@@ -1,5 +1,7 @@
 import { Geist, Geist_Mono, Poppins, Open_Sans } from "next/font/google";
 import "./globals.css";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 
 const poppins = Poppins({
@@ -25,7 +27,11 @@ export default function RootLayout({ children }) {
       <body
         className={`${poppins.variable} ${open_sans.variable} antialiased`}
       >
-        {children}
+        <div>
+          <Navbar/>
+          <main>{children}</main>
+          <Footer/>
+        </div>
       </body>
     </html>
   );
