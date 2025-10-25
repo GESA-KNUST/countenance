@@ -46,14 +46,21 @@
   /* app styles */
   --font-poppins: var(--font-poppins);
   --font-open_sans: var(--font-open_sans);
+  --padding-page-x: 3.5rem;
+  --padding-page-y: 0.5rem;
+  --padding-page-sx: 1rem;
+  --navbar-height: var(--navbar-height);
+  --color-warm-gray: var(--warm-gray);
 
 }
 
 :root {
   /* app styles */
 
-  --medium-dark: #919FAE;
+  --medium-dark: #919fae;
   --primary: #FFBE00;
+  --navbar-height: 96px;
+  --warm-gray: #BEBDBD;
   
 
 
