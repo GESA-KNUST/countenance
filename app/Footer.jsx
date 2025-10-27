@@ -59,19 +59,19 @@ const Footer = () => {
               <Image src={logo} alt='logo' />
               <div className='flex flex-col'>
                 <h3 className='text-primary font-semibold text-2xl'>GESA-KNUST</h3>
-                <p className='text-sm'>Kwame Nkrumah University of <br className='hidden md:block' /> Science and Technology</p>
-                <p className='text-sm'>College of Engineering</p>
+                <p className='text-sm text-warm-gray'>Kwame Nkrumah University of <br className='hidden md:block' /> Science and Technology</p>
+                <p className='text-sm text-warm-gray'>College of Engineering</p>
               </div>
             </div>
 
             <div className='flex flex-wrap gap-10 items-start'>
               <div className='flex flex-col gap-2'>
                 <h3 className='text-sm font-bold text-primary'>Contact Us</h3>
-                <span>024-342-6670</span>
+                <span className='text-warm-gray'>024-342-6670</span>
               </div>
               <div className='flex flex-col gap-2'>
                 <h3 className='text-sm font-bold text-primary'>Email</h3>
-                <span>info@gesaknust.org</span>
+                <span className='text-warm-gray'>info@gesaknust.org</span>
               </div>
             </div>
 

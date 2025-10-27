@@ -44,8 +44,8 @@ const Navbar = () => {
 
         {/* Mobile nav */}
         {isOpen && (
-          <div className='fixed top-0 left-0 h-full w-full'>
-            <div className="px-4 pb-4 bg-white flex flex-col relative">
+          <div className='fixed top-0 left-0 h-full w-full z-50'>
+            <div className="px-4 pb-4 bg-white flex flex-col relative ">
               <div
                 onClick={() => setIsOpen(false)}
                 className='absolute right-10 top-4 p-2 text-red-500 hover:bg-red-500 hover:text-white cursor-pointer rounded-full transition duration-300'
