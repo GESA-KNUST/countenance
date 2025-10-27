@@ -51,6 +51,9 @@
   --padding-page-sx: 1rem;
   --navbar-height: var(--navbar-height);
   --color-warm-gray: var(--warm-gray);
+  --color-medium-dark: var(--medium-dark);
+  --color-separator: var(--separator-color);
+  --color-text-gray: var(--gray);
 
 }
 
@@ -59,8 +62,10 @@
 
   --medium-dark: #919fae;
   --primary: #FFBE00;
-  --navbar-height: 96px;
+  --navbar-height: 88px;
   --warm-gray: #BEBDBD;
+  --separator-color: #F4F6F5;
+  --gray: #667085;
   
 
 
