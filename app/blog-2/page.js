@@ -99,7 +99,7 @@ export default function Page() {
               </div>
             </section>
 
-            <Image src="/images/image-26.png" alt="blog image" width={800} height={574} className="w-full h-auto mb-8" />
+            <Image src="/images/image 26.png" alt="blog image" width={800} height={574} className="w-full h-auto mb-8" />
             
             <p className="text-foreground text-lg leading-8">{mainContent}</p>
 
