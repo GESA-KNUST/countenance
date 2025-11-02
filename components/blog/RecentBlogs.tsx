@@ -1,5 +1,5 @@
 import React from 'react'
-import BlogCard from '../blog/BlogCard'
+import BlogCard from './BlogCard'
 
 
 const RecentBlogs = () => {
