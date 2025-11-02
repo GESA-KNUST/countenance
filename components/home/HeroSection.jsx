@@ -42,7 +42,6 @@ const HeroSection = () => {
     api.scrollTo(index);
   };
 
-  const images = [img1, img2, img1, img2];
 
   return (
     <div className='relative h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden'>
