@@ -9,7 +9,7 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-} from "../../components/ui/carousel";
+} from "../ui/carousel";
 
 const HeroSection = () => {
   const [api, setApi] = useState();
