@@ -28,7 +28,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "app/gesa-blog/page.jsx"  ],
+, "app/blog/page.jsx"  ],
   "exclude": [
     "node_modules"
   ]
