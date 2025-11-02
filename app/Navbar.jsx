@@ -1,18 +1,28 @@
 'use client'
+import React, { useRef, useState } from "react";
+import { motion } from "framer-motion";
 import Image from 'next/image';
 import Logo from '../public/images/logo.svg'
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
-import { useState } from 'react';
+
+
 
 const Navbar = () => {
   const currentPath = usePathname()
   const [isOpen, setIsOpen] = useState(false);
+  const [position, setPosition] = useState({
+    left: 0,
+    width: 0,
+    opacity: 0,
+  });
+
+
 
   const navItems = [
     { name: 'Home', link: '/' },
-    { name: 'GESA Blog', link: '/gesa-blog' },
+    { name: 'GESA Blog', link: '/blog' },
     { name: 'Events', link: '/events' },
     { name: 'Executives', link: '/executives' },
     { name: 'Hub', link: '/hub' },
@@ -25,13 +35,25 @@ const Navbar = () => {
     <div className='flex items-center justify-between md:px-page-x lg:py-page-y px-page-sx font-poppins max-w-360 mx-auto h-(--navbar-height)'>
       <Image src={Logo} alt='logo' />
       <div className='hidden lg:block'>
-        <ul className='flex items-center gap-4 xl:gap-4 lg:gap-2'>
+        <ul
+          onMouseLeave={() => {
+            setPosition((pv) => ({
+              ...pv,
+              opacity: 0,
+            }));
+          }}
+          className='flex items-center gap-4 xl:gap-4 lg:gap-2'
+        >
           {navItems.map((nav, i) => (
-            <li className='' key={i}>
-              <Link href={nav.link} className={`${currentPath == nav.link && 'px-5 py-2 bg-primary'} hover:rounded-full hover:bg-primary py-2 px-3 font-semibold transition duration-300 rounded-full`}>{nav.name}</Link>
-            </li>
+            <Tab setPosition={setPosition} key={i}>
+              <Link href={nav.link} className={`font-semibold ${currentPath == nav.link && 'bg-primary rounded-full'} md:px-5 md:py-3 py-1.5`}>{nav.name}</Link>
+            </Tab>
           ))}
+
+
+          <Cursor position={position} />
         </ul>
+
       </div>
       {/* mobile screen */}
       <div className='lg:hidden'>
@@ -75,3 +97,38 @@ const Navbar = () => {
 }
 
 export default Navbar;
+
+const Tab = ({ children, setPosition }) => {
+  const ref = useRef(null);
+
+  return (
+    <li
+      ref={ref}
+      onMouseEnter={() => {
+        if (!ref?.current) return;
+
+        const { width } = ref.current.getBoundingClientRect();
+
+        setPosition({
+          left: ref.current.offsetLeft,
+          width,
+          opacity: 1,
+        });
+      }}
+      className="relative z-10 block cursor-pointer text-xs uppercase text-black xl:text-base"
+    >
+      {children}
+    </li>
+  );
+};
+
+const Cursor = ({ position }) => {
+  return (
+    <motion.li
+      animate={{
+        ...position,
+      }}
+      className="absolute z-0 h-7 rounded-full bg-primary md:h-12"
+    />
+  );
+};
