@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useState } from 'react';
+import Link from 'next/link';
 import logo from '../../public/images/logo.svg'
 import fb2 from '../../public/images/fb2.svg'
 import twitter from '../../public/images/twitter.svg'
@@ -63,12 +63,6 @@ const allPosts = [
 
 export default function Page() {
   const mainContent = `The Ghana Engineering Students’ Association (GESA-KNUST) was officially established to serve as the recognized representative body for all engineering students at Kwame Nkrumah University of Science and Technology. GESA-KNUST operates as an autonomous, non-partisan student organization dedicated to promoting academic excellence, professional development, and unity among engineering students. The Association........The Ghana Engineering Students’ Association (GESA-KNUST) was officially established to serve as the recognized representative body for all engineering students at Kwame Nkrumah University of Science and Technology. GESA-KNUST operates as an autonomous, non-partisan student organization dedicated to promoting academic excellence, professional development, and unity among engineering students. The Association........The Ghana Engineering Students’ Association (GESA-KNUST) was officially established to serve as the recognized representative body for all engineering students at Kwame Nkrumah University of Science and Technology. GESA-KNUST operates as an autonomous, non-partisan student organization dedicated to promoting academic excellence, professional development, and unity among engineering students. The Association........The Ghana Engineering Students’ Association (GESA-KNUST) was officially established to serve as the recognized representative body for all engineering students at Kwame Nkrumah University of Science and Technology. GESA-KNUST operates as an autonomous, non-partisan student organization dedicated to promoting academic excellence, professional development, and unity among engineering students. The Association........The Ghana Engineering Students’ Association (GESA-KNUST) was officially established to serve as the recognized representative body for all engineering students at Kwame Nkrumah University of Science and Technology. GESA-KNUST operates as an autonomous, non-partisan student organization dedicated to promoting academic excellence, professional development, and unity among engineering students. The Association........The Ghana Engineering Students’ Association (GESA-KNUST) was officially established to serve as the recognized representative body for all engineering students at Kwame Nkrumah University of Science and Technology. GESA-KNUST operates as an autonomous, non-partisan student organization dedicated to promoting academic excellence, professional development, and unity among engineering students. The Association........`;
-  const [visiblePosts, setVisiblePosts] = useState(3);
-
-  const loadMore = () => {
-    setVisiblePosts(prevVisiblePosts => prevVisiblePosts + 3);
-  };
-
 
   return (
     <main className="flex min-h-screen flex-col items-center bg-white font-poppins">
@@ -124,14 +118,13 @@ export default function Page() {
             </h2>
 
             <div className="flex flex-col gap-8">
-                {allPosts.slice(0, visiblePosts).map((post, index) => (
+                {allPosts.slice(0, 3).map((post, index) => (
                     <BlogCard key={index} />
                 ))}
             </div>
 
-            {visiblePosts < allPosts.length && (
+            <Link href="/blog">
                  <button 
-                 onClick={loadMore}
                  className="flex flex-row items-center justify-center py-3 px-6 rounded-lg bg-primary/10 border border-primary/10 shadow-xs w-auto self-center gap-2">
                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                      <path d="M10 4.16669V15.8334" stroke="currentColor" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
@@ -139,7 +132,7 @@ export default function Page() {
                  </svg>
                  <span className="font-medium text-base text-primary">Load More</span>
              </button>
-            )}
+            </Link>
           </div>
         </div>
 
