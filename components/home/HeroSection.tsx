@@ -7,8 +7,15 @@ import img1 from "../../public/images/img1.png";
 import img2 from "../../public/images/img2.png";
 import { ArrowUpRight } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
+import Headline from "../ui/Headline";
 
-const HeroSection = () => {
+interface PropsText {
+  title: string;
+  highlight: string;
+  images: string[];
+}
+
+const HeroSection = ({ title, highlight, images }: PropsText) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -52,7 +59,7 @@ const HeroSection = () => {
         }}
       >
         <CarouselContent className="h-full">
-          {[img1, img2, img1, img2].map((img, index) => (
+          {images.map((img, index) => (
             <CarouselItem
               key={index}
               className="relative h-[calc(100vh-var(--navbar-height))] w-full"
@@ -75,17 +82,18 @@ const HeroSection = () => {
 
       {/* Content */}
       <div className="relative z-20 flex flex-col items-center justify-center text-white px-4 text-center max-w-360 mx-auto gap-6 -mt-32">
-        <h1 className="font-bold text-4xl leading-12 sm:text-[60px] sm:leading-16 md:text-[72px] md:leading-[76px] xl:text-[90px] lg:leading-[90px]">
-          Innovating Tomorrow's <span className="text-primary">Engineers</span>,
-          Today
-        </h1>
+        <Headline
+          text={title}
+          highlight={highlight}
+          highlightClass="text-primary"
+        />
 
         <p className="text-sm sm:text-lg md:text-xl max-w-3xl mx-auto">
           Empowering students with cutting-edge knowledge, hands-on experience,
           and the tools to shape the future of technology and innovation.
         </p>
 
-        <button className="bg-primary font-semibold rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-sm hover:scale-105 transition-transform">
+        <button className="bg-primary font-semibold rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-sm hover:scale-110 transition-transform">
           Explore more{" "}
           <ArrowUpRight className="text-black" strokeWidth={2.5} size={28} />
         </button>
