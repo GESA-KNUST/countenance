@@ -1,7 +1,5 @@
 import Image from "next/image";
-import blogImg1 from "../../public/images/blogImg1.png";
 import { ArrowUpRight } from "lucide-react";
-import blogAuthor from "../../public/images/author.jpg";
 
 interface CardProps {
   slug: string;
