@@ -1,13 +1,13 @@
-import { Geist, Geist_Mono, Poppins, Open_Sans } from "next/font/google";
+import { Poppins, Open_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
 
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["300","400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 const open_sans = Open_Sans({
@@ -24,13 +24,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${poppins.variable} ${open_sans.variable} antialiased`}
-      >
+      <body className={`${poppins.variable} ${open_sans.variable} antialiased`}>
         <div>
-          <Navbar/>
-          <main>{children}</main>
-          <Footer/>
+          <Navbar />
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+          <Footer />
         </div>
       </body>
     </html>
