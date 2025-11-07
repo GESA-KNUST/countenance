@@ -61,7 +61,6 @@ const RecentBlogs = () => {
       return data.blogPostCollection.items;
     },
   });
-  console.log(data);
 
   return (
     <div className="md:px-page-x lg:py-page-y px-page-sx font-poppins my-16">
