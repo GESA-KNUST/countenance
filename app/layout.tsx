@@ -27,7 +27,9 @@ export default function RootLayout({ children }) {
       <body className={`${poppins.variable} ${open_sans.variable} antialiased`}>
         <div>
           <Navbar />
-          <ReactQueryProvider>{children}</ReactQueryProvider>
+          <ReactQueryProvider>
+            {children}
+          </ReactQueryProvider>
           <Footer />
         </div>
       </body>
