@@ -16,7 +16,7 @@ interface CardProps {
 
 const BlogCard = ({ headerImg, slug, author }: CardProps) => {
   return (
-    <div className="h-[580px] xl:w-[334px] lg:w-[300px] sm:w-[340px] w-full shadow-lg p-5 flex justify-center rounded cursor-pointer hover:scale-102 hover:rotate-1 transition-transform duration-300">
+    <div className="h-[580px] lg:w-[300px] sm:w-[340px] w-full shadow-lg p-5 flex justify-center rounded cursor-pointer hover:scale-101 hover:rotate-1 transition-transform duration-300">
       <div className="flex flex-col gap-5">
         <div className="h-60 relative">
           <Image
