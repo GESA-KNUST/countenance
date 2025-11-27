@@ -1,24 +1,22 @@
-import Personality from "../components/home/Personality";
-import HeroSection from "../components/home/HeroSection";
-import React from "react";
-import RecentEvent from "../components/home/RecentEvent";
-import Gallery from "../components/home/Gallery";
-import img1 from "../public/images/img1.png"
-import img2 from "../public/images/img2.png";
+import Personality from '../components/home/Personality';
+import HeroSection from '../components/home/HeroSection'
+import React from 'react'
+import RecentEvent from '../components/home/RecentEvent';
+import Gallery from '../components/home/Gallery';
 
 const Home = () => {
   return (
-    <div className="font-poppins min-h-screen">
-      <HeroSection
+    <div className='font-poppins min-h-screen'>
+      <HeroSection 
         title="Innovating Tomorrow's Engineers, Today"
         highlight="Engineers"
-        images={[img1.src, img2.src, img1.src]}
+        images={['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png']}
       />
-      <Personality />
-      <RecentEvent />
-      <Gallery />
+      <Personality/>
+      <RecentEvent/>
+      <Gallery/>
     </div>
-  );
-};
+  )
+}
 
 export default Home;
