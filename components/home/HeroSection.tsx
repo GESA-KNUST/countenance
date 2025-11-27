@@ -1,21 +1,22 @@
-"use client";
-import { type CarouselApi } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
-import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
-import img1 from "../../public/images/img1.png";
-import img2 from "../../public/images/img2.png";
-import { ArrowUpRight } from "lucide-react";
-import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
-import Headline from "../ui/Headline";
+'use client';
+import Autoplay from "embla-carousel-autoplay"
+import Image from 'next/image';
+import React, { useEffect, useRef, useState } from 'react';
+import { ArrowUpRight } from 'lucide-react';
+import {
+  Carousel,
+  CarouselApi,
+  CarouselContent,
+  CarouselItem,
+} from "../ui/carousel";
 
-interface PropsText {
+interface HeroSectionProps {
   title: string;
   highlight: string;
   images: string[];
 }
 
-const HeroSection = ({ title, highlight, images }: PropsText) => {
+const HeroSection = ({ title, highlight, images }: HeroSectionProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -41,13 +42,15 @@ const HeroSection = ({ title, highlight, images }: PropsText) => {
     });
   }, [api]);
 
-  const handleDotClick = (index) => {
+  const handleDotClick = (index: number) => {
     if (!api) return;
     api.scrollTo(index);
   };
 
+
   return (
-    <div className="relative h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden">
+    <div className='relative h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden'>
+
       {/* Background Image Carousel */}
       <Carousel
         plugins={[plugin.current]}
@@ -59,16 +62,13 @@ const HeroSection = ({ title, highlight, images }: PropsText) => {
         }}
       >
         <CarouselContent className="h-full">
-          {images.map((img, index) => (
-            <CarouselItem
-              key={index}
-              className="relative h-[calc(100vh-var(--navbar-height))] w-full"
-            >
+          {images.map((imgSrc, index) => (
+            <CarouselItem key={index} className="relative h-[calc(100vh-var(--navbar-height))] w-full">
               <Image
-                src={img}
+                src={imgSrc}
                 alt={`Hero image ${index + 1}`}
                 fill
-                className="object-cover"
+                className='object-cover'
                 priority={index === 0}
                 sizes="100vw"
               />
@@ -78,24 +78,28 @@ const HeroSection = ({ title, highlight, images }: PropsText) => {
       </Carousel>
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/65 z-10" />
+      <div className='absolute inset-0 bg-black/65 z-10' />
 
       {/* Content */}
-      <div className="relative z-20 flex flex-col items-center justify-center text-white px-4 text-center max-w-360 mx-auto gap-6 -mt-32">
-        <Headline
-          text={title}
-          highlight={highlight}
-          highlightClass="text-primary"
-        />
+      <div className='relative z-20 flex flex-col items-center justify-center text-white px-4 text-center max-w-360 mx-auto gap-6 -mt-32'>
+        <h1 className='font-bold text-4xl leading-12 sm:text-[60px] sm:leading-16 md:text-[72px] md:leading-[76px] xl:text-[90px] lg:leading-[90px]'>
+          {title.split(highlight).map((part, index) => (
+            <React.Fragment key={index}>
+              {part}
+              {index < title.split(highlight).length - 1 && (
+                <span className='text-primary'>{highlight}</span>
+              )}
+            </React.Fragment>
+          ))}
+        </h1>
 
-        <p className="text-sm sm:text-lg md:text-xl max-w-3xl mx-auto">
+        <p className='text-sm sm:text-lg md:text-xl max-w-3xl mx-auto'>
           Empowering students with cutting-edge knowledge, hands-on experience,
           and the tools to shape the future of technology and innovation.
         </p>
 
-        <button className="bg-primary font-semibold rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-sm hover:scale-110 transition-transform">
-          Explore more{" "}
-          <ArrowUpRight className="text-black" strokeWidth={2.5} size={28} />
+        <button className="bg-primary font-semibold rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-sm hover:scale-105 transition-transform">
+          Explore more <ArrowUpRight className='text-black' strokeWidth={2.5} size={28} />
         </button>
       </div>
 
@@ -107,13 +111,12 @@ const HeroSection = ({ title, highlight, images }: PropsText) => {
               onClick={() => handleDotClick(index)}
               key={index}
               aria-label={`Go to slide ${index + 1}`}
-              className={`w-4 h-4 ${
-                current === index ? "bg-white" : "bg-white/30"
-              } rounded-full cursor-pointer transition-all duration-300 hover:bg-white/60`}
+              className={`w-4 h-4 ${current === index ? 'bg-white' : 'bg-white/30'} rounded-full cursor-pointer transition-all duration-300 hover:bg-white/60`}
             />
           ))}
         </div>
       </div>
+
     </div>
   );
 };

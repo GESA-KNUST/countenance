@@ -1,8 +1,10 @@
 'use client';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import BlogCard from '../blog/BlogCard';
+import EventCard from './EventsCard';
 
-const RecentEvents = ({ currentIndex, total, onNext, onPrev }) => {
+const RecentEvents = ({ currentIndex, total, onNext, onPrev, events }) => {
+  const getEventAtIndex = (index) => events[index % events.length];
+
   return (
     <div className="py-16 px-6 sm:px-10 md:px-16 lg:px-20 xl:px-24 flex flex-col xl:flex-row items-start gap-12">
       <div className="w-full xl:w-1/4 text-center lg:text-left">
@@ -25,9 +27,21 @@ const RecentEvents = ({ currentIndex, total, onNext, onPrev }) => {
       </div>
 
       <div className="w-full xl:w-3/4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-1">
-          <BlogCard />
-          <BlogCard />
-          <BlogCard />
+        {[...Array(3)].map((_, i) => {
+          const event = getEventAtIndex(currentIndex + i);
+          return <EventCard 
+            key={event._id} 
+            title={event.slug} 
+            description={event.description}
+            date={event.eventDate}
+            headerImg={event.eventImage}
+            author={{
+                title: "GESA",
+                url: "/images/logo.svg",
+                description: "GESA Logo"
+            }}
+          />;
+        })}
       </div>
     </div>
   );
