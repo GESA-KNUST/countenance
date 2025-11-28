@@ -31,15 +31,13 @@ const RecentEvents = ({ currentIndex, total, onNext, onPrev, events }) => {
           const event = getEventAtIndex(currentIndex + i);
           return <EventCard 
             key={event._id} 
-            title={event.slug} 
+            title={event.title} 
             description={event.description}
             date={event.eventDate}
             headerImg={event.eventImage}
-            author={{
-                title: "GESA",
-                url: "/images/logo.svg",
-                description: "GESA Logo"
-            }}
+            venue={event.venue}
+            onlineLink={event.onlineLink}
+            slug={event.slug}
           />;
         })}
       </div>

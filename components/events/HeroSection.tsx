@@ -7,12 +7,15 @@ import EventCard from './EventsCard';
 interface ItemsProps {
   _id: string;
   slug: string;
+  title: string;
   description: string;
   eventImage: {
     url: string;
     description: string;
   };
   eventDate: string;
+  venue: string;
+  onlineLink?: string;
 }
 
 
@@ -77,15 +80,13 @@ const HeroSection = ({ heroImage, title, subtitle, currentIndex, total, onNext, 
                           key={item._id}
                           className={`w-[334px] shrink-0 transition-opacity duration-300 ${opacityClass}`}>
                           <EventCard 
-                            title={item.slug} 
+                            title={item.title} 
                             description={item.description}
                             headerImg={item.eventImage}
                             date={item.eventDate}
-                            author={{
-                                title: "GESA",
-                                url: "/images/logo.svg",
-                                description: "GESA Logo"
-                            }}/>
+                            venue={item.venue}
+                            onlineLink={item.onlineLink}
+                            slug={item.slug}/>
                         </div>
                     );
                 })}
@@ -101,15 +102,13 @@ const HeroSection = ({ heroImage, title, subtitle, currentIndex, total, onNext, 
               {items && items.map((item) => (
                 <div key={item._id} className="w-full h-full shrink-0 p-4">
                    <EventCard 
-                    title={item.slug} 
+                    title={item.title} 
                     description={item.description}
                     headerImg={item.eventImage}
                     date={item.eventDate}
-                    author={{
-                        title: "GESA",
-                        url: "/images/logo.svg",
-                        description: "GESA Logo"
-                    }}/>
+                    venue={item.venue}
+                    onlineLink={item.onlineLink}
+                    slug={item.slug}/>
                 </div>
               ))}
             </div>
