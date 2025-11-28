@@ -4,22 +4,19 @@ import heroImage from '../../public/images/image 26.png';
 import HeroSection from '../../components/events/HeroSection';
 import RecentEvents from '../../components/events/RecentEvents';
 import AllEvents from '../../components/events/AllEvents';
+import useEventCollection from '../../hooks/useEventCollection';
 
 const EventsPage = () => {
+  const { data: events, isLoading, error } = useEventCollection();
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const blogPosts = [
-    { id: 1, title: 'First Event' },
-    { id: 2, title: 'Second Event' },
-    { id: 3, title: 'Third Event' },
-    { id: 4, title: 'Fourth Event' },
-    { id: 5, title: 'Fifth Event' },
-  ];
+
+  const items = events ?? [];
 
   const handleNext = () =>
-    setCurrentIndex((i) => (i === blogPosts.length - 1 ? 0 : i + 1));
+    setCurrentIndex((i) => (i === (events?.length ?? 0) - 1 ? 0 : i + 1));
   const handlePrev = () =>
-    setCurrentIndex((i) => (i === 0 ? blogPosts.length - 1 : i - 1));
+    setCurrentIndex((i) => (i === 0 ? (events?.length ?? 0) - 1 : i - 1));
 
   return (
     <div className="bg-white text-black overflow-x-hidden">
@@ -28,18 +25,27 @@ const EventsPage = () => {
         title="Upcoming"
         subtitle="Explore insights, innovations, and student experiences from the heart of KNUST’s engineering community."
         currentIndex={currentIndex}
-        total={blogPosts.length}
+        total={events?.length ?? 0}
         onNext={handleNext}
         onPrev={handlePrev}
-        items={blogPosts} 
+        items={items}
       />
 
       <RecentEvents
         currentIndex={currentIndex}
-        total={blogPosts.length}
+        total={events?.length ?? 0}
         onNext={handleNext}
         onPrev={handlePrev}
+        events={items}
       />
+
+      {isLoading && (
+        <div className="p-4 text-center">Loading events…</div>
+      )}
+
+      {error && (
+        <div className="p-4 text-center text-red-600">There was an error loading events.</div>
+      )}
 
       <AllEvents />
     </div>

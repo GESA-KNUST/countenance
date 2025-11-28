@@ -7,7 +7,11 @@ import Gallery from '../components/home/Gallery';
 const Home = () => {
   return (
     <div className='font-poppins min-h-screen'>
-      <HeroSection/>
+      <HeroSection 
+        title="Innovating Tomorrow's Engineers, Today"
+        highlight="Engineers"
+        images={['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png']}
+      />
       <Personality/>
       <RecentEvent/>
       <Gallery/>
