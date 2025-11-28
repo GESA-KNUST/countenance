@@ -1,0 +1,20 @@
+name: build-site.yml
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+
+jobs:
+  build-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout branch
+        uses: actions/checkout@v4
+      - name: setup nodeJS
+        uses: actions/setup-node@v4
+      - name: install packages
+        run: npm ci
+      - name: build site
+        run: npm run build
+
