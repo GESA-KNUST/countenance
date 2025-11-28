@@ -27,7 +27,7 @@ const RecentEvents = ({ currentIndex, total, onNext, onPrev, events }) => {
       </div>
 
       <div className="w-full xl:w-3/4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-1">
-        {[...Array(3)].map((_, i) => {
+        {events && events.length > 0 && [...Array(3)].map((_, i) => {
           const event = getEventAtIndex(currentIndex + i);
           return <EventCard 
             key={event._id} 
