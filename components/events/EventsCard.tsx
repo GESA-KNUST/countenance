@@ -29,7 +29,7 @@ const EventCard: React.FC<EventCardProps> = ({ title, description, date, headerI
                 <p className='text-text-gray'>{description}</p>
                 <div>
                     <p className='font-medium text-sm'>Venue: {venue}</p>
-                    {onlineLink && <a href={onlineLink} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-500 break-words">{onlineLink}</a>}
+                    {onlineLink && <a href={onlineLink} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-500 wrap-break-word">{onlineLink}</a>}
                 </div>
                 <div className='flex gap-2'>
                     <div>
