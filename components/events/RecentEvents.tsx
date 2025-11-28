@@ -6,8 +6,8 @@ const RecentEvents = ({ currentIndex, total, onNext, onPrev, events }) => {
   const getEventAtIndex = (index) => events[index % events.length];
 
   return (
-    <div className="py-16 px-6 sm:px-10 md:px-16 lg:px-20 xl:px-24 flex flex-col xl:flex-row items-start gap-12">
-      <div className="w-full xl:w-1/4 text-center lg:text-left">
+    <div className="py-16 px-6 sm:px-10 md:px-16 lg:px-20 xl:px-24 flex flex-col lg:flex-row items-start gap-12">
+      <div className="w-full lg:w-1/3 xl:w-1/4 text-center lg:text-left">
         <h2 className="text-5xl sm:text-6xl lg:text-7xl font-semibold leading-tight">
           Recent <br /> <span className="text-[#FFBE00]">Events</span>
         </h2>
@@ -26,7 +26,7 @@ const RecentEvents = ({ currentIndex, total, onNext, onPrev, events }) => {
         </div>
       </div>
 
-      <div className="w-full xl:w-3/4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-1">
+  <div className="w-full lg:w-2/3 xl:w-3/4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
         {events && events.length > 0 && [...Array(3)].map((_, i) => {
           const event = getEventAtIndex(currentIndex + i);
           return <EventCard 
