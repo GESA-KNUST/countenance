@@ -1,9 +1,36 @@
 'use client';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import { ArrowUpRight, ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from 'lucide-react';
-import BlogCard from '../blog/BlogCard';
+import EventCard from './EventsCard';
 
-const HeroSection = ({ heroImage, title, subtitle, currentIndex, total, onNext, onPrev, items }) => {
+
+interface ItemsProps {
+  _id: string;
+  slug: string;
+  title: string;
+  description: string;
+  eventImage: {
+    url: string;
+    description: string;
+  };
+  eventDate: string;
+  venue: string;
+  onlineLink?: string;
+}
+
+
+interface HeroSectionProps {
+  heroImage: StaticImageData;
+  title: string;
+  subtitle: string;
+  currentIndex: number;
+  total: number;
+  onNext: () => void;
+  onPrev: () => void;
+  items: ItemsProps[];
+}
+
+const HeroSection = ({ heroImage, title, subtitle, currentIndex, total, onNext, onPrev, items }: HeroSectionProps) => {
 
   return (
     <div className="relative min-h-[calc(100vh-var(--navbar-height))] w-full flex items-center justify-center">
@@ -50,10 +77,16 @@ const HeroSection = ({ heroImage, title, subtitle, currentIndex, total, onNext, 
 
                     return (
                         <div
-                          key={item.id}
-                          className={`w-[334px] shrink-0 transition-opacity duration-300 ${opacityClass}`}
-                         >
-                          <BlogCard title={item.title} author={item.author} date={item.date} />
+                          key={item._id}
+                          className={`w-[334px] shrink-0 transition-opacity duration-300 ${opacityClass}`}>
+                          <EventCard 
+                            title={item.title} 
+                            description={item.description}
+                            headerImg={item.eventImage}
+                            date={item.eventDate}
+                            venue={item.venue}
+                            onlineLink={item.onlineLink}
+                            slug={item.slug}/>
                         </div>
                     );
                 })}
@@ -67,8 +100,15 @@ const HeroSection = ({ heroImage, title, subtitle, currentIndex, total, onNext, 
               style={{ transform: `translateY(-${currentIndex * 100}%)` }}
             >
               {items && items.map((item) => (
-                <div key={item.id} className="w-full h-full shrink-0 p-4">
-                  <BlogCard title={item.title} author={item.author} date={item.date} />
+                <div key={item._id} className="w-full h-full shrink-0 p-4">
+                   <EventCard 
+                    title={item.title} 
+                    description={item.description}
+                    headerImg={item.eventImage}
+                    date={item.eventDate}
+                    venue={item.venue}
+                    onlineLink={item.onlineLink}
+                    slug={item.slug}/>
                 </div>
               ))}
             </div>
