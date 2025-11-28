@@ -55,7 +55,7 @@ const Navbar = () => {
         </ul>
 
       </div>
-      {/* mobile screen */}
+
       <div className='lg:hidden'>
         <Menu
           strokeWidth={3}
@@ -64,7 +64,6 @@ const Navbar = () => {
           onClick={() => setIsOpen(prev => !prev)}
         />
 
-        {/* Mobile nav */}
         {isOpen && (
           <div className='fixed top-0 left-0 h-full w-full z-50'>
             <div className="px-4 pb-4 bg-white flex flex-col relative ">
