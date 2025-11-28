@@ -16,7 +16,7 @@ interface EventCardProps {
 
 const EventCard: React.FC<EventCardProps> = ({ title, description, date, headerImg, venue, onlineLink, slug }) => {
     return (
-        <div className='h-[580px] xl:w-[334px] lg:w-[300px] sm:w-[340px] w-full shadow-lg p-5 flex justify-center rounded cursor-pointer hover:scale-102 hover:rotate-1 transition-transform duration-300'>
+        <div className='h-[520px] md:h-[480px] sm:h-[440px] xl:w-[334px] lg:w-[300px] sm:w-[340px] w-full shadow-lg p-5 flex justify-center rounded cursor-pointer hover:scale-102 hover:rotate-1 transition-transform duration-300'>
             <div className='flex flex-col gap-5'>
                 <div className='h-60'>
                     <Image src={headerImg.url} alt={headerImg.description} width={300} height={240} className='w-full h-full object-cover' />
