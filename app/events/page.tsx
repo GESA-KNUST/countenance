@@ -10,13 +10,8 @@ const EventsPage = () => {
   const { data: events, isLoading, error } = useEventCollection();
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
-  if (error) {
-    return <div>Error loading events.</div>;
-  }
+  const items = events ?? [];
 
   const handleNext = () =>
     setCurrentIndex((i) => (i === (events?.length ?? 0) - 1 ? 0 : i + 1));
@@ -33,7 +28,7 @@ const EventsPage = () => {
         total={events?.length ?? 0}
         onNext={handleNext}
         onPrev={handlePrev}
-        items={events} 
+        items={items}
       />
 
       <RecentEvents
@@ -41,8 +36,16 @@ const EventsPage = () => {
         total={events?.length ?? 0}
         onNext={handleNext}
         onPrev={handlePrev}
-        events={events}
+        events={items}
       />
+
+      {isLoading && (
+        <div className="p-4 text-center">Loading events…</div>
+      )}
+
+      {error && (
+        <div className="p-4 text-center text-red-600">There was an error loading events.</div>
+      )}
 
       <AllEvents />
     </div>
