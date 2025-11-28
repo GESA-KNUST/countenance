@@ -6,7 +6,11 @@ import RecentBlog from '../../components/blog/RecentBlogs'
 const page = () => {
   return (
     <div className='font-poppins min-h-screen'>
-      <HeroSection />
+      <HeroSection 
+        title="Explore Our Latest Blog Posts"
+        highlight="Blog Posts"
+        images={[]}
+      />
       <BigStory />
       <RecentBlog/>
     </div>

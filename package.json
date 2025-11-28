@@ -8,14 +8,19 @@
     "start": "next start"
   },
   "dependencies": {
-    "@radix-ui/react-separator": "^1.1.7",
+    "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.3",
+    "@tanstack/react-query": "^5.90.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "embla-carousel": "^8.6.0",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
+    "graphql": "^16.12.0",
+    "graphql-request": "^7.3.1",
     "lucide-react": "^0.548.0",
+    "motion": "^12.23.24",
     "next": "^15.5.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -23,6 +28,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@tanstack/react-query-devtools": "^5.90.2",
     "@types/node": "24.9.1",
     "@types/react": "19.2.2",
     "tailwindcss": "^4",
