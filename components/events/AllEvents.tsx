@@ -7,20 +7,15 @@ import useEventCollection from '../../hooks/useEventCollection';
 const AllEvents = () => {
   const { data: events, isLoading, error } = useEventCollection();
   const [searchTerm, setSearchTerm] = useState('');
+ 
+  const items = events ?? [];
 
-  const filteredEvents = events?.filter((event) => {
-    const matchesSearch = event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          event.description.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredEvents = items.filter((event) => {
+    const matchesSearch =
+      event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      event.description.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesSearch;
   });
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error loading events.</div>;
-  }
 
   return (
     <div className="py-16 px-6 sm:px-10 md:px-16 lg:px-20 xl:px-24 flex flex-col xl:flex-row items-start gap-12">
@@ -49,7 +44,19 @@ const AllEvents = () => {
       </div>
 
       <div className="w-full xl:w-3/4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-        {filteredEvents?.map((event) => (
+        {isLoading && (
+          <div className="col-span-full p-4 text-center">Loading events…</div>
+        )}
+
+        {error && (
+          <div className="col-span-full p-4 text-center text-red-600">Error loading events.</div>
+        )}
+
+        {!isLoading && !error && filteredEvents.length === 0 && (
+          <div className="col-span-full p-4 text-center">No events found.</div>
+        )}
+
+        {!isLoading && !error && filteredEvents.map((event) => (
           <EventCard 
             key={event._id} 
             title={event.title} 
