@@ -9,7 +9,7 @@ const AllEvents = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredEvents = events?.filter((event) => {
-    const matchesSearch = event.slug.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch = event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           event.description.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesSearch;
   });
@@ -52,15 +52,13 @@ const AllEvents = () => {
         {filteredEvents?.map((event) => (
           <EventCard 
             key={event._id} 
-            title={event.slug} 
+            title={event.title} 
             description={event.description}
             date={event.eventDate}
             headerImg={event.eventImage}
-            author={{
-                title: "GESA",
-                url: "/images/logo.svg",
-                description: "GESA Logo"
-            }}
+            venue={event.venue}
+            onlineLink={event.onlineLink}
+            slug={event.slug}
           />
         ))}
       </div>
