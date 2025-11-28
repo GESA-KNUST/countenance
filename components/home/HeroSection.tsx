@@ -2,17 +2,22 @@
 import Autoplay from "embla-carousel-autoplay"
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
-import img1 from '../../public/images/img1.png';
-import img2 from '../../public/images/img2.png';
 import { ArrowUpRight } from 'lucide-react';
 import {
   Carousel,
+  CarouselApi,
   CarouselContent,
   CarouselItem,
-} from "../../components/ui/carousel";
+} from "../ui/carousel";
 
-const HeroSection = () => {
-  const [api, setApi] = useState();
+interface HeroSectionProps {
+  title: string;
+  highlight: string;
+  images: string[];
+}
+
+const HeroSection = ({ title, highlight, images }: HeroSectionProps) => {
+  const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
 
@@ -37,7 +42,7 @@ const HeroSection = () => {
     });
   }, [api]);
 
-  const handleDotClick = (index) => {
+  const handleDotClick = (index: number) => {
     if (!api) return;
     api.scrollTo(index);
   };
@@ -57,10 +62,10 @@ const HeroSection = () => {
         }}
       >
         <CarouselContent className="h-full">
-          {[img1, img2, img1, img2].map((img, index) => (
+          {images.map((imgSrc, index) => (
             <CarouselItem key={index} className="relative h-[calc(100vh-var(--navbar-height))] w-full">
               <Image
-                src={img}
+                src={imgSrc}
                 alt={`Hero image ${index + 1}`}
                 fill
                 className='object-cover'
@@ -78,7 +83,14 @@ const HeroSection = () => {
       {/* Content */}
       <div className='relative z-20 flex flex-col items-center justify-center text-white px-4 text-center max-w-360 mx-auto gap-6 -mt-32'>
         <h1 className='font-bold text-4xl leading-12 sm:text-[60px] sm:leading-16 md:text-[72px] md:leading-[76px] xl:text-[90px] lg:leading-[90px]'>
-          Innovating Tomorrow's <span className='text-primary'>Engineers</span>, Today
+          {title.split(highlight).map((part, index) => (
+            <React.Fragment key={index}>
+              {part}
+              {index < title.split(highlight).length - 1 && (
+                <span className='text-primary'>{highlight}</span>
+              )}
+            </React.Fragment>
+          ))}
         </h1>
 
         <p className='text-sm sm:text-lg md:text-xl max-w-3xl mx-auto'>
