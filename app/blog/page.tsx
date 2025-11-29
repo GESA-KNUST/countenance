@@ -1,5 +1,5 @@
 import React from 'react'
-import HeroSection from '../../components/home/HeroSection'
+import HeroSection from '../../components/blog/HeroSection'
 import BigStory from '../../components/blog/BigStory'
 import RecentBlog from '../../components/blog/RecentBlogs'
 import img1 from "public/images/img1.png";
