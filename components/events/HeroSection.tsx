@@ -1,8 +1,15 @@
 'use client';
+import Autoplay from "embla-carousel-autoplay"
 import Image, { StaticImageData } from 'next/image';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from 'lucide-react';
 import EventCard from './EventsCard';
-
+import {
+  Carousel,
+  CarouselApi,
+  CarouselContent,
+  CarouselItem,
+} from "../ui/carousel";
 
 interface ItemsProps {
   _id: string;
@@ -14,13 +21,15 @@ interface ItemsProps {
     description: string;
   };
   eventDate: string;
-  venue: string;
+  venue: {
+    lat: number;
+    lon: number;
+  };
   onlineLink?: string;
 }
 
-
 interface HeroSectionProps {
-  heroImage: StaticImageData;
+  images: (string | StaticImageData)[];
   title: string;
   subtitle: string;
   currentIndex: number;
@@ -30,22 +39,64 @@ interface HeroSectionProps {
   items: ItemsProps[];
 }
 
-const HeroSection = ({ heroImage, title, subtitle, currentIndex, total, onNext, onPrev, items }: HeroSectionProps) => {
+const HeroSection = ({ images, title, subtitle, currentIndex, total, onNext, onPrev, items }: HeroSectionProps) => {
+
+  const [api, setApi] = useState<CarouselApi>();
+  const plugin = useRef(
+    Autoplay({
+      delay: 5000,
+      stopOnMouseEnter: true,
+      stopOnInteraction: false,
+    })
+  );
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+  }, [api]);
+  
+  
+  const MOBILE_CARD_HEIGHT_CLASS = 'h-[500px]'; 
 
   return (
-    <div className="relative min-h-[calc(100vh-var(--navbar-height))] w-full flex items-center justify-center">
-      <Image src={heroImage} alt="background image" fill priority className="object-cover" />
+    <div className="relative h-[calc(100vh-var(--navbar-height))] w-full flex items-center justify-center">
+      <Carousel
+        plugins={[plugin.current]}
+        setApi={setApi}
+        className="w-full h-full absolute inset-0"
+        opts={{
+          loop: true,
+          duration: 50,
+        }}
+      >
+        <CarouselContent className="h-full ml-0">
+          {images.map((img, index) => (
+            <CarouselItem key={index} className="relative h-[calc(100vh-var(--navbar-height))] w-full pl-0">
+              <Image
+                src={img}
+                alt={`Hero image ${index + 1}`}
+                fill
+                className='object-cover'
+                priority={index === 0}
+                sizes="100vw"
+              />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
+
       <div className="absolute inset-0 bg-black/60 z-10" />
 
-      <div className="relative z-20 w-full flex flex-col lg:flex-row items-center justify-between text-white p-6 sm:p-8 md:p-12 lg:p-20 xl:p-24 gap-8">
+      <div className="relative z-20 w-full flex flex-col lg:flex-row items-center justify-between text-white p-4 sm:p-8 md:p-12 lg:p-20 xl:p-24 gap-6">
         <div className="max-w-xl text-center lg:text-left">
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-semibold leading-tight">
+          <h1 className="text-3xl sm:text-5xl lg:text-7xl font-semibold leading-tight">
             {title} <span className="text-[#FFBE00]">Events</span>
           </h1>
-          <p className="mt-4 text-base sm:text-lg md:text-xl max-w-lg mx-auto lg:mx-0">{subtitle}</p>
+          <p className="mt-4 text-sm sm:text-base md:text-lg max-w-lg mx-auto lg:mx-0">{subtitle}</p>
 
-          <div className="mt-8 flex flex-col items-center lg:items-start gap-4">
-            <button className="bg-[#FFBE00] text-black px-5 py-3 rounded-lg font-semibold flex items-center gap-2">
+          <div className="mt-6 flex flex-col items-center lg:items-start gap-4">
+            <button className="bg-[#FFBE00] text-black px-5 py-3 rounded-lg font-semibold flex items-center gap-2 text-sm sm:text-base">
               <span>Explore more</span>
               <ArrowUpRight className="h-5 w-5" />
             </button>
@@ -62,59 +113,64 @@ const HeroSection = ({ heroImage, title, subtitle, currentIndex, total, onNext, 
           </div>
         </div>
 
+        
         <div className="hidden lg:block w-[800px] overflow-hidden">
-            <div
-              className="flex gap-6 items-center transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentIndex * (334 + 24)}px)` }}
-            >
-                {items && items.map((item, index) => {
-                    let opacityClass = 'opacity-25';
-                    if (index === currentIndex) {
-                        opacityClass = 'opacity-100';
-                    } else if (index === currentIndex + 1) {
-                        opacityClass = 'opacity-50';
-                    }
+          <div
+            className="flex gap-6 items-center transition-transform duration-500 ease-in-out"
+            style={{ transform: `translateX(-${currentIndex * (334 + 24)}px)` }}
+          >
+            {items && items.map((item, index) => {
+              let opacityClass = 'opacity-25';
+              if (index === currentIndex) {
+                opacityClass = 'opacity-100';
+              } else if (index === currentIndex + 1) {
+                opacityClass = 'opacity-50';
+              }
 
-                    return (
-                        <div
-                          key={item._id}
-                          className={`w-[334px] shrink-0 transition-opacity duration-300 ${opacityClass}`}>
-                          <EventCard 
-                            title={item.title} 
-                            description={item.description}
-                            headerImg={item.eventImage}
-                            date={item.eventDate}
-                            venue={item.venue}
-                            onlineLink={item.onlineLink}
-                            slug={item.slug}/>
-                        </div>
-                    );
-                })}
-            </div>
-        </div>
-
-        <div className="lg:hidden w-full max-w-sm mx-auto mt-8">
-          <div className="relative h-[580px] overflow-hidden">
-            <div
-              className="absolute top-0 left-0 w-full h-full transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateY(-${currentIndex * 100}%)` }}
-            >
-              {items && items.map((item) => (
-                <div key={item._id} className="w-full h-full shrink-0 p-4">
-                   <EventCard 
-                    title={item.title} 
+              return (
+                <div
+                  key={item._id}
+                  className={`w-[334px] shrink-0 transition-opacity duration-300 ${opacityClass}`}
+                >
+                  <EventCard
+                    title={item.title}
                     description={item.description}
                     headerImg={item.eventImage}
                     date={item.eventDate}
                     venue={item.venue}
                     onlineLink={item.onlineLink}
-                    slug={item.slug}/>
+                    slug={item.slug}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        
+        <div className="lg:hidden w-full max-w-sm mx-auto mt-4">
+          <div className={`relative ${MOBILE_CARD_HEIGHT_CLASS} overflow-hidden`}>
+            <div
+              className="absolute top-0 left-0 w-full transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateY(-${currentIndex * 500}px)` }} 
+            >
+              {items && items.map((item) => (
+                <div key={item._id} className={`w-full ${MOBILE_CARD_HEIGHT_CLASS} shrink-0 p-2`}>
+                  <EventCard
+                    title={item.title}
+                    description={item.description}
+                    headerImg={item.eventImage}
+                    date={item.eventDate}
+                    venue={item.venue}
+                    onlineLink={item.onlineLink}
+                    slug={item.slug}
+                  />
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="flex items-center justify-center gap-4 mt-4 text-white">
+          <div className="flex items-center justify-center gap-4 mt-2 text-white">
             <button onClick={onPrev} className="p-3 border border-white/30 rounded-full">
               <ChevronUp />
             </button>

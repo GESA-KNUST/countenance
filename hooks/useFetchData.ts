@@ -10,6 +10,13 @@ interface FetchOptions<T> extends Omit<UseQueryOptions<T, Error>, "queryKey" | "
 export function useFetchData<T>({ queryKey, queryFn }: FetchOptions<T>) {
   return useQuery<T, Error>({
     queryKey: Array.isArray(queryKey) ? queryKey : [queryKey],
-    queryFn,
+    queryFn: async () => {
+      try {
+        return await queryFn();
+      } catch (error) {
+        console.error('[useFetchData Error]', error);
+        throw error;
+      }
+    },
   });
 }
