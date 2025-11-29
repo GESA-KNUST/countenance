@@ -37,7 +37,7 @@ const RecentEvents = ({ currentIndex, total, onNext, onPrev, events }: RecentEve
   const DISPLAY_COUNT = 3;
 
 
-  const eventsToRender = events.slice(currentIndex, currentIndex + DISPLAY_COUNT);
+  const eventsToRender = events.slice(0, DISPLAY_COUNT);
   
   
   const isPrevDisabled = currentIndex === 0;
