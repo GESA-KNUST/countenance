@@ -1,8 +1,9 @@
 'use client';
 import Autoplay from "embla-carousel-autoplay"
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import Link from 'next/link';
 import {
   Carousel,
   CarouselApi,
@@ -11,12 +12,16 @@ import {
 } from "../ui/carousel";
 
 interface HeroSectionProps {
-  title: string;
-  highlight: string;
-  images: string[];
+  title?: string;
+  highlight?: string;
+  images?: (string | StaticImageData)[];
 }
 
-const HeroSection = ({ title, highlight, images }: HeroSectionProps) => {
+const HeroSection = ({
+  title = "Innovating Tomorrow's Engineers, Today",
+  highlight = "Engineers",
+  images = ['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png'],
+}: HeroSectionProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -47,6 +52,8 @@ const HeroSection = ({ title, highlight, images }: HeroSectionProps) => {
     api.scrollTo(index);
   };
 
+  const titleParts = title.split(highlight);
+
 
   return (
     <div className='relative h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden'>
@@ -62,10 +69,10 @@ const HeroSection = ({ title, highlight, images }: HeroSectionProps) => {
         }}
       >
         <CarouselContent className="h-full">
-          {images.map((imgSrc, index) => (
+          {images.map((img, index) => (
             <CarouselItem key={index} className="relative h-[calc(100vh-var(--navbar-height))] w-full">
               <Image
-                src={imgSrc}
+                src={img}
                 alt={`Hero image ${index + 1}`}
                 fill
                 className='object-cover'
@@ -83,14 +90,7 @@ const HeroSection = ({ title, highlight, images }: HeroSectionProps) => {
       {/* Content */}
       <div className='relative z-20 flex flex-col items-center justify-center text-white px-4 text-center max-w-360 mx-auto gap-6 -mt-32'>
         <h1 className='font-bold text-4xl leading-12 sm:text-[60px] sm:leading-16 md:text-[72px] md:leading-[76px] xl:text-[90px] lg:leading-[90px]'>
-          {title.split(highlight).map((part, index) => (
-            <React.Fragment key={index}>
-              {part}
-              {index < title.split(highlight).length - 1 && (
-                <span className='text-primary'>{highlight}</span>
-              )}
-            </React.Fragment>
-          ))}
+          {titleParts[0]}<span className='text-primary'>{highlight}</span>{titleParts[1]}
         </h1>
 
         <p className='text-sm sm:text-lg md:text-xl max-w-3xl mx-auto'>
@@ -98,9 +98,11 @@ const HeroSection = ({ title, highlight, images }: HeroSectionProps) => {
           and the tools to shape the future of technology and innovation.
         </p>
 
-        <button className="bg-primary font-semibold rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-sm hover:scale-105 transition-transform">
-          Explore more <ArrowUpRight className='text-black' strokeWidth={2.5} size={28} />
-        </button>
+        <Link href="/blog">
+          <button className="bg-primary font-semibold rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-sm hover:scale-105 transition-transform">
+            Explore more <ArrowUpRight className='text-black' strokeWidth={2.5} size={28} />
+          </button>
+        </Link>
       </div>
 
       {/* Progress Dots */}
