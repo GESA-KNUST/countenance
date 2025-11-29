@@ -2,8 +2,6 @@
 import Autoplay from "embla-carousel-autoplay"
 import Image, { StaticImageData } from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight } from 'lucide-react';
-import Link from 'next/link';
 import {
   Carousel,
   CarouselApi,
@@ -97,12 +95,6 @@ const HeroSection = ({
           Empowering students with cutting-edge knowledge, hands-on experience,
           and the tools to shape the future of technology and innovation.
         </p>
-
-        <Link href="/blog">
-          <button className="bg-primary font-semibold rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-sm hover:scale-105 transition-transform">
-            Explore more <ArrowUpRight className='text-black' strokeWidth={2.5} size={28} />
-          </button>
-        </Link>
       </div>
 
       {/* Progress Dots */}
