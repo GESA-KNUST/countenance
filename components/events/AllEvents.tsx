@@ -21,6 +21,7 @@ const AllEvents = () => {
   return (
     <div className="py-16 px-6 sm:px-10 md:px-16 lg:px-20 xl:px-24 flex flex-col lg:flex-row items-start gap-12 scroll-smooth">
       
+      
       <div className="w-full lg:w-1/3 xl:w-1/4 text-center xl:text-left">
         <h2 className="text-5xl sm:text-6xl lg:text-7xl font-semibold leading-tight">
           All <br /> <span className="text-[#FFBE00]">Events</span>
@@ -44,7 +45,7 @@ const AllEvents = () => {
         </div>
       </div>
 
-      <div className="w-full lg:w-2/3 xl:w-3/4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+      <div className="w-full lg:w-2/3 xl:w-3/4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {isLoading && <SkeletonLoadingCard />}
 
         {error && (
@@ -58,21 +59,16 @@ const AllEvents = () => {
         )}
 
         {!isLoading && !error && filteredEvents.map((event) => (
-          <div
+          <EventCard
             key={event._id}
-            id={`event-${event.slug}`}
-            className="scroll-mt-28"
-          >
-            <EventCard
-              title={event.title}
-              description={event.description}
-              date={event.eventDate}
-              headerImg={event.eventImage}
-              venue={event.venue}
-              onlineLink={event.onlineLink}
-              slug={event.slug}
-            />
-          </div>
+            title={event.title}
+            description={event.description}
+            date={event.eventDate}
+            headerImg={event.eventImage}
+            venue={event.venue}
+            onlineLink={event.onlineLink}
+            slug={event.slug}
+          />
         ))}
       </div>
     </div>
