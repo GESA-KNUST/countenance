@@ -1,7 +1,7 @@
 'use client';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import EventCard from './EventsCard'; 
-
+import EventCard from './EventsCard';
+import SkeletonLoadingCard from './SkeletonLoadingCard'; 
+import React from 'react';
 
 interface EventVenue {
   lat: number;
@@ -25,26 +25,23 @@ interface EventItem {
 }
 
 interface RecentEventsProps {
-  currentIndex: number;
-  total: number;
-  onNext: () => void;
-  onPrev: () => void;
-  events: EventItem[]; 
+  events?: EventItem[]; 
+  isLoading?: boolean;  
 }
 
-const RecentEvents = ({ currentIndex, total, onNext, onPrev, events }: RecentEventsProps) => {
-  
+const RecentEvents: React.FC<RecentEventsProps> = ({ events = [], isLoading = false }) => {
   const DISPLAY_COUNT = 3;
+  const now = new Date();
 
+  
+  const pastEvents = events.filter((event) => new Date(event.eventDate) <= now);
 
-  const eventsToRender = events.slice(currentIndex, currentIndex + DISPLAY_COUNT);
   
-  
-  const isPrevDisabled = currentIndex === 0;
-  const isNextDisabled = currentIndex + DISPLAY_COUNT >= total; 
-  
-  
-  const hideNavigation = total <= DISPLAY_COUNT;
+  const sortedEvents = pastEvents.sort(
+    (a, b) => new Date(b.eventDate).getTime() - new Date(a.eventDate).getTime()
+  );
+
+  const eventsToRender = sortedEvents.slice(0, DISPLAY_COUNT);
 
   return (
     <div className="py-16 px-6 sm:px-10 md:px-16 lg:px-20 xl:px-24 flex flex-col lg:flex-row items-start gap-12">
@@ -55,42 +52,29 @@ const RecentEvents = ({ currentIndex, total, onNext, onPrev, events }: RecentEve
         <p className="mt-6 text-lg sm:text-xl text-gray-700">
           Explore insights, innovations, and student experiences from the heart of KNUST’s engineering community.
         </p>
-
-        
-        {!hideNavigation && (
-          <div className="flex items-center justify-center lg:justify-start gap-4 mt-8">
-            <button 
-              onClick={onPrev} 
-              disabled={isPrevDisabled} 
-              className={`p-3 border border-black/30 rounded-full ${isPrevDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-black'}`}
-            >
-              <ChevronLeft />
-            </button>
-            <span>{currentIndex + 1}/{total}</span>
-            <button 
-              onClick={onNext} 
-              disabled={isNextDisabled} 
-              className={`p-3 border border-black rounded-full ${isNextDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'}`}
-            >
-              <ChevronRight />
-            </button>
-          </div>
-        )}
       </div>
 
+      
       <div className="w-full lg:w-2/3 xl:w-3/4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {eventsToRender.map((event) => (
-          <EventCard
-            key={event._id}
-            title={event.title}
-            description={event.description}
-            date={event.eventDate}
-            headerImg={event.eventImage}
-            venue={event.venue}
-            onlineLink={event.onlineLink}
-            slug={event.slug}
-          />
-        ))}
+        {isLoading ? (
+         
+          <SkeletonLoadingCard />
+        ) : eventsToRender.length > 0 ? (
+          eventsToRender.map((event) => (
+            <EventCard
+              key={event._id}
+              title={event.title}
+              description={event.description}
+              date={event.eventDate}
+              headerImg={event.eventImage}
+              venue={event.venue}
+              onlineLink={event.onlineLink}
+              slug={event.slug}
+            />
+          ))
+        ) : (
+          <p className="col-span-full text-center text-gray-500">No recent events found.</p>
+        )}
       </div>
     </div>
   );
