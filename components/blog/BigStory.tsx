@@ -10,6 +10,7 @@ import yt from '../../public/images/yt.svg';
 import linkedin2 from '../../public/images/linkedin2.svg';
 import { Separator } from '../ui/separator';
 import blogImg1 from '../../public/images/blogImg1.png'
+import Link from 'next/link';
 
 const BigStory = () => {
   return (
@@ -29,9 +30,11 @@ const BigStory = () => {
           <p className="font-open_sans font-medium text-sm sm:text-base text-gray-700">
             The Ghana Engineering Students' Association (GESA-KNUST) was officially established to serve as the recognized representative body for all engineering students at Kwame Nkrumah University of Science and Technology. GESA-KNUST operates as an autonomous, non-partisan student organization dedicated to promoting academic excellence, professional development, and unity among engineering students. The Association...
           </p>
-          <button className="bg-primary rounded-lg px-6 py-3 text-black font-semibold text-sm sm:text-base w-max">
-            Read more
-          </button>
+          <Link href="/blog-2">
+            <button className="bg-primary rounded-lg px-6 py-3 text-black font-semibold text-sm sm:text-base w-max">
+              Read more
+            </button>
+          </Link>
           <div className="flex items-center gap-4 mt-4">
             <Image src={logo} alt="logo" />
             <div className="h-10">
