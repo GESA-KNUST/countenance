@@ -1,13 +1,13 @@
-'use client';
-import { useState } from 'react';
-import { Search } from 'lucide-react';
-import EventCard from './EventsCard';
-import SkeletonLoadingCard from './SkeletonLoadingCard'; 
-import useEventCollection from '../../hooks/useEventCollection';
+"use client";
+import { useState, useEffect } from "react";
+import { Search } from "lucide-react";
+import EventCard from "./EventsCard";
+import SkeletonLoadingCard from "./SkeletonLoadingCard";
+import useEventCollection from "../../hooks/useEventCollection";
 
 const AllEvents = () => {
   const { data: events, isLoading, error } = useEventCollection();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const items = events ?? [];
 
@@ -20,7 +20,7 @@ const AllEvents = () => {
 
   return (
     <div className="py-16 px-6 sm:px-10 md:px-16 lg:px-20 xl:px-24 flex flex-col lg:flex-row items-start gap-12 scroll-smooth">
-      
+
       
       <div className="w-full lg:w-1/3 xl:w-1/4 text-center xl:text-left">
         <h2 className="text-5xl sm:text-6xl lg:text-7xl font-semibold leading-tight">
@@ -30,7 +30,6 @@ const AllEvents = () => {
           Explore insights, innovations, and student experiences from the heart of KNUST’s engineering community.
         </p>
 
-        
         <div className="mt-10 mx-auto xl:mx-0">
           <div className="flex items-center justify-between border-b-2 border-black pb-2">
             <input
@@ -45,7 +44,15 @@ const AllEvents = () => {
         </div>
       </div>
 
-      <div className="w-full lg:w-2/3 xl:w-3/4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      
+      <div className="
+        w-full lg:w-2/3 xl:w-3/4 
+        grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 
+        gap-4
+        items-stretch
+        content-start
+      ">
+        
         {isLoading && <SkeletonLoadingCard />}
 
         {error && (
@@ -58,18 +65,26 @@ const AllEvents = () => {
           <div className="col-span-full p-4 text-center">No events found.</div>
         )}
 
-        {!isLoading && !error && filteredEvents.map((event) => (
-          <EventCard
-            key={event._id}
-            title={event.title}
-            description={event.description}
-            date={event.eventDate}
-            headerImg={event.eventImage}
-            venue={event.venue}
-            onlineLink={event.onlineLink}
-            slug={event.slug}
-          />
-        ))}
+        {!isLoading &&
+          !error &&
+          filteredEvents.map((event) => (
+            <div
+              key={event._id}
+              id={`event-${event.slug}`}
+              className="h-full flex"
+            >
+              
+              <EventCard
+                title={event.title}
+                description={event.description}
+                date={event.eventDate}
+                headerImg={event.eventImage}
+                venue={event.venue}
+                onlineLink={event.onlineLink}
+                slug={event.slug}
+              />
+            </div>
+          ))}
       </div>
     </div>
   );
