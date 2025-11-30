@@ -63,8 +63,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   );
 
   return (
-    <div className="relative h-[calc(100vh-var(--navbar-height))] w-full flex items-center justify-center">
-
+    <div className="relative min-h-[calc(100vh-var(--navbar-height))] w-full flex items-center justify-center overflow-auto">
 
       <Carousel
         plugins={[plugin.current]}
@@ -91,7 +90,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         </CarouselContent>
       </Carousel>
 
-     
       <div className="absolute inset-0 bg-black/60 z-10" />
 
       <div className="relative z-20 w-full flex flex-col lg:flex-row items-center justify-between text-white p-4 sm:p-8 md:p-12 lg:p-20 xl:p-24 gap-6">
@@ -121,7 +119,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
           </div>
         </div>
-    
+
         <div className="hidden lg:block w-[800px] overflow-hidden">
           <div
             className="flex gap-6 items-center transition-transform duration-500 ease-in-out"
@@ -153,7 +151,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
         </div>
 
-        
         <div className="lg:hidden w-full max-w-sm mx-auto mt-4">
           <div className="relative overflow-hidden" style={{ height: MOBILE_CARD_HEIGHT }}>
             <div
@@ -164,7 +161,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 <div
                   key={item._id}
                   onClick={() => scrollToEvent(item.slug)}
-                  className="block w-full cursor-pointer"
+                  className="block w-full cursor-pointer pointer-events-auto"
                 >
                   <div className="relative w-full h-[260px] rounded-xl overflow-hidden shadow-lg">
                     <Image src={item.eventImage.url} alt={item.title} fill className="object-cover" />
@@ -179,7 +176,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
           </div>
 
-          
           <div className="flex items-center justify-center gap-4 mt-2 text-white">
             <button onClick={handlePrevClick} className="p-3 border border-white/30 rounded-full">
               <ChevronUp />
