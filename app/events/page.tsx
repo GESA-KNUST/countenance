@@ -8,7 +8,7 @@ const EventsPage = () => {
   const { data: events, isLoading, error } = useEventCollection();
 
   return (
-    <div className="bg-white text-black overflow-x-hidden">
+    <div className='font-poppins min-h-screen'>
       <HeroSection
         images={["/images/img1.png", "/images/img2.png", "/images/img1.png", "/images/img2.png"]}
         title="Upcoming"
