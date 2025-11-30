@@ -40,6 +40,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   const MOBILE_CARD_HEIGHT = 260;
   const total = items?.length || 0;
 
+  const scrollToEvent = (slug: string) => {
+    const element = document.getElementById(`event-${slug}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   const handleNextClick = () => {
     if (!items || items.length === 0) return;
     setCurrentIndex((prev) => (prev + 1) % total);
@@ -56,9 +63,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   );
 
   return (
-    <div className="relative h-[calc(100vh-var(--navbar-height))] w-full flex items-center justify-center">
+    <div className="relative min-h-[calc(100vh-var(--navbar-height))] w-full flex items-center justify-center overflow-auto">
 
-      
       <Carousel
         plugins={[plugin.current]}
         setApi={setApi}
@@ -84,13 +90,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         </CarouselContent>
       </Carousel>
 
-      
       <div className="absolute inset-0 bg-black/60 z-10" />
 
-      
       <div className="relative z-20 w-full flex flex-col lg:flex-row items-center justify-between text-white p-4 sm:p-8 md:p-12 lg:p-20 xl:p-24 gap-6">
 
-        
         <div className="max-w-xl text-center lg:text-left">
           <h1 className="text-3xl sm:text-5xl lg:text-7xl font-semibold leading-tight">
             {title} <span className="text-[#FFBE00]">Events</span>
@@ -105,7 +108,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               <ArrowUpRight className="h-5 w-5" />
             </button>
 
-           
             <div className="hidden lg:flex items-center gap-4 mt-8 text-white">
               <button onClick={handlePrevClick} className="p-3 border border-white/30 rounded-full">
                 <ChevronLeft />
@@ -118,7 +120,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
         </div>
 
-        
         <div className="hidden lg:block w-[800px] overflow-hidden">
           <div
             className="flex gap-6 items-center transition-transform duration-500 ease-in-out"
@@ -127,7 +128,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             {items?.map((item, index) => (
               <div
                 key={item._id}
-                className={`w-[334px] shrink-0 transition-opacity duration-300 ${
+                onClick={() => scrollToEvent(item.slug)}
+                className={`w-[334px] shrink-0 cursor-pointer transition-opacity duration-300 ${
                   index === currentIndex
                     ? 'opacity-100'
                     : index === currentIndex + 1
@@ -149,7 +151,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
         </div>
 
-        
         <div className="lg:hidden w-full max-w-sm mx-auto mt-4">
           <div className="relative overflow-hidden" style={{ height: MOBILE_CARD_HEIGHT }}>
             <div
@@ -157,7 +158,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               style={{ transform: `translateY(-${currentIndex * MOBILE_CARD_HEIGHT}px)` }}
             >
               {items?.map((item) => (
-                <a key={item._id} href={`#event-${item.slug}`} className="block w-full">
+                <div
+                  key={item._id}
+                  onClick={() => scrollToEvent(item.slug)}
+                  className="block w-full cursor-pointer pointer-events-auto"
+                >
                   <div className="relative w-full h-[260px] rounded-xl overflow-hidden shadow-lg">
                     <Image src={item.eventImage.url} alt={item.title} fill className="object-cover" />
                     <div className="absolute bottom-0 left-0 right-0 bg-black/60 p-3">
@@ -166,12 +171,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                       </p>
                     </div>
                   </div>
-                </a>
+                </div>
               ))}
             </div>
           </div>
 
-          
           <div className="flex items-center justify-center gap-4 mt-2 text-white">
             <button onClick={handlePrevClick} className="p-3 border border-white/30 rounded-full">
               <ChevronUp />
