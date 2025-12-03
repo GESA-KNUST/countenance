@@ -3,27 +3,30 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
 interface CardProps {
+  post: any;
   slug: string;
   author: {
     title: string;
     url: string;
-    description: string;
+    description?: string;
   };
   headerImg: {
     url: string;
-    description: string;
+    description?: string;
+    title?: string;
   };
+  onPostSelect?: (post: any) => void;
 }
 
-const BlogCard = ({ headerImg, slug, author }: CardProps) => {
+const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) => {
   return (
-    <Link href="/blog-2">
+    <Link href={`/blog-2?slug=${post.slug}`} onClick={() => onPostSelect && onPostSelect(post)}>
       <div className="h-[580px] lg:w-[300px] sm:w-[340px] w-full shadow-lg p-5 flex justify-center rounded cursor-pointer hover:scale-101 hover:rotate-1 transition-transform duration-300">
         <div className="flex flex-col gap-5">
           <div className="h-60 relative">
             <Image
               src={headerImg.url}
-              alt={headerImg.description}
+              alt={headerImg.title || "Blog post header image"}
               className="w-full h-60 object-cover"
               fill
             />
@@ -41,7 +44,7 @@ const BlogCard = ({ headerImg, slug, author }: CardProps) => {
             <div className="h-10 w-10 rounded-full relative">
               <Image
                 src={author.url}
-                alt={author.description}
+                alt={author.title || "author image"}
                 className="h-full w-full object-cover rounded-full"
                 fill
               />

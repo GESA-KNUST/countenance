@@ -10,7 +10,7 @@ interface ExecutiveCardProps {
 
 const ExecutiveCard = ({ image, name, position }: ExecutiveCardProps) => {
   return (
-    <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+    <div className="bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-500">
       <div className="relative h-[252px]">
         <Image src={image} alt={name} fill objectFit="cover" />
       </div>
