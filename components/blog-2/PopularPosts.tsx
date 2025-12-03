@@ -4,10 +4,10 @@ import BlogCard from '../../components/blog/BlogCard';
 import { Skeleton } from '../../components/ui/skeleton';
 
 const PopularPosts = ({ allPosts, onPostSelect }) => {
-    const [visiblePosts, setVisiblePosts] = useState(4);
+    const [visiblePosts, setVisiblePosts] = useState(9);
 
     const loadMore = () => {
-        setVisiblePosts(prevVisiblePosts => prevVisiblePosts + 4);
+        setVisiblePosts(prevVisiblePosts => prevVisiblePosts + 3);
     };
 
     if (!allPosts) {
@@ -16,8 +16,8 @@ const PopularPosts = ({ allPosts, onPostSelect }) => {
                 <h2 className="text-3xl font-bold text-muted-foreground/50 text-center xl:text-left">
                     Popular Posts
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-8">
-                    {[...Array(4)].map((_, i) => (
+                <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-1 gap-8">
+                    {[...Array(9)].map((_, i) => (
                         <div key={i} className="h-full w-full max-w-sm shadow-lg p-5 flex justify-center rounded">
                             <div className="flex flex-col gap-5 w-full">
                                 <Skeleton className="h-60 w-full" />
@@ -49,7 +49,7 @@ const PopularPosts = ({ allPosts, onPostSelect }) => {
                 Popular Posts
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-1 gap-8">
                 {allPosts?.slice(0, visiblePosts).map((post) => (
                     <BlogCard 
                         key={post.slug} 
