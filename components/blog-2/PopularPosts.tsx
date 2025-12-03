@@ -4,21 +4,21 @@ import BlogCard from '../../components/blog/BlogCard';
 import { Skeleton } from '../../components/ui/skeleton';
 
 const PopularPosts = ({ allPosts, onPostSelect }) => {
-    const [visiblePosts, setVisiblePosts] = useState(3);
+    const [visiblePosts, setVisiblePosts] = useState(4);
 
     const loadMore = () => {
-        setVisiblePosts(prevVisiblePosts => prevVisiblePosts + 3);
+        setVisiblePosts(prevVisiblePosts => prevVisiblePosts + 4);
     };
 
     if (!allPosts) {
         return (
-            <div className="w-full lg:w-1/3 flex flex-col gap-8 lg:mt-58">
-                <h2 className="text-3xl font-bold text-muted-foreground/50">
+            <div className="w-full xl:w-1/3 flex flex-col items-center xl:items-start gap-8 xl:mt-58">
+                <h2 className="text-3xl font-bold text-muted-foreground/50 text-center xl:text-left">
                     Popular Posts
                 </h2>
-                <div className="flex flex-col gap-8">
-                    {[...Array(3)].map((_, i) => (
-                        <div key={i} className="h-[580px] lg:w-[300px] sm:w-[340px] w-full shadow-lg p-5 flex justify-center rounded">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-8">
+                    {[...Array(4)].map((_, i) => (
+                        <div key={i} className="h-full w-full max-w-sm shadow-lg p-5 flex justify-center rounded">
                             <div className="flex flex-col gap-5 w-full">
                                 <Skeleton className="h-60 w-full" />
                                 <Skeleton className="h-4 w-1/4" />
@@ -44,12 +44,12 @@ const PopularPosts = ({ allPosts, onPostSelect }) => {
     }
 
     return (
-        <div className="w-full lg:w-1/3 flex flex-col gap-8 lg:mt-78">
-            <h2 className="text-3xl font-bold text-muted-foreground/50">
+        <div className="w-full xl:w-1/3 flex flex-col items-center xl:items-start gap-8 xl:mt-78">
+            <h2 className="text-3xl font-bold text-muted-foreground/50 text-center xl:text-left">
                 Popular Posts
             </h2>
 
-            <div className="flex flex-col gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-8">
                 {allPosts?.slice(0, visiblePosts).map((post) => (
                     <BlogCard 
                         key={post.slug} 
@@ -67,7 +67,7 @@ const PopularPosts = ({ allPosts, onPostSelect }) => {
             </div>
 
             {allPosts && visiblePosts < allPosts.length && (
-                <button onClick={loadMore} className="text-primary font-bold py-2 px-4 rounded-lg w-fit self-end">
+                <button onClick={loadMore} className="text-primary font-bold py-2 px-4 rounded-lg w-fit self-center xl:self-end">
                     Load More
                 </button>
             )}
