@@ -19,41 +19,55 @@ interface CardProps {
 }
 
 const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) => {
+  const formattedDate = new Date(post.datePublished).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
   return (
     <Link href={`/blog-2?slug=${post.slug}`} onClick={() => onPostSelect && onPostSelect(post)}>
-      <div className="h-[580px] lg:w-[300px] sm:w-[340px] w-full shadow-lg p-5 flex justify-center rounded cursor-pointer hover:scale-101 hover:rotate-1 transition-transform duration-300">
-        <div className="flex flex-col gap-5">
-          <div className="h-60 relative">
-            <Image
-              src={headerImg.url}
-              alt={headerImg.title || "Blog post header image"}
-              className="w-full h-60 object-cover"
-              fill
-            />
-          </div>
-          <h1 className="font-semibold text-primary text-sm">Design</h1>
-          <div className="flex">
-            <h1 className="text-2xl font-bold font-open_sans">{slug}</h1>
-            <ArrowUpRight />
-          </div>
-          <p className="text-text-gray">
-            How do you create compelling presentations that wow your colleagues
-            and impress your managers?
-          </p>
-          <div className="flex gap-2">
-            <div className="h-10 w-10 rounded-full relative">
-              <Image
-                src={author.url}
-                alt={author.title || "author image"}
-                className="h-full w-full object-cover rounded-full"
-                fill
-              />
+      <div className="h-[520px] lg:w-[300px] sm:w-[340px] w-full shadow-lg overflow-hidden flex flex-col cursor-pointer hover:scale-101 hover:rotate-1 transition-transform duration-300">
+       
+        <div className="h-60 relative shrink-0">
+          <Image
+            src={headerImg.url}
+            alt={headerImg.title || "Blog post header image"}
+            className="w-full h-full object-cover"
+            fill
+          />
+        </div>
+
+        
+        <div className="p-5 flex flex-col grow">
+          <div className="grow">
+            <h1 className="font-semibold text-primary text-sm">Design</h1>
+            <div className="flex mt-2 items-start">
+              <h1 className="text-2xl font-bold font-open_sans line-clamp-2">{slug}</h1>
+              <ArrowUpRight className="shrink-0 ml-1" />
             </div>
-            <div>
-              <h4 className="font-medium text-sm">{author.title}</h4>
-              <p className="md:text-sm text-xs text-text-gray">
-                1st October 2025
-              </p>
+            <p className="text-text-gray mt-2 line-clamp-3">
+              {post.hook}
+            </p>
+          </div>
+
+          
+          <div className="shrink-0 mt-4">
+            <div className="flex gap-2 items-center">
+              <div className="h-10 w-10 relative">
+                <Image
+                  src={author.url}
+                  alt={author.title || "author image"}
+                  className="h-full w-full object-cover"
+                  fill
+                />
+              </div>
+              <div>
+                <h4 className="font-medium text-sm">{author.title}</h4>
+                <p className="md:text-sm text-xs text-text-gray">
+                  {formattedDate}
+                </p>
+              </div>
             </div>
           </div>
         </div>
