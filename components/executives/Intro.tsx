@@ -3,11 +3,14 @@
 import { useState } from 'react';
 import { ChevronDown, Star } from 'lucide-react';
 
-const years = ['2024 - 2025 Executives', '2023 - 2024 Executives', '2022 - 2023 Executives'];
+interface IntroProps {
+  academicYears: string[];
+  selectedYear: string | null;
+  setSelectedYear: (year: string) => void;
+}
 
-const Intro = () => {
+const Intro: React.FC<IntroProps> = ({ academicYears, selectedYear, setSelectedYear }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedYear, setSelectedYear] = useState(years[0]);
 
   const handleYearSelect = (year: string) => {
     setSelectedYear(year);
@@ -31,7 +34,7 @@ const Intro = () => {
         <p className="text-lg sm:text-xl text-black">
           As a student-led association dedicated to nurturing growth and excellence, we are committed to creating an environment where every student can develop their skills, deepen their knowledge, and unlock their full potential. It is with great honor and enthusiasm that we, the Executive Body of the Noble Association, extend our warmest welcome to you. We are privileged to support and guide you throughout your academic journey—within the association and beyond. Our mission is to provide unwavering leadership, meaningful opportunities, and a community that empowers you to thrive both academically and personally. Your success remains our highest priority, and we look forward to contributing to your growth, achievements, and future impact. Together, we build, we learn, and we rise.
         </p>
-        
+
         <div className="relative inline-block text-left mx-auto md:mx-0">
           <div>
             <button
@@ -39,7 +42,7 @@ const Intro = () => {
               className="bg-[#FFBE00] text-black px-4 py-3 rounded-lg font-semibold flex items-center gap-2"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
-              <span>{selectedYear}</span>
+              <span>{selectedYear ? `${selectedYear} Executives` : 'Select Year'}</span>
               <ChevronDown className="h-5 w-5" />
             </button>
           </div>
@@ -52,7 +55,7 @@ const Intro = () => {
               aria-labelledby="menu-button"
             >
               <div className="py-1" role="none">
-                {years.map((year) => (
+                {academicYears.map((year) => (
                   <a
                     href="#"
                     key={year}
@@ -63,7 +66,7 @@ const Intro = () => {
                         handleYearSelect(year);
                     }}
                   >
-                    {year}
+                    {`${year} Executives`}
                   </a>
                 ))}
               </div>
