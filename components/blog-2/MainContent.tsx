@@ -21,7 +21,7 @@ const MainContent = ({ selectedPost }) => {
     const tags = getTags();
 
   return (
-    <div className="w-full lg:w-2/3">
+    <div className="w-full xl:w-2/3">
         <section className="flex flex-col items-center text-center mb-8">
           <div className="flex items-center justify-center gap-2.5 mb-4">
             <svg
