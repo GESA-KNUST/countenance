@@ -1,58 +1,70 @@
-import { useFetchData } from './useFetchData';
-import { contentfulClient } from '@/lib/contentful-client';
-import { gql } from 'graphql-request';
+'use client';
+import { useQuery } from "@tanstack/react-query";
+import { gql } from "graphql-request";
+import { contentfulClient } from "../lib/contentful-client";
 
-interface ItemsProps {
-  _id: string;
-  slug: string;
-  title: string;
-  headerImage: {
-    description: string;
-    url: string;
-  };
-  author: {
+interface Author {
     name: string;
     authorProfilePicture: {
-      description: string;
-      title: string;
-      url: string;
+        url: string;
+        title: string;
     };
-  };
 }
 
+interface Blog {
+    title: string;
+    slug: string;
+    headerImage: {
+        title: string;
+        url: string;
+    };
+    author: Author;
+    hook: string;
+    tags: {
+        tags: string[];
+    };
+    blogContent: {
+        json: any;
+    };
+}
 
 interface Props {
-  blogPostCollection: {
-    items: ItemsProps[];
-  };
+    blogPostCollection: {
+        items: Blog[];
+    };
 }
 
 const GET_BLOGS = gql`
-  query BlogPostCollection {
-    blogPostCollection {
-      items {
-        headerImage {
-          description
-          url
+    query {
+        blogPostCollection {
+            items {
+                headerImage {
+                    title
+                    url
+                }
+                slug
+                author {
+                    name
+                    authorProfilePicture {
+                        url
+                        title
+                    }
+                }
+                blogContent {
+                    json
+                }
+                hook
+                tags {
+                    tags
+                }
+                title
+            }
         }
-        slug
-        title
-        author {
-          name
-          authorProfilePicture {
-            description
-            title
-            url
-          }
-        }
-        _id
-      }
     }
-  }
 `;
 
 const useBlogCollection = () => {
-    return useFetchData({
+    return useQuery({
         queryKey: ["blogs"],
         queryFn: async () => {
             const data = await contentfulClient.request<Props>(GET_BLOGS);
