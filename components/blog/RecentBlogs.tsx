@@ -3,7 +3,7 @@ import React from 'react';
 import useBlogCollection from '../../hooks/useBlogCollection';
 import BlogCard from './BlogCard';
 
-const RecentBlogs = () => {
+const RecentBlogs = ({ onPostSelect }: { onPostSelect?: (post: any) => void }) => {
     const { data: blogs, isLoading, error } = useBlogCollection();
 
     if (isLoading) {
@@ -21,14 +21,15 @@ const RecentBlogs = () => {
                 <div className='grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-cols-1 my-10 gap-x-20 gap-y-10'>
                     {blogs?.slice(0, 6).map((post) => (
                         <BlogCard
-                            key={post._id}
+                            key={post.slug}
+                            post={post}
                             slug={post.title}
                             author={{
                                 title: post.author.name,
                                 url: post.author.authorProfilePicture.url,
-                                description: post.author.authorProfilePicture.description,
                             }}
                             headerImg={post.headerImage}
+                            onPostSelect={onPostSelect}
                         />
                     ))}
                 </div>
