@@ -33,7 +33,9 @@ const Navbar = () => {
 
   return (
     <div className='flex items-center justify-between md:px-page-x lg:py-page-y px-page-sx font-poppins max-w-360 mx-auto h-(--navbar-height)'>
-      <Image src={Logo} alt='logo' />
+      <Link href="/">
+        <Image src={Logo} alt='logo' />
+      </Link>
       <div className='hidden lg:block'>
         <ul
           onMouseLeave={() => {
