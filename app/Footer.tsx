@@ -23,7 +23,7 @@ const Footer = () => {
       title: "Popular Search",
       path: [
         { page: "Personality of the Week", to: "/" },
-        { page: "GESA blog", to: "/" },
+        { page: "GESA blog", to: "/blog" },
         { page: "GESA Quiz", to: "/" },
         { page: "Apply for Scholarship", to: "/" },
       ]
@@ -31,11 +31,11 @@ const Footer = () => {
     {
       title: "Quick Links",
       path: [
-        { page: "Events", to: "/" },
-        { page: "Executives", to: "/" },
-        { page: "clubs", to: "/" },
-        { page: "Hub", to: "/" },
-        { page: "Gallery", to: "/" },
+        { page: "Events", to: "/events" },
+        { page: "Executives", to: "/executives" },
+        { page: "clubs", to: "/clubs" },
+        { page: "Hub", to: "/hub" },
+        { page: "Gallery", to: "/gallery" },
         { page: "FAQs", to: "/" },
       ]
     },
