@@ -3,13 +3,14 @@ import Autoplay from "embla-carousel-autoplay"
 import Image, { StaticImageData } from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
-import Link from 'next/link';
+import { useRouter } from "next/navigation";
 import {
   Carousel,
   CarouselApi,
   CarouselContent,
   CarouselItem,
 } from "../ui/carousel";
+import StarSpinner from "../ui/StarSpinner";
 
 interface HeroSectionProps {
   title?: string;
@@ -25,6 +26,8 @@ const HeroSection = ({
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const plugin = useRef(
     Autoplay({
@@ -53,6 +56,14 @@ const HeroSection = ({
   };
 
   const titleParts = title.split(highlight);
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => {
+      router.push('/blog');
+    }, 1000);
+  };
 
 
   return (
@@ -98,11 +109,15 @@ const HeroSection = ({
           and the tools to shape the future of technology and innovation.
         </p>
 
-        <Link href="/blog">
-          <button className="bg-primary font-semibold rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-sm hover:scale-105 transition-transform">
+        {loading ? (
+          <div className="flex items-center justify-center w-full h-12">
+            <StarSpinner />
+          </div>
+        ) : (
+          <button onClick={handleClick} className="bg-primary font-semibold rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-sm hover:scale-105 transition-transform">
             Explore more <ArrowUpRight className='text-black' strokeWidth={2.5} size={28} />
           </button>
-        </Link>
+        )}
       </div>
 
       {/* Progress Dots */}
