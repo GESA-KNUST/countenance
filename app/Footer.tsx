@@ -36,14 +36,14 @@ const Footer = () => {
         { page: "clubs", to: "/clubs" },
         { page: "Hub", to: "/hub" },
         { page: "Gallery", to: "/gallery" },
-        { page: "FAQs", to: "/" },
+        { page: "FAQs", to: "contact-us" },
       ]
     },
     {
       title: "Discovery",
       path: [
         { page: "Campus", to: "/" },
-        { page: "KNUST", to: "/" },
+        { page: "KNUST", to: "https://www.knust.edu.gh/" },
       ]
     },
   ]
@@ -67,11 +67,11 @@ const Footer = () => {
             <div className='flex flex-wrap gap-10 items-start'>
               <div className='flex flex-col gap-2'>
                 <h3 className='text-sm font-bold text-primary'>Contact Us</h3>
-                <span className='text-warm-gray'>024-342-6670</span>
+                <span className='text-warm-gray'>+233 20 057 6468</span>
               </div>
               <div className='flex flex-col gap-2'>
                 <h3 className='text-sm font-bold text-primary'>Email</h3>
-                <span className='text-warm-gray'>info@gesaknust.org</span>
+                <span className='text-warm-gray'>thegesaknust@gmail.com</span>
               </div>
             </div>
 
