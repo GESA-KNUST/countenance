@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import Image from "next/image";
 import { format } from "date-fns";
 import { ArrowRight } from "lucide-react";
@@ -34,7 +34,7 @@ const RecentEvent = () => {
           <div className="flex flex-col gap-8">
             {recent?.length > 0 ? (
               recent.map((event, i) => (
-                <Link href={`/events/${event.slug}`} key={event._id} className="group">
+                <Link href={`/events#event-${event.slug}`} key={event._id} className="group">
                   <div
                     className="flex md:gap-6 gap-3 cursor-pointer rounded-md transition-all duration-500 h-[170px]"
                   >
@@ -49,7 +49,7 @@ const RecentEvent = () => {
                     <div className="flex flex-col justify-between font-open_sans w-full">
                       <div className="space-y-1">
                         <h3 className="font-bold sm:text-lg text-base line-clamp-2 group-hover:underline">
-                          {event.slug}
+                          {event.title}
                         </h3>
                         <p className="text-medium-dark md:text-sm text-xs line-clamp-3">
                           {event.description}
@@ -82,7 +82,7 @@ const RecentEvent = () => {
           <div className="flex flex-col sm:gap-6 gap-4">
             {upcoming?.length > 0 ? (
               upcoming.map((event, i) => (
-                <Link href={`/events/${event.slug}`} key={event._id} className="group">
+                <Link href={`/events#event-${event.slug}`} key={event._id} className="group">
                   <div
                     className="flex gap-4 bg-white/70 p-4 rounded-xl cursor-pointer hover:scale-105 transition-all duration-500 h-24"
                   >
@@ -101,7 +101,7 @@ const RecentEvent = () => {
                         </span>
                         <ArrowRight size={18} className="group-hover:translate-x-1 transition-all" />
                       </div>
-                      <h3 className="font-semibold text-lg line-clamp-1 group-hover:underline">{event.slug}</h3>
+                      <h3 className="font-semibold text-lg line-clamp-1 group-hover:underline">{event.title}</h3>
                     </div>
                   </div>
                 </Link>
