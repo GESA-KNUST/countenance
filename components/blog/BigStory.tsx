@@ -1,9 +1,8 @@
 'use client';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import star from '../../public/images/star.svg';
-import storyImg from '../../public/images/image 26.png';
 import logo from '../../public/images/logo.svg';
 import fb2 from '../../public/images/fb2.svg';
 import twitter from '../../public/images/twitter.svg';
@@ -12,18 +11,58 @@ import linkedin2 from '../../public/images/linkedin2.svg';
 import { Separator } from '../ui/separator';
 import { motion } from 'framer-motion';
 import StarSpinner from '../ui/StarSpinner';
+import useBlogCollection from '../../hooks/useBlogCollection';
 
 const BigStory = () => {
   const [loading, setLoading] = useState(false);
+  const [post, setPost] = useState(null);
+  const { data: allPosts } = useBlogCollection();
   const router = useRouter();
+
+  useEffect(() => {
+    if (allPosts) {
+      const slug = 'the-ghana-engineering-students-association-gesa-knust';
+      const foundPost = allPosts.find(p => p.slug === slug);
+      setPost(foundPost);
+    }
+  }, [allPosts]);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setLoading(true);
     setTimeout(() => {
-      router.push('/blog-2');
+      router.push(`/blog-2?slug=${post.slug}`);
     }, 1000);
   };
+
+  const getTag = () => {
+    if (!post || !post.tags) return 'Uncategorized';
+    if (Array.isArray(post.tags) && post.tags.length > 0) {
+        const tag = post.tags[0];
+        return typeof tag === 'string' ? tag : tag.title;
+    }
+    if (typeof post.tags === 'object' && Array.isArray(post.tags.tags) && post.tags.tags.length > 0) {
+        const tag = post.tags.tags[0];
+        return typeof tag === 'string' ? tag : tag.title;
+    }
+    return 'Uncategorized';
+  };
+
+  if (!post) {
+    return (
+        <div className="px-4 sm:px-6 md:px-10 lg:px-20 py-12">
+            <div className="max-w-7xl mx-auto flex flex-col-reverse xl:flex-row gap-6 md:gap-10 lg:gap-16 items-center">
+                <div className="flex flex-col gap-4 md:gap-6 max-w-full xl:max-w-[600px]">
+                    <div className="h-8 w-1/2 bg-gray-200 animate-pulse"></div>
+                    <div className="h-12 w-full bg-gray-200 animate-pulse"></div>
+                    <div className="h-4 w-1/4 bg-gray-200 animate-pulse"></div>
+                    <div className="h-20 w-full bg-gray-200 animate-pulse"></div>
+                </div>
+                <div className="w-full xl:w-[500px] h-[424px] lg:h-[574px] rounded bg-gray-200 animate-pulse"></div>
+            </div>
+        </div>
+    );
+  }
 
   return (
     <div className="px-4 sm:px-6 md:px-10 lg:px-20 py-12">
@@ -32,15 +71,15 @@ const BigStory = () => {
         <div className="flex flex-col gap-4 md:gap-6 max-w-full xl:max-w-[600px]">
           <div className="flex gap-3 items-center">
             <Image src={star} alt="star icon" />
-            <h4 className="text-sm text-primary font-semibold">AGYAPONG ALBERT YEBOAH</h4>
+            <h4 className="text-sm text-primary font-semibold">{post.author.name}</h4>
             <Image src={star} alt="star icon" />
           </div>
           <h1 className="font-open_sans font-bold text-2xl sm:text-3xl lg:text-4xl text-gray-900">
-            The Ghana Engineering Students Association - GESA KNUST
+            {post.title}
           </h1>
           <div className="bg-primary rounded h-1 w-10"></div>
           <p className="font-open_sans font-medium text-sm sm:text-base text-gray-700">
-            The Ghana Engineering Students' Association (GESA-KNUST) was officially established to serve as the recognized representative body for all engineering students at Kwame Nkrumah University of Science and Technology. GESA-KNUST operates as an autonomous, non-partisan student organization dedicated to promoting academic excellence, professional development, and unity among engineering students. The Association...
+            {post.hook}
           </p>
           
           {loading ? (
@@ -75,9 +114,11 @@ const BigStory = () => {
         {/* Image Section */}
         <div className="w-full xl:w-[500px] h-[424px] lg:h-[574px] rounded overflow-hidden">
           <Image
-            src={storyImg}
-            alt="GESA story image"
+            src={post.headerImage.url}
+            alt={post.headerImage.description || post.title}
             className="w-full h-full object-cover rounded"
+            width={500}
+            height={574}
           />
         </div>
       </div>

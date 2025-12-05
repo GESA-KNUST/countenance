@@ -32,13 +32,19 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
-    setLoading(true);
     if (onPostSelect) {
+      setLoading(true);
       onPostSelect(post);
+      router.push(`/blog-2?slug=${post.slug}`, { scroll: false });
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    } else {
+      setLoading(true);
+      setTimeout(() => {
+        router.push(`/blog-2?slug=${post.slug}`);
+      }, 1000);
     }
-    setTimeout(() => {
-      router.push(`/blog-2?slug=${post.slug}`);
-    }, 1000);
   };
 
   return (
