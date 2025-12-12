@@ -5,7 +5,7 @@ const GalleryCard = ({ src, title, location, large = false }) => (
   <div
     className={`relative ${
       large ? "h-[660px]" : "h-[350px]"
-    } flex-1 group cursor-pointer overflow-hidden`}
+    } w-full md:flex-1 group cursor-pointer overflow-hidden`}
   >
     <Image
       src={src}
