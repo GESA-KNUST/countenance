@@ -80,6 +80,7 @@ const EventCard: React.FC<EventCardProps> = ({
     };
   }, [hasOnlineLink]);
 
+  
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (showMap && mapLoading) {
@@ -112,16 +113,29 @@ const EventCard: React.FC<EventCardProps> = ({
             <h1 className="text-2xl font-bold font-open_sans w-auto min-w-0">{title}</h1>
 
             <div className="relative flex items-center ml-2">
-              <ArrowUpRight
-                className={`shrink-0 mt-1 ${hasOnlineLink ? 'text-black transition-transform duration-300 group-hover:rotate-45 animate-pulse' : 'text-black'}`}
-              />
-              {hasOnlineLink && (
-                <span
-                  className={`ml-1 absolute -top-4 left-6 text-xs font-semibold text-yellow-300 opacity-70 transition-all duration-500 
-                  ${showClickText ? 'opacity-100 animate-pulse' : 'opacity-0'}`}
-                >
-                  Click Me!
-                </span>
+              {hasOnlineLink ? (
+                <>
+                  <Link
+                    href={onlineLink!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <ArrowUpRight className="shrink-0 mt-1 text-black transition-transform duration-300 group-hover:rotate-45 animate-pulse" />
+                  </Link>
+                  <Link
+                    href={onlineLink!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`ml-1 absolute -top-4 left-6 text-xs font-semibold text-yellow-300 opacity-70 transition-all duration-500 
+                      ${showClickText ? 'opacity-100 animate-pulse' : 'opacity-0'}`}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Click Me!
+                  </Link>
+                </>
+              ) : (
+                <ArrowUpRight className="shrink-0 mt-1 text-black" />
               )}
             </div>
           </div>
