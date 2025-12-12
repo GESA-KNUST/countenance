@@ -32,11 +32,11 @@ const ContactForm = () => {
                         <div className='space-y-6'>
                             <div className='flex items-center gap-4'>
                                 <Phone />
-                                <span>+233 20 057 6468</span>
+                                <span>024-342-6670</span>
                             </div>
                             <div className='flex items-center gap-4'>
                                 <Mail />
-                                <span>thegesaknust@gmail.com</span>
+                                <span>info@gesaknust.org</span>
                             </div>
                             <div className='flex items-center gap-4'>
                                 <MapPin />
@@ -45,7 +45,7 @@ const ContactForm = () => {
                         </div>
                     </div>
 
-                    <div className='flex items-center gap-3 mb-4'>
+                    <div className='flex items-center gap-4 mt-8 md:mt-0 md:gap-3 mb-4'>
                         <a href="#" className="bg-black text-white p-1 rounded-full hover:bg-white hover:text-black transition-colors">
                             <Facebook size={16} />
                         </a>
@@ -61,8 +61,8 @@ const ContactForm = () => {
                     </div>
                 </div>
 
-                <div className="absolute w-[269px] h-[269px] bg-[rgba(255,190,0,0.5)] rounded-full bottom-[-100px] -right-20"></div>
-                <div className="absolute w-[138px] h-[138px] bg-[rgba(255,190,0,0.5)] rounded-full bottom-[60px] right-20"></div>
+                <div className="absolute w-[269px] h-[269px] bg-[rgba(255,190,0,0.5)] rounded-full bottom-[-100px] right-[-80px]"></div>
+                <div className="absolute w-[138px] h-[138px] bg-[rgba(255,190,0,0.5)] rounded-full bottom-[60px] right-[80px]"></div>
 
             </div>
             <div className='w-full md:w-2/3 p-8'>
