@@ -16,9 +16,11 @@ const EventsPage = () => {
         items={events ?? []}  
       />
 
-      <RecentEvents
-        events={events ?? []} 
-      />
+      <div id="recent-events">
+        <RecentEvents
+          events={events ?? []} 
+        />
+      </div>
 
       <AllEvents />
     </div>
