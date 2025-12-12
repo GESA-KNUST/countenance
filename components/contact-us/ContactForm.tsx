@@ -32,11 +32,11 @@ const ContactForm = () => {
                         <div className='space-y-6'>
                             <div className='flex items-center gap-4'>
                                 <Phone />
-                                <span>024-342-6670</span>
+                                <span>+233 20 057 6468</span>
                             </div>
                             <div className='flex items-center gap-4'>
                                 <Mail />
-                                <span>info@gesaknust.org</span>
+                                <span>thegesaknust@gmail.com</span>
                             </div>
                             <div className='flex items-center gap-4'>
                                 <MapPin />
