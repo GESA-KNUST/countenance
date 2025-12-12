@@ -47,6 +47,13 @@ const Hero = ({
     api.scrollTo(index);
   };
 
+  const handleExploreMore = () => {
+    const gallerySection = document.getElementById("gallery");
+    if (gallerySection) {
+      gallerySection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className='relative h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden'>
 
@@ -85,9 +92,16 @@ const Hero = ({
               <br />
               <span className="text-yellow-500">MOMENTS</span>
             </h1>
-            <p className='text-xl'>
+            <p className='text-xl mb-8'>
             Explore photos from our events,activities and unforgettable memories across our community.
             </p>
+            <button
+              onClick={handleExploreMore}
+              className="bg-primary text-black font-semibold py-3 px-6 rounded-lg flex items-center gap-2 hover:scale-105 transition-transform"
+            >
+              <span>Explore more</span>
+              <ArrowUpRight />
+          </button>
         </div>
 
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30">
