@@ -95,7 +95,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       <div className="relative z-20 w-full flex flex-col lg:flex-row items-center justify-between text-white p-4 sm:p-8 md:p-12 lg:p-20 xl:p-24 gap-6">
 
         <div className="max-w-xl text-center lg:text-left">
-        <h1 className='font-bold text-4xl leading-12 sm:text-[60px] sm:leading-16 md:text-[72px] md:leading-[76px] xl:text-[90px] lg:leading-[90px]'>
+          <h1 className='font-bold text-4xl leading-12 sm:text-[60px] sm:leading-16 md:text-[72px] md:leading-[76px] xl:text-[90px] lg:leading-[90px]'>
             {title} <span className="text-[#FFBE00]">Events</span>
           </h1>
           <p className='text-sm sm:text-lg md:text-xl max-w-3xl mx-auto'>
@@ -128,7 +128,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             {items?.map((item, index) => (
               <div
                 key={item._id}
-                onClick={() => scrollToEvent(item.slug)}
+                onClick={() => scrollToEvent(item.slug)} 
                 className={`w-[334px] shrink-0 cursor-pointer transition-opacity duration-300 ${
                   index === currentIndex
                     ? 'opacity-100'
