@@ -47,6 +47,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     }
   };
 
+  const scrollToRecentEvents = () => {
+    const element = document.getElementById('recent-events');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   const handleNextClick = () => {
     if (!items || items.length === 0) return;
     setCurrentIndex((prev) => (prev + 1) % total);
@@ -103,11 +110,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </p>
 
           <div className="mt-6 flex flex-col items-center lg:items-start gap-4">
-            <button className="bg-[#FFBE00] text-black px-5 py-3 rounded-lg font-semibold flex items-center gap-2 text-sm sm:text-base">
+            <button
+              onClick={scrollToRecentEvents}
+              className="bg-[#FFBE00] text-black px-5 py-3 rounded-lg font-semibold flex items-center gap-2 text-sm sm:text-base"
+            >
               <span>Explore more</span>
               <ArrowUpRight className="h-5 w-5" />
             </button>
 
+            
             <div className="hidden lg:flex items-center gap-4 mt-8 text-white">
               <button onClick={handlePrevClick} className="p-3 border border-white/30 rounded-full">
                 <ChevronLeft />
@@ -128,7 +139,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             {items?.map((item, index) => (
               <div
                 key={item._id}
-                onClick={() => scrollToEvent(item.slug)} 
+                onClick={() => scrollToEvent(item.slug)}
                 className={`w-[334px] shrink-0 cursor-pointer transition-opacity duration-300 ${
                   index === currentIndex
                     ? 'opacity-100'
