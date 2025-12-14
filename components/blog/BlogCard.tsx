@@ -58,11 +58,11 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
         ) : (
           <>
             {/* Image */}
-            <div className="h-60 relative shrink-0">
+            <div className="h-60 relative shrink-0 rounded-t-sm">
               <Image
                 src={headerImg.url}
                 alt={headerImg.title || "Blog post header image"}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover rounded-t-sm"
                 fill
               />
             </div>
