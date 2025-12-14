@@ -38,29 +38,29 @@ const BigStory = () => {
   const getTag = () => {
     if (!post || !post.tags) return 'Uncategorized';
     if (Array.isArray(post.tags) && post.tags.length > 0) {
-        const tag = post.tags[0];
-        return typeof tag === 'string' ? tag : tag.title;
+      const tag = post.tags[0];
+      return typeof tag === 'string' ? tag : tag.title;
     }
     if (typeof post.tags === 'object' && Array.isArray(post.tags.tags) && post.tags.tags.length > 0) {
-        const tag = post.tags.tags[0];
-        return typeof tag === 'string' ? tag : tag.title;
+      const tag = post.tags.tags[0];
+      return typeof tag === 'string' ? tag : tag.title;
     }
     return 'Uncategorized';
   };
 
   if (!post) {
     return (
-        <div className="px-4 sm:px-6 md:px-10 lg:px-20 py-12">
-            <div className="max-w-7xl mx-auto flex flex-col-reverse xl:flex-row gap-6 md:gap-10 lg:gap-16 items-center">
-                <div className="flex flex-col gap-4 md:gap-6 max-w-full xl:max-w-[600px]">
-                    <div className="h-8 w-1/2 bg-gray-200 animate-pulse"></div>
-                    <div className="h-12 w-full bg-gray-200 animate-pulse"></div>
-                    <div className="h-4 w-1/4 bg-gray-200 animate-pulse"></div>
-                    <div className="h-20 w-full bg-gray-200 animate-pulse"></div>
-                </div>
-                <div className="w-full xl:w-[500px] h-[424px] lg:h-[574px] rounded bg-gray-200 animate-pulse"></div>
-            </div>
+      <div className="px-4 sm:px-6 md:px-10 lg:px-20 py-12">
+        <div className="max-w-7xl mx-auto flex flex-col-reverse xl:flex-row gap-6 md:gap-10 lg:gap-16 items-center">
+          <div className="flex flex-col gap-4 md:gap-6 max-w-full xl:max-w-[600px]">
+            <div className="h-8 w-1/2 bg-gray-200 animate-pulse"></div>
+            <div className="h-12 w-full bg-gray-200 animate-pulse"></div>
+            <div className="h-4 w-1/4 bg-gray-200 animate-pulse"></div>
+            <div className="h-20 w-full bg-gray-200 animate-pulse"></div>
+          </div>
+          <div className="w-full xl:w-[500px] h-[424px] lg:h-[574px] rounded bg-gray-200 animate-pulse"></div>
         </div>
+      </div>
     );
   }
 
@@ -81,12 +81,12 @@ const BigStory = () => {
           <p className="font-open_sans font-medium text-sm sm:text-base text-gray-700">
             {post.hook}
           </p>
-          
+
           {loading ? (
             <div className="flex items-center justify-start w-full h-12">
-                 <StarSpinner />
+              <StarSpinner />
             </div>
-           
+
           ) : (
             <motion.button
               onClick={handleClick}
