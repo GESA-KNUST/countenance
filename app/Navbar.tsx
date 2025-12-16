@@ -25,7 +25,7 @@ const Navbar = () => {
     { name: 'GESA Blog', link: '/blog' },
     { name: 'Events', link: '/events' },
     { name: 'Executives', link: '/executives' },
-    { name: 'Hub', link: '/hub' },
+    { name: 'Hub', link: '/hubs' },
     { name: 'Clubs', link: '/clubs' },
     { name: 'Gallery', link: '/gallery' },
     { name: 'Contact Us', link: '/contact-us' },
