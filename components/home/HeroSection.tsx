@@ -15,13 +15,17 @@ import StarSpinner from "../ui/StarSpinner";
 interface HeroSectionProps {
   title?: string;
   highlight?: string;
+  text: string;
   images?: (string | StaticImageData)[];
+  button?: boolean;
 }
 
 const HeroSection = ({
   title = "Innovating Tomorrow's Engineers, Today",
   highlight = "Engineers",
+  text,
   images = ['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png'],
+  button = true,
 }: HeroSectionProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -105,18 +109,20 @@ const HeroSection = ({
         </h1>
 
         <p className='text-sm sm:text-lg md:text-xl max-w-3xl mx-auto'>
-          Empowering students with cutting-edge knowledge, hands-on experience,
-          and the tools to shape the future of technology and innovation.
+          {text}
         </p>
 
-        {loading ? (
-          <div className="flex items-center justify-center w-full h-12">
-            <StarSpinner />
-          </div>
-        ) : (
-          <button onClick={handleClick} className="bg-primary font-semibold rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-sm hover:scale-105 transition-transform">
-            Explore more <ArrowUpRight className='text-black' strokeWidth={2.5} size={28} />
-          </button>
+        {button && (
+
+          loading ? (
+            <div className="flex items-center justify-center w-full h-12" >
+              <StarSpinner />
+            </div>
+          ) : (
+            <button onClick={handleClick} className="bg-primary font-semibold rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-sm hover:scale-105 transition-transform">
+              Explore more <ArrowUpRight className='text-black' strokeWidth={2.5} size={28} />
+            </button>
+          )
         )}
       </div>
 
@@ -134,7 +140,7 @@ const HeroSection = ({
         </div>
       </div>
 
-    </div>
+    </div >
   );
 };
 

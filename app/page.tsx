@@ -10,6 +10,7 @@ const Home = () => {
       <HeroSection 
         title="Innovating Tomorrow's Engineers, Today"
         highlight="Engineers"
+        text="Empowering students with cutting-edge knowledge, hands-on experience, and the tools to shape the future of technology and innovation."
         images={['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png']}
       />
       <Personality/>

@@ -12,6 +12,7 @@ import {
 interface HeroSectionProps {
   title?: string;
   highlight?: string;
+  text: string;
   images?: (string | StaticImageData)[];
 }
 
@@ -19,6 +20,7 @@ const HeroSection = ({
   title = "Innovating Tomorrow's Engineers, Today",
   highlight = "Engineers",
   images = ['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png'],
+  text
 }: HeroSectionProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -92,8 +94,7 @@ const HeroSection = ({
         </h1>
 
         <p className='text-sm sm:text-lg md:text-xl max-w-3xl mx-auto'>
-          Empowering students with cutting-edge knowledge, hands-on experience,
-          and the tools to shape the future of technology and innovation.
+          {text}
         </p>
       </div>
 
