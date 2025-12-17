@@ -50,7 +50,7 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
   return (
     <div onClick={handleClick}>
       <motion.div 
-        className="h-[520px] lg:w-[300px] sm:w-[340px] w-full shadow-lg overflow-hidden flex flex-col cursor-pointer hover:scale-101 hover:rotate-1 transition-transform duration-300"
+        className="h-[520px] lg:w-[300px] sm:w-[340px] w-full shadow-lg overflow-hidden flex flex-col cursor-pointer hover:scale-101 hover:rotate-1 transition-transform duration-300 rounded-t-md"
         whileTap={{ scale: 0.95 }}
       >
         {loading ? (

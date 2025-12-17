@@ -27,7 +27,7 @@ const RecentEvent = () => {
 
   return (
     <section className="md:px-page-x lg:py-page-y px-page-sx font-poppins my-16">
-      <div className="max-w-360 mx-auto flex gap-12 flex-col lg:flex-row">
+      <div className="max-w-360 mx-auto flex gap-12 flex-col-reverse lg:flex-row">
         {/* Recent Events */}
         <div className="flex flex-col gap-8 flex-1">
           <h2 className="font-open_sans font-bold text-3xl">Recent Events</h2>
