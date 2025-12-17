@@ -64,7 +64,7 @@ const page = () => {
 
                     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-12 mt-20'>
                         {Array.from({ length: 5 }).map((_, index) => (
-                            <div key={index} className='bg-[#F9FAFB] p-6 rounded-xl flex flex-col gap-4 w-[384px]'>
+                            <div key={index} className='bg-[#F9FAFB] p-6 rounded-xl flex flex-col gap-4 sm:w-[384px] w-full'>
                                 <div className='w-12 h-12 rounded-full bg-primary/13 p-1 flex items-center justify-center'>
                                     <Image src="/images/tech.svg" alt="" width={32} height={32} />
                                 </div>
