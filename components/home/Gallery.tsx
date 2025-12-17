@@ -1,9 +1,12 @@
+'use client'
 import Image from 'next/image';
 import React from 'react'
 import img1 from '../../public/images/img1.png'
 import img2 from '../../public/images/potw.png'
 import img3 from '../../public/images/galleryImg.png'
 import img4 from '../../public/images/galleryimg2.png'
+import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 const Gallery = () => {
     return (
@@ -26,6 +29,15 @@ const Gallery = () => {
                             />
                         </div>
                     ))}
+                </div>
+
+                <div className='grid place-content-center'>
+                    <motion.button
+                        className="bg-primary rounded-lg px-6 py-3 text-black font-semibold text-sm sm:text-base w-max hover:scale-105 cursor-pointer transition-transform duration-300"
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        <Link href='/gallery'>View More</Link>
+                    </motion.button>
                 </div>
 
 

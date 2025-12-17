@@ -15,11 +15,11 @@ const RecentBlogs = ({ onPostSelect }: { onPostSelect?: (post: any) => void }) =
     }
 
     return (
-        <div className='md:px-page-x lg:py-page-y px-page-sx font-poppins my-16'>
-            <div className='max-w-7xl mx-auto flex flex-col gap-6'>
-                <h1 className='font-open_sans text-2xl font-bold'>Recent Blog Posts</h1>
-                <div className='grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-cols-1 my-10 gap-x-20 gap-y-10'>
-                    {blogs?.slice(0, 6).map((post) => (
+        <div className='px-4 md:px-8 lg:px-12 py-12 font-poppins'>
+            <div className='max-w-7xl mx-auto flex flex-col gap-8'>
+                <h1 className='font-open_sans text-2xl md:text-3xl font-bold text-gray-900'>Recent Blog Posts</h1>
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
+                    {blogs?.map((post) => (
                         <BlogCard
                             key={post.slug}
                             post={post}

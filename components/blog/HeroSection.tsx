@@ -28,7 +28,7 @@ const HeroSection = ({
 
   const plugin = useRef(
     Autoplay({
-      delay: 5000,
+      delay: 8000,
       stopOnMouseEnter: true,
       stopOnInteraction: false,
     })
