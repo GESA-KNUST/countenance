@@ -30,6 +30,7 @@ const Navbar = () => {
     { name: 'Gallery', link: '/gallery' },
     { name: 'Contact Us', link: '/contact-us' },
   ]
+  console.log(currentPath)
 
   return (
     <div className='flex items-center justify-between md:px-page-x lg:py-page-y px-page-sx font-poppins max-w-360 mx-auto h-(--navbar-height)'>
@@ -80,7 +81,7 @@ const Navbar = () => {
                   <li key={i}>
                     <Link
                       href={nav.link}
-                      className={`block ${currentPath === nav.link ? 'bg-primary text-white' : ''
+                      className={`block ${currentPath == nav.link ? 'bg-primary text-white' : ''
                         } hover:bg-primary hover:text-white py-2 px-3 font-semibold transition duration-300 rounded-md`}
                       onClick={() => setIsOpen(false)}
                     >
