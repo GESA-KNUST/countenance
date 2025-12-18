@@ -22,6 +22,7 @@ interface EventCardProps {
   venue: VenueType;
   onlineLink?: string;
   slug: string;
+  isHeroCard?: boolean;
 }
 
 const EventCard: React.FC<EventCardProps> = ({
@@ -32,11 +33,11 @@ const EventCard: React.FC<EventCardProps> = ({
   venue,
   onlineLink,
   slug,
+  isHeroCard,
 }) => {
   const [showMap, setShowMap] = useState(false);
   const [mapLoading, setMapLoading] = useState(true);
   const [mapError, setMapError] = useState(false);
-  const [showClickText, setShowClickText] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   const eventDate = new Date(date);
@@ -59,28 +60,15 @@ const EventCard: React.FC<EventCardProps> = ({
 
   const hasOnlineLink = !!onlineLink;
 
-  useEffect(() => {
-    if (!hasOnlineLink) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setShowClickText(true);
-          } else {
-            setShowClickText(false);
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-    if (cardRef.current) observer.observe(cardRef.current);
+  const handleCardClick = () => {
+    if (isHeroCard) {
+      return;
+    }
+    if (hasOnlineLink) {
+      window.open(onlineLink, '_blank');
+    }
+  };
 
-    return () => {
-      if (cardRef.current) observer.unobserve(cardRef.current);
-    };
-  }, [hasOnlineLink]);
-
-  
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (showMap && mapLoading) {
@@ -91,10 +79,23 @@ const EventCard: React.FC<EventCardProps> = ({
     return () => clearTimeout(timer);
   }, [showMap, mapLoading]);
 
+  const cardClasses = isHeroCard
+    ? 'relative group bg-white h-[480px] w-full sm:w-[340px] lg:w-[300px] xl:w-[334px] shadow-lg rounded transition-transform duration-300 hover:scale-[1.02] cursor-pointer'
+    : 'relative group bg-white min-h-[480px] w-full sm:w-[340px] lg:w-[300px] xl:w-[334px] shadow-lg rounded transition-transform duration-300 hover:scale-[1.02] cursor-pointer';
+
+  const descriptionClasses = isHeroCard
+    ? 'text-text-gray line-clamp-3 overflow-hidden h-20'
+    : 'text-text-gray line-clamp-3 overflow-hidden max-h-14 lg:h-20';
+
+  const titleWords = title.split(' ');
+  const lastWord = titleWords.pop();
+  const restOfTitle = titleWords.join(' ');
+
   return (
     <div
       ref={cardRef}
-      className="relative group min-h-[480px] w-full sm:w-[340px] lg:w-[300px] xl:w-[334px] shadow-lg rounded transition-transform duration-300 hover:scale-[1.02] cursor-pointer"
+      className={cardClasses}
+      onClick={handleCardClick}
     >
       <div className="p-5 flex flex-col justify-between h-full">
         <div className="flex flex-col gap-4">
@@ -109,43 +110,32 @@ const EventCard: React.FC<EventCardProps> = ({
 
           <h1 className="font-semibold text-primary text-sm">Event</h1>
 
-          <div className="flex items-start gap-1 flex-wrap relative">
-            <h1 className="text-2xl font-bold font-open_sans w-auto min-w-0">{title}</h1>
-
-            <div className="relative flex items-center ml-2">
+          <h1 className="text-2xl font-bold font-open_sans w-auto min-w-0 lg:h-16 lg:line-clamp-2 text-black">
+            {restOfTitle}
+            <span className="whitespace-nowrap">
+              {' '}{lastWord}
               {hasOnlineLink ? (
-                <>
-                  <Link
-                    href={onlineLink!}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <ArrowUpRight className="shrink-0 mt-1 text-black transition-transform duration-300 group-hover:rotate-45 animate-pulse" />
-                  </Link>
-                  <Link
-                    href={onlineLink!}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`ml-1 absolute -top-4 left-6 text-xs font-semibold text-yellow-300 opacity-70 transition-all duration-500 
-                      ${showClickText ? 'opacity-100 animate-pulse' : 'opacity-0'}`}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    Click Me!
-                  </Link>
-                </>
+                <Link
+                  href={onlineLink!}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-block ml-1"
+                >
+                  <ArrowUpRight className="shrink-0 text-black transition-transform duration-300 group-hover:rotate-45 animate-pulse" />
+                </Link>
               ) : (
-                <ArrowUpRight className="shrink-0 mt-1 text-black" />
+                <ArrowUpRight className="shrink-0 inline-block ml-1 text-black" />
               )}
-            </div>
-          </div>
+            </span>
+          </h1>
 
-          <p className="text-text-gray line-clamp-3 overflow-hidden max-h-14">{description}</p>
+          <p className={descriptionClasses}>{description}</p>
 
           <div>
             <button
               onClick={(e) => handleMapToggle(e, true)}
-              className="flex items-center gap-1 font-medium text-sm cursor-pointer z-10 relative"
+              className="flex items-center gap-1 font-medium text-sm cursor-pointer z-10 relative p-2 -m-2"
               aria-label="View venue on map"
             >
               <MapPin className="w-4 h-4 text-yellow-400" />
@@ -168,7 +158,7 @@ const EventCard: React.FC<EventCardProps> = ({
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex justify-between items-center mb-2">
-            <h2 className="font-bold text-lg">Venue or Location</h2>
+            <h2 className="font-bold text-lg text-black">Venue or Location</h2>
             <button
               onClick={() => setShowMap(false)}
               className="p-1 text-gray-700 hover:text-black"

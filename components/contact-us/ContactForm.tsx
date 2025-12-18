@@ -23,7 +23,7 @@ const ContactForm = () => {
   return (
     <div className='relative pb-20'>
         <div className='max-w-6xl mx-auto p-4'>
-          <div className='bg-white shadow-lg rounded-lg flex flex-col md:flex-row min-h-[667px]'>
+          <div className='bg-white shadow-lg rounded-lg flex flex-col-reverse md:flex-row min-h-[667px]'>
             <div className='w-full md:w-1/3 bg-black text-white p-8 rounded-l-lg relative overflow-hidden'>
                 <div className='relative z-10 h-full flex flex-col justify-between'>
                     <div>
@@ -32,11 +32,11 @@ const ContactForm = () => {
                         <div className='space-y-6'>
                             <div className='flex items-center gap-4'>
                                 <Phone />
-                                <span>+233 20 057 6468</span>
+                                <span>024-342-6670</span>
                             </div>
                             <div className='flex items-center gap-4'>
                                 <Mail />
-                                <span>thegesaknust@gmail.com</span>
+                                <span>info@gesaknust.org</span>
                             </div>
                             <div className='flex items-center gap-4'>
                                 <MapPin />
