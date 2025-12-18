@@ -23,8 +23,8 @@ const AllEvents = () => {
 
       
       <div className="w-full lg:w-1/3 xl:w-1/4 text-center xl:text-left">
-        <h2 className="text-5xl sm:text-6xl lg:text-7xl font-semibold leading-tight">
-          All <br /> <span className="text-[#FFBE00]">Events</span>
+        <h2 className="text-5xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight">
+          All <br className="hidden sm:block"/> <span className="text-[#FFBE00]">Events</span>
         </h2>
         <p className="mt-8 text-lg sm:text-xl text-gray-700 mx-auto xl:mx-0">
           Explore insights, innovations, and student experiences from the heart of KNUST’s engineering community.
