@@ -1,6 +1,7 @@
 'use client';
 import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Twitter } from 'lucide-react';
 import { useState } from 'react';
+import emailjs from 'emailjs-com';
 
 const ContactForm = () => {
   const [firstName, setFirstName] = useState('');
@@ -9,15 +10,36 @@ const ContactForm = () => {
   const [phone, setPhone] = useState('');
   const [subject, setSubject] = useState('General Inquiry');
   const [message, setMessage] = useState('');
+  const [feedback, setFeedback] = useState({ message: '', type: '' });
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const mailtoLink = `mailto:thegesaknust@gmail.com?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(
-      `Name: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}`
-    )}`;
-    window.location.href = mailtoLink;
+
+    const templateParams = {
+      firstName: firstName,
+      lastName: lastName,
+      messageType: subject,
+      messageBody: message,
+      emailFrom: email,
+      email: 'thegesaknust@gmail.com',
+    };
+
+    emailjs.send(
+      'service_dj6nnll',
+      'template_vjomjvq',
+      templateParams,
+      'nsEZld8wCEmOsyI4w'
+    ).then((response) => {
+       setFeedback({ message: 'Your message has been sent successfully.', type: 'success' });
+       setFirstName('');
+       setLastName('');
+       setEmail('');
+       setPhone('');
+       setSubject('General Inquiry');
+       setMessage('');
+    }, (err) => {
+       setFeedback({ message: 'Failed to send message. Please try again later.', type: 'error' });
+    });
   };
 
   return (
@@ -95,6 +117,11 @@ const ContactForm = () => {
                 <div>
                   <textarea placeholder="Write your message.." className='w-full border-b-2 border-gray-300 focus:border-yellow-500 outline-none p-2' rows={3} value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
                 </div>
+                {feedback.message && (
+                  <div className={`p-4 rounded-md ${feedback.type === 'success' ? 'bg-yellow-500 text-white' : 'bg-red-100 text-red-800'}`}>
+                    {feedback.message}
+                  </div>
+                )}
                 <div className='text-right'>
                   <button type="button" onClick={handleSubmit} className='bg-yellow-500 text-white py-3 px-8 rounded-md shadow-lg hover:bg-yellow-600 transition-colors'>
                     Send Message
