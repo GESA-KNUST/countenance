@@ -1,13 +1,44 @@
 'use client';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import HeroSection from '@/components/home/HeroSection'
 import Container from '@/components/custom/Container';
 import { Search } from 'lucide-react';
 import Image from 'next/image';
+import { ClubItems, useClubs } from '@/hooks/useClubs';
+import ClubCardSkeleton from '@/components/clubs/ClubCardSkeleton';
 
 const page = () => {
     const [currentId, setCurrentId] = useState<number>(0)
+    const { data: clubs, isLoading, error } = useClubs();
+    const [search, setSearch] = useState<string>('');
 
+    const navItems = [
+        { name: 'All Clubs', value: 'all' },
+        { name: 'Tech Clubs', value: 'Tech Clubs' },
+        { name: 'Creative & Arts', value: 'Creative & Arts' },
+        { name: 'Leadership & Service', value: 'Leadership & Service' },
+        { name: 'Sport & Fitness', value: 'Sport & Fitness' },
+        { name: 'Academic Societies', value: 'Academic Societies' },
+    ]
+
+    const [filteredClubs, setFilteredClubs] = useState<ClubItems[]>(clubs || []);
+    useEffect(() => {
+        setFilteredClubs(clubs || []);
+    }, [clubs])
+
+    useEffect(() => {
+        if (currentId === 0) {
+            setFilteredClubs(clubs || []);
+            return;
+        }
+        const filteredClubs = clubs?.filter((club) => club.clubType === navItems[currentId].value) || [];
+        setFilteredClubs(filteredClubs);
+    }, [currentId, clubs])
+
+    useEffect(() => {
+        const filteredClubs = clubs?.filter((club) => club.clubName.toLowerCase().includes(search.toLowerCase())) || [];
+        setFilteredClubs(filteredClubs);
+    }, [search, clubs])
 
     return (
         <div className='font-poppins min-h-screen'>
@@ -26,17 +57,12 @@ const page = () => {
                             type="text"
                             placeholder='Search clubs'
                             className='w-full p-2 rounded-xl h-full outline-0'
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
                     <ul className='flex gap-2 flex-wrap justify-center'>
-                        {[
-                            { name: 'All Clubs', value: 'all' },
-                            { name: 'Tech Clubs', value: 'all' },
-                            { name: 'Creative & Arts', value: 'all' },
-                            { name: 'Leadership & Service', value: 'all' },
-                            { name: 'Sport & Fitness', value: 'all' },
-                            { name: 'Academic Societies', value: 'all' },
-                        ].map((item, index) => (
+                        {navItems.map((item, index) => (
                             <li onClick={() => setCurrentId(index)} key={index} className={`rounded-full ${currentId === index ? 'bg-primary text-white' : 'bg-slate-100'}  text-black font-medium px-6 py-2 cursor-pointer transition-all duration-300 text-sm`}>{item.name}</li>
                         ))}
                     </ul>
@@ -48,18 +74,30 @@ const page = () => {
                     <h1 className='font-bold text-3xl text-center'>Featured Clubs</h1>
                     <p className='text-center mt-2'>Discover our most active and engaging student communities</p>
                     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-6'>
-                        {Array.from({ length: 5 }).map((_, index) => (
-                            <div className='p-6 shadow-lg rounded-xl h-[454px] flex flex-col justify-between' key={index}>
-                                <div className='w-full h-56 bg-slate-100 rounded-xl'></div>
-                                <div className='flex flex-col gap-y-4'>
-                                    <h2 className='font-bold text-lg'>GESA Coding Society</h2>
-                                    <p className='text-sm text-gray-500'>Discover hands-on coding workshops and build amazing projects with developers</p>
-                                    <div className='w-full'>
-                                        <button className='bg-primary cursor-pointer px-4 py-2 rounded-full w-full font-medium hover:bg-primary/80 transition-all duration-300 hover:scale-105'>Join Club</button>
+                        {isLoading ?
+                            <>
+                                <ClubCardSkeleton />
+                                <ClubCardSkeleton />
+                                <ClubCardSkeleton />
+                            </>
+                            : filteredClubs?.map((club, index) => (
+                                <div className='p-6 shadow-lg rounded-xl h-[454px] flex flex-col justify-between' key={index}>
+                                    <div className='w-full h-56 bg-slate-100 rounded-xl relative overflow-hidden'>
+                                        <Image src={club.clubLogo.url} alt={club.clubLogo.title || "Club Logo"} fill className='object-cover rounded-xl' />
+                                    </div>
+                                    <div className='flex flex-col gap-y-4 py-4'>
+                                        <h2 className='font-bold text-lg'>{club.clubName}</h2>
+                                        <p className='text-sm text-gray-500'>{club.description.slice(0, 250) + '...'}</p>
+                                        <div className='bg-primary cursor-pointer hover:bg-slate-800 hover:text-white px-4 py-2 rounded-full w-full font-medium transition-all duration-300 hover:scale-105 text-center'>
+                                            <a href={club.clubLink} target="_blank" rel="noopener noreferrer"
+                                                className='text-white transition-all'>
+                                                Join Club
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                            {error && <p className='text-red-500'>Error fetching clubs</p>}
                     </div>
 
                     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-12 mt-20'>
