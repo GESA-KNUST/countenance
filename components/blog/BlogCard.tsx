@@ -70,7 +70,7 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
             {/* Content */}
             <div className="p-5 flex flex-col grow">
               <div className="grow">
-                <h1 className="font-semibold text-primary text-sm">Design</h1>
+                <h1 className="font-semibold text-primary text-sm">Blog</h1>
                 <div className="flex mt-2 items-start">
                   <h1 className="text-2xl font-bold font-open_sans line-clamp-2">{slug}</h1>
                   <ArrowUpRight className="shrink-0 ml-1" />
