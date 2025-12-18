@@ -28,7 +28,7 @@ export default function BlogContent() {
 
   return (
     <main className="flex min-h-screen flex-col items-center bg-white font-poppins">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-2 lg:px-8 pt-24 pb-16">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-2 lg:px-8 pb-16">
         <div className="flex flex-col xl:flex-row gap-16">
           <MainContent selectedPost={selectedPost} />
           <PopularPosts allPosts={allPosts} onPostSelect={handlePostSelect} />
