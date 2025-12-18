@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useFetchData } from './useFetchData';
 import { contentfulClient } from '@/lib/contentful-client';
 import { gql } from 'graphql-request';
@@ -8,6 +8,7 @@ interface ItemsProps {
   academicYear: string;
   executivePositionHeld: string;
   fullName: string;
+  primarySocialLink: string;
   officialImage: {
     title: string;
     description: string;
@@ -30,6 +31,7 @@ const GET_EXECUTIVES = gql`
         academicYear
         executivePositionHeld
         fullName
+        primarySocialLink
         officialImage {
           title
           description
