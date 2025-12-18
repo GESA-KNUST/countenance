@@ -45,9 +45,9 @@ const RecentEvents: React.FC<RecentEventsProps> = ({ events = [], isLoading = fa
 
   return (
     <div className="py-16 px-6 sm:px-10 md:px-16 lg:px-20 xl:px-24 flex flex-col lg:flex-row items-start gap-12">
-      <div className="w-full lg:w-1/3 xl:w-1/4 text-center lg:text-left">
-        <h2 className="text-5xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight">
-          Recent <br className="hidden sm:block"/> <span className="text-[#FFBE00]">Events</span>
+      <div className="w-full lg:w-1/4 text-center lg:text-left">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight">
+          Recent <br className="hidden lg:block"/> <span className="text-[#FFBE00]">Events</span>
         </h2>
         <p className="mt-6 text-lg sm:text-xl text-gray-700">
           Explore insights, innovations, and student experiences from the heart of KNUST’s engineering community.
@@ -55,7 +55,7 @@ const RecentEvents: React.FC<RecentEventsProps> = ({ events = [], isLoading = fa
       </div>
 
       
-      <div className="w-full lg:w-2/3 xl:w-3/4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="w-full lg:w-3/4 grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-8">
         {isLoading ? (
          
           <SkeletonLoadingCard />
