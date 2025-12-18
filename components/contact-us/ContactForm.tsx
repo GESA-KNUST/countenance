@@ -83,8 +83,8 @@ const ContactForm = () => {
                     </div>
                 </div>
 
-                <div className="absolute w-[269px] h-[269px] bg-[rgba(255,190,0,0.5)] rounded-full bottom-[-100px] right-[-80px]"></div>
-                <div className="absolute w-[138px] h-[138px] bg-[rgba(255,190,0,0.5)] rounded-full bottom-[60px] right-[80px]"></div>
+                <div className="absolute w-[269px] h-[269px] bg-[rgba(255,190,0,0.5)] rounded-full bottom-[-100px] -right-20"></div>
+                <div className="absolute w-[138px] h-[138px] bg-[rgba(255,190,0,0.5)] rounded-full bottom-[60px] right-20"></div>
 
             </div>
             <div className='w-full md:w-2/3 p-8'>
