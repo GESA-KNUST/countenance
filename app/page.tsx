@@ -3,19 +3,27 @@ import HeroSection from '../components/home/HeroSection'
 import React from 'react'
 import RecentEvent from '../components/home/RecentEvent';
 import Gallery from '../components/home/Gallery';
+import HistorySection from '../components/home/HistorySection';
+import HomeHubsPreview from '../components/home/HomeHubsPreview';
+import HomeClubsPreview from '../components/home/HomeClubsPreview';
+import HomeBlogPreview from '../components/home/HomeBlogPreview';
 
 const Home = () => {
   return (
     <div className='font-poppins min-h-screen'>
-      <HeroSection 
+      <HeroSection
         title="Innovating Tomorrow's Engineers, Today"
         highlight="Engineers"
         text="Empowering students with cutting-edge knowledge, hands-on experience, and the tools to shape the future of technology and innovation."
         images={['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png']}
       />
-      <Personality/>
-      <RecentEvent/>
-      <Gallery/>
+      <Personality />
+      <HomeHubsPreview />
+      <HomeClubsPreview />
+      <RecentEvent />
+      <HistorySection />
+      {/* <HomeBlogPreview /> */}
+      <Gallery />
     </div>
   )
 }
