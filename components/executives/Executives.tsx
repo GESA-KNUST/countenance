@@ -6,6 +6,7 @@ interface ItemsProps {
   academicYear: string;
   executivePositionHeld: string;
   fullName: string;
+  primarySocialLink: string;
   officialImage: {
     title: string;
     description: string;
@@ -32,6 +33,7 @@ const Executives = ({ executives, isLoading }: ExecutivesProps) => {
                 image={executive.officialImage.url}
                 name={executive.fullName}
                 position={executive.executivePositionHeld}
+                primarySocialLink={executive.primarySocialLink}
               />
             ))}
       </div>
