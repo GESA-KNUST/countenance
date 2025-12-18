@@ -35,16 +35,17 @@ const HomeClubsPreview = () => {
                                     <div className="w-full h-full bg-primary/20 rounded-lg"></div>
                                 </div>
                                 <div>
-                                    <h3 className='font-bold text-xl mb-2 group-hover:text-primary transition-colors'>{club.name}</h3>
+                                    <h3 className='font-bold text-xl mb-2 transition-colors group-hover:text-blue-600'>{club.name}</h3>
                                     <p className='text-sm text-gray-500 mb-4 line-clamp-2'>{club.desc}</p>
                                     <span className='font-medium text-xs text-primary bg-primary/10 px-3 py-1.5 rounded-full'>
                                         {club.tag}
                                     </span>
                                 </div>
 
-                                <button className='mt-auto w-full py-2.5 rounded-xl border border-slate-200 text-sm font-semibold hover:bg-primary hover:text-black hover:border-primary transition-all duration-300'>
+                                <a href="#" target="_blank" rel="noopener noreferrer" className='font-medium inline-flex justify-center items-center w-full bg-primary mt-3 border border-slate-200 hover:bg-slate-800 hover:text-white transition-all rounded-xl py-3 group-hover:shadow-lg z-10 cursor-pointer'>
                                     View Details
-                                </button>
+                                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                                </a>
                             </div>
                         ))}
                     </div>
