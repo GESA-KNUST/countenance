@@ -1,40 +1,42 @@
 'use client';
-import { useState } from 'react';
-import BlogCard from '../../components/blog/BlogCard';
+import Image from 'next/image';
 import { Skeleton } from '../../components/ui/skeleton';
 
-const PopularPosts = ({ allPosts, onPostSelect }) => {
-    const [visiblePosts, setVisiblePosts] = useState(9);
+const SimplifiedBlogCard = ({ post, onPostSelect }) => (
+  <div 
+    className="h-[116px] w-full max-w-sm shadow-lg cursor-pointer hover:bg-gray-100 transition-colors duration-200 flex flex-row overflow-hidden"
+    onClick={() => onPostSelect(post)}
+  >
+    <div className="relative w-28 h-full shrink-0">
+        <Image 
+            src={post.headerImage.url} 
+            alt={post.title} 
+            fill 
+            className="object-cover"
+        />
+    </div>
+    <div className="flex flex-col justify-center p-4">
+      <p className='text-sm text-[#FFBE00] font-bold '>Blog</p>
+      <h3 className='text-lg font-bold text-foreground line-clamp-2'>{post.title}</h3>
+    </div>
+  </div>
+);
 
-    const loadMore = () => {
-        setVisiblePosts(prevVisiblePosts => prevVisiblePosts + 3);
-    };
+const PopularPosts = ({ allPosts, onPostSelect }) => {
 
     if (!allPosts) {
         return (
-            <div className="w-full xl:w-1/3 flex flex-col items-center xl:items-start gap-8 xl:mt-58">
+            <div className="w-[361px] flex flex-col items-center xl:items-start gap-2.5 xl:mt-78">
                 <h2 className="text-3xl font-bold text-muted-foreground/50 text-center xl:text-left">
                     Popular Posts
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-1 gap-8">
-                    {[...Array(9)].map((_, i) => (
-                        <div key={i} className="h-full w-full max-w-sm shadow-lg p-5 flex justify-center rounded">
-                            <div className="flex flex-col gap-5 w-full">
-                                <Skeleton className="h-60 w-full" />
+                <div className="flex flex-col gap-2.5 w-full">
+                    {[...Array(5)].map((_, i) => (
+                        <div key={i} className="h-[116px] w-full max-w-sm shadow-lg flex flex-row overflow-hidden">
+                            <Skeleton className="h-full w-28" />
+                            <div className="flex flex-col justify-center p-4 gap-2 w-full">
                                 <Skeleton className="h-4 w-1/4" />
-                                <div className="flex">
-                                    <Skeleton className="h-8 w-full" />
-                                </div>
-                                <Skeleton className="h-4 w-full" />
-                                <Skeleton className="h-4 w-full" />
-                                <Skeleton className="h-4 w-4/5" />
-                                <div className="flex gap-2">
-                                    <Skeleton className="h-10 w-10 rounded-full" />
-                                    <div className="w-full flex flex-col gap-2">
-                                        <Skeleton className="h-4 w-1/2" />
-                                        <Skeleton className="h-4 w-1/3" />
-                                    </div>
-                                </div>
+                                <Skeleton className="h-6 w-3/4" />
                             </div>
                         </div>
                     ))}
@@ -44,33 +46,20 @@ const PopularPosts = ({ allPosts, onPostSelect }) => {
     }
 
     return (
-        <div className="w-full xl:w-1/3 flex flex-col items-center xl:items-start gap-8 xl:mt-78">
+        <div className="w-[361px] flex flex-col items-center xl:items-start gap-2.5 xl:mt-78">
             <h2 className="text-3xl font-bold text-muted-foreground/50 text-center xl:text-left">
                 Popular Posts
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-1 gap-8">
-                {allPosts?.slice(0, visiblePosts).map((post) => (
-                    <BlogCard 
+            <div className="flex flex-col gap-2.5 w-full">
+                {allPosts?.slice(0, 5).map((post) => (
+                    <SimplifiedBlogCard 
                         key={post.slug} 
                         post={post}
-                        slug={post.title} 
-                        author={{
-                            title: post.author.name,
-                            url: post.author.authorProfilePicture.url,
-                            description: post.author.authorProfilePicture.description
-                        }}
-                        headerImg={post.headerImage}
                         onPostSelect={onPostSelect}
                     />
                 ))}
             </div>
-
-            {allPosts && visiblePosts < allPosts.length && (
-                <button onClick={loadMore} className="text-primary font-bold py-2 px-4 rounded-lg w-fit self-center xl:self-end">
-                    Load More
-                </button>
-            )}
         </div>
     );
 };
