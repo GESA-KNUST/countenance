@@ -71,7 +71,7 @@ const Navbar = () => {
             <div className="px-4 pb-4 bg-white flex flex-col relative ">
               <div
                 onClick={() => setIsOpen(false)}
-                className='absolute right-10 top-4 p-2 text-red-500 hover:bg-red-500 hover:text-white cursor-pointer rounded-full transition duration-300'
+                className='absolute right-10 top-4 p-2 text-yellow-500 hover:bg-yellow-500 hover:text-white cursor-pointer rounded-full transition duration-300'
               >
                 <X strokeWidth={3} size={30} />
               </div>

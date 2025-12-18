@@ -92,7 +92,7 @@ const Hero = ({
               <br />
               <span className="text-yellow-500">MOMENTS</span>
             </h1>
-            <p className='text-xl mb-8'>
+            <p className='text-sm md:text-xl mb-8'>
             Explore photos from our events,activities and unforgettable memories across our community.
             </p>
             <button
