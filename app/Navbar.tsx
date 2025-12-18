@@ -30,7 +30,6 @@ const Navbar = () => {
     { name: 'Gallery', link: '/gallery' },
     { name: 'Contact Us', link: '/contact-us' },
   ]
-  console.log(currentPath)
 
   return (
     <div className='flex items-center justify-between md:px-page-x lg:py-page-y px-page-sx font-poppins max-w-360 mx-auto h-(--navbar-height)'>
