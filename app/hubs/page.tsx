@@ -2,7 +2,7 @@
 import Container from '@/components/custom/Container'
 import HeroSection from '@/components/home/HeroSection'
 import OpportunityCard from '@/components/hubs/OpportunityCard'
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import internship from '@/public/images/internship.svg'
 import scholarship from '@/public/images/scholarship.svg'
 import financialAid from '@/public/images/financial-aid.svg'
@@ -10,10 +10,14 @@ import Image from 'next/image'
 import announcement from '@/public/images/announcement.svg'
 import tips from '@/public/images/tips.svg'
 import correctBullet from '@/public/images/corectBullet.svg'
+import { useHubs } from '@/hooks/useHubs'
+import SkeletonLoading from '@/components/hubs/SkeletonLoading'
+import POLoading from '@/components/hubs/POLoading'
 
 const page = () => {
 
     const [currentId, setCurrentId] = useState<number>(0)
+    const { data: hubs, isLoading, error } = useHubs()
 
     const navItems = [
         { name: 'All', value: 'all', icon: null },
@@ -22,56 +26,15 @@ const page = () => {
         { name: 'Financial Aid', value: 'financial aid', icon: financialAid },
     ]
 
-    const opportunities = [
-        {
-            title: "Software Engineering Intern",
-            type: "Internship",
-            icon: internship,
-            description: "Join our dynamic team building the future of AI. Work on real-world problems and gain hands-on experience.",
-            deadline: 'Dec 20, 2025'
-        },
-        {
-            title: "Global Merit Scholarship",
-            type: "Scholarship",
-            icon: scholarship,
-            description: "Full tuition coverage for outstanding students demonstrating academic excellence and leadership potential.",
-            deadline: 'Dec 20, 2025'
-        },
-        {
-            title: "Student Support Fund",
-            type: "Financial Aid",
-            icon: financialAid,
-            description: "Financial assistance program designed to help students cover essential living expenses and study materials.",
-            deadline: 'Dec 20, 2025'
-        },
-        {
-            title: "Product Design Intern",
-            type: "Internship",
-            icon: internship,
-            description: "Collaborate with cross-functional teams to design intuitive and beautiful user experiences for millions of users.",
-            deadline: 'Dec 20, 2025'
-        },
-        {
-            title: "Tech Innovation Grant",
-            type: "Scholarship",
-            icon: scholarship,
-            description: "A specialized grant for students pursuing research or projects in emerging technologies and innovation.",
-            deadline: 'Dec 20, 2025'
-        },
-        {
-            title: "Emergency Relief Aid",
-            type: "Financial Aid",
-            icon: financialAid,
-            description: "Immediate financial support for students facing unexpected hardship or emergency situations.",
-            deadline: 'Dec 20, 2025'
-        }
-    ]
-    const [filteredOpportunities, setFilteredOpportunities] = useState(opportunities)
+    const [filteredOpportunities, setFilteredOpportunities] = useState(hubs)
+    useEffect(() => {
+        setFilteredOpportunities(hubs)
+    }, [hubs])
     useEffect(() => {
         if (currentId === 0) {
-            setFilteredOpportunities(opportunities)
+            setFilteredOpportunities(hubs)
         } else {
-            const filtered = opportunities.filter(opportunity => opportunity.type.toLowerCase() === navItems[currentId].value)
+            const filtered = hubs.filter(opportunity => opportunity.opportunityType.toLowerCase() === navItems[currentId].value)
             setFilteredOpportunities(filtered)
         }
     }, [currentId])
@@ -159,12 +122,21 @@ const page = () => {
             <Container size='xl'>
                 <div className='grid grid-cols-1 lg:grid-cols-4 gap-8'>
                     <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                        {filteredOpportunities.map((opp, index) => (
-                            <OpportunityCard
-                                key={index}
-                                {...opp}
-                            />
-                        ))}
+                        {isLoading ? (
+                            <>
+                                <SkeletonLoading/>
+                                <SkeletonLoading/>
+                                <SkeletonLoading/>
+                            </>
+                        ) : (
+                            filteredOpportunities?.map((opp, index) => (
+                                <OpportunityCard
+                                    key={index}
+                                    {...opp}
+                                />
+                            ))
+                        )}
+                        {error && <p className='text-red-500 text-sm'>Error loading opportunities</p>}
                     </div>
                     <div className="lg:col-span-1 space-y-8">
                         <div className='flex flex-col gap-2 shadow-md rounded-xl p-2 px-4'>
@@ -184,19 +156,29 @@ const page = () => {
                                 ))}
                             </div>
                         </div>
-                        <div className='flex flex-col gap-4 shadow-md rounded-xl p-2 px-4'>
-                            <h1 className='font-semibold text-lg'>Popular Opportunities</h1>
-                            <div className='flex flex-col gap-2 py-2'>
-                                {popularOpportunites.map((opp, index) => (
-                                    <div className='flex gap-2' key={index}>
-                                        <div className='flex flex-col gap-2'>
-                                            <p className='font-medium'>{opp.title}</p>
-                                            <p className='text-gray-600 text-sm'>{opp.description}</p>
-                                        </div>
+                        {
+                            isLoading ? (
+                                <>
+                                    <POLoading/>
+                                    <POLoading/>
+                                    <POLoading/>
+                                </>
+                            ) : (
+                                <div className='flex flex-col gap-4 shadow-md rounded-xl p-2 px-4'>
+                                    <h1 className='font-semibold text-lg'>Popular Opportunities</h1>
+                                    <div className='flex flex-col gap-2 py-2'>
+                                        {hubs?.map((opp, index) => (
+                                            <a href={opp.source} target='_blank' className='flex gap-2 cursor-pointer hover:bg-slate-200/20 p-2 rounded-xl' key={index}>
+                                                <div className='flex flex-col gap-2'>
+                                                    <p className='font-medium'>{opp.title}</p>
+                                                    <p className='text-gray-600 text-sm'>{opp.description.slice(0, 50)+'...'}</p>
+                                                </div>
+                                            </a>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
-                        </div>
+                                </div>
+                            )
+                        }
                         <div className='flex flex-col gap-4 shadow-md rounded-xl py-4 px-4 bg-black'>
                             <h1 className='flex items-center gap-2 font-semibold text-lg xl:text-xl text-primary'>
                                 <Image src={tips} alt="" />
