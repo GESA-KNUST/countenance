@@ -12,6 +12,7 @@ export interface ClubItems {
     clubName: string
     clubType: string
     description: string
+    isFeatured: boolean
 }
 
 interface ClubCollection {
@@ -34,6 +35,7 @@ query ClubCollection {
       clubName
       clubType
       description
+      isFeatured
     }
   }
 }
