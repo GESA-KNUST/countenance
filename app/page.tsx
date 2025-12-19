@@ -18,10 +18,10 @@ const Home = () => {
         images={['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png']}
       />
       <Personality />
+      <HistorySection />
       <HomeHubsPreview />
       <HomeClubsPreview />
       <RecentEvent />
-      <HistorySection />
       {/* <HomeBlogPreview /> */}
       <Gallery />
     </div>
