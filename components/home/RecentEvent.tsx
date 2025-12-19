@@ -31,13 +31,23 @@ const RecentEvent = () => {
   }
 
   return (
-    <section className="px-page-sx md:px-page-x lg:py-16 py-12 font-header bg-background/50">
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-[1.2fr_auto_1fr] gap-12">
+    <section className="px-page-sx md:px-page-x lg:py-16 py-12 font-header bg-background/50 overflow-hidden relative">
+      <video
+        className="absolute top-0 left-0 w-full h-full object-cover z-0"
+        src="/videos/coenight.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+      <div className="absolute top-0 left-0 w-full h-full bg-black/50 z-10" />
+
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-[1.2fr_auto_1fr] gap-12 relative z-20">
 
         {/* Recent Events Column */}
         <div className="flex flex-col gap-8">
           <div className="flex items-center justify-between">
-            <h2 className="font-header font-bold text-3xl text-gray-900 dark:text-gray-100 flex items-center gap-2">
+            <h2 className="font-header font-bold text-3xl text-white flex items-center gap-2">
               Recent Events
               <div className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
             </h2>
@@ -47,7 +57,7 @@ const RecentEvent = () => {
             {recent && recent.length > 0 ? (
               recent.map((event) => (
                 <Link href={`/events#event-${event.slug}`} key={event._id} className="group block">
-                  <div className="bg-white dark:bg-card border border-border/40 hover:border-primary/50 shadow-sm hover:shadow-lg transition-all duration-300 rounded-2xl overflow-hidden flex flex-col sm:flex-row h-auto sm:h-[180px] p-2 sm:p-0 gap-4 group-hover:-translate-y-1">
+                  <div className="bg-[#ffffffdf] dark:bg-card border border-border/40 hover:border-primary/50 shadow-sm hover:shadow-lg transition-all duration-300 rounded-2xl overflow-hidden flex flex-col sm:flex-row h-auto sm:h-[180px] p-2 sm:p-0 gap-4 group-hover:-translate-y-1">
                     {/* Image Container */}
                     <div className="relative w-full sm:w-[200px] h-[160px] sm:h-full overflow-hidden rounded-xl sm:rounded-none sm:rounded-l-xl">
                       <Image
@@ -88,7 +98,7 @@ const RecentEvent = () => {
                 </Link>
               ))
             ) : (
-              <div className="p-8 text-center text-muted-foreground bg-gray-50 rounded-xl border border-dashed">
+              <div className="p-8 text-center text-white bg-gray-50 rounded-xl border border-dashed">
                 No recent events found.
               </div>
             )}
@@ -102,7 +112,7 @@ const RecentEvent = () => {
 
         {/* Upcoming Events Column */}
         <div className="flex flex-col gap-8">
-          <h2 className="font-open_sans font-bold text-3xl text-gray-900 dark:text-gray-100">
+          <h2 className="font-header font-bold text-3xl text-white">
             Upcoming Events
           </h2>
 
@@ -156,6 +166,7 @@ const RecentEvent = () => {
           </div>
         </div>
       </div>
+
     </section>
   );
 };
