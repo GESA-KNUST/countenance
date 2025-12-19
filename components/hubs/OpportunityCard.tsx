@@ -46,7 +46,7 @@ const OpportunityCard = ({
 
 
     return (
-        <div className="group bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col items-start gap-4 relative overflow-hidden max-h-[350px]">
+        <div className="group bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col items-start gap-4 relative overflow-hidden min-h-[300px]">
             <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-full blur-2xl -mr-16 -mt-16 pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity" />
 
             <div className='flex items-center gap-2 justify-between w-full'>
@@ -59,12 +59,16 @@ const OpportunityCard = ({
             </div>
 
             <div className="z-10 flex-1">
-                <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">{title}</h3>
+                <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors font-header">{title}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed">{description.slice(0, 150) + '...'}</p>
             </div>
             <div className='flex items-center gap-2'>
                 <Calendar size={14} />
-                <span className="text-xs">Deadline: {new Date(applicationDeadline).toLocaleDateString()}</span>
+                <span className="text-xs">Deadline: {new Date(applicationDeadline).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                })}</span>
             </div>
 
             <a href={source} target="_blank" rel="noopener noreferrer" className='font-medium inline-flex justify-center items-center w-full mt-3 bg-primary hover:bg-slate-800 hover:text-white transition-all rounded-xl py-3 group-hover:shadow-lg z-10 cursor-pointer'>
