@@ -2,7 +2,7 @@
 import Container from '@/components/custom/Container'
 import HeroSection from '@/components/home/HeroSection'
 import OpportunityCard from '@/components/hubs/OpportunityCard'
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import internship from '@/public/images/internship.svg'
 import scholarship from '@/public/images/scholarship.svg'
 import financialAid from '@/public/images/financial-aid.svg'
@@ -13,11 +13,24 @@ import correctBullet from '@/public/images/corectBullet.svg'
 import { useHubs } from '@/hooks/useHubs'
 import SkeletonLoading from '@/components/hubs/SkeletonLoading'
 import POLoading from '@/components/hubs/POLoading'
+import { useAnnouncements } from '@/hooks/useAnnoucement'
 
 const page = () => {
-
     const [currentId, setCurrentId] = useState<number>(0)
     const { data: hubs, isLoading, error } = useHubs()
+    const {
+        data: announcementsData,
+        isLoading: loadingAnnouncements,
+        error: announcementError
+    } = useAnnouncements()
+
+    const announcements = useMemo(() => {
+        if (!announcementsData) return [];
+        return [...announcementsData]
+            .sort((a, b) => new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime())
+            .slice(0, 3);
+    }, [announcementsData]);
+
 
     const navItems = [
         { name: 'All', value: 'all', icon: null },
@@ -39,24 +52,6 @@ const page = () => {
         }
     }, [currentId])
 
-    const announcements = [
-        {
-            title: "Application Portal Update",
-            description: "New features added for easier application tracking",
-            date: "Dec 20, 2025"
-        },
-        {
-            title: "Workshop Series",
-            description: "Resume building workshops starting next week",
-            date: "Dec 20, 2025"
-        },
-        {
-            title: "New Partnerships",
-            description: "Additional internship opportunities available",
-            date: "Dec 20, 2025"
-        }
-    ]
-
     const renderBorderColor = (index: number) => {
         switch (index) {
             case 0:
@@ -70,27 +65,10 @@ const page = () => {
         }
     }
 
-    const popularOpportunites = [
-        {
-            title: 'MTN Scholarship',
-            description: 'Scholarship for students pursuing research or projects in emerging technologies and innovation.',
-        },
-        {
-            title: 'UITS Internship',
-            description: 'Internship for students pursuing research or projects in emerging technologies and innovation.',
-        }
-    ]
-
     const applicationTips = [
-        {
-            description: "Start applications early to avoid last-minute rush.",
-        },
-        {
-            description: "Tailor your resume for each opportunity.",
-        },
-        {
-            description: "Follow up after submitting applications.",
-        }
+        { description: "Start applications early to avoid last-minute rush." },
+        { description: "Tailor your resume for each opportunity." },
+        { description: "Follow up after submitting applications." },
     ]
 
 
@@ -121,47 +99,59 @@ const page = () => {
             </Container>
             <Container size='xl'>
                 <div className='grid grid-cols-1 lg:grid-cols-4 gap-8'>
-                    <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 content-start">
                         {isLoading ? (
                             <>
-                                <SkeletonLoading/>
-                                <SkeletonLoading/>
-                                <SkeletonLoading/>
+                                <SkeletonLoading />
+                                <SkeletonLoading />
+                                <SkeletonLoading />
                             </>
                         ) : (
-                            filteredOpportunities?.map((opp, index) => (
-                                <OpportunityCard
-                                    key={index}
-                                    {...opp}
-                                />
-                            ))
+                            <>
+                                {filteredOpportunities?.map((opp, index) => (
+                                    <OpportunityCard
+                                        key={`${index}`}
+                                        {...opp}
+                                    />
+                                ))}
+                            </>
                         )}
                         {error && <p className='text-red-500 text-sm'>Error loading opportunities</p>}
                     </div>
                     <div className="lg:col-span-1 space-y-8">
-                        <div className='flex flex-col gap-2 shadow-md rounded-xl p-2 px-4'>
-                            <div className='flex items-center gap-4'>
-                                <Image src={announcement} alt="" />
-                                <p className='text-[#111827] font-medium text-lg'>Latest Announcements</p>
-                            </div>
-                            <div className='flex flex-col gap-2 py-2'>
-                                {announcements.map((announcement, index) => (
-                                    <div className='flex gap-4' key={index}>
-                                        <div className={`${renderBorderColor(index)} h-16 w-1.5`}></div>
-                                        <div className='flex flex-col gap-2'>
-                                            <p className='font-medium'>{announcement.title}</p>
-                                            <p className='text-gray-600 text-sm'>{announcement.description}</p>
-                                        </div>
+                        {
+                            loadingAnnouncements ? (
+                                <>
+                                    <POLoading />
+                                    <POLoading />
+                                    <POLoading />
+                                </>
+                            ) : (
+                                <div className='flex flex-col gap-2 shadow-md rounded-xl p-2 px-4'>
+                                    <div className='flex items-center gap-4'>
+                                        <Image src={announcement} alt="" />
+                                        <p className='text-[#111827] font-medium text-lg'>Latest Announcements</p>
                                     </div>
-                                ))}
-                            </div>
-                        </div>
+                                    <div className='flex flex-col gap-2 py-2'>
+                                        {announcements?.map((announcement, index) => (
+                                            <a href={announcement.actionLink} target="_blank" rel="noopener noreferrer" className='flex gap-4 hover:bg-slate-200/20 py-2 rounded-xl transition-all duration-300' key={index}>
+                                                <div className={`${renderBorderColor(index)} h-16 w-1.5`}></div>
+                                                <div className='flex flex-col gap-2'>
+                                                    <p className='font-medium'>{announcement.title}</p>
+                                                    <p className='text-gray-600 text-sm'>{announcement.description.slice(0, 50) + '...'}</p>
+                                                </div>
+                                            </a>
+                                        ))}
+                                    </div>
+                                </div>
+                            )
+                        }
                         {
                             isLoading ? (
                                 <>
-                                    <POLoading/>
-                                    <POLoading/>
-                                    <POLoading/>
+                                    <POLoading />
+                                    <POLoading />
+                                    <POLoading />
                                 </>
                             ) : (
                                 <div className='flex flex-col gap-4 shadow-md rounded-xl p-2 px-4'>
@@ -171,7 +161,7 @@ const page = () => {
                                             <a href={opp.source} target='_blank' className='flex gap-2 cursor-pointer hover:bg-slate-200/20 p-2 rounded-xl' key={index}>
                                                 <div className='flex flex-col gap-2'>
                                                     <p className='font-medium'>{opp.title}</p>
-                                                    <p className='text-gray-600 text-sm'>{opp.description.slice(0, 50)+'...'}</p>
+                                                    <p className='text-gray-600 text-sm'>{opp.description.slice(0, 50) + '...'}</p>
                                                 </div>
                                             </a>
                                         ))}

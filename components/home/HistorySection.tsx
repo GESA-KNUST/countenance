@@ -27,7 +27,7 @@ const historyData = {
 
 const HistorySection = () => {
     return (
-        <div className="bg-slate-50 font-poppins">
+        <div className="bg-slate-50 font-header">
             <Container size="xl">
                 <div className="flex flex-col gap-12">
                     <div className="text-center space-y-4">
