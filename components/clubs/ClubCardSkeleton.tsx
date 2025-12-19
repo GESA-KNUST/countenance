@@ -18,4 +18,4 @@ const ClubCardSkeleton = () => {
     )
 }
 
-export default ClubCardSkeleton
+export default ClubCardSkeleton;

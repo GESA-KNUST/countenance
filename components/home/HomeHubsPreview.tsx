@@ -2,37 +2,17 @@
 import React from 'react'
 import Container from '../custom/Container'
 import OpportunityCard from '../hubs/OpportunityCard'
-import internship from '@/public/images/internship.svg'
-import scholarship from '@/public/images/scholarship.svg'
 import { Button } from '../ui/button'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
+import { useHubs } from '@/hooks/useHubs'
 
 const HomeHubsPreview = () => {
-    // Top 3 opportunities for preview
-    const opportunities = [
-        {
-            title: "Software Engineering Intern",
-            type: "Internship",
-            icon: internship,
-            description: "Join our dynamic team building the future of AI. Work on real-world problems.",
-            deadline: 'Dec 20, 2025'
-        },
-        {
-            title: "Global Merit Scholarship",
-            type: "Scholarship",
-            icon: scholarship,
-            description: "Full tuition coverage for outstanding students demonstrating academic excellence.",
-            deadline: 'Dec 20, 2025'
-        },
-        {
-            title: "Product Design Intern",
-            type: "Internship",
-            icon: internship,
-            description: "Collaborate with cross-functional teams to design intuitive user experiences.",
-            deadline: 'Dec 20, 2025'
-        },
-    ]
+    const { data: hubs, isLoading } = useHubs()
+
+    if (isLoading) {
+        return <div className="h-96 flex items-center justify-center text-muted-foreground animate-pulse">Loading hubs...</div>
+    }
 
     return (
         <div className="bg-white py-12 font-poppins">
@@ -40,7 +20,7 @@ const HomeHubsPreview = () => {
                 <div className="flex flex-col gap-8">
                     <div className="flex justify-between items-center">
                         <div className="space-y-1">
-                            <h2 className="md:text-3xl text-2xl font-bold text-gray-900">Latest Opportunities</h2>
+                            <h2 className="md:text-3xl text-2xl font-header font-bold text-gray-900">Latest Opportunities</h2>
                             <p className="text-gray-500 text-xs md:text-base">Discover internships, scholarships, and more.</p>
                         </div>
                         <Link href="/hubs">
@@ -51,10 +31,10 @@ const HomeHubsPreview = () => {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {opportunities.map((opp, index) => (
+                        {hubs?.slice(0, 3)?.map((hub, index) => (
                             <OpportunityCard
                                 key={index}
-                                {...opp}
+                                {...hub}
                             />
                         ))}
                     </div>
