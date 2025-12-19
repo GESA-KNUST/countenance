@@ -21,8 +21,8 @@ interface HeroSectionProps {
 }
 
 const HeroSection = ({
-  title = "Innovating Tomorrow's Engineers, Today",
-  highlight = "Engineers",
+  title,
+  highlight,
   text,
   images = ['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png'],
   button = true,
