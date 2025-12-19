@@ -24,10 +24,10 @@ interface CardProps {
 const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const formattedDate = new Date(post.datePublished).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+  const formattedDate = new Date(post.datePublished).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -48,52 +48,50 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
   };
 
   return (
-    <div onClick={handleClick}>
-      <motion.div 
-        className="h-[520px] lg:w-[300px] sm:w-[340px] w-full shadow-lg overflow-hidden flex flex-col cursor-pointer hover:scale-101 hover:rotate-1 transition-transform duration-300 rounded-t-md"
-        whileTap={{ scale: 0.95 }}
+    <div className="h-full" onClick={handleClick}>
+      <motion.div
+        className="h-full flex flex-col bg-white overflow-hidden shadow-lg rounded-xl cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+        whileTap={{ scale: 0.98 }}
       >
         {loading ? (
-          <LoadingSpinner />
+          <div className="flex items-center justify-center h-64">
+            <LoadingSpinner />
+          </div>
         ) : (
           <>
-            {/* Image */}
-            <div className="h-60 relative shrink-0">
+            {/* Image Container - Fixed height for alignment */}
+            <div className="relative h-56 w-full shrink-0 overflow-hidden bg-gray-100">
               <Image
                 src={headerImg.url}
                 alt={headerImg.title || "Blog post header image"}
-                className="w-full h-full object-cover"
-                fill
+                className="object-cover object-center w-full h-full transition-transform duration-500 hover:scale-105"
+                width={600}
+                height={350}
               />
             </div>
-
-            {/* Content */}
-            <div className="p-5 flex flex-col grow">
-              <div className="grow">
-                <h1 className="font-semibold text-primary text-sm">Blog</h1>
-                <div className="flex mt-2 items-start">
-                  <h1 className="text-2xl font-bold font-open_sans line-clamp-2">{slug}</h1>
-                  <ArrowUpRight className="shrink-0 ml-1" />
-                </div>
-                <p className="text-text-gray mt-2 line-clamp-3">
-                  {post.hook}
-                </p>
+            {/* Content Container */}
+            <div className="flex flex-col grow justify-between p-6">
+              <div>
+                <h3 className="font-header text-xl font-bold text-gray-900 leading-tight mb-3 line-clamp-3">
+                  {slug}
+                </h3>
               </div>
 
-              {/* Author Info */}
-              <div className="shrink-0 mt-4">
-                <div className="flex gap-2 items-center">
-                  <div className="h-10 w-10 relative">
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <div className="flex gap-3 items-center">
+                  <div className="h-10 w-10 relative rounded-full overflow-hidden shrink-0 border border-gray-100">
                     <Image
                       src={author.url}
-                      alt={author.title || "author image"}
+                      alt={"author image"}
                       className="h-full w-full object-cover"
                       fill
                     />
                   </div>
-                  <div>
-                    <h4 className="font-medium text-sm">{author.title}</h4>
-                    <p className="md:text-sm text-xs text-text-gray">
+                  <div className="flex flex-col">
+                    <h4 className="font-semibold text-sm text-gray-900 leading-none mb-1">
+                      {author.title}
+                    </h4>
+                    <p className="text-xs text-gray-500 font-medium">
                       {formattedDate}
                     </p>
                   </div>

@@ -6,6 +6,11 @@ import { Search } from 'lucide-react';
 import Image from 'next/image';
 import { ClubItems, useClubs } from '@/hooks/useClubs';
 import ClubCardSkeleton from '@/components/clubs/ClubCardSkeleton';
+import academicIcon from '@/public/images/academic.svg'
+import creativeIcon from '@/public/images/social.svg'
+import leadershipIcon from '@/public/images/leadership&S.svg'
+import techIcon from '@/public/images/tech.svg'
+import activityIcon from '@/public/images/activity.svg'
 
 const page = () => {
     const [currentId, setCurrentId] = useState<number>(0)
@@ -39,6 +44,23 @@ const page = () => {
         const filteredClubs = clubs?.filter((club) => club.clubName.toLowerCase().includes(search.toLowerCase())) || [];
         setFilteredClubs(filteredClubs);
     }, [search, clubs])
+
+    const getClubIcon = (type: string) => {
+        switch (type) {
+            case 'Tech Clubs':
+                return techIcon;
+            case 'Creative & Arts':
+                return creativeIcon;
+            case 'Leadership & Service':
+                return leadershipIcon;
+            case 'Sport & Fitness':
+                return activityIcon;
+            case 'Academic Societies':
+                return academicIcon;
+            default:
+                return activityIcon;
+        }
+    }
 
     return (
         <div className='font-poppins min-h-screen'>
@@ -80,7 +102,7 @@ const page = () => {
                                 <ClubCardSkeleton />
                                 <ClubCardSkeleton />
                             </>
-                            : filteredClubs?.map((club, index) => (
+                            : filteredClubs.filter((club) => club.isFeatured)?.map((club, index) => (
                                 <div className='p-6 shadow-lg rounded-xl h-[454px] flex flex-col justify-between' key={index}>
                                     <div className='w-full h-56 bg-slate-100 rounded-xl relative overflow-hidden'>
                                         <Image src={club.clubLogo.url} alt={club.clubLogo.title || "Club Logo"} fill className='object-cover rounded-xl' />
@@ -97,25 +119,24 @@ const page = () => {
                                     </div>
                                 </div>
                             ))}
-                            {error && <p className='text-red-500'>Error fetching clubs</p>}
+                        {error && <p className='text-red-500'>Error fetching clubs</p>}
                     </div>
 
-                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-12 mt-20'>
-                        {Array.from({ length: 5 }).map((_, index) => (
-                            <div key={index} className='bg-[#F9FAFB] p-6 rounded-xl flex flex-col gap-4 sm:w-[384px] w-full'>
+                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6 py-12 mt-20'>
+                        {filteredClubs?.filter(club => !club.isFeatured).map((club, index) => (
+                            <div key={index} className='bg-[#F9FAFB] p-6 rounded-xl flex flex-col gap-4 w-full'>
                                 <div className='w-12 h-12 rounded-full bg-primary/13 p-1 flex items-center justify-center'>
-                                    <Image src="/images/tech.svg" alt="" width={32} height={32} />
+                                    <Image src={getClubIcon(club.clubType)} alt="" width={32} height={32} />
                                 </div>
-                                <h2 className='font-bold text-lg'>AI & Machine Learning</h2>
-                                <p className='text-sm text-gray-500'>Explore artificial intelligence and build intelligent</p>
+                                <h2 className='font-bold text-lg'>{club.clubName}</h2>
+                                <p className='text-sm text-gray-500'>{club.description.slice(0, 250) + '...'}</p>
                                 <div className='flex items-center gap-2'>
-                                    <span className='font-medium text-xs text-primary bg-primary/23 px-2 py-1 rounded-full'>Tech</span>
-                                    <span className='font-medium text-xs text bg-primary/23 px-2 py-1 rounded-full'>Research</span>
+                                    <span className='font-medium text-xs text-primary bg-primary/23 px-2 py-1 rounded-full'>{club.clubType}</span>
                                 </div>
                                 <div className='w-full'>
                                     <button
                                         className='bg-black cursor-pointer text-white px-4 py-2 rounded-full w-full font-medium hover:bg-primary/80 transition-all duration-300 hover:scale-105'>
-                                        View Details
+                                        Join Club
                                     </button>
                                 </div>
                             </div>

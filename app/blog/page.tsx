@@ -4,6 +4,7 @@ import BigStory from '../../components/blog/BigStory'
 import RecentBlog from '../../components/blog/RecentBlogs'
 import img1 from "public/images/img1.png";
 import img2 from "public/images/img2.png";
+import Container from '@/components/custom/Container';
 
 const page = () => {
   return (

@@ -31,13 +31,13 @@ const RecentEvent = () => {
   }
 
   return (
-    <section className="px-page-sx md:px-page-x lg:py-16 py-12 font-poppins bg-background/50">
+    <section className="px-page-sx md:px-page-x lg:py-16 py-12 font-header bg-background/50">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-[1.2fr_auto_1fr] gap-12">
 
         {/* Recent Events Column */}
         <div className="flex flex-col gap-8">
           <div className="flex items-center justify-between">
-            <h2 className="font-open_sans font-bold text-3xl text-gray-900 dark:text-gray-100 flex items-center gap-2">
+            <h2 className="font-header font-bold text-3xl text-gray-900 dark:text-gray-100 flex items-center gap-2">
               Recent Events
               <div className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
             </h2>
@@ -62,11 +62,11 @@ const RecentEvent = () => {
                     {/* Content */}
                     <div className="flex flex-col justify-between py-4 pr-6 flex-1 gap-2 sm:gap-0">
                       <div>
-                        <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider mb-2">
+                        <div className="flex items-center gap-2 text-primary font-header font-semibold text-xs uppercase tracking-wider mb-2">
                           <Clock className="w-3 h-3" />
                           completed
                         </div>
-                        <h3 className="font-bold text-lg sm:text-xl text-gray-900 dark:text-gray-100 line-clamp-2 group-hover:text-primary transition-colors mb-2 leading-tight">
+                        <h3 className="font-header font-bold text-lg sm:text-xl text-gray-900 dark:text-gray-100 line-clamp-2 group-hover:text-primary transition-colors mb-2 leading-tight">
                           {event.title}
                         </h3>
                         <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">

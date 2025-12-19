@@ -2,6 +2,7 @@
 import React from 'react';
 import useBlogCollection from '../../hooks/useBlogCollection';
 import BlogCard from './BlogCard';
+import Container from '../custom/Container';
 
 const RecentBlogs = ({ onPostSelect }: { onPostSelect?: (post: any) => void }) => {
     const { data: blogs, isLoading, error } = useBlogCollection();
@@ -11,14 +12,14 @@ const RecentBlogs = ({ onPostSelect }: { onPostSelect?: (post: any) => void }) =
     }
 
     if (error) {
-        return <div>Error loading blog posts</div>;
+        return <div className='font-header text-red-500'>Error loading blog posts</div>;
     }
 
     return (
-        <div className='px-4 md:px-8 lg:px-12 py-12 font-poppins'>
+        <Container size='xl' className='font-poppins'>
             <div className='max-w-7xl mx-auto flex flex-col gap-8'>
-                <h1 className='font-open_sans text-2xl md:text-3xl font-bold text-gray-900'>Recent Blog Posts</h1>
-                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
+                <h1 className='font-header text-2xl md:text-3xl font-bold text-gray-900'>Recent Blog Posts</h1>
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6'>
                     {blogs?.map((post) => (
                         <BlogCard
                             key={post.slug}
@@ -34,7 +35,7 @@ const RecentBlogs = ({ onPostSelect }: { onPostSelect?: (post: any) => void }) =
                     ))}
                 </div>
             </div>
-        </div>
+        </Container>
     );
 };
 

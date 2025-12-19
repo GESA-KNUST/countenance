@@ -74,11 +74,11 @@ const BigStory = () => {
             <h4 className="text-sm text-primary font-semibold">{post.author.name}</h4>
             <Image src={star} alt="star icon" />
           </div>
-          <h1 className="font-open_sans font-bold text-2xl sm:text-3xl lg:text-4xl text-gray-900">
+          <h1 className="font-header font-bold text-2xl sm:text-3xl lg:text-4xl text-gray-900">
             {post.title}
           </h1>
           <div className="bg-primary rounded h-1 w-10"></div>
-          <p className="font-open_sans font-medium text-sm sm:text-base text-gray-700">
+          <p className="font-header font-medium text-sm sm:text-base text-gray-700">
             {post.hook}
           </p>
 
