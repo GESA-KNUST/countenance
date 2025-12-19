@@ -5,17 +5,18 @@ import { Button } from '../ui/button'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { useClubs } from '@/hooks/useClubs'
+import Image from 'next/image'
 
 const HomeClubsPreview = () => {
-const { data: clubs, isLoading } = useClubs()
+    const { data: clubs, isLoading } = useClubs()
 
     if (isLoading) {
         return <div className="h-96 flex items-center justify-center text-muted-foreground animate-pulse">Loading clubs...</div>
     }
 
     return (
-        <div className="bg-slate-50 py-12 font-poppins">
-            <Container size='xl'>
+        <div className="bg-slate-50 py-12 font-poppins relative">
+            <Container size='xl' className='relative z-30'>
                 <div className="flex flex-col gap-8">
                     <div className="flex justify-between items-center">
                         <div className="space-y-2">

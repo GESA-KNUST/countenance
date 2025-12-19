@@ -6,6 +6,7 @@ import { Button } from '../ui/button'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { useHubs } from '@/hooks/useHubs'
+import Image from 'next/image'
 
 const HomeHubsPreview = () => {
     const { data: hubs, isLoading } = useHubs()
@@ -15,16 +16,25 @@ const HomeHubsPreview = () => {
     }
 
     return (
-        <div className="bg-white py-12 font-poppins">
-            <Container size='xl'>
+        <div className="bg-white py-12 font-poppins relative">
+            <Image
+                className="absolute top-0 left-0 w-full h-full object-cover z-0"
+                src="/images/img1.png"
+                alt="Hub Preview"
+                fill
+                priority
+                sizes="100vw"
+            />
+            <div className="absolute top-0 left-0 w-full h-full bg-black/70 z-10" />
+            <Container size='xl' className='relative z-30'>
                 <div className="flex flex-col gap-8">
                     <div className="flex justify-between items-center">
                         <div className="space-y-1">
-                            <h2 className="md:text-3xl text-2xl font-header font-bold text-gray-900">Latest Opportunities</h2>
-                            <p className="text-gray-500 text-xs md:text-base">Discover internships, scholarships, and more.</p>
+                            <h2 className="md:text-3xl text-2xl font-header font-bold text-white">Latest Opportunities</h2>
+                            <p className="text-xs md:text-base text-white">Discover internships, scholarships, and more.</p>
                         </div>
                         <Link href="/hubs">
-                            <Button variant="ghost" className="text-sm md:text-base gap-2 text-primary hover:text-primary/80 hover:bg-primary/10">
+                            <Button variant="ghost" className="text-sm md:text-base gap-2 text-primary hover:text-primary/80 hover:bg-primary/40 cursor-pointer">
                                 View All <ArrowRight size={16} />
                             </Button>
                         </Link>

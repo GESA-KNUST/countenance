@@ -57,7 +57,7 @@ const RecentEvent = () => {
             {recent && recent.length > 0 ? (
               recent.map((event) => (
                 <Link href={`/events#event-${event.slug}`} key={event._id} className="group block">
-                  <div className="bg-[#ffffffdf] dark:bg-card border border-border/40 hover:border-primary/50 shadow-sm hover:shadow-lg transition-all duration-300 rounded-2xl overflow-hidden flex flex-col sm:flex-row h-auto sm:h-[180px] p-2 sm:p-0 gap-4 group-hover:-translate-y-1">
+                  <div className="bg-[#ffffff]/95 dark:bg-card border-2 border-border/40 hover:border-primary/50 shadow-sm hover:shadow-lg transition-all duration-300 rounded-2xl overflow-hidden flex flex-col sm:flex-row h-auto sm:h-[180px] p-2 sm:p-0 gap-4 group-hover:-translate-y-1">
                     {/* Image Container */}
                     <div className="relative w-full sm:w-[200px] h-[160px] sm:h-full overflow-hidden rounded-xl sm:rounded-none sm:rounded-l-xl">
                       <Image
@@ -120,7 +120,7 @@ const RecentEvent = () => {
             {upcoming && upcoming.length > 0 ? (
               upcoming.map((event) => (
                 <Link href={`/events#event-${event.slug}`} key={event._id} className="group">
-                  <div className="flex items-center gap-4 p-3 pr-4 bg-white dark:bg-card hover:bg-gray-50 dark:hover:bg-accent/50 rounded-xl border border-transparent hover:border-border transition-all duration-300 group-hover:scale-[1.02]">
+                  <div className="flex items-center gap-4 p-3 pr-4 bg-white dark:bg-card hover:bg-gray-50 dark:hover:bg-accent/50 rounded-xl border-2 border-transparent hover:border-border transition-all duration-300 group-hover:scale-[1.02]">
                     {/* Date Box */}
                     <div className="flex flex-col items-center justify-center w-16 h-16 rounded-lg bg-primary/10 text-primary border border-primary/20 shrink-0">
                       <span className="text-xs font-bold uppercase tracking-wider">
