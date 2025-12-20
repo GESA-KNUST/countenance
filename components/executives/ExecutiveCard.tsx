@@ -14,9 +14,9 @@ const ExecutiveCard = ({ image, name, position, primarySocialLink }: ExecutiveCa
         <Image src={image} alt={name} fill className="object-cover" />
       </div>
       <div className="p-6 flex flex-col grow">
-        <h3 className="text-sm font-semibold text-[#FFBE00]">{position}</h3>
+        <h3 className="text-sm font-semibold text-[#FFBE00] font-header">{position}</h3>
         <div className="flex justify-between items-center mt-3">
-          <h2 className="text-2xl font-semibold text-gray-900">{name}</h2>
+          <h2 className="text-2xl font-semibold text-gray-900 font-header">{name}</h2>
         </div>
       </div>
     </div>

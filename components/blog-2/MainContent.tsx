@@ -85,14 +85,17 @@ const MainContent = ({ selectedPost }) => {
           <Link href="#">
             <Image src="/images/fb2.svg" alt="Facebook" width={40} height={40} />
           </Link>
-          <Link href="#">
+          <Link href="https://x.com/thegesaknust?s=11">
             <Image src="/images/twitter.svg" alt="Twitter" width={40} height={40} />
           </Link>
-          <Link href="#">
+          <Link href="https://youtube.com/@knust-college_of_engineering?si=jtCCfu6aXxDdSXid">
             <Image src="/images/yt.svg" alt="YouTube" width={40} height={40} />
           </Link>
-          <Link href="#">
+          <Link href="https://www.linkedin.com/company/gesa-knust/">
             <Image src="/images/linkedin2.svg" alt="LinkedIn" width={40} height={40} />
+          </Link>
+          <Link href="https://www.instagram.com/thegesaknust?igsh=MXhidHNqZndwYmdqMg==">
+            <Image src="/images/ig.svg" alt="Instagram" width={40} height={40} />
           </Link>
         </div>
       </div>
