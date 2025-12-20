@@ -37,7 +37,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   items,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const MOBILE_CARD_HEIGHT = 260;
+  const MOBILE_CARD_HEIGHT = 460;
   const total = items?.length || 0;
 
   const scrollToEvent = (slug: string) => {
@@ -58,6 +58,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   };
 
   const [api, setApi] = useState<CarouselApi>();
+  const [mobileApi, setMobileApi] = useState<CarouselApi>();
   const plugin = useRef(
     Autoplay({ delay: 5000, stopOnMouseEnter: true, stopOnInteraction: false })
   );
@@ -137,10 +138,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 key={item._id}
                 onClick={() => scrollToEvent(item.slug)}
                 className={`w-[334px] shrink-0 cursor-pointer transition-opacity duration-300 flex flex-col ${index === currentIndex
-                    ? 'opacity-100'
-                    : index === currentIndex + 1
-                      ? 'opacity-50'
-                      : 'opacity-25'
+                  ? 'opacity-100'
+                  : index === currentIndex + 1
+                    ? 'opacity-50'
+                    : 'opacity-25'
                   }`}
               >
                 <EventCard
@@ -159,39 +160,41 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         </div>
 
         <div className="lg:hidden w-full max-w-sm mx-auto mt-4">
-          <div className="relative overflow-hidden" style={{ height: MOBILE_CARD_HEIGHT }}>
-            <div
-              className="absolute top-0 left-0 w-full transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateY(-${currentIndex * MOBILE_CARD_HEIGHT}px)` }}
-            >
+          <Carousel
+            className="w-full"
+            setApi={setMobileApi}
+            plugins={[]}
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+          >
+            <CarouselContent className="-ml-4">
               {items?.map((item) => (
-                <div
-                  key={item._id}
-                  onClick={() => scrollToEvent(item.slug)}
-                  className="block w-full cursor-pointer pointer-events-auto"
-                >
-                  <div className="relative w-full h-[260px] rounded-xl overflow-hidden shadow-lg">
-                    <Image src={item.eventImage.url} alt={item.title} fill className="object-cover" />
-                    <div className="absolute bottom-0 left-0 right-0 bg-black/60 p-3">
-                      <p className="text-white font-semibold text-lg leading-tight line-clamp-2">
-                        {item.title}
-                      </p>
-                    </div>
+                <CarouselItem key={item._id} className="pl-4 basis-full">
+                  <div
+                    onClick={() => scrollToEvent(item.slug)}
+                    className="h-full"
+                  >
+                    <EventCard
+                      isHeroCard={true}
+                      title={item.title}
+                      description={item.description}
+                      headerImg={item.eventImage}
+                      date={item.eventDate}
+                      venue={item.venue}
+                      onlineLink={item.onlineLink}
+                      slug={item.slug}
+                    />
                   </div>
-                </div>
+                </CarouselItem>
               ))}
+            </CarouselContent>
+            <div className="flex items-center justify-center gap-2 mt-4 text-white/50">
+              {/* Optional: Add indicators or simple swipe hint if needed */}
+              <span className="text-xs">Swipe to explore</span>
             </div>
-          </div>
-
-          <div className="flex items-center justify-center gap-4 mt-2 text-white">
-            <button onClick={handlePrevClick} className="p-3 border border-white/30 rounded-full">
-              <ChevronUp />
-            </button>
-            <span>{currentIndex + 1}/{total}</span>
-            <button onClick={handleNextClick} className="p-3 border border-white rounded-full">
-              <ChevronDown />
-            </button>
-          </div>
+          </Carousel>
         </div>
 
       </div>

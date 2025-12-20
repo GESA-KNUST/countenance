@@ -90,7 +90,7 @@ const EventCard: React.FC<EventCardProps> = ({
         onClick={handleCardClick}
       >
         {/* Image */}
-        <div className="h-60 w-full relative shrink-0 bg-gray-100">
+        <div className="h-48 sm:h-60 w-full relative shrink-0 bg-gray-100">
           <Image
             src={imgUrl}
             alt={imgDesc}
@@ -100,10 +100,10 @@ const EventCard: React.FC<EventCardProps> = ({
         </div>
 
         {/* Content Container */}
-        <div className="flex flex-col grow justify-between p-6">
-          <div>
-            <div className="flex justify-between items-start mb-3">
-              <h1 className="font-header text-xl font-bold text-gray-900 leading-tight line-clamp-2">
+        <div className="flex flex-col grow p-4 sm:p-6">
+          <div className="grow">
+            <div className="flex justify-between items-start mb-2 sm:mb-3">
+              <h1 className="font-header text-lg sm:text-xl font-bold text-gray-900 leading-tight line-clamp-2">
                 {title}
                 {hasOnlineLink && (
                   <ArrowUpRight className="inline-block ml-1 w-4 h-4 text-gray-400" />
@@ -111,13 +111,13 @@ const EventCard: React.FC<EventCardProps> = ({
               </h1>
             </div>
 
-            <p className="text-gray-500 line-clamp-3 mb-4 text-sm">
+            <p className="text-gray-500 line-clamp-3 mb-3 sm:mb-4 text-sm">
               {description}
             </p>
           </div>
 
           {/* Footer */}
-          <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+          <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-100 flex items-center justify-between">
             <p className="text-xs text-gray-500 font-medium">
               {formattedDate}
             </p>
