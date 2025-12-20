@@ -1,4 +1,4 @@
-import { Poppins, Open_Sans } from "next/font/google";
+import { Poppins, Open_Sans, Montserrat } from "next/font/google";
 import "./globals.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -16,6 +16,12 @@ const open_sans = Open_Sans({
   weight: ["400", "500", "600", "700"],
 });
 
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
 export const metadata = {
   title: "GESA",
   description: "GESA-KNUST Official Website",
@@ -24,7 +30,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable} ${open_sans.variable} antialiased`}>
+      <body className={`${poppins.variable} ${open_sans.variable} ${montserrat.variable} antialiased`}>
         <div>
           <Navbar />
           <ReactQueryProvider>

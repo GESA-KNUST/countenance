@@ -25,7 +25,7 @@ const Navbar = () => {
     { name: 'GESA Blog', link: '/blog' },
     { name: 'Events', link: '/events' },
     { name: 'Executives', link: '/executives' },
-    { name: 'Hub', link: '/hub' },
+    { name: 'Hub', link: '/hubs' },
     { name: 'Clubs', link: '/clubs' },
     { name: 'Gallery', link: '/gallery' },
     { name: 'Contact Us', link: '/contact-us' },
@@ -80,7 +80,7 @@ const Navbar = () => {
                   <li key={i}>
                     <Link
                       href={nav.link}
-                      className={`block ${currentPath === nav.link ? 'bg-primary text-white' : ''
+                      className={`block ${currentPath == nav.link ? 'bg-primary text-white' : ''
                         } hover:bg-primary hover:text-white py-2 px-3 font-semibold transition duration-300 rounded-md`}
                       onClick={() => setIsOpen(false)}
                     >
