@@ -15,6 +15,25 @@ const ContactForm = () => {
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
+    // Basic validation
+    if (!firstName.trim() || !lastName.trim() || !email.trim() || !message.trim()) {
+      setFeedback({
+        message: 'Please fill in all required fields (First Name, Last Name, Email, and Message).',
+        type: 'error'
+      });
+      return;
+    }
+
+    // Email format validation (basic)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setFeedback({
+        message: 'Please enter a valid email address.',
+        type: 'error'
+      });
+      return;
+    }
+
     const templateParams = {
       firstName: firstName,
       lastName: lastName,
