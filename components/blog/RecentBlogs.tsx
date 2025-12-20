@@ -3,6 +3,7 @@ import React from 'react';
 import useBlogCollection from '../../hooks/useBlogCollection';
 import BlogCard from './BlogCard';
 import Container from '../custom/Container';
+import FetchError from '../custom/FetchError';
 
 const RecentBlogs = ({ onPostSelect }: { onPostSelect?: (post: any) => void }) => {
     const { data: blogs, isLoading, error } = useBlogCollection();
@@ -12,7 +13,7 @@ const RecentBlogs = ({ onPostSelect }: { onPostSelect?: (post: any) => void }) =
     }
 
     if (error) {
-        return <div className='font-header text-red-500'>Error loading blog posts</div>;
+        return <FetchError />
     }
 
     return (

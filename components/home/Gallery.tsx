@@ -8,14 +8,19 @@ import img4 from '../../public/images/galleryimg2.png'
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useGalleries } from '@/hooks/useGalleryCollection';
+import FetchError from '../custom/FetchError';
 
 const Gallery = () => {
-    const { data: galleries, isLoading } = useGalleries()
+    const { data: galleries, isLoading, error } = useGalleries()
     const openPicturesLink = (pictureLink: string) => {
     if (pictureLink) {
       window.open(pictureLink, '_blank');
     }
   };
+
+  if (error) {
+    return <FetchError />
+  }
 
 
     return (

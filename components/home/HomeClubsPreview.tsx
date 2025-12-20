@@ -6,13 +6,17 @@ import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { useClubs } from '@/hooks/useClubs'
 import Image from 'next/image'
+import FetchError from '../custom/FetchError'
 
 const HomeClubsPreview = () => {
-    const { data: clubs, isLoading } = useClubs()
-    console.log(clubs)
+    const { data: clubs, isLoading, error } = useClubs()
 
     if (isLoading) {
         return <div className="h-96 flex items-center justify-center text-muted-foreground animate-pulse">Loading clubs...</div>
+    }
+
+    if (error) {
+        return <FetchError />
     }
 
     return (

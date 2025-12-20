@@ -7,12 +7,17 @@ import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { useHubs } from '@/hooks/useHubs'
 import Image from 'next/image'
+import FetchError from '../custom/FetchError'
 
 const HomeHubsPreview = () => {
-    const { data: hubs, isLoading } = useHubs()
+    const { data: hubs, isLoading, error } = useHubs()
 
     if (isLoading) {
         return <div className="h-96 flex items-center justify-center text-muted-foreground animate-pulse">Loading hubs...</div>
+    }
+
+    if (error) {
+        return <FetchError />
     }
 
     return (
