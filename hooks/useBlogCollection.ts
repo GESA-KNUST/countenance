@@ -27,6 +27,7 @@ interface Blog {
         json: any;
     };
     datePublished: string;
+    _id
 }
 
 interface Props {
@@ -60,6 +61,7 @@ const GET_BLOGS = gql`
                 }
                 title
                 datePublished
+                _id
             }
         }
     }

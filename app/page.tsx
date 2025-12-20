@@ -7,6 +7,7 @@ import HistorySection from '../components/home/HistorySection';
 import HomeHubsPreview from '../components/home/HomeHubsPreview';
 import HomeClubsPreview from '../components/home/HomeClubsPreview';
 import HomeBlogPreview from '../components/home/HomeBlogPreview';
+import Contribute from '@/components/home/Contribute';
 
 const Home = () => {
   return (
@@ -19,9 +20,10 @@ const Home = () => {
       />
       <Personality />
       <HistorySection />
-        <HomeHubsPreview />
-        <HomeClubsPreview />
-        <RecentEvent />
+      <HomeHubsPreview />
+      <HomeClubsPreview />
+      <RecentEvent />
+      <Contribute />
       {/* <HomeBlogPreview /> */}
       <Gallery />
     </div>
