@@ -129,20 +129,19 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
         <div className="hidden lg:block w-[800px] overflow-hidden">
           <div
-            className="flex gap-6 items-center transition-transform duration-500 ease-in-out"
+            className="flex gap-6 items-stretch transition-transform duration-500 ease-in-out"
             style={{ transform: `translateX(-${currentIndex * (334 + 24)}px)` }}
           >
             {items?.map((item, index) => (
               <div
                 key={item._id}
-                onClick={() => scrollToEvent(item.slug)} 
-                className={`w-[334px] shrink-0 cursor-pointer transition-opacity duration-300 ${
-                  index === currentIndex
+                onClick={() => scrollToEvent(item.slug)}
+                className={`w-[334px] shrink-0 cursor-pointer transition-opacity duration-300 flex flex-col ${index === currentIndex
                     ? 'opacity-100'
                     : index === currentIndex + 1
-                    ? 'opacity-50'
-                    : 'opacity-25'
-                }`}
+                      ? 'opacity-50'
+                      : 'opacity-25'
+                  }`}
               >
                 <EventCard
                   isHeroCard={true}
