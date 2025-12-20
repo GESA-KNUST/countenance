@@ -46,6 +46,7 @@
   /* app styles */
   --font-poppins: var(--font-poppins);
   --font-open_sans: var(--font-open_sans);
+  --font-header: var(--font-montserrat);
   --padding-page-x: 3.5rem;
   --padding-page-y: 0.5rem;
   --padding-page-sx: 1rem;
@@ -66,7 +67,7 @@
   --warm-gray: #BEBDBD;
   --separator-color: #F4F6F5;
   --gray: #667085;
-  
+  --font-header: var(--font-montserrat);
 
 
   /* shadcn UI root styles */

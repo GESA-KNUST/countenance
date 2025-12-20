@@ -74,11 +74,11 @@ const BigStory = () => {
             <h4 className="text-sm text-primary font-semibold">{post.author.name}</h4>
             <Image src={star} alt="star icon" />
           </div>
-          <h1 className="font-open_sans font-bold text-2xl sm:text-3xl lg:text-4xl text-gray-900">
+          <h1 className="font-header font-bold text-2xl sm:text-3xl lg:text-4xl text-gray-900">
             {post.title}
           </h1>
           <div className="bg-primary rounded h-1 w-10"></div>
-          <p className="font-open_sans font-medium text-sm sm:text-base text-gray-700">
+          <p className="font-header font-medium text-sm sm:text-base text-gray-700">
             {post.hook}
           </p>
 
@@ -90,7 +90,7 @@ const BigStory = () => {
           ) : (
             <motion.button
               onClick={handleClick}
-              className="bg-primary rounded-lg px-6 py-3 text-black font-semibold text-sm sm:text-base w-max"
+              className="bg-primary rounded-lg px-6 py-3 text-black font-semibold text-sm sm:text-base w-max hover:scale-105 cursor-pointer transition-transform duration-300"
               whileTap={{ scale: 0.95 }}
             >
               Read more
@@ -112,13 +112,13 @@ const BigStory = () => {
         </div>
 
         {/* Image Section */}
-        <div className="w-full xl:w-[500px] h-[424px] lg:h-[574px] rounded overflow-hidden">
+        <div className="w-full h-[304px] md:h-[424px] lg:h-[500px] rounded-md overflow-hidden relative">
           <Image
             src={post.headerImage.url}
             alt={post.headerImage.description || post.title}
-            className="w-full h-full object-cover rounded"
-            width={500}
-            height={574}
+            className="object-cover rounded"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
       </div>
