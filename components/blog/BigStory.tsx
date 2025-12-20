@@ -8,8 +8,10 @@ import fb2 from '../../public/images/fb2.svg';
 import twitter from '../../public/images/twitter.svg';
 import yt from '../../public/images/yt.svg';
 import linkedin2 from '../../public/images/linkedin2.svg';
+import ig from '../../public/images/ig.svg';
 import { Separator } from '../ui/separator';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import StarSpinner from '../ui/StarSpinner';
 import useBlogCollection from '../../hooks/useBlogCollection';
 
@@ -103,10 +105,18 @@ const BigStory = () => {
               <Separator orientation="vertical" className="w-full" />
             </div>
             <div className="flex gap-2">
-              <Image src={fb2} alt="Facebook" />
-              <Image src={twitter} alt="Twitter" />
-              <Image src={yt} alt="YouTube" />
-              <Image src={linkedin2} alt="LinkedIn" />
+              <Link href="/" target="_blank" rel="noopener noreferrer">
+                <Image src={fb2} alt="Facebook" />
+              </Link>
+              <Link href="https://x.com/thegesaknust?s=11" target="_blank" rel="noopener noreferrer">
+                <Image src={twitter} alt="Twitter" />
+              </Link>
+              <Link href="https://youtube.com/@knust-college_of_engineering?si=jtCCfu6aXxDdSXid" target="_blank" rel="noopener noreferrer">
+                <Image src={yt} alt="YouTube" />
+              </Link>
+              <Link href="https://www.linkedin.com/company/gesa-knust/" target="_blank" rel="noopener noreferrer">
+                <Image src={linkedin2} alt="LinkedIn" />
+              </Link>
             </div>
           </div>
         </div>

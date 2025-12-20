@@ -6,6 +6,7 @@ import { ArrowUpRight, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Hand }
 import EventCard from './EventsCard';
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "../ui/carousel";
 import { motion } from "framer-motion";
+import EmptyState from './EmptyState';
 
 interface ItemsProps {
   _id: string;
@@ -117,65 +118,37 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               <ArrowUpRight className="h-5 w-5" />
             </button>
 
-            <div className="hidden lg:flex items-center gap-4 mt-8 text-white">
-              <button onClick={handlePrevClick} className="p-3 border border-white/30 rounded-full">
-                <ChevronLeft />
-              </button>
-              <span>{currentIndex + 1}/{total}</span>
-              <button onClick={handleNextClick} className="p-3 border border-white rounded-full">
-                <ChevronRight />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="hidden lg:block w-[800px] overflow-hidden">
-          <div
-            className="flex gap-6 items-stretch transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(-${currentIndex * (334 + 24)}px)` }}
-          >
-            {items?.map((item, index) => (
-              <div
-                key={item._id}
-                onClick={() => scrollToEvent(item.slug)}
-                className={`w-[334px] shrink-0 cursor-pointer transition-opacity duration-300 flex flex-col ${index === currentIndex
-                  ? 'opacity-100'
-                  : index === currentIndex + 1
-                    ? 'opacity-50'
-                    : 'opacity-25'
-                  }`}
-              >
-                <EventCard
-                  isHeroCard={true}
-                  title={item.title}
-                  description={item.description}
-                  headerImg={item.eventImage}
-                  date={item.eventDate}
-                  venue={item.venue}
-                  onlineLink={item.onlineLink}
-                  slug={item.slug}
-                />
+            {total > 0 && (
+              <div className="hidden lg:flex items-center gap-4 mt-8 text-white">
+                <button onClick={handlePrevClick} className="p-3 border border-white/30 rounded-full">
+                  <ChevronLeft />
+                </button>
+                <span>{currentIndex + 1}/{total}</span>
+                <button onClick={handleNextClick} className="p-3 border border-white rounded-full">
+                  <ChevronRight />
+                </button>
               </div>
-            ))}
+            )}
           </div>
         </div>
 
-        <div className="lg:hidden w-full max-w-sm mx-auto mt-4">
-          <Carousel
-            className="w-full"
-            setApi={setMobileApi}
-            plugins={[]}
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-          >
-            <CarouselContent className="-ml-4">
-              {items?.map((item) => (
-                <CarouselItem key={item._id} className="pl-4 basis-full">
+        {total > 0 ? (
+          <>
+            <div className="hidden lg:block w-[800px] overflow-hidden">
+              <div
+                className="flex gap-6 items-stretch transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${currentIndex * (334 + 24)}px)` }}
+              >
+                {items?.map((item, index) => (
                   <div
+                    key={item._id}
                     onClick={() => scrollToEvent(item.slug)}
-                    className="h-full"
+                    className={`w-[334px] shrink-0 cursor-pointer transition-opacity duration-300 flex flex-col ${index === currentIndex
+                      ? 'opacity-100'
+                      : index === currentIndex + 1
+                        ? 'opacity-50'
+                        : 'opacity-25'
+                      }`}
                   >
                     <EventCard
                       isHeroCard={true}
@@ -188,24 +161,67 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                       slug={item.slug}
                     />
                   </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <div className="flex items-center justify-center gap-2 mt-4 text-white/50">
-              <motion.div
-                animate={{ y: [-5, 5, -5] }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 1.5,
-                  ease: "easeInOut"
+                ))}
+              </div>
+            </div>
+
+            <div className="lg:hidden w-full max-w-sm mx-auto mt-4">
+              <Carousel
+                className="w-full"
+                setApi={setMobileApi}
+                plugins={[]}
+                opts={{
+                  align: "start",
+                  loop: true,
                 }}
               >
-                <Hand className="w-5 h-5" />
-              </motion.div>
-              <span className="text-xs font-medium tracking-wide">Swipe to explore</span>
+                <CarouselContent className="-ml-4">
+                  {items?.map((item) => (
+                    <CarouselItem key={item._id} className="pl-4 basis-full">
+                      <div
+                        onClick={() => scrollToEvent(item.slug)}
+                        className="h-full"
+                      >
+                        <EventCard
+                          isHeroCard={true}
+                          title={item.title}
+                          description={item.description}
+                          headerImg={item.eventImage}
+                          date={item.eventDate}
+                          venue={item.venue}
+                          onlineLink={item.onlineLink}
+                          slug={item.slug}
+                        />
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <div className="flex items-center justify-center gap-2 mt-4 text-white/50">
+                  <motion.div
+                    animate={{ y: [-5, 5, -5] }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 1.5,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    <Hand className="w-5 h-5" />
+                  </motion.div>
+                  <span className="text-xs font-medium tracking-wide">Swipe to explore</span>
+                </div>
+              </Carousel>
             </div>
-          </Carousel>
-        </div>
+          </>
+        ) : (
+          <div className="w-full lg:w-1/2">
+            <EmptyState
+              title="No Upcoming Events"
+              message="We're currently planning some amazing events. Stay tuned and check back soon."
+              isHero={true}
+              showHomeButton={false}
+            />
+          </div>
+        )}
 
       </div>
     </div>
