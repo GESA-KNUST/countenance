@@ -58,7 +58,7 @@ const RecentEvent = () => {
           <div className="flex flex-col gap-4">
             {upcoming && upcoming.length > 0 ? (
               upcoming.map((event) => (
-                <Link href={`/events#event-${event.slug}`} key={event._id} className="group">
+                <Link href={`/events#event-${event.slug}`} key={event._id} className="group block w-full">
                   <div className="flex items-center gap-4 p-3 pr-4 bg-white dark:bg-card hover:bg-gray-50 dark:hover:bg-accent/50 rounded-xl border-2 border-transparent hover:border-border transition-all duration-300 group-hover:scale-[1.02]">
                     {/* Date Box */}
                     <div className="flex flex-col items-center justify-center w-16 h-16 rounded-lg bg-primary/10 text-primary border border-primary/20 shrink-0">
@@ -72,10 +72,10 @@ const RecentEvent = () => {
 
                     <div className="flex-1 min-w-0">
                       <h3 className="font-bold text-gray-900 dark:text-gray-100 truncate group-hover:text-primary transition-colors">
-                        {event.title}
+                        <span className="whitespace-pre-wrap">{event.title}</span>
                       </h3>
                       <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
-                        {event.description}
+                        <span className="whitespace-pre-wrap">{event.description}</span>
                       </p>
                     </div>
 
