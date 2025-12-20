@@ -2,9 +2,10 @@
 import Autoplay from "embla-carousel-autoplay";
 import Image, { StaticImageData } from 'next/image';
 import React, { useRef, useState } from 'react';
-import { ArrowUpRight, ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from 'lucide-react';
+import { ArrowUpRight, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Hand } from 'lucide-react';
 import EventCard from './EventsCard';
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "../ui/carousel";
+import { motion } from "framer-motion";
 
 interface ItemsProps {
   _id: string;
@@ -191,8 +192,17 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               ))}
             </CarouselContent>
             <div className="flex items-center justify-center gap-2 mt-4 text-white/50">
-              {/* Optional: Add indicators or simple swipe hint if needed */}
-              <span className="text-xs">Swipe to explore</span>
+              <motion.div
+                animate={{ y: [-5, 5, -5] }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 1.5,
+                  ease: "easeInOut"
+                }}
+              >
+                <Hand className="w-5 h-5" />
+              </motion.div>
+              <span className="text-xs font-medium tracking-wide">Swipe to explore</span>
             </div>
           </Carousel>
         </div>
