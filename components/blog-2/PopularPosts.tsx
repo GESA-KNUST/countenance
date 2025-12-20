@@ -4,7 +4,7 @@ import { Skeleton } from '../../components/ui/skeleton';
 
 const SimplifiedBlogCard = ({ post, onPostSelect }) => (
     <div
-        className="h-[116px] w-full max-w-sm shadow-lg cursor-pointer hover:bg-gray-100 transition-colors duration-200 flex flex-row overflow-hidden"
+        className="h-[116px] w-full max-w-sm shadow-lg cursor-pointer hover:bg-gray-100 transition-colors duration-200 flex flex-row overflow-hidden rounded-xl border border-gray-50"
         onClick={() => onPostSelect(post)}
     >
         <div className="relative w-28 h-full shrink-0">
@@ -30,7 +30,7 @@ const PopularPosts = ({ allPosts, onPostSelect }) => {
                 <h2 className="text-3xl font-bold text-muted-foreground/50 text-center xl:text-left font-header">
                     Popular Posts
                 </h2>
-                <div className="flex flex-col gap-2.5 w-full">
+                <div className="flex flex-col gap-6 w-full">
                     {[...Array(5)].map((_, i) => (
                         <div key={i} className="h-[116px] w-full max-w-sm shadow-lg flex flex-row overflow-hidden">
                             <Skeleton className="h-full w-28" />
@@ -46,12 +46,12 @@ const PopularPosts = ({ allPosts, onPostSelect }) => {
     }
 
     return (
-        <div className="w-[361px] flex flex-col items-center xl:items-start gap-2.5 xl:mt-78">
+        <div className="w-[361px] flex flex-col items-center xl:items-start gap-6 xl:mt-78">
             <h2 className="text-3xl font-bold text-muted-foreground/50 text-center xl:text-left font-header">
                 Popular Posts
             </h2>
 
-            <div className="flex flex-col gap-2.5 w-full">
+            <div className="flex flex-col gap-6 w-full">
                 {allPosts?.slice(0, 5).map((post) => (
                     <SimplifiedBlogCard
                         key={post.slug}
