@@ -35,7 +35,7 @@ const HeroSection = ({
 
   const plugin = useRef(
     Autoplay({
-      delay: 5000,
+      delay: 10000,
       stopOnMouseEnter: true,
       stopOnInteraction: false,
     })
@@ -80,7 +80,7 @@ const HeroSection = ({
         className="w-full h-full absolute inset-0"
         opts={{
           loop: true,
-          duration: 50,
+          duration: 80,
         }}
       >
         <CarouselContent className="h-full">
