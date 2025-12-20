@@ -23,7 +23,7 @@ const HomeBlogPreview = () => {
                 <div className="flex flex-col gap-8">
                     <div className="flex justify-between items-end">
                         <div className="space-y-2">
-                            <h2 className="text-3xl font-bold text-gray-900">From the Blog</h2>
+                            <h2 className="text-3xl font-bold text-gray-900 font-header">From the Blog</h2>
                             <p className="text-gray-500">Insights, innovations, and student stories.</p>
                         </div>
                         <Link href="/blog">

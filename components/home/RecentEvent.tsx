@@ -66,7 +66,7 @@ const RecentEvent = () => {
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-bold text-gray-900 dark:text-gray-100 truncate group-hover:text-primary transition-colors">
+                      <h3 className="font-bold text-gray-900 dark:text-gray-100 truncate group-hover:text-primary transition-colors font-header">
                         {event.title}
                       </h3>
                       <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
@@ -91,7 +91,7 @@ const RecentEvent = () => {
           <div className="mt-4 p-6 bg-linear-to-br from-gray-900 to-gray-800 rounded-2xl text-white relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-3xl -mr-16 -mt-16 transition-all duration-500 group-hover:bg-primary/30"></div>
             <div className="relative z-10">
-              <h3 className="font-bold text-lg mb-1">Join the Community</h3>
+              <h3 className="font-bold text-lg mb-1 font-header">Join the Community</h3>
               <p className="text-gray-300 text-sm mb-4">Don't miss out on future events and opportunities.</p>
               <Link href="/events" className="inline-flex items-center text-sm font-semibold text-primary hover:text-primary/80 transition-colors gap-2">
                 View Events <ArrowRight className="w-4 h-4" />
