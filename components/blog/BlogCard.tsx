@@ -59,14 +59,13 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
           </div>
         ) : (
           <>
-            {/* Image Container - Fixed height for alignment */}
-            <div className="relative h-56 w-full shrink-0 overflow-hidden bg-gray-100">
+            {/* Image */}
+            <div className="h-60 relative shrink-0 rounded-t-sm">
               <Image
                 src={headerImg.url}
                 alt={headerImg.title || "Blog post header image"}
-                className="object-cover object-center w-full h-full transition-transform duration-500 hover:scale-105"
-                width={600}
-                height={350}
+                className="w-full h-full object-cover rounded-t-sm"
+                fill
               />
             </div>
             {/* Content Container */}
