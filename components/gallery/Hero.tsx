@@ -87,10 +87,8 @@ const Hero = ({
 
       
        <div className='relative z-20 flex flex-col justify-center items-start h-full text-white p-10 md:p-20 lg:p-40'>
-            <h1 className='text-6xl md:text-8xl font-bold mb-4'>
-              <span>CAPTURED</span>
-              <br />
-              <span className="text-yellow-500">MOMENTS</span>
+            <h1 className='text-6xl md:text-8xl font-bold mb-4 font-header'>
+              CAPTURED <span className="text-yellow-500">MOMENTS</span>
             </h1>
             <p className='text-sm md:text-xl mb-8'>
             Explore photos from our events,activities and unforgettable memories across our community.

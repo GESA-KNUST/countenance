@@ -43,7 +43,7 @@ const ContactForm = () => {
   };
 
   return (
-    <div className='relative pb-20'>
+    <div className='relative py-20'>
         <div className='max-w-6xl mx-auto p-4'>
           <div className='bg-white shadow-lg rounded-lg flex flex-col-reverse md:flex-row min-h-[667px]'>
             <div className='w-full md:w-1/3 bg-black text-white p-8 rounded-l-lg relative overflow-hidden'>
