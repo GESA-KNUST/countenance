@@ -81,6 +81,7 @@ const page = () => {
                 highlight="Opportunities"
                 text='Discover upcoming opportunities—from internships to scholarships and financial support—carefully curated to help you grow and succeed.'
                 images={['/images/img1.png', '/images/img2.png']}
+                button={false}
             />
             <Container size='lg'>
                 <div className='flex items-center justify-center w-full'>
