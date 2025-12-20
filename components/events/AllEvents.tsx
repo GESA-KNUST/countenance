@@ -21,10 +21,10 @@ const AllEvents = () => {
   return (
     <div className="py-16 px-6 sm:px-10 md:px-16 lg:px-20 xl:px-24 flex flex-col lg:flex-row items-start gap-12 scroll-smooth">
 
-      
+
       <div className="w-full lg:w-1/4 text-center lg:text-left">
         <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight">
-          All <br className="hidden lg:block"/> <span className="text-[#FFBE00]">Events</span>
+          All <br className="hidden lg:block" /> <span className="text-[#FFBE00]">Events</span>
         </h2>
         <p className="mt-8 text-lg sm:text-xl text-gray-700 mx-auto xl:mx-0">
           Explore insights, innovations, and student experiences from the heart of KNUST’s engineering community.
@@ -44,7 +44,7 @@ const AllEvents = () => {
         </div>
       </div>
 
-      
+
       <div className="
         w-full lg:w-3/4
         grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3
@@ -52,7 +52,7 @@ const AllEvents = () => {
         items-stretch
         content-start
       ">
-        
+
         {isLoading && <SkeletonLoadingCard />}
 
         {error && (
@@ -71,9 +71,9 @@ const AllEvents = () => {
             <div
               key={event._id}
               id={`event-${event.slug}`}
-              className="h-full flex"
+              className="h-full w-full"
             >
-              
+
               <EventCard
                 title={event.title}
                 description={event.description}
