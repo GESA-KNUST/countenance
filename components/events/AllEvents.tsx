@@ -4,6 +4,7 @@ import { Search } from "lucide-react";
 import EventCard from "./EventsCard";
 import SkeletonLoadingCard from "./SkeletonLoadingCard";
 import useEventCollection from "../../hooks/useEventCollection";
+import EmptyState from "./EmptyState";
 
 const AllEvents = () => {
   const { data: events, isLoading, error } = useEventCollection();
@@ -61,8 +62,25 @@ const AllEvents = () => {
           </div>
         )}
 
-        {!isLoading && !error && filteredEvents.length === 0 && (
-          <div className="col-span-full p-4 text-center">No events found.</div>
+        {!isLoading && !error && items.length === 0 && (
+          <div className="col-span-full">
+            <EmptyState
+              title="The Stage is Set, but Waiting"
+              message="Our engineering calendar is currently a clean slate. We're in the lab crafting the next big experience for you. Check back soon"
+              showHomeButton={false}
+            />
+          </div>
+        )}
+
+        {!isLoading && !error && items.length > 0 && filteredEvents.length === 0 && (
+          <div className="col-span-full">
+            <EmptyState
+              title="There might be a mistake, kindly retype"
+              message={`We couldn't find a match for "${searchTerm}". Maybe it's under a different name? Try exploring our full list or a different keyword`}
+              showHomeButton={false}
+              onRefresh={() => setSearchTerm("")}
+            />
+          </div>
         )}
 
         {!isLoading &&

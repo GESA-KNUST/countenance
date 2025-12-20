@@ -147,7 +147,7 @@ const EventCard: React.FC<EventCardProps> = ({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-4 flex justify-between items-center border-b">
-              <h3 className="font-bold text-lg text-gray-900">Event Location</h3>
+              <h3 className="font-bold text-lg text-gray-900 ">Event Location</h3>
               <button
                 onClick={() => setShowMap(false)}
                 className="p-1 rounded-full hover:bg-gray-100 text-gray-500 transition-colors"
