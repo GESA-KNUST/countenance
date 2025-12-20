@@ -12,11 +12,12 @@ import { Separator } from '../ui/separator';
 import { motion } from 'framer-motion';
 import StarSpinner from '../ui/StarSpinner';
 import useBlogCollection from '../../hooks/useBlogCollection';
+import FetchError from '../custom/FetchError';
 
 const BigStory = () => {
   const [loading, setLoading] = useState(false);
   const [post, setPost] = useState(null);
-  const { data: allPosts } = useBlogCollection();
+  const { data: allPosts, error } = useBlogCollection();
   const router = useRouter();
 
   useEffect(() => {
@@ -62,6 +63,10 @@ const BigStory = () => {
         </div>
       </div>
     );
+  }
+
+  if (error) {
+    return <FetchError />
   }
 
   return (

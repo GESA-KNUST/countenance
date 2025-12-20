@@ -4,9 +4,10 @@ import { format } from "date-fns";
 import { ArrowRight, CalendarDays, Clock } from "lucide-react";
 import Link from "next/link";
 import useEventCollection from "@/hooks/useEventCollection";
+import FetchError from "../custom/FetchError";
 
 const RecentEvent = () => {
-  const { data: events, isLoading } = useEventCollection();
+  const { data: events, isLoading, error } = useEventCollection();
 
   const now = new Date();
 
@@ -28,6 +29,10 @@ const RecentEvent = () => {
 
   if (isLoading) {
     return <div className="h-96 flex items-center justify-center text-muted-foreground animate-pulse">Loading events...</div>
+  }
+
+  if (error) {
+    return <FetchError />
   }
 
   return (
