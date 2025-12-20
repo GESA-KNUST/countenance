@@ -9,6 +9,7 @@ import Image from 'next/image'
 
 const HomeClubsPreview = () => {
     const { data: clubs, isLoading } = useClubs()
+    console.log(clubs)
 
     if (isLoading) {
         return <div className="h-96 flex items-center justify-center text-muted-foreground animate-pulse">Loading clubs...</div>
@@ -31,11 +32,17 @@ const HomeClubsPreview = () => {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {clubs?.slice(0, 3)?.map((club, index) => (
+                        {clubs?.filter(club => club.isFeatured).slice(0, 3)?.map((club, index) => (
                             <div key={index} className='bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg transition-all duration-300 flex flex-col gap-4 group'>
-                                <div className='w-14 h-14 rounded-xl bg-primary/10 p-3 flex items-center justify-center group-hover:scale-110 transition-transform'>
+                                <div className='w-14 h-14 bg-primary/10 p-3 flex items-center justify-center group-hover:scale-110 transition-transform relative'>
                                     {/* Placeholder Icon */}
-                                    <div className="w-full h-full bg-primary/20 rounded-lg"></div>
+                                    {/* <div className="w-full h-full bg-primary/20 rounded-lg"></div> */}
+                                    <Image 
+                                        src={club?.clubLogo.url || null} 
+                                        alt="" 
+                                        className="w-14 h-14 object-cover rounded-md" 
+                                        fill
+                                    />
                                 </div>
                                 <div>
                                     <h3 className='font-bold text-xl mb-2 transition-colors group-hover:text-blue-600 font-header'>{club.clubName}</h3>

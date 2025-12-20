@@ -89,7 +89,7 @@ const HeroSection = ({
 
       {/* Content */}
       <div className='relative z-20 flex flex-col items-center justify-center text-white px-4 text-center max-w-360 mx-auto gap-6 -mt-32'>
-        <h1 className='font-bold text-4xl leading-12 sm:text-[60px] sm:leading-16 md:text-[72px] md:leading-[76px] xl:text-[90px] lg:leading-[90px]'>
+        <h1 className='font-bold font-header text-4xl leading-12 sm:text-[60px] sm:leading-16 md:text-[72px] md:leading-[76px] xl:text-[90px] lg:leading-[90px]'>
           {titleParts[0]}<span className='text-primary'>{highlight}</span>{titleParts[1]}
         </h1>
 
