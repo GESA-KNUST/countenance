@@ -75,18 +75,18 @@ const Hero = ({
         </CarouselContent>
       </Carousel>
 
-      
+
       <div className='absolute inset-0 bg-black/65 z-10' />
 
-      
-       <div className='relative z-20 flex flex-col justify-center items-start h-full text-white p-10 md:p-20 lg:p-40'>
-            <h1 className='text-6xl md:text-8xl font-bold mb-4 font-header'>
-              CONNECT <span className="text-yellow-500">WITH US</span>
-            </h1>
-            <p className='text-xl'>
-            Your feedback and inquiries matter to us. Contact us anytime and we’ll respond promptly.
-            </p>
-        </div>
+
+      <div className='relative z-20 flex flex-col justify-center items-start h-full text-white px-page-sx md:px-page-x max-w-360 mx-auto w-full'>
+        <h1 className='text-4xl md:text-6xl lg:text-7xl font-bold mb-4 font-header leading-tight'>
+          CONNECT <span className="text-yellow-500 font-header">WITH US</span>
+        </h1>
+        <p className='text-base md:text-lg lg:text-xl max-w-2xl'>
+          Your feedback and inquiries matter to us. Contact us anytime and we’ll respond promptly.
+        </p>
+      </div>
 
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30">
         <div className="flex gap-x-2">
