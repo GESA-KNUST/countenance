@@ -24,7 +24,7 @@ const AllEvents = () => {
 
 
       <div className="w-full lg:w-1/4 text-center lg:text-left">
-        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight font-header">
           All <br className="hidden lg:block" /> <span className="text-[#FFBE00]">Events</span>
         </h2>
         <p className="mt-8 text-lg sm:text-xl text-gray-700 mx-auto xl:mx-0">
