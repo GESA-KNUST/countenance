@@ -1,5 +1,5 @@
 'use client';
-import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Twitter } from 'lucide-react';
+import { MessageCircle, Instagram, Linkedin, Mail, MapPin, Phone, Twitter } from 'lucide-react';
 import { useState } from 'react';
 import emailjs from 'emailjs-com';
 import Container from '../custom/Container';
@@ -88,8 +88,8 @@ const ContactForm = () => {
             </div>
 
             <div className='relative z-10 flex items-center gap-4 mt-8 md:mt-auto mb-2'>
-              <a href="#" className="bg-white/10 p-2 rounded-full hover:bg-white hover:text-black transition-all">
-                <Facebook size={18} />
+              <a href="https://whatsapp.com/channel/0029Vb6ndaFDeON4BBZULN0A" className="bg-white/10 p-2 rounded-full hover:bg-white hover:text-black transition-all">
+                <MessageCircle size={18} />
               </a>
               <a href="https://x.com/thegesaknust?s=11" className="bg-white/10 p-2 rounded-full hover:bg-white hover:text-black transition-all">
                 <Twitter size={18} />
