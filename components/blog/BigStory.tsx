@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import star from '../../public/images/star.svg';
 import logo from '../../public/images/logo.svg';
-import fb2 from '../../public/images/fb2.svg';
+import whatsapp2 from '../../public/images/whatsapp2.svg';
 import twitter from '../../public/images/twitter.svg';
 import yt from '../../public/images/yt.svg';
 import linkedin2 from '../../public/images/linkedin2.svg';
@@ -104,8 +104,8 @@ const BigStory = () => {
               <Separator orientation="vertical" className="w-full" />
             </div>
             <div className="flex gap-2">
-              <Link href="/" target="_blank" rel="noopener noreferrer">
-                <Image src={fb2} alt="Facebook" />
+              <Link href="https://whatsapp.com/channel/0029Vb6ndaFDeON4BBZULN0A" target="_blank" rel="noopener noreferrer">
+                <Image src={whatsapp2} alt="WhatsApp" />
               </Link>
               <Link href="https://x.com/thegesaknust?s=11" target="_blank" rel="noopener noreferrer">
                 <Image src={twitter} alt="Twitter" />

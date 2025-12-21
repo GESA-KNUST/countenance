@@ -48,9 +48,8 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ gallery, large = false }) => 
             src={image.url}
             alt={image.title}
             fill
-            className={`object-cover group-hover:scale-105 transition-opacity duration-1000 ease-in-out ${
-              index === currentIndex ? 'opacity-100' : 'opacity-0'
-            }`}
+            className={`object-cover group-hover:scale-105 transition-all duration-300 ease-in-out ${index === currentIndex ? 'opacity-100' : 'opacity-0'
+              }`}
           />
         ))}
       </div>
@@ -59,11 +58,9 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ gallery, large = false }) => 
 
   return (
     <div
-      className={`relative ${
-        large ? 'h-[350px] md:h-[660px]' : 'h-[350px]'
-      } w-full md:flex-1 group overflow-hidden font-poppins ${
-        gallery?.picturesLink ? 'cursor-pointer' : 'cursor-default'
-      }`}
+      className={`relative ${large ? 'h-[350px] md:h-[660px]' : 'h-[350px]'
+        } w-full md:flex-1 group overflow-hidden font-poppins ${gallery?.picturesLink ? 'cursor-pointer' : 'cursor-default'
+        }`}
       onClick={openPicturesLink}
     >
       {renderContent()}
@@ -74,7 +71,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ gallery, large = false }) => 
         </h3>
       </div>
       {gallery?.picturesLink && (
-        <div className="absolute bottom-6 right-6 md:bottom-10 md:right-10 text-white opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute bottom-6 right-6 md:bottom-10 md:right-10 text-white opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
           <ArrowRight size={28} />
         </div>
       )}
