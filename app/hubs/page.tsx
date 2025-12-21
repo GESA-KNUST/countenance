@@ -14,6 +14,7 @@ import { useHubs } from '@/hooks/useHubs'
 import SkeletonLoading from '@/components/hubs/SkeletonLoading'
 import POLoading from '@/components/hubs/POLoading'
 import { useAnnouncements } from '@/hooks/useAnnoucement'
+import FetchError from '@/components/custom/FetchError'
 
 const page = () => {
     const [currentId, setCurrentId] = useState<number>(0)
@@ -71,6 +72,9 @@ const page = () => {
         { description: "Follow up after submitting applications." },
     ]
 
+    if (error) {
+        return <FetchError />
+    }
 
 
 

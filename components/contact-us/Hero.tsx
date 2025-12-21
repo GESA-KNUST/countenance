@@ -15,7 +15,7 @@ interface HeroProps {
 }
 
 const Hero = ({
-  images = ['/images/image 26.png', '/images/img2.png', '/images/img1.png', '/images/img2.png'],
+  images = ['/images/img2.png', '/images/img1.png', '/images/img2.png'],
 }: HeroProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -80,10 +80,8 @@ const Hero = ({
 
       
        <div className='relative z-20 flex flex-col justify-center items-start h-full text-white p-10 md:p-20 lg:p-40'>
-            <h1 className='text-6xl md:text-8xl font-bold mb-4'>
-              <span className="text-yellow-500">CONNECT</span>
-              <br />
-              <span>WITH US</span>
+            <h1 className='text-6xl md:text-8xl font-bold mb-4 font-header'>
+              CONNECT <span className="text-yellow-500">WITH US</span>
             </h1>
             <p className='text-xl'>
             Your feedback and inquiries matter to us. Contact us anytime and we’ll respond promptly.

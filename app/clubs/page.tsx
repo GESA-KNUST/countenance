@@ -11,6 +11,7 @@ import creativeIcon from '@/public/images/social.svg'
 import leadershipIcon from '@/public/images/leadership&S.svg'
 import techIcon from '@/public/images/tech.svg'
 import activityIcon from '@/public/images/activity.svg'
+import FetchError from '@/components/custom/FetchError';
 
 const page = () => {
     const [currentId, setCurrentId] = useState<number>(0)
@@ -60,6 +61,10 @@ const page = () => {
             default:
                 return activityIcon;
         }
+    }
+
+    if (error) {
+        return <FetchError />
     }
 
     return (

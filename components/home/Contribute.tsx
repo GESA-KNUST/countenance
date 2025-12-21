@@ -6,10 +6,15 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import useBlogCollection from '@/hooks/useBlogCollection';
 import BlogCard from '../blog/BlogCard';
+import FetchError from '../custom/FetchError';
 
 const Contribute = () => {
 
-    const { data: blogs } = useBlogCollection()
+    const { data: blogs, error } = useBlogCollection()
+
+    if (error) {
+        return <FetchError />
+    }
 
     return (
         <Container size='xl' className='font-poppins py-16'>
@@ -44,8 +49,8 @@ const Contribute = () => {
 
                     {/* Contribute Card */}
                     <div className="relative group overflow-hidden rounded-xl bg-primary min-h-[400px] flex flex-col justify-between p-8 text-black transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
-                        <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/5 rounded-full blur-2xl -ml-12 -mb-12 pointer-events-none" />
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16" />
+                        <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/5 rounded-full blur-2xl -ml-12 -mb-12" />
 
                         <div className="relative z-10 space-y-6">
                             <div className="w-12 h-12 bg-black/5 rounded-full flex items-center justify-center mb-4">
@@ -59,10 +64,10 @@ const Contribute = () => {
                             </p>
                         </div>
 
-                        <div className="relative z-10 pt-8 cursor-pointer">
-                            <Link href="https://forms.gle/kxMYY1xN5JWMiZdYA">
+                        <div className="relative z-10 pt-8">
+                            <Link href="https://forms.gle/kxMYY1xN5JWMiZdYA" className="cursor-pointer">
                                 <Button className="w-full bg-black text-white hover:bg-black/80 border-0 h-12 rounded-lg font-semibold text-base transition-all duration-300 group-hover:shadow-lg">
-                                    Start Writing <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                                    Contribute to GESA Blogs <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                                 </Button>
                             </Link>
                         </div>

@@ -6,7 +6,6 @@ import Gallery from '../components/home/Gallery';
 import HistorySection from '../components/home/HistorySection';
 import HomeHubsPreview from '../components/home/HomeHubsPreview';
 import HomeClubsPreview from '../components/home/HomeClubsPreview';
-import HomeBlogPreview from '../components/home/HomeBlogPreview';
 import Contribute from '@/components/home/Contribute';
 
 const Home = () => {
@@ -24,7 +23,6 @@ const Home = () => {
       <HomeClubsPreview />
       <RecentEvent />
       <Contribute />
-      {/* <HomeBlogPreview /> */}
       <Gallery />
     </div>
   )
