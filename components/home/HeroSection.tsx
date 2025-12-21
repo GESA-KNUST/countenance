@@ -15,13 +15,17 @@ import StarSpinner from "../ui/StarSpinner";
 interface HeroSectionProps {
   title?: string;
   highlight?: string;
+  text: string;
   images?: (string | StaticImageData)[];
+  button?: boolean;
 }
 
 const HeroSection = ({
-  title = "Innovating Tomorrow's Engineers, Today",
-  highlight = "Engineers",
+  title,
+  highlight,
+  text,
   images = ['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png'],
+  button = true,
 }: HeroSectionProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -31,7 +35,7 @@ const HeroSection = ({
 
   const plugin = useRef(
     Autoplay({
-      delay: 5000,
+      delay: 10000,
       stopOnMouseEnter: true,
       stopOnInteraction: false,
     })
@@ -76,7 +80,7 @@ const HeroSection = ({
         className="w-full h-full absolute inset-0"
         opts={{
           loop: true,
-          duration: 50,
+          duration: 80,
         }}
       >
         <CarouselContent className="h-full">
@@ -99,24 +103,26 @@ const HeroSection = ({
       <div className='absolute inset-0 bg-black/65 z-10' />
 
       {/* Content */}
-      <div className='relative z-20 flex flex-col items-center justify-center text-white px-4 text-center max-w-360 mx-auto gap-6 -mt-32'>
-        <h1 className='font-bold text-4xl leading-12 sm:text-[60px] sm:leading-16 md:text-[72px] md:leading-[76px] xl:text-[90px] lg:leading-[90px]'>
-          {titleParts[0]}<span className='text-primary'>{highlight}</span>{titleParts[1]}
+      <div className='relative z-20 flex flex-col items-center justify-center text-white px-4 text-center max-w-360 mx-auto gap-2 -mt-32'>
+        <h1 className='font-bold font-header text-4xl leading-12 sm:text-[60px] sm:leading-16 md:text-[72px] md:leading-[76px] xl:text-[85px] lg:leading-[90px]'>
+          Engineering <span className="text-yellow-500 font-header">Beyond</span> Classrooms
         </h1>
 
         <p className='text-sm sm:text-lg md:text-xl max-w-3xl mx-auto'>
-          Empowering students with cutting-edge knowledge, hands-on experience,
-          and the tools to shape the future of technology and innovation.
+          {text}
         </p>
 
-        {loading ? (
-          <div className="flex items-center justify-center w-full h-12">
-            <StarSpinner />
-          </div>
-        ) : (
-          <button onClick={handleClick} className="bg-primary font-semibold rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-sm hover:scale-105 transition-transform">
-            Explore more <ArrowUpRight className='text-black' strokeWidth={2.5} size={28} />
-          </button>
+        {button && (
+
+          loading ? (
+            <div className="flex items-center justify-center w-full h-12" >
+              <StarSpinner />
+            </div>
+          ) : (
+            <button onClick={handleClick} className="bg-primary font-semibold rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-sm hover:scale-105 transition-transform">
+              Explore more <ArrowUpRight className='text-black' strokeWidth={2.5} size={28} />
+            </button>
+          )
         )}
       </div>
 
@@ -134,7 +140,7 @@ const HeroSection = ({
         </div>
       </div>
 
-    </div>
+    </div >
   );
 };
 

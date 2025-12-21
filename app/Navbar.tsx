@@ -25,7 +25,7 @@ const Navbar = () => {
     { name: 'GESA Blog', link: '/blog' },
     { name: 'Events', link: '/events' },
     { name: 'Executives', link: '/executives' },
-    { name: 'Hub', link: '/hub' },
+    { name: 'Hub', link: '/hubs' },
     { name: 'Clubs', link: '/clubs' },
     { name: 'Gallery', link: '/gallery' },
     { name: 'Contact Us', link: '/contact-us' },
@@ -48,7 +48,7 @@ const Navbar = () => {
         >
           {navItems.map((nav, i) => (
             <Tab setPosition={setPosition} key={i}>
-              <Link href={nav.link} className={`font-semibold ${currentPath == nav.link && 'bg-primary rounded-full'} md:px-5 md:py-3 py-1.5`}>{nav.name}</Link>
+              <Link href={nav.link} className={`font-semibold ${(currentPath === nav.link || (currentPath === '/blog-2' && nav.link === '/blog')) && 'bg-primary rounded-full'} md:px-5 md:py-3 py-1.5`}>{nav.name}</Link>
             </Tab>
           ))}
 
@@ -80,8 +80,7 @@ const Navbar = () => {
                   <li key={i}>
                     <Link
                       href={nav.link}
-                      className={`block ${currentPath === nav.link ? 'bg-primary text-white' : ''
-                        } hover:bg-primary hover:text-white py-2 px-3 font-semibold transition duration-300 rounded-md`}
+                      className={`block ${(currentPath === nav.link || (currentPath === '/blog-2' && nav.link === '/blog')) ? 'bg-primary text-white' : ''} hover:bg-primary hover:text-white py-2 px-3 font-semibold transition duration-300 rounded-md`}
                       onClick={() => setIsOpen(false)}
                     >
                       {nav.name}
