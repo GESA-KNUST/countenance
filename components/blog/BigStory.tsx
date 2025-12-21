@@ -10,14 +10,14 @@ import yt from '../../public/images/yt.svg';
 import linkedin2 from '../../public/images/linkedin2.svg';
 import { Separator } from '../ui/separator';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import StarSpinner from '../ui/StarSpinner';
 import useBlogCollection from '../../hooks/useBlogCollection';
-import FetchError from '../custom/FetchError';
 
 const BigStory = () => {
   const [loading, setLoading] = useState(false);
   const [post, setPost] = useState(null);
-  const { data: allPosts, error } = useBlogCollection();
+  const { data: allPosts } = useBlogCollection();
   const router = useRouter();
 
   useEffect(() => {
@@ -65,10 +65,6 @@ const BigStory = () => {
     );
   }
 
-  if (error) {
-    return <FetchError />
-  }
-
   return (
     <div className="px-4 sm:px-6 md:px-10 lg:px-20 py-12">
       <div className="max-w-7xl mx-auto flex flex-col-reverse xl:flex-row gap-6 md:gap-10 lg:gap-16 items-center">
@@ -108,10 +104,18 @@ const BigStory = () => {
               <Separator orientation="vertical" className="w-full" />
             </div>
             <div className="flex gap-2">
-              <Image src={fb2} alt="Facebook" />
-              <Image src={twitter} alt="Twitter" />
-              <Image src={yt} alt="YouTube" />
-              <Image src={linkedin2} alt="LinkedIn" />
+              <Link href="/" target="_blank" rel="noopener noreferrer">
+                <Image src={fb2} alt="Facebook" />
+              </Link>
+              <Link href="https://x.com/thegesaknust?s=11" target="_blank" rel="noopener noreferrer">
+                <Image src={twitter} alt="Twitter" />
+              </Link>
+              <Link href="https://youtube.com/@knust-college_of_engineering?si=jtCCfu6aXxDdSXid" target="_blank" rel="noopener noreferrer">
+                <Image src={yt} alt="YouTube" />
+              </Link>
+              <Link href="https://www.linkedin.com/company/gesa-knust/" target="_blank" rel="noopener noreferrer">
+                <Image src={linkedin2} alt="LinkedIn" />
+              </Link>
             </div>
           </div>
         </div>

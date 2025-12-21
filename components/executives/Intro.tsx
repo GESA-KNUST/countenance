@@ -22,11 +22,11 @@ const Intro: React.FC<IntroProps> = ({ academicYears, selectedYear, setSelectedY
       <div className="flex flex-col items-center text-center md:items-start md:text-left gap-12 max-w-4xl">
         <div className="flex flex-col gap-8">
           <div className="flex items-center gap-2 mx-auto md:mx-0">
-           <Star className="w-3.5 h-3.5 text-[#FFBE00]" fill="#FFBE00" />
-           <h6 className="text-[#FFBE00] font-bold text-sm uppercase">Meet OUR EXECUTIVES</h6>
-           <Star className="w-3.5 h-3.5 text-[#FFBE00]" fill="#FFBE00" />
+            <Star className="w-3.5 h-3.5 text-[#FFBE00]" fill="#FFBE00" />
+            <h6 className="text-[#FFBE00] font-bold text-sm uppercase font-header">Meet OUR EXECUTIVES</h6>
+            <Star className="w-3.5 h-3.5 text-[#FFBE00]" fill="#FFBE00" />
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#252638] leading-snug">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#252638] leading-snug font-header">
             Behind every success is a team of committed leaders—meet the executives steering our mission forward.
           </h2>
           <div className="w-12 h-1 bg-[#FFBE00] mx-auto md:mx-0" />
@@ -62,8 +62,8 @@ const Intro: React.FC<IntroProps> = ({ academicYears, selectedYear, setSelectedY
                     className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
                     role="menuitem"
                     onClick={(e) => {
-                        e.preventDefault();
-                        handleYearSelect(year);
+                      e.preventDefault();
+                      handleYearSelect(year);
                     }}
                   >
                     {`${year} Executives`}
