@@ -82,27 +82,27 @@ const Hero = ({
         </CarouselContent>
       </Carousel>
 
-      
+
       <div className='absolute inset-0 bg-black/65 z-10' />
 
-      
-       <div className='relative z-20 flex flex-col justify-center items-start h-full text-white p-10 md:p-20 lg:p-40'>
-            <h1 className='text-6xl md:text-8xl font-bold mb-4'>
-              <span>CAPTURED</span>
-              <br />
-              <span className="text-yellow-500">MOMENTS</span>
-            </h1>
-            <p className='text-sm md:text-xl mb-8'>
-            Explore photos from our events,activities and unforgettable memories across our community.
-            </p>
-            <button
-              onClick={handleExploreMore}
-              className="bg-primary text-black font-semibold py-3 px-6 rounded-lg flex items-center gap-2 hover:scale-105 transition-transform"
-            >
-              <span>Explore more</span>
-              <ArrowUpRight />
-          </button>
-        </div>
+
+      <div className='relative z-20 flex flex-col justify-center items-start h-full text-white p-10 md:p-20 lg:p-40'>
+        <h1 className='text-6xl md:text-8xl font-bold mb-4 font-header'>
+          <span className="font-header">CAPTURED</span>
+          <br />
+          <span className="text-yellow-500 font-header">MOMENTS</span>
+        </h1>
+        <p className='text-sm md:text-xl mb-8'>
+          Explore photos from our events,activities and unforgettable memories across our community.
+        </p>
+        <button
+          onClick={handleExploreMore}
+          className="bg-primary text-black font-semibold py-3 px-6 rounded-lg flex items-center gap-2 hover:scale-105 transition-transform"
+        >
+          <span>Explore more</span>
+          <ArrowUpRight />
+        </button>
+      </div>
 
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30">
         <div className="flex gap-x-2">

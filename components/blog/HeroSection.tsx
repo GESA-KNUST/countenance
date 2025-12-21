@@ -12,6 +12,7 @@ import {
 interface HeroSectionProps {
   title?: string;
   highlight?: string;
+  text: string;
   images?: (string | StaticImageData)[];
 }
 
@@ -19,6 +20,7 @@ const HeroSection = ({
   title = "Innovating Tomorrow's Engineers, Today",
   highlight = "Engineers",
   images = ['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png'],
+  text
 }: HeroSectionProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -26,7 +28,7 @@ const HeroSection = ({
 
   const plugin = useRef(
     Autoplay({
-      delay: 5000,
+      delay: 8000,
       stopOnMouseEnter: true,
       stopOnInteraction: false,
     })
@@ -87,13 +89,12 @@ const HeroSection = ({
 
       {/* Content */}
       <div className='relative z-20 flex flex-col items-center justify-center text-white px-4 text-center max-w-360 mx-auto gap-6 -mt-32'>
-        <h1 className='font-bold text-4xl leading-12 sm:text-[60px] sm:leading-16 md:text-[72px] md:leading-[76px] xl:text-[90px] lg:leading-[90px]'>
-          {titleParts[0]}<span className='text-primary'>{highlight}</span>{titleParts[1]}
+        <h1 className='font-bold font-header text-4xl leading-12 sm:text-[60px] sm:leading-16 md:text-[72px] md:leading-[76px] xl:text-[90px] lg:leading-[90px]'>
+          Engineering <span className="text-[#FFBE00] font-header">Vibe</span>
         </h1>
 
         <p className='text-sm sm:text-lg md:text-xl max-w-3xl mx-auto'>
-          Empowering students with cutting-edge knowledge, hands-on experience,
-          and the tools to shape the future of technology and innovation.
+          {text}
         </p>
       </div>
 
