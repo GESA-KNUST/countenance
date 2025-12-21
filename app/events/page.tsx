@@ -13,12 +13,12 @@ const EventsPage = () => {
         images={["/images/img1.png", "/images/img2.png", "/images/img1.png", "/images/img2.png"]}
         title="Upcoming"
         subtitle="Explore insights, innovations, and student experiences from the heart of KNUST’s engineering community."
-        items={events ?? []}  
+        items={events ?? []}
       />
 
       <div id="recent-events">
         <RecentEvents
-          events={events ?? []} 
+          events={events ?? []}
         />
       </div>
 

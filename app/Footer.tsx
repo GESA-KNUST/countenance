@@ -13,9 +13,9 @@ const Footer = () => {
 
   const socialLinks = [
     { img: fb, to: "/" },
-    { img: x, to: "/" },
-    { img: ig, to: "/" },
-    { img: linkedin, to: "/" },
+    { img: x, to: "https://x.com/thegesaknust?s=11" },
+    { img: ig, to: "https://www.instagram.com/thegesaknust?igsh=MXhidHNqZndwYmdqMg==" },
+    { img: linkedin, to: "https://www.linkedin.com/company/gesa-knust/" },
   ]
 
   const pageLinks = [
@@ -24,7 +24,6 @@ const Footer = () => {
       path: [
         { page: "Personality of the Week", to: "/" },
         { page: "GESA blog", to: "/blog" },
-        { page: "GESA Quiz", to: "/" },
         { page: "Apply for Scholarship", to: "/" },
       ]
     },
@@ -36,7 +35,6 @@ const Footer = () => {
         { page: "clubs", to: "/clubs" },
         { page: "Hub", to: "/hub" },
         { page: "Gallery", to: "/gallery" },
-        { page: "FAQs", to: "contact-us" },
       ]
     },
     {

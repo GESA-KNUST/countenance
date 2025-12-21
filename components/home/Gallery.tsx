@@ -13,10 +13,10 @@ import FetchError from '../custom/FetchError';
 const Gallery = () => {
     const { data: galleries, isLoading, error } = useGalleries()
     const openPicturesLink = (pictureLink: string) => {
-    if (pictureLink) {
-      window.open(pictureLink, '_blank');
-    }
-  };
+        if (pictureLink) {
+            window.open(pictureLink, '_blank');
+        }
+    };
 
   if (error) {
     return <FetchError />
@@ -26,7 +26,7 @@ const Gallery = () => {
     return (
         <div className='md:px-page-x px-page-sx font-poppins my-20 bg-[#F9FBFD]'>
             <div className='max-w-360 mx-auto flex gap-12 flex-col py-20'>
-                <h1 className='font-open_sans font-bold text-3xl'>Gallery</h1>
+                <h1 className='font-header font-bold text-3xl'>Gallery</h1>
 
 
                 <div className="grid grid-cols-1 md:grid-cols-4 auto-rows-[250px] gap-4">

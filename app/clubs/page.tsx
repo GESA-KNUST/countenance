@@ -98,7 +98,7 @@ const page = () => {
             </Container>
             <Container size="xl">
                 <div className='py-4'>
-                    <h1 className='font-bold text-3xl text-center'>Featured Clubs</h1>
+                    <h1 className='font-bold text-3xl text-center font-header'>Featured Clubs</h1>
                     <p className='text-center mt-2'>Discover our most active and engaging student communities</p>
                     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-6'>
                         {isLoading ?
@@ -113,7 +113,7 @@ const page = () => {
                                         <Image src={club.clubLogo.url} alt={club.clubLogo.title || "Club Logo"} fill className='object-cover rounded-xl' />
                                     </div>
                                     <div className='flex flex-col gap-y-4 py-4'>
-                                        <h2 className='font-bold text-lg'>{club.clubName}</h2>
+                                        <h2 className='font-bold text-lg font-header'>{club.clubName}</h2>
                                         <p className='text-sm text-gray-500'>{club.description.slice(0, 250) + '...'}</p>
                                         <div className='bg-primary cursor-pointer hover:bg-slate-800 hover:text-white px-4 py-2 rounded-full w-full font-medium transition-all duration-300 hover:scale-105 text-center'>
                                             <a href={club.clubLink} target="_blank" rel="noopener noreferrer"
@@ -133,7 +133,7 @@ const page = () => {
                                 <div className='w-12 h-12 rounded-full bg-primary/13 p-1 flex items-center justify-center'>
                                     <Image src={getClubIcon(club.clubType)} alt="" width={32} height={32} />
                                 </div>
-                                <h2 className='font-bold text-lg'>{club.clubName}</h2>
+                                <h2 className='font-bold text-lg font-header'>{club.clubName}</h2>
                                 <p className='text-sm text-gray-500'>{club.description.slice(0, 250) + '...'}</p>
                                 <div className='flex items-center gap-2'>
                                     <span className='font-medium text-xs text-primary bg-primary/23 px-2 py-1 rounded-full'>{club.clubType}</span>
