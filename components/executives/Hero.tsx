@@ -83,7 +83,7 @@ const Hero = ({
         <div className="flex flex-col gap-6 max-w-4xl">
           <div className="flex flex-col gap-2">
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold leading-none font-header">
-              Our <br /> <span className="text-[#FFBE00]">Executives</span>
+              Our <br /> <span className="text-[#FFBE00] font-header">Executives</span>
             </h1>
             <p className="text-sm sm:text-lg md:text-xl">
               Explore leadership insights, transformative innovations, and standout student experiences at the core of KNUST’s engineering excellence.
