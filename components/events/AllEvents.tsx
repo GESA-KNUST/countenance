@@ -66,7 +66,7 @@ const AllEvents = () => {
           <div className="col-span-full">
             <EmptyState
               title="The Stage is Set, but Waiting"
-              message="Our engineering calendar is currently a clean slate. We're in the lab crafting the next big experience for you. Check back soon"
+              message="Our engineering calendar is currently a clean slate. We're crafting the next big experience for you. Check back soon."
               showHomeButton={false}
             />
           </div>
@@ -75,7 +75,7 @@ const AllEvents = () => {
         {!isLoading && !error && items.length > 0 && filteredEvents.length === 0 && (
           <div className="col-span-full">
             <EmptyState
-              title="There might be a mistake, kindly retype"
+              title="There is no match."
               message={`We couldn't find a match for "${searchTerm}". Maybe it's under a different name? Try exploring our full list or a different keyword`}
               showHomeButton={false}
               onRefresh={() => setSearchTerm("")}

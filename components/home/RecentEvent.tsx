@@ -4,9 +4,10 @@ import { format } from "date-fns";
 import { ArrowRight, CalendarDays, Clock } from "lucide-react";
 import Link from "next/link";
 import useEventCollection from "@/hooks/useEventCollection";
+import FetchError from "../custom/FetchError";
 
 const RecentEvent = () => {
-  const { data: events, isLoading } = useEventCollection();
+  const { data: events, isLoading, error } = useEventCollection();
 
   const now = new Date();
 
@@ -28,6 +29,10 @@ const RecentEvent = () => {
 
   if (isLoading) {
     return <div className="h-96 flex items-center justify-center text-muted-foreground animate-pulse">Loading events...</div>
+  }
+
+  if (error) {
+    return <FetchError />
   }
 
   return (
@@ -53,7 +58,7 @@ const RecentEvent = () => {
           <div className="flex flex-col gap-4">
             {upcoming && upcoming.length > 0 ? (
               upcoming.map((event) => (
-                <Link href={`/events#event-${event.slug}`} key={event._id} className="group">
+                <Link href={`/events#event-${event.slug}`} key={event._id} className="group block w-full">
                   <div className="flex items-center gap-4 p-3 pr-4 bg-white dark:bg-card hover:bg-gray-50 dark:hover:bg-accent/50 rounded-xl border-2 border-transparent hover:border-border transition-all duration-300 group-hover:scale-[1.02]">
                     {/* Date Box */}
                     <div className="flex flex-col items-center justify-center w-16 h-16 rounded-lg bg-primary/10 text-primary border border-primary/20 shrink-0">
@@ -70,7 +75,7 @@ const RecentEvent = () => {
                         {event.title}
                       </h3>
                       <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
-                        {event.description}
+                        <span className="whitespace-pre-wrap">{event.description}</span>
                       </p>
                     </div>
 

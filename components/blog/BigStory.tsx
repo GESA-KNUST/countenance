@@ -8,7 +8,6 @@ import fb2 from '../../public/images/fb2.svg';
 import twitter from '../../public/images/twitter.svg';
 import yt from '../../public/images/yt.svg';
 import linkedin2 from '../../public/images/linkedin2.svg';
-import ig from '../../public/images/ig.svg';
 import { Separator } from '../ui/separator';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
