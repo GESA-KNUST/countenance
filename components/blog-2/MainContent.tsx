@@ -52,7 +52,7 @@ const MainContent = ({ selectedPost }) => {
           </svg>
         </div>
         <div className="relative mb-4">
-          <h1 className="text-[32px] md:text-[40px] font-bold leading-tight text-foreground max-w-3xl">
+          <h1 className="text-[32px] md:text-[40px] font-bold leading-tight text-foreground max-w-3xl font-header">
             {selectedPost.title}
           </h1>
           {selectedPost.hook && <p className="text-lg text-muted-foreground mt-4">{selectedPost.hook}</p>}

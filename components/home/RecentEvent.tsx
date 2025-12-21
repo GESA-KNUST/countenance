@@ -115,7 +115,7 @@ const RecentEvent = () => {
           <div className="flex items-center justify-between">
             <h2 className="font-header font-bold text-3xl text-white flex items-center gap-2">
               Recent Events
-              <div className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
+              <div className="h-2 w-2 rounded-full bg-red-500 animate-pulse font-header" />
             </h2>
           </div>
 

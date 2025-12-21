@@ -48,7 +48,7 @@ const RecentEvents: React.FC<RecentEventsProps> = ({ events = [], isLoading = fa
     <div className="py-16 px-6 sm:px-10 md:px-16 lg:px-20 xl:px-24 flex flex-col lg:flex-row items-start gap-12">
       <div className="w-full lg:w-1/4 text-center lg:text-left">
         <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight font-header">
-          Recent <br className="hidden lg:block" /> <span className="text-[#FFBE00]">Events</span>
+          Recent <br className="hidden lg:block" /> <span className="text-[#FFBE00] font-header">Events</span>
         </h2>
         <p className="mt-6 text-lg sm:text-xl text-gray-700">
           Explore insights, innovations, and student experiences from the heart of KNUST’s engineering community.

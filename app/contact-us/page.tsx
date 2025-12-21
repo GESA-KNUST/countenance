@@ -3,7 +3,7 @@ import Hero from '@/components/contact-us/Hero';
 
 const ContactPage = () => {
   return (
-    <div className="bg-white text-gray-800 font-poppins relative">
+    <div className='font-poppins min-h-screen w-full overflow-x-hidden'>
       <Hero />
       <ContactForm />
     </div>

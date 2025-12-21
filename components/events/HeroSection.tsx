@@ -106,7 +106,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
         <div className="max-w-xl text-center lg:text-left">
           <h1 className='font-bold font-header text-4xl leading-12 sm:text-[60px] sm:leading-16 md:text-[72px] md:leading-[76px] xl:text-[90px] lg:leading-[90px]'>
-            {title} <span className="text-[#FFBE00]">Events</span>
+            {title} <span className="text-[#FFBE00] font-header">Events</span>
           </h1>
           <p className='text-sm sm:text-lg md:text-xl max-w-3xl mx-auto'>
             {subtitle}
