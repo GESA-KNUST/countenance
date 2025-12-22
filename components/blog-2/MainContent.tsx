@@ -90,8 +90,8 @@ const MainContent = ({ selectedPost }) => {
           <Separator orientation="vertical" className="w-full" />
         </div>
         <div className="flex gap-2">
-          <Link href="#">
-            <Image src="/images/fb2.svg" alt="Facebook" width={40} height={40} />
+          <Link href="https://whatsapp.com/channel/0029Vb6ndaFDeON4BBZULN0A">
+            <Image src="/images/whatsapp2.svg" alt="WhatsApp" width={40} height={40} />
           </Link>
           <Link href="https://x.com/thegesaknust?s=11">
             <Image src="/images/twitter.svg" alt="Twitter" width={40} height={40} />
