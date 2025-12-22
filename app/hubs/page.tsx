@@ -162,7 +162,7 @@ const page = () => {
                                 <div className='flex flex-col gap-4 shadow-md rounded-xl p-2 px-4'>
                                     <h1 className='font-semibold text-lg font-header'>Popular Opportunities</h1>
                                     <div className='flex flex-col gap-2 py-2'>
-                                        {hubs?.map((opp, index) => (
+                                        {hubs.slice(0,3)?.map((opp, index) => (
                                             <a href={opp.source} target='_blank' className='flex gap-2 cursor-pointer hover:bg-slate-200/20 p-2 rounded-xl' key={index}>
                                                 <div className='flex flex-col gap-2'>
                                                     <p className='font-medium'>{opp.title}</p>
