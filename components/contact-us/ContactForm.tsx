@@ -1,11 +1,11 @@
 'use client';
-import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Twitter } from 'lucide-react';
+import { MessageCircle, Instagram, Linkedin, Mail, MapPin, Phone, Twitter } from 'lucide-react';
 import { useState } from 'react';
 import emailjs from 'emailjs-com';
 import Container from '../custom/Container';
 
 const ContactForm = () => {
-  // ... (keeping existing state and handlers)
+  //  (keeping existing state and handlers)
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -88,8 +88,8 @@ const ContactForm = () => {
             </div>
 
             <div className='relative z-10 flex items-center gap-4 mt-8 md:mt-auto mb-2'>
-              <a href="#" className="bg-white/10 p-2 rounded-full hover:bg-white hover:text-black transition-all">
-                <Facebook size={18} />
+              <a href="https://whatsapp.com/channel/0029Vb6ndaFDeON4BBZULN0A" className="bg-white/10 p-2 rounded-full hover:bg-white hover:text-black transition-all">
+                <MessageCircle size={18} />
               </a>
               <a href="https://x.com/thegesaknust?s=11" className="bg-white/10 p-2 rounded-full hover:bg-white hover:text-black transition-all">
                 <Twitter size={18} />
@@ -102,9 +102,9 @@ const ContactForm = () => {
               </a>
             </div>
 
-            {/* Decorative circles - more responsive sizes */}
-            <div className="absolute w-[180px] h-[180px] md:w-[269px] md:h-[269px] bg-[rgba(255,190,0,0.3)] rounded-full -bottom-10 -right-10 md:-bottom-20 md:-right-20"></div>
-            <div className="absolute w-[100px] h-[100px] md:w-[138px] md:h-[138px] bg-[rgba(255,190,0,0.3)] rounded-full top-20 -right-10 md:bottom-[60px] md:right-20"></div>
+
+            <div className="absolute w-[180px] h-[180px] md:w-[269px] md:h-[269px] bg-[rgba(255,190,0,0.5)] rounded-full -bottom-[58px] -right-[60px] md:-bottom-[86px] md:-right-[89px]"></div>
+            <div className="absolute w-[100px] h-[100px] md:w-[138px] md:h-[138px] bg-[rgba(255,190,0,0.5)] rounded-full bottom-[51px] right-[51px] md:bottom-[71px] md:right-[70px]"></div>
 
           </div>
           <div className='w-full lg:w-2/3 p-6 md:p-10'>
