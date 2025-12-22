@@ -5,7 +5,7 @@ import emailjs from 'emailjs-com';
 import Container from '../custom/Container';
 
 const ContactForm = () => {
-  // ... (keeping existing state and handlers)
+  //  (keeping existing state and handlers)
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -102,9 +102,9 @@ const ContactForm = () => {
               </a>
             </div>
 
-            {/* Decorative circles - more responsive sizes */}
-            <div className="absolute w-[180px] h-[180px] md:w-[269px] md:h-[269px] bg-[rgba(255,190,0,0.3)] rounded-full -bottom-10 -right-10 md:-bottom-20 md:-right-20"></div>
-            <div className="absolute w-[100px] h-[100px] md:w-[138px] md:h-[138px] bg-[rgba(255,190,0,0.3)] rounded-full top-20 -right-10 md:bottom-[60px] md:right-20"></div>
+
+            <div className="absolute w-[180px] h-[180px] md:w-[269px] md:h-[269px] bg-[rgba(255,190,0,0.5)] rounded-full -bottom-10 -right-10 md:-bottom-[86px] md:-right-[89px]"></div>
+            <div className="absolute w-[100px] h-[100px] md:w-[138px] md:h-[138px] bg-[rgba(255,190,0,0.5)] rounded-full bottom-[120px] right-10 md:bottom-[71px] md:right-[70px]"></div>
 
           </div>
           <div className='w-full lg:w-2/3 p-6 md:p-10'>
