@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import logo from '../public/images/logo2.svg'
-import fb from '../public/images/fb.svg'
+import whatsapp from '../public/images/whatsapp.svg'
 import ig from '../public/images/ig.svg'
 import linkedin from '../public/images/linkedIn.svg'
 import x from '../public/images/x.svg'
@@ -12,7 +12,7 @@ import { Separator } from '../components/ui/separator';
 const Footer = () => {
 
   const socialLinks = [
-    { img: fb, to: "/" },
+    { img: whatsapp, to: "https://whatsapp.com/channel/0029Vb6ndaFDeON4BBZULN0A" },
     { img: x, to: "https://x.com/thegesaknust?s=11" },
     { img: ig, to: "https://www.instagram.com/thegesaknust?igsh=MXhidHNqZndwYmdqMg==" },
     { img: linkedin, to: "https://www.linkedin.com/company/gesa-knust/" },
