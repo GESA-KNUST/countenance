@@ -3,6 +3,7 @@ import Autoplay from "embla-carousel-autoplay"
 import Image, { StaticImageData } from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import Container from '../custom/Container';
 import {
   Carousel,
   CarouselApi,
@@ -79,13 +80,15 @@ const Hero = ({
       <div className='absolute inset-0 bg-black/65 z-10' />
 
 
-      <div className='relative z-20 flex flex-col justify-center items-start h-full text-white px-page-sx md:px-page-x max-w-360 mx-auto w-full'>
-        <h1 className='text-4xl md:text-6xl lg:text-7xl font-bold mb-4 font-header leading-tight'>
-          CONNECT <span className="text-yellow-500 font-header">WITH US</span>
-        </h1>
-        <p className='text-base md:text-lg lg:text-xl max-w-2xl'>
-          Your feedback and inquiries matter to us. Contact us anytime and we’ll respond promptly.
-        </p>
+      <div className='relative z-20 flex flex-col justify-center h-full w-full'>
+        <Container size="xl" className="!py-0 text-white">
+          <h1 className='text-4xl md:text-6xl lg:text-7xl font-bold mb-4 font-header leading-tight'>
+            CONNECT <span className="text-yellow-500 font-header">WITH US</span>
+          </h1>
+          <p className='text-base md:text-lg lg:text-xl max-w-2xl'>
+            Your feedback and inquiries matter to us. Contact us anytime and we’ll respond promptly.
+          </p>
+        </Container>
       </div>
 
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30">
