@@ -15,6 +15,7 @@ import SkeletonLoading from '@/components/hubs/SkeletonLoading'
 import POLoading from '@/components/hubs/POLoading'
 import { useAnnouncements } from '@/hooks/useAnnoucement'
 import FetchError from '@/components/custom/FetchError'
+import NoData from '@/components/custom/NoData'
 
 const page = () => {
     const [currentId, setCurrentId] = useState<number>(0)
@@ -102,27 +103,32 @@ const page = () => {
                     </ul>
                 </div>
             </Container>
-            <Container size='xl'>
+            <Container size='xl' className='relative'>
                 <div className='grid grid-cols-1 lg:grid-cols-4 gap-8'>
-                    <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 content-start">
-                        {isLoading ? (
-                            <>
-                                <SkeletonLoading />
-                                <SkeletonLoading />
-                                <SkeletonLoading />
-                            </>
-                        ) : (
-                            <>
-                                {filteredOpportunities?.map((opp, index) => (
-                                    <OpportunityCard
-                                        key={`${index}`}
-                                        {...opp}
-                                    />
-                                ))}
-                            </>
-                        )}
-                        {error && <p className='text-red-500 text-sm'>Error loading opportunities</p>}
-                    </div>
+                    {filteredOpportunities?.length == 0 ? <div className="lg:col-span-3"><NoData /></div> :
+                        <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 content-start relative">
+                            {isLoading ? (
+                                <>
+                                    <SkeletonLoading />
+                                    <SkeletonLoading />
+                                    <SkeletonLoading />
+                                </>
+                            ) : (
+                                <>
+                                    {filteredOpportunities?.map((opp, index) => (
+                                        <OpportunityCard
+                                            key={`${index}`}
+                                            {...opp}
+                                        />
+                                    ))}
+                                </>
+                            )}
+                            {error && <p className='text-red-500 text-sm'>Error loading opportunities</p>}
+                            {/* <div className=' w-full h-full'>
+                        {filteredOpportunities?.length == 0 && <NoData/>}
+                    </div> */}
+                        </div>
+                    }
                     <div className="lg:col-span-1 space-y-8">
                         {
                             loadingAnnouncements ? (
@@ -162,7 +168,7 @@ const page = () => {
                                 <div className='flex flex-col gap-4 shadow-md rounded-xl p-2 px-4'>
                                     <h1 className='font-semibold text-lg font-header'>Popular Opportunities</h1>
                                     <div className='flex flex-col gap-2 py-2'>
-                                        {hubs.slice(0,3)?.map((opp, index) => (
+                                        {hubs.slice(0, 3)?.map((opp, index) => (
                                             <a href={opp.source} target='_blank' className='flex gap-2 cursor-pointer hover:bg-slate-200/20 p-2 rounded-xl' key={index}>
                                                 <div className='flex flex-col gap-2'>
                                                     <p className='font-medium'>{opp.title}</p>
