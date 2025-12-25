@@ -77,7 +77,9 @@ const Footer = () => {
               <h3 className='text-sm font-bold text-primary'>Follow us on social media</h3>
               <div className='flex items-center gap-6 flex-wrap'>
                 {socialLinks.map((link, i) => (
-                  <Image src={link.img} alt='logo' key={i} />
+                  <a href={link.to} target="_blank" rel="noopener noreferrer" key={i} className="hover:scale-110 transition-transform cursor-pointer">
+                    <Image src={link.img} alt='logo' />
+                  </a>
                 ))}
               </div>
             </div>
