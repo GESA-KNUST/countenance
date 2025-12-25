@@ -9,7 +9,26 @@ import { Button } from '../components/ui/button';
 import Link from 'next/link';
 import { Separator } from '../components/ui/separator';
 
+import { useState, FormEvent } from 'react';
+
 const Footer = () => {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const handleSubscribe = (e: FormEvent) => {
+    e.preventDefault();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setStatus('error');
+      return;
+    }
+
+    setStatus('loading');
+    setTimeout(() => {
+      setStatus('success');
+      setEmail('');
+      setTimeout(() => setStatus('idle'), 5000);
+    }, 1500);
+  };
 
   const socialLinks = [
     { img: whatsapp, to: "https://whatsapp.com/channel/0029Vb6ndaFDeON4BBZULN0A" },
@@ -89,16 +108,35 @@ const Footer = () => {
           <div className='flex flex-col gap-8 flex-1'>
             <div className='space-y-6'>
               <h3 className='text-primary font-semibold'>Keep Yourself Up to Date(GESA Newsletter)</h3>
-              <form className='bg-white/8 lg:w-[600px] w-full flex flex-col sm:flex-row items-center p-2 rounded'>
-                <input
-                  type="email"
-                  placeholder='Your Email'
-                  className='p-4 outline-none text-sm flex-1 w-full'
-                />
-                <Button type="submit" className="font-poppins font-semibold h-full bg-white/8 cursor-pointer w-full sm:w-auto">
-                  Subscribe
-                </Button>
-              </form>
+              {status === 'success' ? (
+                <div className='bg-white/5 border border-primary/30 p-4 rounded-lg text-center font-medium animate-fade-in'>
+                  <span className="text-primary text-lg font-bold">Thank you for subscribing.</span>
+                </div>
+              ) : (
+                <form onSubmit={handleSubscribe} className='bg-white/8 lg:w-[600px] w-full flex flex-col sm:flex-row items-center p-2 rounded relative'>
+                  <input
+                    type="email"
+                    placeholder='Your Email'
+                    className='p-4 outline-none text-sm flex-1 w-full bg-transparent text-white placeholder:text-gray-400 focus:bg-transparent'
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      if (status === 'error') setStatus('idle');
+                    }}
+                    required
+                  />
+                  <Button
+                    type="submit"
+                    className="font-poppins font-semibold h-full bg-white/10 hover:bg-white/20 cursor-pointer w-full sm:w-auto min-w-[100px]"
+                    disabled={status === 'loading'}
+                  >
+                    {status === 'loading' ? 'Sending...' : 'Subscribe'}
+                  </Button>
+                  {status === 'error' && (
+                    <p className="absolute -bottom-6 left-0 text-xs text-red-500">Please enter a valid email address.</p>
+                  )}
+                </form>
+              )}
             </div>
 
             {/* links */}
