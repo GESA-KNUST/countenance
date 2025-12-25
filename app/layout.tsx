@@ -3,7 +3,7 @@ import "./globals.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -22,6 +22,13 @@ const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
+
+export const viewport: Viewport = {
+  themeColor: "#FFBE00",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.gesaknust.com'),
@@ -46,7 +53,7 @@ export const metadata: Metadata = {
     url: "https://www.gesaknust.com",
     siteName: "GESA-KNUST",
     title: "GESA-KNUST | Ghana Engineering Students Association",
-    description: "Building Civilization",
+    description: "Building Civilization. The official website of the Ghana Engineering Students Association (GESA) at KNUST. Empowering students with innovation, technology, and leadership.",
   },
   twitter: {
     card: "summary_large_image",
