@@ -12,6 +12,8 @@ import leadershipIcon from '@/public/images/leadership&S.svg'
 import techIcon from '@/public/images/tech.svg'
 import activityIcon from '@/public/images/activity.svg'
 import FetchError from '@/components/custom/FetchError';
+import NoData from '@/components/custom/NoData';
+
 
 const page = () => {
     const [currentId, setCurrentId] = useState<number>(0)
@@ -126,7 +128,7 @@ const page = () => {
                             ))}
                         {error && <p className='text-red-500'>Error fetching clubs</p>}
                     </div>
-
+                    {filteredClubs?.length === 0 && <NoData title='No clubs found' description='There are no clubs to display at this time.' />}
                     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6 py-12 mt-20'>
                         {filteredClubs?.filter(club => !club.isFeatured).map((club, index) => (
                             <div key={index} className='bg-[#F9FAFB] p-6 rounded-xl flex flex-col gap-4 w-full'>

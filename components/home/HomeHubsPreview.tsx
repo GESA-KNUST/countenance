@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { useHubs } from '@/hooks/useHubs'
 import Image from 'next/image'
 import FetchError from '../custom/FetchError'
+import NoData from '../custom/NoData'
 
 const HomeHubsPreview = () => {
     const { data: hubs, isLoading, error } = useHubs()
@@ -18,6 +19,10 @@ const HomeHubsPreview = () => {
 
     if (error) {
         return <FetchError />
+    }
+
+    if(hubs?.length == 0) {
+        return <NoData title='No hubs found' />
     }
 
     return (

@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { useClubs } from '@/hooks/useClubs'
 import Image from 'next/image'
 import FetchError from '../custom/FetchError'
+import NoData from '../custom/NoData'
 
 const HomeClubsPreview = () => {
     const { data: clubs, isLoading, error } = useClubs()
@@ -17,6 +18,10 @@ const HomeClubsPreview = () => {
 
     if (error) {
         return <FetchError />
+    }
+
+    if(clubs?.length == 0) {
+        return <NoData title='No clubs found' />
     }
 
     return (
