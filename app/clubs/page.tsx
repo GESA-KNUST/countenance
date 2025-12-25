@@ -117,12 +117,9 @@ const page = () => {
                                     <div className='flex flex-col gap-y-4 py-4'>
                                         <h2 className='font-bold text-lg font-header'>{club.clubName}</h2>
                                         <p className='text-sm text-gray-500'>{club.description.slice(0, 250) + '...'}</p>
-                                        <div className='bg-primary cursor-pointer hover:bg-slate-800 hover:text-white px-4 py-2 rounded-full w-full font-medium transition-all duration-300 hover:scale-105 text-center'>
-                                            <a href={club.clubLink} target="_blank" rel="noopener noreferrer"
-                                                className='text-white transition-all'>
-                                                Join Club
-                                            </a>
-                                        </div>
+                                        <a href={club.clubLink} target="_blank" rel="noopener noreferrer" className='bg-primary cursor-pointer hover:bg-slate-800 text-white px-4 py-2 rounded-full w-full font-medium transition-all duration-300 hover:scale-105 text-center block'>
+                                            Join Club
+                                        </a>
                                     </div>
                                 </div>
                             ))}
@@ -141,10 +138,13 @@ const page = () => {
                                     <span className='font-medium text-xs text-primary bg-primary/23 px-2 py-1 rounded-full'>{club.clubType}</span>
                                 </div>
                                 <div className='w-full'>
-                                    <button
-                                        className='bg-black cursor-pointer text-white px-4 py-2 rounded-full w-full font-medium hover:bg-primary/80 transition-all duration-300 hover:scale-105'>
+                                    <a
+                                        href={club.clubLink}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className='bg-black cursor-pointer text-white px-4 py-2 rounded-full w-full font-medium hover:bg-primary/80 transition-all duration-300 hover:scale-105 block text-center'>
                                         Join Club
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         ))}
