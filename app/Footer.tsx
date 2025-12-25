@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import logo from '../public/images/logo2.svg'
+
 import whatsapp from '../public/images/whatsapp.svg'
 import ig from '../public/images/ig.svg'
 import linkedin from '../public/images/linkedIn.svg'
@@ -73,7 +73,7 @@ const Footer = () => {
         <div className='flex flex-col lg:flex-row justify-between gap-10'>
           <div className='flex flex-col gap-6 flex-1'>
             <div className='flex items-start gap-4'>
-              <Image src={logo} alt='logo' />
+              <Image src="/images/logo2.svg" width={50} height={50} alt='logo' className="w-12 h-12" />
               <div className='flex flex-col'>
                 <h3 className='text-primary font-semibold text-2xl'>GESA-KNUST</h3>
                 <p className='text-sm text-warm-gray'>Kwame Nkrumah University of <br className='hidden md:block' /> Science and Technology</p>

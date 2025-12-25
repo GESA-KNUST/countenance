@@ -108,7 +108,7 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
                         }).catch((error) => console.log('Error sharing', error));
                       } else {
                         navigator.clipboard.writeText(url);
-                        alert("Link copied to clipboard!");
+                        alert("Link copied to clipboard");
                       }
                     }}
                     className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500 hover:text-primary"

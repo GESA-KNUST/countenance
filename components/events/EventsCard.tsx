@@ -81,7 +81,7 @@ const EventCard: React.FC<EventCardProps> = ({
   }, [showMap, mapLoading]);
 
   // Unified card style matching BlogCard
-  const cardClasses = "h-[460px] flex flex-col bg-white overflow-hidden shadow-lg rounded-xl cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300";
+  const cardClasses = "h-full flex flex-col bg-white overflow-hidden shadow-lg rounded-xl cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300";
 
   return (
     <div className="h-full w-full" ref={cardRef}>
