@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import { Metadata } from "next";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -22,15 +23,81 @@ const montserrat = Montserrat({
   weight: ["400", "500", "600", "700"],
 });
 
-export const metadata = {
-  title: "GESA",
-  description: "GESA-KNUST Official Website",
+export const metadata: Metadata = {
+  metadataBase: new URL('https://www.gesaknust.com'),
+  title: {
+    default: "GESA-KNUST | Ghana Engineering Students Association",
+    template: "%s | GESA-KNUST"
+  },
+  description: "Official website of the Ghana Engineering Students Association (GESA) at Kwame Nkrumah University of Science and Technology (KNUST), Kumasi. Empowering future engineers in the College of Engineering.",
+  keywords: [
+    "GESA", "GESA-KNUST", "Ghana Engineering Students Association", "KNUST", "Kumasi",
+    "College of Engineering", "Engineering Students", "Technology", "Innovation", "Student Association",
+    "STEM", "Engineering Society", "Tech Community", "Student Leadership", "Academic Excellence",
+    "Engineering Projects", "Career Development", "Mentorship", "Hackathons", "Industrial Training",
+    "Engineering Workshops", "Future Engineers", "Ghana Tech", "University Students"
+  ],
+  authors: [{ name: "GESA-KNUST" }],
+  creator: "GESA-KNUST",
+  publisher: "GESA-KNUST",
+  openGraph: {
+    type: "website",
+    locale: "en_GH",
+    url: "https://www.gesaknust.com",
+    siteName: "GESA-KNUST",
+    title: "GESA-KNUST | Ghana Engineering Students Association",
+    description: "Building Civilization",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "GESA-KNUST",
+    description: "Official website of the Ghana Engineering Students Association (GESA) at KNUST.",
+    creator: "@thegesaknust",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({ children }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Ghana Engineering Students Association - KNUST",
+    "alternateName": "GESA-KNUST",
+    "url": "https://www.gesaknust.com",
+    "logo": "https://www.gesaknust.com/images/logo.svg",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+233 20 057 6468",
+      "contactType": "customer service",
+      "email": "thegesaknust@gmail.com",
+      "areaServed": "GH",
+      "availableLanguage": "en"
+    },
+    "sameAs": [
+      "https://x.com/thegesaknust",
+      "https://www.instagram.com/thegesaknust",
+      "https://www.linkedin.com/company/gesa-knust/",
+      "https://whatsapp.com/channel/0029Vb6ndaFDeON4BBZULN0A"
+    ]
+  };
+
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${open_sans.variable} ${montserrat.variable} antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <div>
           <Navbar />
           <ReactQueryProvider>
