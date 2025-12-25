@@ -25,6 +25,7 @@ const Navbar = () => {
     { name: 'GESA Blog', link: '/blog' },
     { name: 'Events', link: '/events' },
     { name: 'Executives', link: '/executives' },
+    { name: 'Departments', link: '/department' },
     { name: 'Hub', link: '/hubs' },
     { name: 'Clubs', link: '/clubs' },
     { name: 'Gallery', link: '/gallery' },
@@ -46,11 +47,22 @@ const Navbar = () => {
           }}
           className='flex items-center gap-4 xl:gap-4 lg:gap-2'
         >
-          {navItems.map((nav, i) => (
-            <Tab setPosition={setPosition} key={i}>
-              <Link href={nav.link} className={`font-semibold ${(currentPath === nav.link || (currentPath === '/blog-2' && nav.link === '/blog')) && 'bg-primary rounded-full'} md:px-5 md:py-3 py-1.5`}>{nav.name}</Link>
-            </Tab>
-          ))}
+          {navItems.map((nav, i) => {
+            const isActive = currentPath === nav.link ||
+              (currentPath === '/blog-2' && nav.link === '/blog') ||
+              (nav.link !== '/' && currentPath?.startsWith(`${nav.link}/`));
+
+            return (
+              <Tab setPosition={setPosition} key={i}>
+                <Link
+                  href={nav.link}
+                  className={`font-semibold ${isActive ? 'bg-primary rounded-full' : ''} md:px-5 md:py-3 py-1.5`}
+                >
+                  {nav.name}
+                </Link>
+              </Tab>
+            )
+          })}
 
 
           <Cursor position={position} />
