@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
         description: 'Ghana Engineering Students Association - KNUST',
         start_url: '/',
         display: 'standalone',
-        background_color: '#000000',
-        theme_color: '#FFBE00',
+        background_color: '#FFFFFF',
+        theme_color: '#FFFFFF',
         icons: [
             {
                 src: '/favicon.ico',
