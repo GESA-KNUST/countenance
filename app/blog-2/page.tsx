@@ -3,6 +3,7 @@ import BlogContent from './BlogContent';
 import { Metadata, ResolvingMetadata } from 'next';
 import { gql } from "graphql-request";
 import { contentfulClient } from "@/lib/contentful-client";
+import StarSpinner from '@/components/ui/StarSpinner';
 
 type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -64,7 +65,7 @@ export async function generateMetadata(
 
 export default function Page() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-gray-50"><StarSpinner /></div>}>
       <BlogContent />
     </Suspense>
   );
