@@ -52,6 +52,29 @@ const GET_EVENTS = gql`
   }
 `;
 
+const GET_EVENT_BY_SLUG = gql`
+  query EventCardBySlug($slug: String!) {
+    eventCardCollection(where: { slug: $slug }, limit: 1) {
+      items {
+        _id
+        title
+        slug
+        eventDate
+        description
+        venue {
+          lat
+          lon
+        }
+        onlineLink
+        eventImage {
+          url
+          description
+        }
+      }
+    }
+  }
+`;
+
 const useEventCollection = () => {
   return useFetchData({
     queryKey: ["events"],
@@ -63,6 +86,23 @@ const useEventCollection = () => {
         throw err;
       }
     },
+  });
+};
+
+export const useEventBySlug = (slug: string) => {
+  return useFetchData({
+    queryKey: ["event", slug],
+    queryFn: async () => {
+      try {
+        const data = await contentfulClient.request<Props>(GET_EVENT_BY_SLUG, {
+          slug,
+        });
+        return data.eventCardCollection.items[0];
+      } catch (err: any) {
+        throw err;
+      }
+    },
+    enabled: !!slug,
   });
 };
 

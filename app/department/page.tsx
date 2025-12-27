@@ -1,62 +1,115 @@
 'use client'
+
 import Container from '@/components/custom/Container'
-import HeroSection from '@/components/home/HeroSection'
-import { Search } from 'lucide-react'
+import DepartmentHero from '@/components/department/DepartmentHero'
+import { Search, Globe } from 'lucide-react'
 import Link from 'next/link'
 import React, { useState } from 'react'
+import { useDepartmentCollection } from '@/hooks/useDepartmentCollection'
+import StarSpinner from '@/components/ui/StarSpinner'
+import Image from 'next/image'
 
-const page = () => {
+const DepartmentListPage = () => {
     const [search, setSearch] = useState<string>('');
+    const { data: departments, isLoading, error } = useDepartmentCollection();
+
+    const filteredDepartments = departments?.filter(dept =>
+        dept.name.toLowerCase().includes(search.toLowerCase()) ||
+        dept.deptAbbreviation?.toLowerCase().includes(search.toLowerCase())
+    );
+
     return (
-        <div className='font-poppins min-h-screen'>
-            <HeroSection
-                title="Find Your Department"
-                highlight="Department"
+        <div className='font-poppins min-h-screen bg-white'>
+            <DepartmentHero
+                title="FIND YOUR"
+                subtitle="DEPARTMENT"
                 text='Choose from our diverse departments designed to equip you with skills, knowledge, and hands-on experience.'
-                images={['/images/img1.png', '/images/img2.png']}
-                button={false}
+                images={['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png']}
             />
             <Container size='xl'>
-                <div className='flex items-center justify-center gap-6'>
-                    <div className='w-[672px] border border-gray-300 h-16 rounded-xl flex items-center px-4'>
-                        <Search className='text-gray-300' />
+                <div className='flex flex-col md:flex-row items-center justify-center gap-6 py-12'>
+                    <div className='w-full max-w-2xl border border-gray-200 h-16 rounded-2xl flex items-center px-6 bg-gray-50/50 focus-within:bg-white focus-within:border-primary transition-all shadow-sm'>
+                        <Search className='text-gray-400' size={20} />
                         <input
                             type="text"
-                            placeholder='Search clubs'
-                            className='w-full p-2 rounded-xl h-full outline-0'
+                            placeholder='Search departments by name or abbreviation...'
+                            className='w-full p-4 rounded-xl h-full outline-0 text-gray-700 font-medium'
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
                     <ul className='flex gap-2 flex-wrap justify-center'>
-                        <li className='bg-primary text-white px-6 py-3 font-header font-semibold rounded-full cursor-pointer'>All Departments</li>
+                        <li className='bg-black text-white px-8 py-3.5 font-header font-bold rounded-full cursor-pointer hover:bg-gray-900 transition-all shadow-lg'>
+                            {departments?.length || 0} Departments
+                        </li>
                     </ul>
                 </div>
             </Container>
+
             <Container size='xl'>
-                <div className='py-2'>
-                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6'>
-                        {/* Content */}
-                            {Array.from({length: 6}).map((_,index) => (
-                                <div key={index} className='bg-[#F9FAFB] p-6 rounded-xl flex flex-col gap-4 w-full'>
-                                <div className='w-12 h-12 rounded-full bg-primary/13 p-1 flex items-center justify-center'>
-                                    {/* <Image src={getClubIcon(club.clubType)} alt="" width={32} height={32} /> */}
+                <div className='pb-20'>
+                    {isLoading ? (
+                        <div className="flex justify-center py-20">
+                            <StarSpinner />
+                        </div>
+                    ) : error ? (
+                        <div className="text-center py-20 bg-red-50 rounded-3xl border border-red-100">
+                            <p className="text-red-500 font-bold text-lg">Failed to load departments. Please try again later.</p>
+                        </div>
+                    ) : filteredDepartments?.length === 0 ? (
+                        <div className="text-center py-20 bg-gray-50 rounded-3xl border border-gray-100">
+                            <p className="text-gray-500 font-bold text-lg italic">No departments match your search.</p>
+                        </div>
+                    ) : (
+                        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+                            {filteredDepartments?.map((dept) => (
+                                <div key={dept.sys.id} className='group bg-white p-8 rounded-[2.5rem] flex flex-col gap-6 w-full border border-gray-100 shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-500 hover:-translate-y-2'>
+                                    <div className='w-16 h-16 rounded-2xl bg-gray-50 p-3 flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-500'>
+                                        {dept.deptLogo?.url ? (
+                                            <div className="relative w-full h-full">
+                                                <Image
+                                                    src={dept.deptLogo.url}
+                                                    alt={dept.name}
+                                                    fill
+                                                    className="object-contain"
+                                                />
+                                            </div>
+                                        ) : (
+                                            <Globe size={32} className="text-gray-300 group-hover:text-primary transition-colors" />
+                                        )}
+                                    </div>
+                                    <div className="flex flex-col gap-2">
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-[10px] font-black bg-primary/10 text-primary px-3 py-1 rounded-full uppercase tracking-widest leading-none">
+                                                {dept.deptAbbreviation || "DEPT"}
+                                            </span>
+                                        </div>
+                                        <h2 className='font-bold text-2xl font-header text-gray-900 line-clamp-2 min-h-[4rem] group-hover:text-primary transition-colors'>
+                                            {dept.name}
+                                        </h2>
+                                    </div>
+                                    <p className='text-gray-500 text-sm leading-relaxed line-clamp-3'>
+                                        Explore the academic excellence and innovative initiatives of the {dept.name} at KNUST.
+                                    </p>
+                                    <div className='w-full pt-4 mt-auto'>
+                                        <Link
+                                            href={`/department-detail?id=${dept.sys.id}`}
+                                            className='bg-black text-white px-6 py-4 rounded-2xl w-full font-bold hover:bg-primary transition-all duration-300 flex items-center justify-center gap-2 group/btn shadow-lg shadow-black/5 hover:shadow-primary/20'
+                                        >
+                                            View Department
+                                            <div className="w-0 overflow-hidden group-hover/btn:w-4 transition-all duration-300">
+                                                →
+                                            </div>
+                                        </Link>
+                                    </div>
                                 </div>
-                                <h2 className='font-bold text-lg font-header'>Computer & Biomedical Engineering</h2>
-                                <p className='text-sm text-gray-500'>Explore the diverse academic units that drive excellence, innovation, and professional growth across our institution.</p>
-                                <div className='w-full'>
-                                    <button
-                                        className='bg-black cursor-pointer text-white px-4 py-2 rounded-full w-full font-medium hover:bg-primary/80 transition-all duration-300 hover:scale-105'>
-                                        <Link href={`/department/1`}>View Department</Link>
-                                    </button>
-                                </div>
-                            </div>
                             ))}
-                    </div>
+                        </div>
+                    )}
                 </div>
             </Container>
         </div>
     )
 }
 
-export default page
+export default DepartmentListPage
