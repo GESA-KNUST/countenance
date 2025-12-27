@@ -59,7 +59,7 @@ const HeroSection = ({
     api.scrollTo(index);
   };
 
-  const titleParts = title.split(highlight);
+  const titleParts = title?.split(highlight) || [];
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
