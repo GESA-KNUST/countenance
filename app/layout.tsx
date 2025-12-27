@@ -76,9 +76,6 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
     title: "GESA-KNUST",
   },
-  icons: {
-    apple: "/images/logo.svg",
-  },
 };
 
 export default function RootLayout({ children }) {
