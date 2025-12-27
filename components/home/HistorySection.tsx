@@ -1,92 +1,190 @@
+"use client";
+
 import React from 'react';
 import Container from '../custom/Container';
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { History, Target, Zap, GraduationCap, Users, Lightbulb } from "lucide-react";
 
 const historyData = {
     history: [
-        "GESA was founded in 1967 as the official representative body for all engineering students at KNUST.",
-        "It emerged after the School of Engineering was established in 1952 and KNUST attained full university status in 1961.",
-        "Originally representing students in Civil, Electrical and Mechanical Engineering, GESA grew as more departments were created.",
-        "In 2003, the School of Engineering became the College of Engineering, expanding its academic programs.",
-        "GESA’s longstanding mandate has been to protect student interests, foster academic excellence, and create platforms for leadership and innovation."
+        "Founded in 1967 as the official voice for all engineering students at KNUST.",
+        "Emerged alongside the School of Engineering's growth since 1952.",
+        "Representative of Civil, Electrical, and Mechanical Engineering since inception.",
+        "Mandated to foster academic excellence and create platforms for leadership.",
+        "A legacy built on nearly six decades of engineering tradition and student advocacy."
     ],
-    events: [
-        "Mindset Revolution Workshop – A transformative mindset and personal development training led by Akosua Bame.",
-        "Engineering Week Celebrations – Departmental exhibitions, seminars, innovation challenges, and alumni networking events.",
-        "Tech & Innovation Seminars – Training programs focused on AI, renewable energy, automation, and modern engineering tools.",
-        "Leadership Development Programs – Capacity-building sessions for student leaders within the College of Engineering.",
-        "Community Impact Projects – Outreach programs aimed at promoting STEM education in basic and secondary schools."
+    activities: [
+        "Engineer's Festival: A signature week-long celebration of innovation and exhibitions.",
+        "Mindset Revolution: Transformative personal development workshops.",
+        "Tech Seminars: Masterclasses on AI, automation, and sustainable energy.",
+        "Leadership Training: Capacity building for the next generation of academic leaders.",
+        "STEM Outreach: Community projects aimed at inspiring secondary school students."
     ],
-    facts: [
-        "GESA is one of the oldest student associations at KNUST.",
-        "The College of Engineering is the largest college in KNUST by student population.",
-        "Many prominent Ghanaian engineers, CEOs, and leaders were once GESA members.",
-        "The popular Engineering Week (ENG Week) has been running for decades and remains one of the most vibrant celebrations on campus.",
-        "Alumni of GESA hold influential positions in energy, telecommunications, aviation, academia, and government sectors."
+    funFacts: [
+        {
+            icon: Users,
+            title: "Oldest Association",
+            description: "One of the pioneering and oldest student bodies at KNUST."
+        },
+        {
+            icon: GraduationCap,
+            title: "Largest Population",
+            description: "The College of Engineering is the largest in KNUST by student count."
+        },
+        {
+            icon: Lightbulb,
+            title: "Engineering Week",
+            description: "ENG Week has been a campus highlight for over four decades."
+        },
+        {
+            icon: Zap,
+            title: "Global Alumni",
+            description: "GESA alumni lead top sectors in energy, aviation, and tech worldwide."
+        }
     ]
 };
 
 const HistorySection = () => {
     return (
-        <div className="bg-slate-50 font-header">
+        <section className="py-24 bg-white overflow-hidden font-header">
             <Container size="xl">
-                <div className="flex flex-col gap-12">
-                    <div className="text-center space-y-4">
-                        <h2 className="text-3xl font-bold">About GESA</h2>
-                        <p className="text-medium-dark max-w-3xl mx-auto text-lg">
-                            The Ghana Engineering Students' Association (GESA) has a rich history of excellence, innovation, and leadership.
-                        </p>
+                <div className="flex flex-col gap-32">
+                    {/* Header */}
+                    <div className="text-center space-y-6 max-w-3xl mx-auto">
+                        <motion.span
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            className="bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider"
+                        >
+                            Our Heritage
+                        </motion.span>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 }}
+                            className="text-4xl md:text-5xl font-bold text-gray-900"
+                        >
+                            The GESA Journey
+                        </motion.h2>
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                            className="text-lg text-gray-600 leading-relaxed"
+                        >
+                            Since 1967, the Ghana Engineering Students' Association has been at the forefront of academic excellence, student leadership, and industrial innovation at KNUST.
+                        </motion.p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {/* History */}
-                        <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-                            <h3 className="text-xl font-bold mb-6 text-gray-900 border-b pb-4 border-slate-100 flex items-center gap-2">
-                                <span className="bg-primary/10 text-primary w-8 h-8 rounded-full flex items-center justify-center text-sm">H</span>
-                                Our History
-                            </h3>
-                            <ul className="space-y-4">
+                    {/* Section 1: History */}
+                    <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+                        <motion.div
+                            initial={{ opacity: 0, x: -50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            className="w-full lg:w-1/2 relative"
+                        >
+                            <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-2xl relative z-10 border-8 border-white">
+                                <Image
+                                    src="/images/history_legacy.jpeg"
+                                    alt="GESA Legacy"
+                                    fill
+                                    className="object-cover"
+                                />
+                            </div>
+                            <div className="absolute -top-6 -left-6 w-full h-full bg-primary/5 rounded-3xl -z-0" />
+                            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/20 rounded-full blur-3xl -z-0 opacity-50" />
+                        </motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0, x: 50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            className="w-full lg:w-1/2 space-y-8"
+                        >
+                            <div className="flex items-center gap-4 text-primary">
+                                <History size={32} />
+                                <h3 className="text-2xl font-bold">Our Rich History</h3>
+                            </div>
+                            <ul className="space-y-6">
                                 {historyData.history.map((item, i) => (
-                                    <li key={i} className="text-[15px] text-gray-600 leading-relaxed pl-4 relative before:content-[''] before:absolute before:left-0 before:top-2.5 before:w-1.5 before:h-1.5 before:bg-primary/40 before:rounded-full">
-                                        {item}
+                                    <li key={i} className="flex gap-4 group">
+                                        <div className="mt-1 w-2 h-2 rounded-full bg-primary flex-shrink-0 group-hover:scale-150 transition-transform duration-300" />
+                                        <p className="text-gray-700 leading-relaxed font-medium">
+                                            {item}
+                                        </p>
                                     </li>
                                 ))}
                             </ul>
-                        </div>
+                        </motion.div>
+                    </div>
 
-                        {/* Events */}
-                        <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-                            <h3 className="text-xl font-bold mb-6 text-gray-900 border-b pb-4 border-slate-100 flex items-center gap-2">
-                                <span className="bg-primary/10 text-primary w-8 h-8 rounded-full flex items-center justify-center text-sm">A</span>
-                                Recent Activities
-                            </h3>
-                            <ul className="space-y-4">
-                                {historyData.events.map((item, i) => (
-                                    <li key={i} className="text-[15px] text-gray-600 leading-relaxed pl-4 relative before:content-[''] before:absolute before:left-0 before:top-2.5 before:w-1.5 before:h-1.5 before:bg-primary/40 before:rounded-full">
-                                        {item}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                    {/* Section 2: Activities (Reversed) */}
+                    <div className="flex flex-col lg:flex-row-reverse items-center gap-16 lg:gap-24">
+                        <motion.div
+                            initial={{ opacity: 0, x: 50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            className="w-full lg:w-1/2 relative"
+                        >
+                            <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-2xl relative z-10 border-8 border-white">
+                                <Image
+                                    src="/images/engineering_activities.jpg"
+                                    alt="GESA Activities"
+                                    fill
+                                    className="object-cover"
+                                />
+                            </div>
+                            <div className="absolute -top-6 -right-6 w-full h-full bg-primary/5 rounded-3xl -z-0" />
+                            <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-primary/20 rounded-full blur-3xl -z-0 opacity-50" />
+                        </motion.div>
 
-                        {/* Facts */}
-                        <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-                            <h3 className="text-xl font-bold mb-6 text-gray-900 border-b pb-4 border-slate-100 flex items-center gap-2">
-                                <span className="bg-primary/10 text-primary w-8 h-8 rounded-full flex items-center justify-center text-sm">F</span>
-                                Fun Facts
-                            </h3>
-                            <ul className="space-y-4">
-                                {historyData.facts.map((item, i) => (
-                                    <li key={i} className="text-[15px] text-gray-600 leading-relaxed pl-4 relative before:content-[''] before:absolute before:left-0 before:top-2.5 before:w-1.5 before:h-1.5 before:bg-primary/40 before:rounded-full">
-                                        {item}
+                        <motion.div
+                            initial={{ opacity: 0, x: -50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            className="w-full lg:w-1/2 space-y-8"
+                        >
+                            <div className="flex items-center gap-4 text-primary">
+                                <Target size={32} />
+                                <h3 className="text-2xl font-bold">What We Do</h3>
+                            </div>
+                            <ul className="space-y-6">
+                                {historyData.activities.map((item, i) => (
+                                    <li key={i} className="flex gap-4 group">
+                                        <div className="mt-1 w-2 h-2 rounded-full bg-primary flex-shrink-0 group-hover:scale-150 transition-transform duration-300" />
+                                        <p className="text-gray-700 leading-relaxed font-medium">
+                                            {item}
+                                        </p>
                                     </li>
                                 ))}
                             </ul>
+                        </motion.div>
+                    </div>
+
+                    {/* Section 3: Fun Facts Grid */}
+                    <div className="pt-16 border-t border-gray-100">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                            {historyData.funFacts.map((fact, i) => (
+                                <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: i * 0.1 }}
+                                    className="p-8 rounded-3xl bg-gray-50 hover:bg-white hover:shadow-xl transition-all duration-500 border border-transparent hover:border-primary/20 group"
+                                >
+                                    <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:bg-primary group-hover:text-white transition-colors duration-500">
+                                        <fact.icon size={28} />
+                                    </div>
+                                    <h4 className="text-xl font-bold text-gray-900 mb-3">{fact.title}</h4>
+                                    <p className="text-gray-600 text-sm leading-relaxed">
+                                        {fact.description}
+                                    </p>
+                                </motion.div>
+                            ))}
                         </div>
                     </div>
                 </div>
             </Container>
-        </div>
-    )
-}
+        </section>
+    );
+};
 
 export default HistorySection;
