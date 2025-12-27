@@ -84,15 +84,14 @@ const DepartmentHero = ({
             {/* Content */}
             <div className='relative z-20 flex flex-col items-center justify-center text-white px-4 text-center max-w-5xl mx-auto gap-4 -mt-32'>
                 <h1 className='font-bold font-header text-4xl leading-12 sm:text-[60px] sm:leading-none md:text-[72px] md:leading-none xl:text-[85px] lg:leading-none flex flex-col items-center gap-2'>
-                    <span className="block animate-in fade-in slide-in-from-top-10 duration-1000">{title}</span>
-                    <span className="text-yellow-500 font-header block animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-300">
+                    <span className="block">{title}</span>
+                    <span className="text-yellow-500 font-header block">
                         {subtitle}
                     </span>
                 </h1>
 
-                <div className="w-24 h-1 bg-primary rounded-full mb-2 animate-in fade-in zoom-in duration-1000 delay-500" />
 
-                <p className='text-sm sm:text-lg md:text-xl max-w-3xl mx-auto text-gray-200 animate-in fade-in slide-in-from-bottom-5 duration-1000 delay-700'>
+                <p className='text-sm sm:text-lg md:text-xl max-w-3xl mx-auto text-gray-200'>
                     {text}
                 </p>
             </div>
