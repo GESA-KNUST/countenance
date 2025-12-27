@@ -4,12 +4,17 @@ import useBlogCollection from '../../hooks/useBlogCollection';
 import BlogCard from './BlogCard';
 import Container from '../custom/Container';
 import FetchError from '../custom/FetchError';
+import StarSpinner from '../ui/StarSpinner';
 
 const RecentBlogs = ({ onPostSelect }: { onPostSelect?: (post: any) => void }) => {
     const { data: blogs, isLoading, error } = useBlogCollection();
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return (
+            <div className="flex justify-center py-20">
+                <StarSpinner />
+            </div>
+        );
     }
 
     if (error) {
