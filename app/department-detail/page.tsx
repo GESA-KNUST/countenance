@@ -64,7 +64,7 @@ export async function generateMetadata(
 
 export default function Page() {
     return (
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-gray-50"><StarSpinner /></div>}>
+        <Suspense fallback={<div className="h-[80vh] flex items-center justify-center bg-gray-50"><StarSpinner /></div>}>
             <DepartmentContent />
         </Suspense>
     );
