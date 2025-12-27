@@ -11,7 +11,7 @@ const ClubDetailPage = () => {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+            <div className="h-[80vh] bg-gray-50 flex items-center justify-center">
                 <StarSpinner />
             </div>
         );
