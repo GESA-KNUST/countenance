@@ -71,6 +71,11 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "GESA-KNUST",
+  },
 };
 
 export default function RootLayout({ children }) {
