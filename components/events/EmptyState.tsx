@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CalendarOff, RefreshCw, Home } from 'lucide-react';
+import { CalendarOff, RefreshCw, Home, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 
 interface EmptyStateProps {
@@ -10,6 +10,7 @@ interface EmptyStateProps {
     showHomeButton?: boolean;
     onRefresh?: () => void;
     isHero?: boolean;
+    icon?: LucideIcon;
 }
 
 const EmptyState: React.FC<EmptyStateProps> = ({
@@ -18,6 +19,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({
     showHomeButton = true,
     onRefresh,
     isHero = false,
+    icon: Icon = CalendarOff,
 }) => {
     return (
         <motion.div
@@ -37,10 +39,10 @@ const EmptyState: React.FC<EmptyStateProps> = ({
                     repeat: Infinity,
                     ease: "easeInOut",
                 }}
-                className="mb-6 relative"
+                className="mb-8 relative"
             >
                 <div className="absolute inset-0 bg-[#FFBE00]/20 blur-2xl rounded-full" />
-                <CalendarOff className={`relative ${isHero ? 'w-24 h-24' : 'w-16 h-16'} text-[#FFBE00]`} />
+                <Icon className={`relative ${isHero ? 'w-24 h-24' : 'w-16 h-16'} text-[#FFBE00]`} />
             </motion.div>
 
             <h3 className={`font-header font-bold mb-3 ${isHero ? 'text-4xl md:text-5xl text-white' : 'text-2xl md:text-3xl text-gray-900'}`}>
@@ -66,8 +68,8 @@ const EmptyState: React.FC<EmptyStateProps> = ({
                     <Link
                         href="/"
                         className={`flex items-center gap-2 px-6 py-3 border font-semibold rounded-full transition-colors ${isHero
-                                ? 'border-white/20 text-white hover:bg-white/10'
-                                : 'border-gray-200 text-gray-700 hover:bg-gray-50 shadow-sm'
+                            ? 'border-white/20 text-white hover:bg-white/10'
+                            : 'border-gray-200 text-gray-700 hover:bg-gray-50 shadow-sm'
                             }`}
                     >
                         <Home className="w-4 h-4" />
