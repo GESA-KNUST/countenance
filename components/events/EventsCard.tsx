@@ -65,9 +65,8 @@ const EventCard: React.FC<EventCardProps> = ({
   const handleCardClick = () => {
     if (isHeroCard) return;
 
-    if (hasOnlineLink) {
-      window.open(onlineLink, '_blank');
-    }
+    // Navigate to the event detail page
+    window.location.href = `/events/${slug}`;
   };
 
   useEffect(() => {
