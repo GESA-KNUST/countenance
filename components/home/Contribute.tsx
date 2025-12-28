@@ -8,6 +8,8 @@ import useBlogCollection from '@/hooks/useBlogCollection';
 import BlogCard from '../blog/BlogCard';
 import FetchError from '../custom/FetchError';
 
+import { motion } from 'framer-motion'
+
 const Contribute = () => {
 
     const { data: blogs, error } = useBlogCollection()
@@ -17,66 +19,86 @@ const Contribute = () => {
     }
 
     return (
-        <Container size='xl' className='font-poppins py-16'>
-            <div className="flex flex-col gap-10">
-                <div className="flex justify-between items-end">
-                    <div className="space-y-2">
-                        <h2 className="text-3xl md:text-4xl font-header font-bold text-gray-900">Recent Stories</h2>
-                        <p className="text-muted-foreground text-sm md:text-base max-w-2xl">
-                            Read our latest blogs to stay updated with the latest trends, insights, and stories from the GESA community.
+        <Container size='xl' className='font-poppins py-24'>
+            <div className="flex flex-col gap-12">
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    className="flex justify-between items-end"
+                >
+                    <div className="space-y-3">
+                        <h2 className="text-4xl md:text-5xl font-header font-bold text-gray-900">Recent Stories</h2>
+                        <p className="text-gray-500 text-sm md:text-lg max-w-2xl leading-relaxed">
+                            Stay updated with insights, innovation highlights, and community stories from the forefront of KNUST Engineering.
                         </p>
                     </div>
                     <Link href="/blog" className="hidden md:block">
-                        <Button variant="ghost" className="gap-2 text-primary hover:text-primary/80 hover:bg-primary/5">
+                        <Button variant="ghost" className="text-base gap-2 text-primary hover:text-primary/80 hover:bg-primary/5 transition-all duration-300">
                             View All Stories <ArrowRight size={16} />
                         </Button>
                     </Link>
-                </div>
+                </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {blogs?.slice(0, 2).map((post) => (
-                        <BlogCard
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    {blogs?.slice(0, 2).map((post, index) => (
+                        <motion.div
                             key={post.slug}
-                            post={post}
-                            slug={post.title}
-                            author={{
-                                title: post.author.name,
-                                url: post.author.authorProfilePicture.url,
-                            }}
-                            headerImg={post.headerImage}
-                        />
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            transition={{ delay: index * 0.1 }}
+                        >
+                            <BlogCard
+                                post={post}
+                                slug={post.title}
+                                author={{
+                                    title: post.author.name,
+                                    url: post.author.authorProfilePicture.url,
+                                }}
+                                headerImg={post.headerImage}
+                            />
+                        </motion.div>
                     ))}
 
                     {/* Contribute Card */}
-                    <div className="relative group overflow-hidden rounded-xl bg-primary min-h-[400px] flex flex-col justify-between p-8 text-black transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16" />
-                        <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/5 rounded-full blur-2xl -ml-12 -mb-12" />
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ delay: 0.2 }}
+                        className="relative group overflow-hidden rounded-3xl bg-primary min-h-[420px] flex flex-col justify-between p-10 text-black transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 cursor-pointer border border-primary/20"
+                    >
+                        <div className="absolute top-0 right-0 w-80 h-80 bg-white/20 rounded-full blur-3xl -mr-20 -mt-20 group-hover:bg-white/30 transition-all duration-700" />
+                        <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/5 rounded-full blur-2xl -ml-16 -mb-16" />
 
-                        <div className="relative z-10 space-y-6">
-                            <div className="w-12 h-12 bg-black/5 rounded-full flex items-center justify-center mb-4">
-                                <span className="font-header font-bold text-xl">?</span>
+                        <div className="relative z-10 space-y-8">
+                            <div className="w-16 h-16 bg-black/5 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                                <span className="font-header font-bold text-3xl">?</span>
                             </div>
-                            <h3 className="font-header text-3xl font-bold leading-tight">
-                                Have a story to share?
-                            </h3>
-                            <p className="text-black/80 font-medium leading-relaxed">
-                                Contribute to the GESA blogs and share your knowledge, experiences, and insights with the entire engineering community.
-                            </p>
+                            <div>
+                                <h3 className="font-header text-3xl font-bold leading-tight mb-4">
+                                    Have a story to share?
+                                </h3>
+                                <p className="text-black/70 font-bold leading-relaxed text-lg">
+                                    Contribute to the GESA blogs and share your knowledge, experiences, and insights with the global engineeeing community.
+                                </p>
+                            </div>
                         </div>
 
-                        <div className="relative z-10 pt-8">
+                        <div className="relative z-10 pt-10">
                             <Link href="https://forms.gle/kxMYY1xN5JWMiZdYA" className="cursor-pointer">
-                                <Button className="w-full bg-black text-white hover:bg-black/80 border-0 h-12 rounded-lg font-semibold text-base transition-all duration-300 group-hover:shadow-lg">
-                                    Contribute to GESA Blogs <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                                <Button className="w-full bg-black text-white hover:bg-gray-900 border-0 h-14 rounded-2xl font-bold text-lg transition-all duration-300 group-hover:shadow-xl shadow-md">
+                                    Contribute Now <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
                                 </Button>
                             </Link>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
 
-                <div className="md:hidden flex justify-center mt-4">
+                <div className="md:hidden flex justify-center mt-6">
                     <Link href="/blog">
-                        <Button variant="ghost" className="gap-2 text-primary hover:text-primary/80">
+                        <Button variant="ghost" className="gap-2 text-primary font-bold">
                             View All Stories <ArrowRight size={16} />
                         </Button>
                     </Link>
