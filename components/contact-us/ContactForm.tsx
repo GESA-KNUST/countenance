@@ -77,7 +77,7 @@ const ContactForm = () => {
               </div>
               <div className='flex items-center gap-4'>
                 <Mail className="shrink-0 w-5 h-5" />
-                <span className="text-sm md:text-base">info@gesaknust.org</span>
+                <span className="text-sm md:text-base">thegesaknust@gmail.com</span>
               </div>
               <div className='flex items-center gap-4'>
                 <MapPin className="shrink-0 w-5 h-5" />
