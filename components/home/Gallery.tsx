@@ -53,8 +53,8 @@ const Gallery = () => {
                         return (
                             <motion.div
                                 key={index}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
+                                initial={{ opacity: 0, x: 30 }}
+                                whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true, margin: "-100px" }}
                                 transition={{ delay: index * 0.05 }}
                                 className={`relative rounded-3xl overflow-hidden group cursor-pointer ${getSpanClasses(index)} shadow-sm hover:shadow-2xl transition-all duration-500`}
