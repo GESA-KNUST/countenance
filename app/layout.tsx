@@ -53,12 +53,21 @@ export const metadata: Metadata = {
     siteName: "GESA-KNUST",
     title: "GESA-KNUST | Ghana Engineering Students Association",
     description: "Building Civilization. The official website of the Ghana Engineering Students Association (GESA) at KNUST. Empowering students with innovation, technology, and leadership.",
+    images: [
+      {
+        url: "/images/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "GESA-KNUST Logo",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "GESA-KNUST",
     description: "Official website of the Ghana Engineering Students Association (GESA) at KNUST.",
     creator: "@thegesaknust",
+    images: ["/images/logo.png"],
   },
   robots: {
     index: true,
@@ -77,7 +86,7 @@ export const metadata: Metadata = {
     title: "GESA-KNUST",
   },
   icons: {
-    apple: "/images/logo.svg",
+    apple: "/images/logo.png",
   },
 };
 
@@ -88,7 +97,7 @@ export default function RootLayout({ children }) {
     "name": "Ghana Engineering Students Association - KNUST",
     "alternateName": "GESA-KNUST",
     "url": "https://www.gesaknust.com",
-    "logo": "https://www.gesaknust.com/images/logo.svg",
+    "logo": "https://www.gesaknust.com/images/logo.png",
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": "+233 20 057 6468",
