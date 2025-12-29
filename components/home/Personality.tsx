@@ -37,8 +37,8 @@ const Personality = () => {
             <div className='my-16 flex flex-col lg:flex-row items-center gap-10 justify-center overflow-hidden'>
 
               <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 className='w-full md:w-[480px] lg:w-[520px] sm:h-[450px] h-[350px] overflow-hidden shadow-lg relative rounded-2xl'
               >
@@ -56,8 +56,8 @@ const Personality = () => {
 
 
               <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 className='flex flex-col gap-4 xl:max-w-xl lg:w-1/2 w-full'
               >
