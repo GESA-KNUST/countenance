@@ -41,8 +41,8 @@ const HomeHubsPreview = () => {
             <Container size='xl' className='relative z-30'>
                 <div className="flex flex-col gap-12">
                     <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
+                        initial={{ opacity: 0, x: 50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
                         className="flex justify-between items-center"
                     >
@@ -61,8 +61,8 @@ const HomeHubsPreview = () => {
                         {hubs?.slice(0, 3)?.map((hub, index) => (
                             <motion.div
                                 key={index}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
+                                initial={{ opacity: 0, x: 50 }}
+                                whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true, margin: "-100px" }}
                                 transition={{ delay: index * 0.1 }}
                             >

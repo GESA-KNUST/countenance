@@ -27,8 +27,8 @@ const Gallery = () => {
         <div className='md:px-page-x px-page-sx font-poppins py-16 bg-[#F9FBFD] overflow-hidden'>
             <div className='max-w-7xl mx-auto flex flex-col gap-12'>
                 <motion.h1
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, x: -50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
                     className='font-header font-bold text-4xl md:text-5xl text-gray-900 px-4 md:px-0'
                 >
@@ -53,8 +53,8 @@ const Gallery = () => {
                         return (
                             <motion.div
                                 key={index}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
+                                initial={{ opacity: 0, x: 50 }}
+                                whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true, margin: "-100px" }}
                                 transition={{ delay: index * 0.1 }}
                                 className={`relative rounded-3xl overflow-hidden group cursor-pointer ${getSpanClasses(index)} shadow-sm hover:shadow-2xl transition-all duration-500`}
