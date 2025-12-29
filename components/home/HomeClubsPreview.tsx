@@ -27,14 +27,14 @@ const HomeClubsPreview = () => {
     }
 
     return (
-        <div className="bg-slate-50 py-24 font-poppins relative overflow-hidden">
+        <div className="bg-slate-50 py-16 font-poppins relative overflow-hidden">
             <Container size='xl' className='relative z-30'>
                 <div className="flex flex-col gap-12">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
-                        className="flex justify-between items-end"
+                        className="flex justify-between items-center"
                     >
                         <div className="space-y-3">
                             <h2 className="text-4xl font-bold text-gray-900 font-header">Featured Clubs</h2>
