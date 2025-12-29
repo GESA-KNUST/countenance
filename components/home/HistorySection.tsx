@@ -49,7 +49,7 @@ const HistorySection = () => {
     return (
         <section className="py-24 bg-white overflow-hidden font-header">
             <Container size="xl">
-                <div className="flex flex-col gap-32">
+                <div className="flex flex-col gap-24">
                     {/* Header */}
                     <div className="text-center space-y-6 max-w-3xl mx-auto">
                         <motion.span
@@ -160,14 +160,19 @@ const HistorySection = () => {
                     </div>
 
                     {/* Section 3: Fun Facts Grid */}
-                    <div className="pt-16 border-t border-gray-100">
+                    <div className="pt-8 border-t border-gray-100">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                             {historyData.funFacts.map((fact, i) => (
                                 <motion.div
                                     key={i}
-                                    initial={{ opacity: 0, y: 30 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: i * 0.1 }}
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    transition={{
+                                        type: "spring",
+                                        stiffness: 100,
+                                        damping: 15,
+                                        delay: i * 0.1
+                                    }}
                                     className="p-8 rounded-3xl bg-gray-50 hover:bg-white hover:shadow-xl transition-all duration-500 border border-transparent hover:border-primary/20 group"
                                 >
                                     <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:bg-primary group-hover:text-white transition-colors duration-500">
