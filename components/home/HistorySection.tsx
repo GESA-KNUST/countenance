@@ -55,7 +55,7 @@ const HistorySection = () => {
                         <motion.span
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            className="bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider"
+                            className="inline-block bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider mb-4"
                         >
                             Our Heritage
                         </motion.span>
@@ -78,11 +78,11 @@ const HistorySection = () => {
                     </div>
 
                     {/* Section 1: History */}
-                    <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+                    <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-20">
                         <motion.div
                             initial={{ opacity: 0, x: -50 }}
                             whileInView={{ opacity: 1, x: 0 }}
-                            className="w-full lg:w-1/2 relative"
+                            className="w-full lg:w-[55%] relative"
                         >
                             <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-2xl relative z-10 border-8 border-white">
                                 <Image
@@ -99,7 +99,7 @@ const HistorySection = () => {
                         <motion.div
                             initial={{ opacity: 0, x: 50 }}
                             whileInView={{ opacity: 1, x: 0 }}
-                            className="w-full lg:w-1/2 space-y-8"
+                            className="w-full lg:w-[45%] space-y-8"
                         >
                             <div className="flex items-center gap-4 text-primary">
                                 <History size={32} />
@@ -119,11 +119,11 @@ const HistorySection = () => {
                     </div>
 
                     {/* Section 2: Activities (Reversed) */}
-                    <div className="flex flex-col lg:flex-row-reverse items-center gap-16 lg:gap-24">
+                    <div className="flex flex-col lg:flex-row-reverse items-center gap-16 lg:gap-20">
                         <motion.div
                             initial={{ opacity: 0, x: 50 }}
                             whileInView={{ opacity: 1, x: 0 }}
-                            className="w-full lg:w-1/2 relative"
+                            className="w-full lg:w-[55%] relative"
                         >
                             <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-2xl relative z-10 border-8 border-white">
                                 <Image
@@ -140,7 +140,7 @@ const HistorySection = () => {
                         <motion.div
                             initial={{ opacity: 0, x: -50 }}
                             whileInView={{ opacity: 1, x: 0 }}
-                            className="w-full lg:w-1/2 space-y-8"
+                            className="w-full lg:w-[45%] space-y-8"
                         >
                             <div className="flex items-center gap-4 text-primary">
                                 <Target size={32} />
