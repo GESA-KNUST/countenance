@@ -8,7 +8,7 @@ import useBlogCollection from '@/hooks/useBlogCollection';
 import BlogCard from '../blog/BlogCard';
 import FetchError from '../custom/FetchError';
 
-import { motion } from 'framer-motion'
+import { motion } from "framer-motion";
 
 const Contribute = () => {
 
@@ -63,8 +63,8 @@ const Contribute = () => {
 
                     {/* Contribute Card */}
                     <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ delay: 0.2 }}
                         className="relative group overflow-hidden rounded-3xl bg-primary min-h-[420px] flex flex-col justify-between p-10 text-black transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 cursor-pointer border border-primary/20"

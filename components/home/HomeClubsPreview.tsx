@@ -9,7 +9,7 @@ import Image from 'next/image'
 import FetchError from '../custom/FetchError'
 import NoData from '../custom/NoData'
 
-import { motion } from 'framer-motion'
+import { motion } from "framer-motion";
 
 const HomeClubsPreview = () => {
     const { data: clubs, isLoading, error } = useClubs()
@@ -51,8 +51,8 @@ const HomeClubsPreview = () => {
                         {clubs?.filter(club => club.isFeatured).slice(0, 3)?.map((club, index) => (
                             <motion.div
                                 key={index}
-                                initial={{ opacity: 0, x: 50 }}
-                                whileInView={{ opacity: 1, x: 0 }}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, margin: "-100px" }}
                                 transition={{ delay: index * 0.1 }}
                                 className='bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-500 flex flex-col gap-6 group hover:-translate-y-1'
