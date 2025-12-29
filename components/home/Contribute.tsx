@@ -19,13 +19,13 @@ const Contribute = () => {
     }
 
     return (
-        <Container size='xl' className='font-poppins py-24'>
+        <Container size='xl' className='font-poppins py-16'>
             <div className="flex flex-col gap-12">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
-                    className="flex justify-between items-end"
+                    className="flex justify-between items-center"
                 >
                     <div className="space-y-3">
                         <h2 className="text-4xl md:text-5xl font-header font-bold text-gray-900">Recent Stories</h2>

@@ -24,7 +24,7 @@ const Gallery = () => {
 
 
     return (
-        <div className='md:px-page-x px-page-sx font-poppins py-24 bg-[#F9FBFD] overflow-hidden'>
+        <div className='md:px-page-x px-page-sx font-poppins py-16 bg-[#F9FBFD] overflow-hidden'>
             <div className='max-w-7xl mx-auto flex flex-col gap-12'>
                 <motion.h1
                     initial={{ opacity: 0, y: 30 }}
@@ -56,7 +56,7 @@ const Gallery = () => {
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, margin: "-100px" }}
-                                transition={{ delay: index * 0.05 }}
+                                transition={{ delay: index * 0.1 }}
                                 className={`relative rounded-3xl overflow-hidden group cursor-pointer ${getSpanClasses(index)} shadow-sm hover:shadow-2xl transition-all duration-500`}
                                 aria-label={`Gallery image ${index + 1}`}
                                 onClick={() => openPicturesLink(img.picturesLink)}
@@ -88,9 +88,9 @@ const Gallery = () => {
                 <div className='flex justify-center mt-12'>
                     <Link href='/gallery'>
                         <motion.button
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
+                            viewport={{ once: true, margin: "-100px" }}
                             className="bg-primary rounded-2xl px-10 py-4 text-black font-bold text-base hover:shadow-2xl hover:bg-primary/90 transition-all duration-300 flex items-center gap-3 cursor-pointer"
                             whileTap={{ scale: 0.95 }}
                         >
