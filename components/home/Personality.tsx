@@ -34,9 +34,14 @@ const Personality = () => {
         isLoading ?
           <LoadingPOTW /> :
           <Container size='xl'>
-            <div className='my-16 flex flex-col lg:flex-row items-center gap-10 justify-center'>
+            <div className='my-16 flex flex-col lg:flex-row items-center gap-10 justify-center overflow-hidden'>
 
-              <div className='w-full md:w-[480px] lg:w-[520px] sm:h-[450px] h-[350px] overflow-hidden shadow-lg relative rounded-2xl'>
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                className='w-full md:w-[480px] lg:w-[520px] sm:h-[450px] h-[350px] overflow-hidden shadow-lg relative rounded-2xl'
+              >
                 {personality?.image?.url ? (
                   <Image
                     src={personality.image.url}
@@ -47,11 +52,16 @@ const Personality = () => {
                 ) : (
                   <div className="w-full h-full bg-gray-200 animate-pulse" />
                 )}
-              </div>
+              </motion.div>
 
 
-              <div className='flex flex-col gap-4 xl:max-w-xl lg:w-1/2 w-full'>
-                <div>
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                className='flex flex-col gap-4 xl:max-w-xl lg:w-1/2 w-full'
+              >
+                <div className="space-y-2">
                   <h1 className='font-bold xl:text-3xl text-2xl font-header'>PERSONALITY OF THE WEEK</h1>
                   <p className='xl:text-[22px] text-medium-dark text-lg'>Celebrating Excellence and Innovation.</p>
                 </div>
@@ -64,7 +74,7 @@ const Personality = () => {
                 >
                   Read more
                 </Button>
-              </div>
+              </motion.div>
 
             </div>
           </Container>
