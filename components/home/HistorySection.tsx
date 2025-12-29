@@ -47,15 +47,16 @@ const historyData = {
 
 const HistorySection = () => {
     return (
-        <section className="py-24 bg-white overflow-hidden font-header">
+        <section className="py-24 bg-white font-header">
             <Container size="xl">
                 <div className="flex flex-col gap-24">
                     {/* Header */}
                     <div className="text-center space-y-6 max-w-3xl mx-auto">
                         <motion.span
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            className="inline-block bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider mb-4"
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            className="inline-block bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider mb-4 relative z-10"
                         >
                             Our Heritage
                         </motion.span>
@@ -84,7 +85,7 @@ const HistorySection = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             className="w-full lg:w-[55%] relative"
                         >
-                            <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-2xl relative z-10 border-8 border-white">
+                            <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-xl relative z-10 border border-slate-100 bg-white">
                                 <Image
                                     src="/images/history_legacy.jpeg"
                                     alt="GESA Legacy"
@@ -92,8 +93,6 @@ const HistorySection = () => {
                                     className="object-cover"
                                 />
                             </div>
-                            <div className="absolute -top-6 -left-6 w-full h-full bg-primary/5 rounded-3xl -z-0" />
-                            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/20 rounded-full blur-3xl -z-0 opacity-50" />
                         </motion.div>
 
                         <motion.div
@@ -125,7 +124,7 @@ const HistorySection = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             className="w-full lg:w-[55%] relative"
                         >
-                            <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-2xl relative z-10 border-8 border-white">
+                            <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-xl relative z-10 border border-slate-100 bg-white">
                                 <Image
                                     src="/images/engineering_activities.jpg"
                                     alt="GESA Activities"
@@ -133,8 +132,6 @@ const HistorySection = () => {
                                     className="object-cover"
                                 />
                             </div>
-                            <div className="absolute -top-6 -right-6 w-full h-full bg-primary/5 rounded-3xl -z-0" />
-                            <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-primary/20 rounded-full blur-3xl -z-0 opacity-50" />
                         </motion.div>
 
                         <motion.div
