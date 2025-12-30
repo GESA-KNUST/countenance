@@ -123,7 +123,6 @@ self.addEventListener('fetch', (event) => {
                         return networkResponse;
                     })
                     .catch((err) => {
-                        console.warn('[Service Worker] Fetch failed:', err);
                     });
                 return response || fetchPromise;
             });
