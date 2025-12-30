@@ -99,7 +99,7 @@ const Navbar = () => {
                         exit={{ opacity: 0, y: 10 }}
                         transition={{ duration: 0.2 }}
                         className="absolute top-full left-0 pt-2 z-50"
-                        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the dropdown
+                        onClick={(e) => e.stopPropagation()}
                       >
                         <div className="bg-white border border-gray-100 shadow-2xl rounded-[1.5rem] p-2 min-w-[220px]">
                           {nav.sublinks.map((sub, si) => (

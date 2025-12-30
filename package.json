@@ -26,9 +26,11 @@
     "lucide-react": "^0.548.0",
     "motion": "^12.23.24",
     "next": "^15.5.9",
+    "posthog-js": "^1.311.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "^3.4.0",
+    "zustand": "^5.0.9"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",

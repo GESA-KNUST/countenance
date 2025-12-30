@@ -1,0 +1,130 @@
+const CACHE_NAME = 'countenance-v1';
+const DYNAMIC_CACHE = 'countenance-dynamic-v1';
+
+const ASSETS = [
+    '/',
+    '/manifest.webmanifest',
+    '/icons/icon-192x192.png',
+    '/icons/icon-512x512.png'
+];
+
+self.addEventListener('install', (event) => {
+    console.log('[Service Worker] Installing...');
+    event.waitUntil(
+        caches.open(CACHE_NAME).then((cache) => {
+            console.log('[Service Worker] Precaching shell...');
+            return cache.addAll(ASSETS).catch(err => {
+                console.warn('Precache warning:', err);
+            });
+        })
+    );
+    self.skipWaiting();
+});
+
+self.addEventListener('activate', (event) => {
+    console.log('[Service Worker] Activating...');
+    event.waitUntil(
+        caches.keys().then((keyList) => {
+            return Promise.all(
+                keyList.map((key) => {
+                    if (key !== CACHE_NAME && key !== DYNAMIC_CACHE) {
+                        console.log('[Service Worker] Removing old cache.', key);
+                        return caches.delete(key);
+                    }
+                })
+            );
+        })
+    );
+    return self.clients.claim();
+});
+
+self.addEventListener('fetch', (event) => {
+    if (event.request.method !== 'GET') {
+        return;
+    }
+
+    const url = new URL(event.request.url);
+
+    if (event.request.destination === 'image' || url.pathname.match(/\.(png|jpg|jpeg|svg|gif|webp)$/)) {
+        event.respondWith(
+            caches.match(event.request).then((response) => {
+                if (response) {
+                    return response;
+                }
+                return fetch(event.request).then((networkResponse) => {
+                    if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic' && networkResponse.type !== 'cors') {
+                        return networkResponse;
+                    }
+                    const responseToCache = networkResponse.clone();
+                    caches.open(DYNAMIC_CACHE).then((cache) => {
+                        cache.put(event.request, responseToCache);
+                    });
+                    return networkResponse;
+                });
+            })
+        );
+        return;
+    }
+
+    if (url.hostname.includes('contentful.com')) {
+        event.respondWith(
+            caches.open(DYNAMIC_CACHE).then((cache) => {
+                return cache.match(event.request).then((response) => {
+                    const fetchPromise = fetch(event.request).then((networkResponse) => {
+                        if (networkResponse && networkResponse.status === 200) {
+                            cache.put(event.request, networkResponse.clone());
+                        }
+                        return networkResponse;
+                    });
+                    return response || fetchPromise;
+                });
+            })
+        );
+        return;
+    }
+
+    if (event.request.mode === 'navigate') {
+        event.respondWith(
+            fetch(event.request)
+                .then((networkResponse) => {
+                    return caches.open(DYNAMIC_CACHE).then((cache) => {
+                        if (networkResponse && networkResponse.status === 200) {
+                            cache.put(event.request, networkResponse.clone());
+                        }
+                        return networkResponse;
+                    });
+                })
+                .catch(() => {
+                    return caches.match(event.request).then((response) => {
+                        return response || caches.match('/');
+                    });
+                })
+        );
+        return;
+    }
+
+
+    // 4. Default: Stale-While-Revalidate (Aggressive Caching)
+    // "Cache Everything": Try to serve from cache immediately, then update cache from network.
+    // This ensures offline availability for almost all assets visited.
+    event.respondWith(
+        caches.open(DYNAMIC_CACHE).then((cache) => {
+            return cache.match(event.request).then((response) => {
+                const fetchPromise = fetch(event.request)
+                    .then((networkResponse) => {
+                        // Cache successful responses (200) AND opaque responses (type 'opaque', status 0)
+                        // This allows caching cross-origin assets (like CDNs) necessary for the site to look right offline.
+                        if (networkResponse && (networkResponse.status === 200 || networkResponse.type === 'opaque')) {
+                            cache.put(event.request, networkResponse.clone());
+                        }
+                        return networkResponse;
+                    })
+                    .catch((err) => {
+                        // Network failed, do nothing (we rely on cache response if it exists)
+                        console.warn('[Service Worker] Fetch failed:', err);
+                    });
+                return response || fetchPromise;
+            });
+        })
+    );
+});
