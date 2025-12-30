@@ -105,7 +105,7 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
                           title: slug,
                           text: `Check out this blog post: ${slug}`,
                           url: url,
-                        }).catch((error) => console.log('Error sharing', error));
+                        }).catch((error) => { });
                       } else {
                         navigator.clipboard.writeText(url);
                         alert("Link copied to clipboard");
