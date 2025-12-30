@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Innovation Hubs",
-    description: "Discover the innovation hubs and incubation centers driving student creativity at KNUST College of Engineering.",
+    title: "Opportunities Hub",
+    description: "Explore opportunities including internships, scholarships, and financial aid available to GESA students.",
     openGraph: {
-        title: "Innovation Hubs | GESA-KNUST",
-        description: "Centers of innovation and excellence at KNUST.",
+        title: "Opportunities Hub | GESA-KNUST",
+        description: "Find career and academic opportunities at GESA-KNUST.",
     },
 };
 

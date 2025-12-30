@@ -51,8 +51,8 @@ const Footer = () => {
       path: [
         { page: "Events", to: "/events" },
         { page: "Executives", to: "/executives" },
-        { page: "clubs", to: "/clubs" },
-        { page: "Hub", to: "/hub" },
+        { page: "Clubs and Societies", to: "/clubs" },
+        { page: "Opportunities Hub", to: "/hub" },
         { page: "Gallery", to: "/gallery" },
       ]
     },
