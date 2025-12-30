@@ -9,12 +9,9 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
-    console.log('[Service Worker] Installing...');
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log('[Service Worker] Precaching shell...');
             return cache.addAll(ASSETS).catch(err => {
-                console.warn('Precache warning:', err);
             });
         })
     );
@@ -22,13 +19,11 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-    console.log('[Service Worker] Activating...');
     event.waitUntil(
         caches.keys().then((keyList) => {
             return Promise.all(
                 keyList.map((key) => {
                     if (key !== CACHE_NAME && key !== DYNAMIC_CACHE) {
-                        console.log('[Service Worker] Removing old cache.', key);
                         return caches.delete(key);
                     }
                 })
