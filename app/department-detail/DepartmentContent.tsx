@@ -15,11 +15,19 @@ import { useSearchParams } from 'next/navigation'
 import { useDepartment } from '@/hooks/useDepartment'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import StarSpinner from '@/components/ui/StarSpinner'
+import { useStore } from '@/store/useStore'
 
 const DepartmentContent = () => {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const { data: department, isLoading, error } = useDepartment(id as string);
+    const { addToRecentlyViewed } = useStore();
+
+    React.useEffect(() => {
+        if (department && id) {
+            addToRecentlyViewed(`/department-detail?id=${id}`);
+        }
+    }, [department, id, addToRecentlyViewed]);
 
     if (isLoading) {
         return (
