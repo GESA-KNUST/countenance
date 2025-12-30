@@ -12,6 +12,9 @@
     "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tabs": "^1.1.13",
+    "@serwist/next": "^9.4.2",
+    "@serwist/precaching": "^9.4.2",
+    "@serwist/sw": "^9.4.2",
     "@tanstack/react-query": "^5.90.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -28,7 +31,8 @@
     "next": "^15.5.9",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "^3.4.0",
+    "zustand": "^5.0.9"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",

@@ -15,11 +15,19 @@ import StarSpinner from '@/components/ui/StarSpinner'
 import whatsapp2 from '@/public/images/whatsapp2.svg'
 import twitter from '@/public/images/twitter.svg'
 import linkedin2 from '@/public/images/linkedin2.svg'
+import { useStore } from '@/store/useStore'
 
 const FacultyContent = () => {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const { data: faculty, isLoading, error } = useFaculty(id as string);
+    const { addToRecentlyViewed } = useStore();
+
+    React.useEffect(() => {
+        if (faculty && id) {
+            addToRecentlyViewed(`/faculty-detail?id=${id}`);
+        }
+    }, [faculty, id, addToRecentlyViewed]);
 
     if (isLoading) {
         return (

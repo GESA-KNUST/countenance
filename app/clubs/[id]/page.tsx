@@ -4,10 +4,19 @@ import { useParams } from 'next/navigation';
 import { useClubById } from '@/hooks/useClubs';
 import ClubDetail from '@/components/clubs/ClubDetail';
 import StarSpinner from '@/components/ui/StarSpinner';
+import { useStore } from '@/store/useStore';
+import { useEffect } from 'react';
 
 const ClubDetailPage = () => {
     const { id } = useParams();
     const { data: club, isLoading, error } = useClubById(id as string);
+    const { addToRecentlyViewed } = useStore();
+
+    useEffect(() => {
+        if (club && id) {
+            addToRecentlyViewed(`/clubs/${id}`);
+        }
+    }, [club, id, addToRecentlyViewed]);
 
     if (isLoading) {
         return (
