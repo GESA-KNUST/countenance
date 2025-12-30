@@ -4,10 +4,19 @@ import { useParams } from 'next/navigation';
 import { useEventBySlug } from '@/hooks/useEventCollection';
 import EventDetail from '@/components/events/EventDetail';
 import SkeletonLoadingCard from '@/components/events/SkeletonLoadingCard';
+import { useStore } from '@/store/useStore';
+import { useEffect } from 'react';
 
 const EventDetailPage = () => {
     const { slug } = useParams();
     const { data: event, isLoading, error } = useEventBySlug(slug as string);
+    const { addToRecentlyViewed } = useStore();
+
+    useEffect(() => {
+        if (event && slug) {
+            addToRecentlyViewed(`/events/${slug}`);
+        }
+    }, [event, slug, addToRecentlyViewed]);
 
     if (isLoading) {
         return (
