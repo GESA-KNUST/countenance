@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import DepartmentContent from './DepartmentContent';
+import FacultyContent from './FacultyContent';
 import { Metadata, ResolvingMetadata } from 'next';
 import { gql } from "graphql-request";
 import { contentfulClient } from "@/lib/contentful-client";
@@ -9,13 +9,13 @@ type Props = {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-const GET_DEPARTMENT_FOR_METADATA = gql`
-    query GetDepartmentForMetadata($id: String!) {
-        departmentCollection(where: { sys: { id: $id } }, limit: 1) {
+const GET_FACULTY_FOR_METADATA = gql`
+    query GetFacultyForMetadata($id: String!) {
+        facultyCollection(where: { sys: { id: $id } }, limit: 1) {
             items {
                 name
-                deptAbbreviation
-                deptLogo {
+                abbreviation
+                logo {
                     url
                 }
             }
@@ -32,32 +32,32 @@ export async function generateMetadata(
 
     if (!id || Array.isArray(id)) {
         return {
-            title: 'Department Detail',
+            title: 'Faculty Detail',
         };
     }
 
     try {
-        const data: any = await contentfulClient.request(GET_DEPARTMENT_FOR_METADATA, { id });
-        const dept = data.departmentCollection.items[0];
+        const data: any = await contentfulClient.request(GET_FACULTY_FOR_METADATA, { id });
+        const faculty = data.facultyCollection.items[0];
 
-        if (!dept) {
+        if (!faculty) {
             return {
-                title: 'Department Not Found',
+                title: 'Faculty Not Found',
             };
         }
 
         return {
-            title: `${dept.name} | GESA KNUST`,
-            description: `Official page of the Department of ${dept.name} at KNUST.`,
+            title: `${faculty.name} | GESA KNUST`,
+            description: `Official page of the ${faculty.name} at KNUST.`,
             openGraph: {
-                title: dept.name,
-                images: dept.deptLogo?.url ? [dept.deptLogo.url] : [],
+                title: faculty.name,
+                images: faculty.logo?.url ? [faculty.logo.url] : [],
             },
         }
     } catch (error) {
         console.error(error);
         return {
-            title: 'Department Detail',
+            title: 'Faculty Detail',
         };
     }
 }
@@ -65,7 +65,7 @@ export async function generateMetadata(
 export default function Page() {
     return (
         <Suspense fallback={<div className="h-[80vh] flex items-center justify-center bg-gray-50"><StarSpinner /></div>}>
-            <DepartmentContent />
+            <FacultyContent />
         </Suspense>
     );
 }
