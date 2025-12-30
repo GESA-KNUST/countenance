@@ -74,9 +74,9 @@ const ClubsPage = () => {
     return (
         <div className='font-poppins min-h-screen'>
             <HeroSection
-                title="Explore Our Clubs"
-                highlight="Clubs"
-                text='Connect, learn, and grow with clubs that support your passions, goals, and personal development.'
+                title="Explore Our Clubs and Societies"
+                highlight="Clubs and Societies"
+                text='Connect, learn, and grow with clubs and societies that support your passions, goals, and personal development.'
                 images={['/images/img1.png', '/images/img2.png']}
                 button={false}
             />
@@ -86,7 +86,7 @@ const ClubsPage = () => {
                         <Search className='text-gray-300' />
                         <input
                             type="text"
-                            placeholder='Search clubs'
+                            placeholder='Search clubs and societies'
                             className='w-full p-2 rounded-xl h-full outline-0 flex-1'
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
@@ -108,7 +108,7 @@ const ClubsPage = () => {
 
             <Container size="xl">
                 <div className='py-8'>
-                    <h1 className='font-bold text-3xl md:text-4xl text-center font-header text-gray-900'>Featured Clubs</h1>
+                    <h1 className='font-bold text-3xl md:text-4xl text-center font-header text-gray-900'>Featured Clubs and Societies</h1>
                     <p className='text-center mt-2 text-gray-500'>Discover our most active and engaging student communities</p>
 
                     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-6'>

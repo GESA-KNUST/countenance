@@ -37,12 +37,12 @@ const HomeClubsPreview = () => {
                         className="flex justify-between items-center"
                     >
                         <div className="space-y-3">
-                            <h2 className="text-4xl font-bold text-gray-900 font-header">Featured Clubs</h2>
+                            <h2 className="text-4xl font-bold text-gray-900 font-header">Featured Clubs and Societies</h2>
                             <p className="text-sm md:text-lg text-gray-500 max-w-2xl">Connect with communities that match your passions and engineering interests.</p>
                         </div>
                         <Link href="/clubs" className="hidden md:block">
                             <Button variant="ghost" className="text-base gap-2 text-primary hover:text-primary/80 hover:bg-primary/5 transition-all duration-300">
-                                View All Clubs <ArrowRight size={16} />
+                                View All Clubs and Societies <ArrowRight size={16} />
                             </Button>
                         </Link>
                     </motion.div>
