@@ -104,23 +104,17 @@ self.addEventListener('fetch', (event) => {
     }
 
 
-    // 4. Default: Stale-While-Revalidate (Aggressive Caching)
-    // "Cache Everything": Try to serve from cache immediately, then update cache from network.
-    // This ensures offline availability for almost all assets visited.
     event.respondWith(
         caches.open(DYNAMIC_CACHE).then((cache) => {
             return cache.match(event.request).then((response) => {
                 const fetchPromise = fetch(event.request)
                     .then((networkResponse) => {
-                        // Cache successful responses (200) AND opaque responses (type 'opaque', status 0)
-                        // This allows caching cross-origin assets (like CDNs) necessary for the site to look right offline.
                         if (networkResponse && (networkResponse.status === 200 || networkResponse.type === 'opaque')) {
                             cache.put(event.request, networkResponse.clone());
                         }
                         return networkResponse;
                     })
                     .catch((err) => {
-                        // Network failed, do nothing (we rely on cache response if it exists)
                         console.warn('[Service Worker] Fetch failed:', err);
                     });
                 return response || fetchPromise;
