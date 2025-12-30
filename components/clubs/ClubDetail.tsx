@@ -33,7 +33,7 @@ const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
                             className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-4 transition-all hover:-translate-x-1"
                         >
                             <ArrowLeft className="w-5 h-5" />
-                            <span className="font-medium">Back to Clubs</span>
+                            <span className="font-medium">Back to Clubs and Societies</span>
                         </Link>
 
                         <div className="relative w-24 h-24 sm:w-32 sm:h-32 mx-auto rounded-3xl overflow-hidden border-4 border-white/10 shadow-2xl animate-in zoom-in duration-700">
