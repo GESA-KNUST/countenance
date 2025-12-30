@@ -18,13 +18,11 @@ const Navbar = () => {
     opacity: 0,
   });
 
-  // Close menus when route changes
   useEffect(() => {
     setIsOpen(false);
     setOpenSubmenu(null);
   }, [currentPath]);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -47,14 +45,19 @@ const Navbar = () => {
     { name: 'GESA Blog', link: '/blog' },
     { name: 'Events', link: '/events' },
     { name: 'Executives', link: '/executives' },
-    { name: 'Hub', link: '/hubs' },
-    { name: 'Clubs', link: '/clubs' },
+    {
+      name: 'Community',
+      sublinks: [
+        { name: 'Opportunities Hub', link: '/hubs' },
+        { name: 'Clubs and Societies', link: '/clubs' },
+      ]
+    },
     { name: 'Gallery', link: '/gallery' },
     { name: 'Contact Us', link: '/contact-us' },
   ]
 
   return (
-    <div className='flex items-center justify-between md:px-page-x lg:py-page-y px-page-sx font-poppins max-w-360 mx-auto h-(--navbar-height)'>
+    <div className='flex items-center justify-between md:px-page-x lg:py-page-y px-page-sx font-poppins max-w-360 mx-auto h-(--navbar-height) relative z-50'>
       <Link href="/">
         <Image src={Logo} alt='logo' />
       </Link>
@@ -82,7 +85,7 @@ const Navbar = () => {
                   onClick={() => setOpenSubmenu(isExpanded ? null : nav.name)}
                 >
                   <div
-                    className={`font-semibold cursor-pointer ${isSubActive ? 'bg-primary rounded-full' : ''} md:px-5 md:py-3 py-1.5 flex items-center gap-1 select-none`}
+                    className={`font-semibold cursor-pointer ${isSubActive ? 'bg-primary rounded-full' : ''} md:px-5 md:py-3 py-1.5 flex items-center gap-1 select-none whitespace-nowrap`}
                   >
                     {nav.name}
                     <ChevronDown
@@ -99,7 +102,7 @@ const Navbar = () => {
                         exit={{ opacity: 0, y: 10 }}
                         transition={{ duration: 0.2 }}
                         className="absolute top-full left-0 pt-2 z-50"
-                        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the dropdown
+                        onClick={(e) => e.stopPropagation()}
                       >
                         <div className="bg-white border border-gray-100 shadow-2xl rounded-[1.5rem] p-2 min-w-[220px]">
                           {nav.sublinks.map((sub, si) => (
@@ -128,7 +131,7 @@ const Navbar = () => {
               <Tab setPosition={setPosition} key={i}>
                 <Link
                   href={nav.link!}
-                  className={`font-semibold ${isActive ? 'bg-primary rounded-full' : ''} md:px-5 md:py-3 py-1.5`}
+                  className={`font-semibold ${isActive ? 'bg-primary rounded-full' : ''} md:px-5 md:py-3 py-1.5 whitespace-nowrap`}
                 >
                   {nav.name}
                 </Link>
