@@ -3,41 +3,49 @@ import { useFetchData } from "./useFetchData";
 import { contentfulClient } from "../lib/contentful-client";
 
 export interface DepartmentData {
-    name: string;
-    deptAbbreviation: string;
-    deptLogo: {
-        title: string;
-        description: string;
-        url: string;
+  name: string;
+  deptAbbreviation: string;
+  deptLogo: {
+    title: string;
+    description: string;
+    url: string;
+  };
+  vision: {
+    json: any;
+  };
+  about: {
+    json: any;
+    links?: {
+      assets: {
+        block: {
+          sys: { id: string };
+          url: string;
+          description: string;
+          width: number;
+          height: number;
+        }[];
+      };
     };
-    vision: {
-        json: any;
-    };
-    about: {
-        json: any;
-    };
-    mission: {
-        json: any;
-    };
-    websiteLink: string;
-    deptPhone: string;
-    deptLinkedIn: string;
-    whatsappLink: string;
-    xComLink: string;
-    tiktokLink: string;
-    deptEmail: string;
+  };
+  mission: {
+    json: any;
+  };
+  websiteLink: string;
+  deptPhone: string;
+  deptLinkedIn: string;
+  whatsappLink: string;
+  xComLink: string;
+  tiktokLink: string;
+  deptEmail: string;
 }
 
 interface Props {
-    departmentCollection: {
-        items: DepartmentData[];
-    };
+  department: DepartmentData;
 }
 
 const GET_DEPARTMENT = gql`
   query GetDepartment($id: String!) {
-    departmentCollection(where: { sys: { id: $id } }, limit: 1) {
-      items {
+    department(id: $id) {
         name
         deptAbbreviation
         deptLogo {
@@ -50,6 +58,19 @@ const GET_DEPARTMENT = gql`
         }
         about {
           json
+          links {
+            assets {
+              block {
+                sys {
+                  id
+                }
+                url
+                description
+                width
+                height
+              }
+            }
+          }
         }
         mission {
           json
@@ -61,24 +82,24 @@ const GET_DEPARTMENT = gql`
         xComLink
         tiktokLink
         deptEmail
-      }
     }
   }
 `;
 
 export const useDepartment = (id: string) => {
-    return useFetchData({
-        queryKey: ["department", id],
-        queryFn: async () => {
-            try {
-                const data = await contentfulClient.request<Props>(GET_DEPARTMENT, {
-                    id,
-                });
-                return data.departmentCollection.items[0];
-            } catch (err: any) {
-                throw err;
-            }
-        },
-        enabled: !!id,
-    });
+  return useFetchData<DepartmentData>({
+    queryKey: ["department", id],
+    queryFn: async () => {
+      try {
+        const data = await contentfulClient.request<Props>(GET_DEPARTMENT, {
+          id,
+        });
+        return data.department;
+      } catch (err: any) {
+        console.error("Error fetching department:", err);
+        throw err;
+      }
+    },
+    enabled: !!id,
+  });
 };
