@@ -24,6 +24,7 @@ export interface DepartmentData {
           width: number;
           height: number;
         }[];
+
       };
     };
   };
@@ -69,6 +70,7 @@ const GET_DEPARTMENT = gql`
                 width
                 height
               }
+
             }
           }
         }
