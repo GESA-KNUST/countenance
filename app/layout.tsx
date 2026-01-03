@@ -2,7 +2,9 @@ import { Poppins, Open_Sans, Montserrat } from "next/font/google";
 import "./globals.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import Link from "next/link";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import { Metadata, Viewport } from "next";
 
 const poppins = Poppins({
@@ -123,6 +125,7 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <div>
+          <ServiceWorkerRegister />
           <Navbar />
           <ReactQueryProvider>
             {children}
