@@ -2,7 +2,7 @@
 
 import Container from '@/components/custom/Container'
 import DepartmentHero from '@/components/department/DepartmentHero'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import star from '@/public/images/star.svg'
 import Image from 'next/image'
@@ -15,11 +15,19 @@ import { useSearchParams } from 'next/navigation'
 import { useDepartment } from '@/hooks/useDepartment'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import StarSpinner from '@/components/ui/StarSpinner'
+import { useStore } from '@/store/useStore'
 
 const DepartmentContent = () => {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const { data: department, isLoading, error } = useDepartment(id as string);
+    const { addToRecentlyViewed } = useStore();
+
+    useEffect(() => {
+        if (department && id) {
+            addToRecentlyViewed(`/department-detail?id=${id}`);
+        }
+    }, [department, id, addToRecentlyViewed]);
 
     if (isLoading) {
         return (
