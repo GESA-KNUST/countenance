@@ -14,9 +14,10 @@ const GET_FACULTY_FOR_METADATA = gql`
         facultyCollection(where: { sys: { id: $id } }, limit: 1) {
             items {
                 name
-                abbreviation
-                logo {
-                    url
+                facultyMainImageCollection(limit: 1) {
+                    items {
+                        url
+                    }
                 }
             }
         }
@@ -51,7 +52,9 @@ export async function generateMetadata(
             description: `Official page of the ${faculty.name} at KNUST.`,
             openGraph: {
                 title: faculty.name,
-                images: faculty.logo?.url ? [faculty.logo.url] : [],
+                images: faculty.facultyMainImageCollection?.items?.[0]?.url
+                    ? [faculty.facultyMainImageCollection.items[0].url]
+                    : [],
             },
         }
     } catch (error) {

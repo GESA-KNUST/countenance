@@ -75,10 +75,10 @@ const HomeClubsPreview = () => {
                                     </div>
                                 </div>
 
-                                <a href={club.clubLink} target="_blank" rel="noopener noreferrer" className='font-bold inline-flex justify-center items-center w-full bg-white border-2 border-slate-100 hover:border-primary hover:bg-primary hover:text-white transition-all duration-300 rounded-2xl py-4 group-hover:shadow-md z-10 cursor-pointer'>
+                                <Link href={`/clubs/${club.sys.id}`} className='font-bold inline-flex justify-center items-center w-full bg-white border-2 border-slate-100 hover:border-primary hover:bg-primary hover:text-white transition-all duration-300 rounded-2xl py-4 group-hover:shadow-md z-10 cursor-pointer'>
                                     View Details
                                     <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                                </a>
+                                </Link>
                             </motion.div>
                         ))}
                     </div>
