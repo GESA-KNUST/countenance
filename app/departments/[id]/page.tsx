@@ -64,6 +64,9 @@ const DepartmentDetailPage = () => {
                     </div>
                 );
             },
+            [BLOCKS.PARAGRAPH]: (node: any, children: any) => {
+                return <p className="mb-6 leading-relaxed text-gray-700 text-lg">{children}</p>;
+            },
         },
     };
 
