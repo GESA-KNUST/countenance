@@ -2,7 +2,7 @@
 
 import Container from '@/components/custom/Container'
 import DepartmentHero from '@/components/department/DepartmentHero'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import star from '@/public/images/star.svg'
 import Image from 'next/image'
@@ -10,16 +10,23 @@ import { Globe, School, LayoutGrid, ChevronRight, Mail, Music2 } from 'lucide-re
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useFaculty } from '@/hooks/useFaculty'
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import StarSpinner from '@/components/ui/StarSpinner'
 import whatsapp2 from '@/public/images/whatsapp2.svg'
 import twitter from '@/public/images/twitter.svg'
 import linkedin2 from '@/public/images/linkedin2.svg'
+import { useStore } from '@/store/useStore'
 
 const FacultyContent = () => {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const { data: faculty, isLoading, error } = useFaculty(id as string);
+    const { addToRecentlyViewed } = useStore();
+
+    useEffect(() => {
+        if (faculty && id) {
+            addToRecentlyViewed(`/faculty-detail?id=${id}`);
+        }
+    }, [faculty, id, addToRecentlyViewed]);
 
     if (isLoading) {
         return (
