@@ -2,31 +2,26 @@
 
 import Container from '@/components/custom/Container'
 import DepartmentHero from '@/components/department/DepartmentHero'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import star from '@/public/images/star.svg'
 import Image from 'next/image'
 import { Globe, School, LayoutGrid, ChevronRight, Mail, Music2 } from 'lucide-react'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { useFaculty } from '@/hooks/useFaculty'
 import StarSpinner from '@/components/ui/StarSpinner'
 import whatsapp2 from '@/public/images/whatsapp2.svg'
 import twitter from '@/public/images/twitter.svg'
 import linkedin2 from '@/public/images/linkedin2.svg'
-import { useStore } from '@/store/useStore'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import remarkBreaks from 'remark-breaks'
 
-const FacultyContent = () => {
-    const searchParams = useSearchParams();
-    const id = searchParams.get('id');
-    const { data: faculty, isLoading, error } = useFaculty(id as string);
-    const { addToRecentlyViewed } = useStore();
-
-    useEffect(() => {
-        if (faculty && id) {
-            addToRecentlyViewed(`/faculty-detail?id=${id}`);
-        }
-    }, [faculty, id, addToRecentlyViewed]);
+const FacultyDetailPage = () => {
+    const params = useParams();
+    const id = params.id as string;
+    const { data: faculty, isLoading, error } = useFaculty(id);
 
     if (isLoading) {
         return (
@@ -36,7 +31,7 @@ const FacultyContent = () => {
         );
     }
 
-    if (error || !faculty || !id) {
+    if (error || !faculty) {
         return (
             <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
                 <div className="text-center max-w-md bg-white p-8 rounded-3xl shadow-xl border border-gray-100">
@@ -57,15 +52,14 @@ const FacultyContent = () => {
         <div className='flex items-center gap-4 mt-2'>
             <div className='flex items-center gap-5 bg-gray-100/50 p-2.5 px-6 rounded-full border border-gray-200 shadow-sm'>
                 <p className='text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mr-2'>Connect</p>
-
-                {faculty.facultyTwitter && (
-                    <a href={faculty.facultyTwitter} target="_blank" rel="noopener noreferrer" className='hover:scale-110 transition-all flex items-center justify-center' title="X (Twitter)">
-                        <Image src={twitter} alt="Twitter" width={24} height={24} className="w-6 h-6" />
-                    </a>
-                )}
                 {faculty.facultyLinkedIn && (
                     <a href={faculty.facultyLinkedIn} target="_blank" rel="noopener noreferrer" className='hover:scale-110 transition-all flex items-center justify-center' title="LinkedIn">
                         <Image src={linkedin2} alt="LinkedIn" width={24} height={24} className="w-6 h-6" />
+                    </a>
+                )}
+                {faculty.facultyTwitter && (
+                    <a href={faculty.facultyTwitter} target="_blank" rel="noopener noreferrer" className='hover:scale-110 transition-all flex items-center justify-center' title="X (Twitter)">
+                        <Image src={twitter} alt="Twitter" width={24} height={24} className="w-6 h-6" />
                     </a>
                 )}
                 {faculty.facultyMail && (
@@ -81,9 +75,9 @@ const FacultyContent = () => {
         <div className='font-poppins min-h-screen bg-white'>
             <DepartmentHero
                 title={faculty.name}
-                subtitle={"GESA"}
-                text={'Leading the way in engineering education and innovative research.'}
-                images={['/images/img2.png', '/images/img1.png']}
+                subtitle="FACULTY"
+                text={`Official page of the ${faculty.name} at KNUST.`}
+                images={faculty.facultyMainImageCollection?.items?.map(item => item.url) || ['/images/img2.png', '/images/img1.png']}
             />
             <Container size='xl'>
                 <div className='py-8'>
@@ -104,9 +98,24 @@ const FacultyContent = () => {
                                 </div>
                                 <h1 className='text-4xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>{faculty.name}</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
-                                <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
-                                    {faculty.about ? <p>{faculty.about}</p> : <p className="italic text-gray-500">Information coming soon...</p>}
+                                <div className='text-lg text-gray-700 space-y-6 max-w-none leading-relaxed'>
+                                    {faculty.about ? (
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm, remarkBreaks]}
+                                            components={{
+                                                p: ({ node, ...props }: any) => <p className="mb-6 leading-relaxed text-gray-700 text-lg" {...props} />,
+                                                ul: ({ node, ...props }: any) => <ul className="list-disc pl-6 mb-6 text-gray-700 text-lg" {...props} />,
+                                                ol: ({ node, ...props }: any) => <ol className="list-decimal pl-6 mb-6 text-gray-700 text-lg" {...props} />,
+                                                li: ({ node, ...props }: any) => <li className="mb-2 pl-2" {...props} />
+                                            }}
+                                        >
+                                            {faculty.about}
+                                        </ReactMarkdown>
+                                    ) : (
+                                        <p className="italic text-gray-500">Information coming soon...</p>
+                                    )}
                                 </div>
+
                                 <div className='flex flex-wrap items-center gap-8 pt-8 border-t border-gray-100'>
                                     {faculty.facultyWebsite && (
                                         <a href={faculty.facultyWebsite} target='_blank' rel='noopener noreferrer' className='bg-primary text-white px-10 py-4 cursor-pointer rounded-full w-max font-bold flex items-center gap-3 hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]'>
@@ -127,11 +136,11 @@ const FacultyContent = () => {
                                     <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    {faculty.departmentsUnderFacultyCollection?.items?.length! > 0 ? (
-                                        faculty.departmentsUnderFacultyCollection?.items.map((dept) => (
+                                    {faculty.departmentsUnderFacultyCollection?.items?.length > 0 ? (
+                                        faculty.departmentsUnderFacultyCollection.items.map((dept) => (
                                             <Link
                                                 key={dept.sys.id}
-                                                href={`/department-detail?id=${dept.sys.id}`}
+                                                href={`/departments/${dept.sys.id}`}
                                                 className="group bg-white border border-gray-100 p-6 rounded-3xl hover:shadow-xl hover:border-primary/20 transition-all duration-300 flex items-center gap-4"
                                             >
                                                 <div className="w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center p-2 group-hover:bg-primary/10 transition-colors">
@@ -164,17 +173,22 @@ const FacultyContent = () => {
                                 </div>
                                 <h1 className='text-4xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>Our Mission</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
-                                <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
-                                    {faculty.mission ? <p>{faculty.mission}</p> : <p className="italic text-gray-500">Mission details are currently being updated.</p>}
-                                </div>
-                                <div className='flex flex-wrap items-center gap-8 pt-8 border-t border-gray-100'>
-                                    {faculty.facultyWebsite && (
-                                        <a href={faculty.facultyWebsite} target='_blank' rel='noopener noreferrer' className='bg-primary text-white px-10 py-4 cursor-pointer rounded-full w-max font-bold flex items-center gap-3 hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]'>
-                                            <Globe size={20} />
-                                            Visit Website
-                                        </a>
+                                <div className='text-lg text-gray-700 space-y-6 max-w-none leading-relaxed'>
+                                    {faculty.mission ? (
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm, remarkBreaks]}
+                                            components={{
+                                                p: ({ node, ...props }: any) => <p className="mb-6 leading-relaxed text-gray-700 text-lg" {...props} />,
+                                                ul: ({ node, ...props }: any) => <ul className="list-disc pl-6 mb-6 text-gray-700 text-lg" {...props} />,
+                                                ol: ({ node, ...props }: any) => <ol className="list-decimal pl-6 mb-6 text-gray-700 text-lg" {...props} />,
+                                                li: ({ node, ...props }: any) => <li className="mb-2 pl-2" {...props} />
+                                            }}
+                                        >
+                                            {faculty.mission}
+                                        </ReactMarkdown>
+                                    ) : (
+                                        <p className="italic text-gray-500">Mission details are currently being updated.</p>
                                     )}
-                                    <SocialLinks />
                                 </div>
                             </div>
                         </TabsContent>
@@ -188,17 +202,22 @@ const FacultyContent = () => {
                                 </div>
                                 <h1 className='text-4xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>Our Vision</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
-                                <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
-                                    {faculty.vision ? <p>{faculty.vision}</p> : <p className="italic text-gray-500">Vision statement is being finalized.</p>}
-                                </div>
-                                <div className='flex flex-wrap items-center gap-8 pt-8 border-t border-gray-100'>
-                                    {faculty.facultyWebsite && (
-                                        <a href={faculty.facultyWebsite} target='_blank' rel='noopener noreferrer' className='bg-primary text-white px-10 py-4 cursor-pointer rounded-full w-max font-bold flex items-center gap-3 hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]'>
-                                            <Globe size={20} />
-                                            Visit Website
-                                        </a>
+                                <div className='text-lg text-gray-700 space-y-6 max-w-none leading-relaxed'>
+                                    {faculty.vision ? (
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm, remarkBreaks]}
+                                            components={{
+                                                p: ({ node, ...props }: any) => <p className="mb-6 leading-relaxed text-gray-700 text-lg" {...props} />,
+                                                ul: ({ node, ...props }: any) => <ul className="list-disc pl-6 mb-6 text-gray-700 text-lg" {...props} />,
+                                                ol: ({ node, ...props }: any) => <ol className="list-decimal pl-6 mb-6 text-gray-700 text-lg" {...props} />,
+                                                li: ({ node, ...props }: any) => <li className="mb-2 pl-2" {...props} />
+                                            }}
+                                        >
+                                            {faculty.vision}
+                                        </ReactMarkdown>
+                                    ) : (
+                                        <p className="italic text-gray-500">Vision statement is being finalized.</p>
                                     )}
-                                    <SocialLinks />
                                 </div>
                             </div>
                         </TabsContent>
@@ -209,4 +228,4 @@ const FacultyContent = () => {
     )
 }
 
-export default FacultyContent
+export default FacultyDetailPage
