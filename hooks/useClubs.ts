@@ -16,6 +16,7 @@ export interface ClubItems {
   clubType: string
   description: string
   isFeatured: boolean
+  isActivelyRecruitingMembers: boolean
 }
 
 interface ClubCollection {
@@ -42,6 +43,7 @@ query ClubCollection {
       clubType
       description
       isFeatured
+      isActivelyRecruitingMembers
     }
   }
 }
@@ -64,6 +66,7 @@ query ClubById($id: String!) {
       clubType
       description
       isFeatured
+      isActivelyRecruitingMembers
     }
   }
 }
