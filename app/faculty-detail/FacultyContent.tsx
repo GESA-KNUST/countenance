@@ -50,13 +50,9 @@ const FacultyContent = () => {
         <div className='flex items-center gap-4 mt-2'>
             <div className='flex items-center gap-5 bg-gray-100/50 p-2.5 px-6 rounded-full border border-gray-200 shadow-sm'>
                 <p className='text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mr-2'>Connect</p>
-                {faculty.whatsappLink && (
-                    <a href={faculty.whatsappLink} target="_blank" rel="noopener noreferrer" className='hover:scale-110 transition-all flex items-center justify-center' title="WhatsApp">
-                        <Image src={whatsapp2} alt="WhatsApp" width={28} height={28} className="w-7 h-7" />
-                    </a>
-                )}
-                {faculty.xComLink && (
-                    <a href={faculty.xComLink} target="_blank" rel="noopener noreferrer" className='hover:scale-110 transition-all flex items-center justify-center' title="X (Twitter)">
+
+                {faculty.facultyTwitter && (
+                    <a href={faculty.facultyTwitter} target="_blank" rel="noopener noreferrer" className='hover:scale-110 transition-all flex items-center justify-center' title="X (Twitter)">
                         <Image src={twitter} alt="Twitter" width={24} height={24} className="w-6 h-6" />
                     </a>
                 )}
@@ -65,13 +61,8 @@ const FacultyContent = () => {
                         <Image src={linkedin2} alt="LinkedIn" width={24} height={24} className="w-6 h-6" />
                     </a>
                 )}
-                {faculty.tiktokLink && (
-                    <a href={faculty.tiktokLink} target="_blank" rel="noopener noreferrer" className='bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-sm text-gray-700 hover:text-black transition-all hover:scale-110 border border-gray-100' title="TikTok">
-                        <Music2 size={18} />
-                    </a>
-                )}
-                {faculty.facultyEmail && (
-                    <a href={`mailto:${faculty.facultyEmail}`} className='bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-sm text-gray-700 hover:text-primary transition-all hover:scale-110 border border-gray-100' title="Email">
+                {faculty.facultyMail && (
+                    <a href={`mailto:${faculty.facultyMail}`} className='bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-sm text-gray-700 hover:text-primary transition-all hover:scale-110 border border-gray-100' title="Email">
                         <Mail size={18} />
                     </a>
                 )}
@@ -83,8 +74,8 @@ const FacultyContent = () => {
         <div className='font-poppins min-h-screen bg-white'>
             <DepartmentHero
                 title={faculty.name}
-                subtitle={faculty.abbreviation || "GESA"}
-                text={faculty.abbreviation ? `Official page of the ${faculty.name} at KNUST.` : 'Leading the way in engineering education and innovative research.'}
+                subtitle={"GESA"}
+                text={'Leading the way in engineering education and innovative research.'}
                 images={['/images/img2.png', '/images/img1.png']}
             />
             <Container size='xl'>
@@ -101,7 +92,7 @@ const FacultyContent = () => {
                             <div className='flex flex-col gap-8'>
                                 <div className='flex items-center gap-3'>
                                     <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
-                                    <p className='text-primary font-bold text-sm tracking-wider uppercase'>{faculty.abbreviation || 'GESA'} - KNUST</p>
+                                    <p className='text-primary font-bold text-sm tracking-wider uppercase'>GESA - KNUST</p>
                                     <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
                                 </div>
                                 <h1 className='text-4xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>{faculty.name}</h1>
@@ -110,8 +101,8 @@ const FacultyContent = () => {
                                     {faculty.about ? <p>{faculty.about}</p> : <p className="italic text-gray-500">Information coming soon...</p>}
                                 </div>
                                 <div className='flex flex-wrap items-center gap-8 pt-8 border-t border-gray-100'>
-                                    {faculty.websiteLink && (
-                                        <a href={faculty.websiteLink} target='_blank' rel='noopener noreferrer' className='bg-primary text-white px-10 py-4 cursor-pointer rounded-full w-max font-bold flex items-center gap-3 hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]'>
+                                    {faculty.facultyWebsite && (
+                                        <a href={faculty.facultyWebsite} target='_blank' rel='noopener noreferrer' className='bg-primary text-white px-10 py-4 cursor-pointer rounded-full w-max font-bold flex items-center gap-3 hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]'>
                                             <Globe size={20} />
                                             Visit Website
                                         </a>
@@ -129,11 +120,11 @@ const FacultyContent = () => {
                                     <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    {faculty.departmentsCollection?.items?.length! > 0 ? (
-                                        faculty.departmentsCollection?.items.map((dept) => (
+                                    {faculty.departmentsUnderFacultyCollection?.items?.length! > 0 ? (
+                                        faculty.departmentsUnderFacultyCollection?.items.map((dept) => (
                                             <Link
-                                                key={dept._id}
-                                                href={`/department-detail?id=${dept._id}`}
+                                                key={dept.sys.id}
+                                                href={`/department-detail?id=${dept.sys.id}`}
                                                 className="group bg-white border border-gray-100 p-6 rounded-3xl hover:shadow-xl hover:border-primary/20 transition-all duration-300 flex items-center gap-4"
                                             >
                                                 <div className="w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center p-2 group-hover:bg-primary/10 transition-colors">
@@ -170,8 +161,8 @@ const FacultyContent = () => {
                                     {faculty.mission ? <p>{faculty.mission}</p> : <p className="italic text-gray-500">Mission details are currently being updated.</p>}
                                 </div>
                                 <div className='flex flex-wrap items-center gap-8 pt-8 border-t border-gray-100'>
-                                    {faculty.websiteLink && (
-                                        <a href={faculty.websiteLink} target='_blank' rel='noopener noreferrer' className='bg-primary text-white px-10 py-4 cursor-pointer rounded-full w-max font-bold flex items-center gap-3 hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]'>
+                                    {faculty.facultyWebsite && (
+                                        <a href={faculty.facultyWebsite} target='_blank' rel='noopener noreferrer' className='bg-primary text-white px-10 py-4 cursor-pointer rounded-full w-max font-bold flex items-center gap-3 hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]'>
                                             <Globe size={20} />
                                             Visit Website
                                         </a>
@@ -194,8 +185,8 @@ const FacultyContent = () => {
                                     {faculty.vision ? <p>{faculty.vision}</p> : <p className="italic text-gray-500">Vision statement is being finalized.</p>}
                                 </div>
                                 <div className='flex flex-wrap items-center gap-8 pt-8 border-t border-gray-100'>
-                                    {faculty.websiteLink && (
-                                        <a href={faculty.websiteLink} target='_blank' rel='noopener noreferrer' className='bg-primary text-white px-10 py-4 cursor-pointer rounded-full w-max font-bold flex items-center gap-3 hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]'>
+                                    {faculty.facultyWebsite && (
+                                        <a href={faculty.facultyWebsite} target='_blank' rel='noopener noreferrer' className='bg-primary text-white px-10 py-4 cursor-pointer rounded-full w-max font-bold flex items-center gap-3 hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]'>
                                             <Globe size={20} />
                                             Visit Website
                                         </a>
