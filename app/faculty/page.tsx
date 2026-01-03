@@ -16,8 +16,7 @@ const FacultyListPage = () => {
     const { data: faculties, isLoading, error } = useFacultyCollection();
 
     const filteredFaculties = faculties?.filter(fac =>
-        fac.name.toLowerCase().includes(search.toLowerCase()) ||
-        fac.abbreviation?.toLowerCase().includes(search.toLowerCase())
+        fac.name.toLowerCase().includes(search.toLowerCase())
     );
 
     return (
@@ -34,7 +33,7 @@ const FacultyListPage = () => {
                         <Search className='text-gray-400' size={20} />
                         <input
                             type="text"
-                            placeholder='Search faculties by name or abbreviation...'
+                            placeholder='Search faculties...'
                             className='w-full p-4 rounded-xl h-full outline-0 text-gray-700 font-medium'
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
@@ -69,13 +68,13 @@ const FacultyListPage = () => {
                     ) : (
                         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
                             {filteredFaculties?.map((fac) => (
-                                <div key={fac._id} className='group bg-white p-8 rounded-[2.5rem] flex flex-col gap-6 w-full border border-gray-100 shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-500 hover:-translate-y-2'>
+                                <div key={fac.sys.id} className='group bg-white p-8 rounded-[2.5rem] flex flex-col gap-6 w-full border border-gray-100 shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-500 hover:-translate-y-2'>
                                     <div className="flex flex-row md:flex-col items-center md:items-start gap-4 md:gap-6">
                                         <div className='w-16 h-16 shrink-0 rounded-2xl bg-gray-50 p-3 flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-500'>
-                                            {fac.logo?.url ? (
+                                            {fac.facultyMainImageCollection?.items[0]?.url ? (
                                                 <div className="relative w-full h-full">
                                                     <Image
-                                                        src={fac.logo.url}
+                                                        src={fac.facultyMainImageCollection.items[0].url}
                                                         alt={fac.name}
                                                         fill
                                                         className="object-contain"
@@ -88,7 +87,7 @@ const FacultyListPage = () => {
                                         <div className="flex flex-col gap-1 md:gap-2">
                                             <div className="flex items-center gap-2">
                                                 <span className="text-[10px] font-black bg-primary/10 text-primary px-3 py-1 rounded-full uppercase tracking-widest leading-none">
-                                                    {fac.abbreviation || "FACULTY"}
+                                                    FACULTY
                                                 </span>
                                             </div>
                                             <h2 className='font-bold text-xl md:text-2xl font-header text-gray-900 line-clamp-2 min-h-0 md:min-h-[4rem] group-hover:text-primary transition-colors'>
@@ -101,7 +100,7 @@ const FacultyListPage = () => {
                                     </p>
                                     <div className='w-full pt-4 mt-auto'>
                                         <Link
-                                            href={`/faculty-detail?id=${fac._id}`}
+                                            href={`/faculties/${fac.sys.id}`}
                                             className='bg-black text-white px-6 py-4 rounded-2xl w-full font-bold hover:bg-primary transition-all duration-300 flex items-center justify-center gap-2 group/btn shadow-lg shadow-black/5 hover:shadow-primary/20'
                                         >
                                             View Faculty

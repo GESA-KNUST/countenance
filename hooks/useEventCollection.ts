@@ -19,6 +19,7 @@ export interface EventItem {
   eventDate: string;
   description: string;
   venue: EventVenue;
+  venueInPlainEnglish: string;
   onlineLink?: string;
   eventImage: EventImage;
 }
@@ -42,6 +43,7 @@ const GET_EVENTS = gql`
           lat
           lon
         }
+        venueInPlainEnglish
         onlineLink
         eventImage {
           url
@@ -65,6 +67,7 @@ const GET_EVENT_BY_SLUG = gql`
           lat
           lon
         }
+        venueInPlainEnglish
         onlineLink
         eventImage {
           url
