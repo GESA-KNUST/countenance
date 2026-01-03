@@ -3,35 +3,35 @@ import { useFetchData } from "./useFetchData";
 import { contentfulClient } from "../lib/contentful-client";
 
 export interface DepartmentData {
-    name: string;
-    deptAbbreviation: string;
-    deptLogo: {
-        title: string;
-        description: string;
-        url: string;
-    };
-    vision: {
-        json: any;
-    };
-    about: {
-        json: any;
-    };
-    mission: {
-        json: any;
-    };
-    websiteLink: string;
-    deptPhone: string;
-    deptLinkedIn: string;
-    whatsappLink: string;
-    xComLink: string;
-    tiktokLink: string;
-    deptEmail: string;
+  name: string;
+  deptAbbreviation: string;
+  deptLogo: {
+    title: string;
+    description: string;
+    url: string;
+  };
+  vision: {
+    json: any;
+  };
+  about: {
+    json: any;
+  };
+  mission: {
+    json: any;
+  };
+  websiteLink: string;
+  deptPhone: string;
+  deptLinkedIn: string;
+  whatsappLink: string;
+  xComLink: string;
+  tiktokLink: string;
+  deptEmail: string;
 }
 
 interface Props {
-    departmentCollection: {
-        items: DepartmentData[];
-    };
+  departmentCollection: {
+    items: DepartmentData[];
+  };
 }
 
 const GET_DEPARTMENT = gql`
@@ -67,18 +67,18 @@ const GET_DEPARTMENT = gql`
 `;
 
 export const useDepartment = (id: string) => {
-    return useFetchData({
-        queryKey: ["department", id],
-        queryFn: async () => {
-            try {
-                const data = await contentfulClient.request<Props>(GET_DEPARTMENT, {
-                    id,
-                });
-                return data.departmentCollection.items[0];
-            } catch (err: any) {
-                throw err;
-            }
-        },
-        enabled: !!id,
-    });
+  return useFetchData({
+    queryKey: ["department", id],
+    queryFn: async () => {
+      try {
+        const data = await contentfulClient.request<Props>(GET_DEPARTMENT, {
+          id,
+        });
+        return data.departmentCollection.items[0];
+      } catch (err: any) {
+        throw err;
+      }
+    },
+    enabled: !!id,
+  });
 };
