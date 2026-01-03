@@ -29,7 +29,7 @@ const SimplifiedBlogCard = ({ post, onPostSelect }) => (
                             title: post.title,
                             text: `Check out this blog post: ${post.title}`,
                             url: url,
-                        }).catch((error) => console.log('Error sharing', error));
+                        }).catch((error) => console.error('Error sharing', error));
                     } else {
                         navigator.clipboard.writeText(url);
                         alert("Link copied to clipboard!");

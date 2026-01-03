@@ -16,6 +16,7 @@ import twitter from '@/public/images/twitter.svg'
 import linkedin2 from '@/public/images/linkedin2.svg'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import remarkBreaks from 'remark-breaks'
 
 const FacultyDetailPage = () => {
     const params = useParams();
@@ -97,13 +98,24 @@ const FacultyDetailPage = () => {
                                 </div>
                                 <h1 className='text-4xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>{faculty.name}</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
-                                <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
+                                <div className='text-lg text-gray-700 space-y-6 max-w-none leading-relaxed'>
                                     {faculty.about ? (
-                                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{faculty.about}</ReactMarkdown>
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm, remarkBreaks]}
+                                            components={{
+                                                p: ({ node, ...props }: any) => <p className="mb-6 leading-relaxed text-gray-700 text-lg" {...props} />,
+                                                ul: ({ node, ...props }: any) => <ul className="list-disc pl-6 mb-6 text-gray-700 text-lg" {...props} />,
+                                                ol: ({ node, ...props }: any) => <ol className="list-decimal pl-6 mb-6 text-gray-700 text-lg" {...props} />,
+                                                li: ({ node, ...props }: any) => <li className="mb-2 pl-2" {...props} />
+                                            }}
+                                        >
+                                            {faculty.about}
+                                        </ReactMarkdown>
                                     ) : (
                                         <p className="italic text-gray-500">Information coming soon...</p>
                                     )}
                                 </div>
+
                                 <div className='flex flex-wrap items-center gap-8 pt-8 border-t border-gray-100'>
                                     {faculty.facultyWebsite && (
                                         <a href={faculty.facultyWebsite} target='_blank' rel='noopener noreferrer' className='bg-primary text-white px-10 py-4 cursor-pointer rounded-full w-max font-bold flex items-center gap-3 hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]'>
@@ -161,9 +173,19 @@ const FacultyDetailPage = () => {
                                 </div>
                                 <h1 className='text-4xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>Our Mission</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
-                                <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
+                                <div className='text-lg text-gray-700 space-y-6 max-w-none leading-relaxed'>
                                     {faculty.mission ? (
-                                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{faculty.mission}</ReactMarkdown>
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm, remarkBreaks]}
+                                            components={{
+                                                p: ({ node, ...props }: any) => <p className="mb-6 leading-relaxed text-gray-700 text-lg" {...props} />,
+                                                ul: ({ node, ...props }: any) => <ul className="list-disc pl-6 mb-6 text-gray-700 text-lg" {...props} />,
+                                                ol: ({ node, ...props }: any) => <ol className="list-decimal pl-6 mb-6 text-gray-700 text-lg" {...props} />,
+                                                li: ({ node, ...props }: any) => <li className="mb-2 pl-2" {...props} />
+                                            }}
+                                        >
+                                            {faculty.mission}
+                                        </ReactMarkdown>
                                     ) : (
                                         <p className="italic text-gray-500">Mission details are currently being updated.</p>
                                     )}
@@ -180,9 +202,19 @@ const FacultyDetailPage = () => {
                                 </div>
                                 <h1 className='text-4xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>Our Vision</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
-                                <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
+                                <div className='text-lg text-gray-700 space-y-6 max-w-none leading-relaxed'>
                                     {faculty.vision ? (
-                                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{faculty.vision}</ReactMarkdown>
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm, remarkBreaks]}
+                                            components={{
+                                                p: ({ node, ...props }: any) => <p className="mb-6 leading-relaxed text-gray-700 text-lg" {...props} />,
+                                                ul: ({ node, ...props }: any) => <ul className="list-disc pl-6 mb-6 text-gray-700 text-lg" {...props} />,
+                                                ol: ({ node, ...props }: any) => <ol className="list-decimal pl-6 mb-6 text-gray-700 text-lg" {...props} />,
+                                                li: ({ node, ...props }: any) => <li className="mb-2 pl-2" {...props} />
+                                            }}
+                                        >
+                                            {faculty.vision}
+                                        </ReactMarkdown>
                                     ) : (
                                         <p className="italic text-gray-500">Vision statement is being finalized.</p>
                                     )}
