@@ -6,6 +6,7 @@ import Link from "next/link";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import { Metadata, Viewport } from "next";
+import PostHogScript from "@/components/analytics/PostHogScript";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -120,6 +121,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${open_sans.variable} ${montserrat.variable} antialiased`}>
+        <PostHogScript />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
