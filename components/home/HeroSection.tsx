@@ -15,7 +15,7 @@ import StarSpinner from "../ui/StarSpinner";
 interface HeroSectionProps {
   title?: string;
   highlight?: string;
-  text: string;
+  text: string | React.ReactNode;
   images?: (string | StaticImageData)[];
   button?: boolean;
 }

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { notFound, useParams } from 'next/navigation';
 import { teamMembers } from '@/lib/data/team';
 import Container from '@/components/custom/Container';
-import { Github, Linkedin, Twitter, Sparkles, User, ArrowLeft } from 'lucide-react';
+import { Github, Linkedin, Twitter, Sparkles, User, ArrowLeft, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 
@@ -19,7 +19,7 @@ const TeamMemberPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 font-poppins pb-32">
+        <div className="min-h-screen bg-slate-50 font-poppins pb-12" suppressHydrationWarning>
             {/* Hero Section */}
             <div className="relative h-[50vh] min-h-[500px] lg:h-[85vh] w-full bg-slate-900 overflow-hidden flex items-end shadow-2xl">
                 {/* Background Image / Texture */}
@@ -42,7 +42,7 @@ const TeamMemberPage = () => {
                 </div>
 
                 <Link
-                    href="/about"
+                    href="/team"
                     className="absolute top-0 left-0 z-50 inline-flex lg:hidden items-center text-yellow-500 bg-black/20 hover:bg-black/40 px-4 py-2 rounded-br-2xl transition-all backdrop-blur-sm border-b border-r border-white/10"
                 >
                     <ArrowLeft className="mr-2" size={18} />
@@ -51,7 +51,7 @@ const TeamMemberPage = () => {
 
                 <Container size="xl" className="relative z-20 w-full mb-16">
                     <Link
-                        href="/about"
+                        href="/team"
                         className="hidden lg:inline-flex items-center text-yellow-500 hover:text-yellow-400 hover:bg-white/10 px-4 py-2 rounded-full transition-all group mb-8 backdrop-blur-sm border border-transparent hover:border-white/20"
                     >
                         <ArrowLeft className="mr-2 group-hover:-translate-x-1 transition-transform" size={18} />
@@ -195,10 +195,14 @@ const TeamMemberPage = () => {
                         )}
 
                         {/* Navigation Footer */}
-                        <div className="pt-12 border-t border-slate-200 mt-12 flex justify-between items-center text-slate-500 text-sm">
-                            <span>GESA Web Application Development Team</span>
-                            <Link href="/about" className="hover:text-primary transition-colors">
+                        <div className="pt-6 sm:pt-12 border-t border-slate-200 mt-6 sm:mt-12 flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-center text-slate-500 text-xs sm:text-sm text-center sm:text-left">
+                            <div>
+                                <span className="block whitespace-nowrap font-medium text-slate-900">GESA Web Application Development Team</span>
+                                <span className="block text-[10px] sm:text-xs text-yellow-600 mt-0.5 font-bold">Built for engineers by engineers</span>
+                            </div>
+                            <Link href="/team" className="flex items-center gap-1 hover:text-primary transition-colors whitespace-nowrap font-medium group text-slate-900">
                                 View all members
+                                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </div>
                     </div>
