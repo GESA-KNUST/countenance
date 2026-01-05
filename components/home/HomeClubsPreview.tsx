@@ -1,13 +1,12 @@
 'use client'
-import React from 'react'
 import Container from '../custom/Container'
 import { Button } from '../ui/button'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { useClubs } from '@/hooks/useClubs'
 import Image from 'next/image'
-import FetchError from '../custom/FetchError'
-import NoData from '../custom/NoData'
+import EmptyState from '../events/EmptyState'
+import { Users, TriangleAlert } from 'lucide-react'
 
 import { motion } from "framer-motion";
 
@@ -19,11 +18,30 @@ const HomeClubsPreview = () => {
     }
 
     if (error) {
-        return <FetchError />
+        return (
+            <div className="py-12 bg-slate-50">
+                <EmptyState
+                    title="Failed to Load Clubs"
+                    message="We encountered an issue loading the clubs."
+                    icon={TriangleAlert}
+                    showHomeButton={false}
+                    onRefresh={() => window.location.reload()}
+                />
+            </div>
+        )
     }
 
     if (clubs?.length == 0) {
-        return <NoData title='No clubs found' />
+        return (
+            <div className="py-12 bg-slate-50">
+                <EmptyState
+                    title='No clubs found'
+                    message='There are no featured clubs to display.'
+                    icon={Users}
+                    showHomeButton={false}
+                />
+            </div>
+        )
     }
 
     return (
