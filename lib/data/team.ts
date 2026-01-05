@@ -28,7 +28,7 @@ export const teamMembers: TeamMember[] = [
             github: "https://github.com"
         },
         slug: "prince-asiedu",
-        about: "As the **Project Manager**, Prince has been instrumental in the GESA Digital Team. With a robust background in software engineering and technology, and currently in 4th year pursuing Agricultural Engineering, he brings a unique perspective to the project, ensuring that our solutions are not just technically sound but also relevant to the students we serve."
+        about: "As the **Project Manager**, Prince has been instrumental in the GESA Software Engineering Team. With a robust background in software engineering and technology, and currently in 4th year pursuing Agricultural Engineering, he brings a unique perspective to the project, ensuring that our solutions are not just technically sound but also relevant to the students we serve."
     },
     {
         name: "Obrempong Kwabena Osei-Wusu",
@@ -43,7 +43,7 @@ export const teamMembers: TeamMember[] = [
             linkedin: "https://www.linkedin.com/in/obrempong-kwabena-osei-wusu-7b0217257/"
         },
         slug: "obrempong-kwabena-osei-wusu",
-        about: "As the **Lead Developer alongside Joy**, Obrempong has been instrumental in the GESA Digital Team. With a strong background in software engineering and technology, and currently in his third year pursuing Geomatic Engineering, he aims to merge technology with the construction industry, particularly surveying, by integrating geospatial tools, data analytics, and modern digital solutions to improve accuracy, efficiency, and decision-making in construction projects, working closely with his sister, **Architect Abigail Nana Akua Osei-Wusu** and  his mentor **Surv.Hubert Owusu Boateng**. In his role as Lead Developer, he brings this interdisciplinary perspective to the GESA Web Application project, ensuring that the team’s solutions are not only technically sound but also practical, innovative, and aligned with the needs of the students they serve."
+        about: "As the **Lead Developer alongside Joy**, Obrempong has been instrumental in the GESA Software Engineering Team. With a strong background in software engineering and technology, and currently in his third year pursuing Geomatic Engineering, he aims to merge technology with the construction industry, particularly surveying, by integrating geospatial tools, data analytics, and modern digital solutions to improve accuracy, efficiency, and decision-making in construction projects, working closely with his sister, **Architect Abigail Nana Akua Osei-Wusu** and  his mentor **Surv.Hubert Owusu Boateng**. In his role as Lead Developer, he brings this interdisciplinary perspective to the GESA Web Application project, ensuring that the team’s solutions are not only technically sound but also practical, innovative, and aligned with the needs of the students they serve."
     },
     {
         name: "Joy Atakora Adu",
@@ -58,7 +58,7 @@ export const teamMembers: TeamMember[] = [
             linkedin: "https://linkedin.com"
         },
         slug: "joy-adu-atakora",
-        about: "As the **Lead Developer together with Obrempong**, Joy has been instrumental in the GESA Digital Team. With a robust background in software engineering and technology, and currently in 3rd year pursuing Telecom Engineering, he brings a unique perspective to the project, ensuring that our solutions are not just technically sound but also relevant to the students we serve."
+        about: "As the **Lead Developer together with Obrempong**, Joy has been instrumental in the GESA Software Engineering Team. With a robust background in software engineering and technology, and currently in 3rd year pursuing Telecom Engineering, he brings a unique perspective to the project, ensuring that our solutions are not just technically sound but also relevant to the students we serve."
     },
     {
         name: "Albert Agyapong Yeboah (Logical)",
