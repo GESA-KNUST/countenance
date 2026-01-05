@@ -123,6 +123,7 @@ export default function RootLayout({ children }) {
         <body className={`${poppins.variable} ${open_sans.variable} ${montserrat.variable} antialiased`}>
           <script
             type="application/ld+json"
+            suppressHydrationWarning
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
           />
           <div>
