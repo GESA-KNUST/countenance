@@ -13,7 +13,8 @@ import leadershipIcon from '@/public/images/leadership&S.svg'
 import techIcon from '@/public/images/tech.svg'
 import activityIcon from '@/public/images/activity.svg'
 import FetchError from '@/components/custom/FetchError';
-import NoData from '@/components/custom/NoData';
+import EmptyState from '@/components/events/EmptyState';
+import { Users, TriangleAlert } from 'lucide-react';
 
 
 const ClubsPage = () => {
@@ -68,15 +69,25 @@ const ClubsPage = () => {
     }
 
     if (error) {
-        return <FetchError />
+        return (
+            <div className="flex items-center justify-center min-h-[50vh]">
+                <EmptyState
+                    title="Failed to Load Clubs"
+                    message="We encountered an issue loading the clubs. Please try again later."
+                    icon={TriangleAlert}
+                    showHomeButton={true}
+                    onRefresh={() => window.location.reload()}
+                />
+            </div>
+        )
     }
 
     return (
         <div className='font-poppins min-h-screen'>
             <HeroSection
-                title="Explore Our Clubs"
-                highlight="Clubs"
-                text='Connect, learn, and grow with clubs that support your passions, goals, and personal development.'
+                title="Explore Our Clubs and Societies"
+                highlight="Clubs and Societies"
+                text='Connect, learn, and grow with clubs and societies that support your passions, goals, and personal development.'
                 images={['/images/img1.png', '/images/img2.png']}
                 button={false}
             />
@@ -86,7 +97,7 @@ const ClubsPage = () => {
                         <Search className='text-gray-300' />
                         <input
                             type="text"
-                            placeholder='Search clubs'
+                            placeholder='Search clubs and societies'
                             className='w-full p-2 rounded-xl h-full outline-0 flex-1'
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
@@ -108,7 +119,7 @@ const ClubsPage = () => {
 
             <Container size="xl">
                 <div className='py-8'>
-                    <h1 className='font-bold text-3xl md:text-4xl text-center font-header text-gray-900'>Featured Clubs</h1>
+                    <h1 className='font-bold text-3xl md:text-4xl text-center font-header text-gray-900'>Featured Clubs and Societies</h1>
                     <p className='text-center mt-2 text-gray-500'>Discover our most active and engaging student communities</p>
 
                     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-6'>
@@ -135,7 +146,14 @@ const ClubsPage = () => {
                     </div>
 
                     {!isLoading && filteredClubs?.length === 0 && (
-                        <NoData title='No clubs found' description='There are no clubs to display at this time.' />
+                        <div className="py-12">
+                            <EmptyState
+                                title='No clubs found'
+                                message='There are no clubs to display at this time.'
+                                icon={Users}
+                                showHomeButton={false}
+                            />
+                        </div>
                     )}
 
                     {!isLoading && filteredClubs?.filter(club => !club.isFeatured).length > 0 && (

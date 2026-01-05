@@ -5,7 +5,7 @@ export const metadata: Metadata = {
     description: "Explore the diverse engineering clubs and student societies under GESA-KNUST. Join a community that shares your passion.",
     openGraph: {
         title: "Clubs & Societies | GESA-KNUST",
-        description: "Find and join engineering clubs at KNUST.",
+        description: "Find and join engineering clubs and societies at GESA-KNUST.",
     },
 };
 

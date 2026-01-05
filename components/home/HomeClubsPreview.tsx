@@ -1,13 +1,12 @@
 'use client'
-import React from 'react'
 import Container from '../custom/Container'
 import { Button } from '../ui/button'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { useClubs } from '@/hooks/useClubs'
 import Image from 'next/image'
-import FetchError from '../custom/FetchError'
-import NoData from '../custom/NoData'
+import EmptyState from '../events/EmptyState'
+import { Users, TriangleAlert } from 'lucide-react'
 
 import { motion } from "framer-motion";
 
@@ -19,11 +18,30 @@ const HomeClubsPreview = () => {
     }
 
     if (error) {
-        return <FetchError />
+        return (
+            <div className="py-12 bg-slate-50">
+                <EmptyState
+                    title="Failed to Load Clubs"
+                    message="We encountered an issue loading the clubs."
+                    icon={TriangleAlert}
+                    showHomeButton={false}
+                    onRefresh={() => window.location.reload()}
+                />
+            </div>
+        )
     }
 
     if (clubs?.length == 0) {
-        return <NoData title='No clubs found' />
+        return (
+            <div className="py-12 bg-slate-50">
+                <EmptyState
+                    title='No clubs found'
+                    message='There are no featured clubs to display.'
+                    icon={Users}
+                    showHomeButton={false}
+                />
+            </div>
+        )
     }
 
     return (
@@ -37,12 +55,12 @@ const HomeClubsPreview = () => {
                         className="flex justify-between items-center"
                     >
                         <div className="space-y-3">
-                            <h2 className="text-4xl font-bold text-gray-900 font-header">Featured Clubs</h2>
+                            <h2 className="text-4xl font-bold text-gray-900 font-header">Featured Clubs and Societies</h2>
                             <p className="text-sm md:text-lg text-gray-500 max-w-2xl">Connect with communities that match your passions and engineering interests.</p>
                         </div>
                         <Link href="/clubs" className="hidden md:block">
                             <Button variant="ghost" className="text-base gap-2 text-primary hover:text-primary/80 hover:bg-primary/5 transition-all duration-300">
-                                View All Clubs <ArrowRight size={16} />
+                                View All Clubs and Societies <ArrowRight size={16} />
                             </Button>
                         </Link>
                     </motion.div>
@@ -75,10 +93,10 @@ const HomeClubsPreview = () => {
                                     </div>
                                 </div>
 
-                                <a href={club.clubLink} target="_blank" rel="noopener noreferrer" className='font-bold inline-flex justify-center items-center w-full bg-white border-2 border-slate-100 hover:border-primary hover:bg-primary hover:text-white transition-all duration-300 rounded-2xl py-4 group-hover:shadow-md z-10 cursor-pointer'>
+                                <Link href={`/clubs/${club.sys.id}`} className='font-bold inline-flex justify-center items-center w-full bg-white border-2 border-slate-100 hover:border-primary hover:bg-primary hover:text-white transition-all duration-300 rounded-2xl py-4 group-hover:shadow-md z-10 cursor-pointer'>
                                     View Details
                                     <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                                </a>
+                                </Link>
                             </motion.div>
                         ))}
                     </div>

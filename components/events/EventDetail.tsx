@@ -129,7 +129,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ event }) => {
                                     </div>
                                     <div>
                                         <h4 className="font-semibold text-gray-900">Venue</h4>
-                                        <p className="text-gray-600 text-sm">Where the event is taking place</p>
+                                        <p className="text-gray-600 text-sm">{event.venueInPlainEnglish || 'Venue to be announced'}</p>
                                     </div>
                                 </div>
 
