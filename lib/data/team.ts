@@ -20,7 +20,7 @@ export const teamMembers: TeamMember[] = [
         role: "Team Lead",
         year: "4th Year",
         major: "Electrical Engineering",
-        description: "As the Team Lead, Professor Carl Danso Kwarteng provides strategic guidance and leadership to the GESA Software Engineering Team. His expertise and vision are crucial in steering the team towards success and innovation.",
+        description: "As the Team Lead, Professor Carl Danso Kwarteng provided strategic guidance and leadership to the GESA Software Engineering Team. His expertise and vision were crucial in steering the team towards success and innovation.",
         image: "/images/Prof.jpg",
         funFact: "Real life RIchard Hendricks.",
         socials: {
@@ -28,7 +28,7 @@ export const teamMembers: TeamMember[] = [
             github: "https://github.com/ProfCarl"
         },
         slug: "carl-danso-kwarteng",
-        about: "As the **Team Lead**, Professor Carl Danso Kwarteng plays a pivotal role in the GESA Software Engineering Team. Currently in his 4th year offering Electrical Engineering, he brings leadership and technical insight to the project, ensuring that our initiatives align with the broader goals of the association and effectively serve the student body."
+        about: "As the **Team Lead**, Professor Carl Danso Kwarteng played a pivotal role in the GESA Software Engineering Team. Currently in his 4th year offering Electrical Engineering, he brought leadership and technical insight to the project, ensuring that our initiatives aligned with the broader goals of the association and effectively serve the student body."
     },
     {
         name: "Prince Asiedu",
