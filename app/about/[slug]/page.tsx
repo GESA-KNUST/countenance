@@ -7,6 +7,7 @@ import { teamMembers } from '@/lib/data/team';
 import Container from '@/components/custom/Container';
 import { Github, Linkedin, Twitter, Sparkles, User, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
+import ReactMarkdown from 'react-markdown';
 
 const TeamMemberPage = () => {
     const params = useParams();
@@ -40,12 +41,18 @@ const TeamMemberPage = () => {
                     )}
                 </div>
 
-
+                <Link
+                    href="/about"
+                    className="absolute top-0 left-0 z-50 inline-flex lg:hidden items-center text-yellow-500 bg-black/20 hover:bg-black/40 px-4 py-2 rounded-br-2xl transition-all backdrop-blur-sm border-b border-r border-white/10"
+                >
+                    <ArrowLeft className="mr-2" size={18} />
+                    <span className="text-sm font-medium">Back to Team</span>
+                </Link>
 
                 <Container size="xl" className="relative z-20 w-full mb-16">
                     <Link
                         href="/about"
-                        className="inline-flex items-center text-yellow-500 hover:text-yellow-400 hover:bg-white/10 px-4 py-2 rounded-full transition-all group mb-8 backdrop-blur-sm border border-transparent hover:border-white/20"
+                        className="hidden lg:inline-flex items-center text-yellow-500 hover:text-yellow-400 hover:bg-white/10 px-4 py-2 rounded-full transition-all group mb-8 backdrop-blur-sm border border-transparent hover:border-white/20"
                     >
                         <ArrowLeft className="mr-2 group-hover:-translate-x-1 transition-transform" size={18} />
                         <span className="text-sm font-medium">Back to Team</span>
@@ -138,10 +145,11 @@ const TeamMemberPage = () => {
                             <h2 className="text-3xl font-bold font-header text-slate-900 mb-6">About</h2>
                             <div className="prose prose-lg prose-slate max-w-none text-slate-600 leading-8 text-[1.05rem]">
                                 <p className="mb-6">{member.description}</p>
-                                <p>
-                                    As the <strong>{member.role}</strong>, {member.name.split(' ')[0]} has been instrumental in the GESA Digital Team.
-                                    With a robust background in software engineering and technology, and currently in {member.year.toLowerCase()} pursuing {member.major}, {member.name.split(' ')[0] === 'Joy' ? 'he brings' : 'they bring'} a unique perspective to the project, ensuring that our solutions are not just technically sound but also relevant to the students we serve.
-                                </p>
+                                {member.about && (
+                                    <ReactMarkdown>
+                                        {member.about}
+                                    </ReactMarkdown>
+                                )}
                             </div>
 
                             {/* Mobile Social Links */}
@@ -176,7 +184,10 @@ const TeamMemberPage = () => {
                                     <div>
                                         <span className="block text-primary font-bold uppercase tracking-widest text-xs mb-2">Fun Fact</span>
                                         <p className="text-xl md:text-2xl font-medium text-white italic leading-relaxed">
-                                            "{member.funFact}"
+                                            {member.slug === 'obrempong-kwabena-osei-wusu'
+                                                ? `"${member.funFact}" - Obrempong Kwabena Osei-Wusu`
+                                                : member.funFact
+                                            }
                                         </p>
                                     </div>
                                 </div>
