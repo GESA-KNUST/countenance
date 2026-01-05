@@ -13,7 +13,8 @@ import leadershipIcon from '@/public/images/leadership&S.svg'
 import techIcon from '@/public/images/tech.svg'
 import activityIcon from '@/public/images/activity.svg'
 import FetchError from '@/components/custom/FetchError';
-import NoData from '@/components/custom/NoData';
+import EmptyState from '@/components/events/EmptyState';
+import { Users, TriangleAlert } from 'lucide-react';
 
 
 const ClubsPage = () => {
@@ -68,7 +69,17 @@ const ClubsPage = () => {
     }
 
     if (error) {
-        return <FetchError />
+        return (
+            <div className="flex items-center justify-center min-h-[50vh]">
+                <EmptyState
+                    title="Failed to Load Clubs"
+                    message="We encountered an issue loading the clubs. Please try again later."
+                    icon={TriangleAlert}
+                    showHomeButton={true}
+                    onRefresh={() => window.location.reload()}
+                />
+            </div>
+        )
     }
 
     return (
@@ -135,7 +146,14 @@ const ClubsPage = () => {
                     </div>
 
                     {!isLoading && filteredClubs?.length === 0 && (
-                        <NoData title='No clubs found' description='There are no clubs to display at this time.' />
+                        <div className="py-12">
+                            <EmptyState
+                                title='No clubs found'
+                                message='There are no clubs to display at this time.'
+                                icon={Users}
+                                showHomeButton={false}
+                            />
+                        </div>
                     )}
 
                     {!isLoading && filteredClubs?.filter(club => !club.isFeatured).length > 0 && (
