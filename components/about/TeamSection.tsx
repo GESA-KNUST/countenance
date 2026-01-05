@@ -18,7 +18,7 @@ const TeamSection = () => {
                     </p>
                 </div>
 
-                <div className="flex flex-col gap-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16 lg:gap-x-12 lg:gap-y-24">
                     {teamMembers.map((member, index) => (
                         <TeamCard key={index} member={member} index={index} />
                     ))}

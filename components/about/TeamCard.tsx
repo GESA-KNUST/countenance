@@ -9,53 +9,63 @@ import { TeamMember } from '@/lib/data/team';
 import { Button } from '../ui/button';
 
 const TeamCard = ({ member, index }: { member: TeamMember, index: number }) => {
-    const isEven = index % 2 === 0;
-
     return (
         <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-10 lg:gap-16 justify-center overflow-hidden py-12 border-b border-slate-100 last:border-0`}
+            transition={{ delay: index * 0.1 }}
+            className="group relative flex flex-col bg-white rounded-[2.5rem] overflow-hidden border border-slate-100 hover:shadow-2xl transition-all duration-500"
         >
             {/* Image Section */}
-            <div className='w-full lg:w-[480px] h-[350px] sm:h-[450px] relative rounded-3xl overflow-hidden shadow-xl group'>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 transition-opacity group-hover:opacity-0" />
+            <div className="relative aspect-[4/5] w-full overflow-hidden bg-slate-100">
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
                 {member.image ? (
                     <Image
                         src={member.image}
                         alt={member.name}
                         fill
-                        className='object-cover hover:scale-105 transition-transform duration-700'
+                        className="object-cover object-top filter grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
                     />
                 ) : (
-                    <div className="w-full h-full bg-slate-200 flex items-center justify-center text-slate-400">
-                        <User size={80} />
+                    <div className="w-full h-full flex items-center justify-center text-slate-300">
+                        <User size={100} strokeWidth={1} />
                     </div>
                 )}
+
+                {/* Role Badge - Floating */}
+                <div className="absolute bottom-6 left-6 z-20">
+                    <span className="px-5 py-2 bg-primary text-black text-[10px] font-black uppercase tracking-[0.2em] rounded-full shadow-xl">
+                        {member.role}
+                    </span>
+                </div>
             </div>
 
             {/* Content Section */}
-            <div className='flex flex-col gap-6 lg:w-1/2 w-full text-center lg:text-left items-center lg:items-start'>
-                <div className="space-y-3 p-4">
-                    <span className="px-4 py-1.5 bg-primary/10 text-primary text-xs font-bold rounded-full uppercase tracking-wider">
-                        {member.role}
-                    </span>
-                    <h2 className='font-bold text-3xl md:text-4xl font-header text-slate-900 leading-tight'>
+            <div className="p-8 lg:p-10 flex flex-col gap-5">
+                <div className="space-y-2">
+                    <h3 className="font-bold text-2xl lg:text-3xl font-header text-slate-900 leading-tight">
                         {member.name}
-                    </h2>
-                    <p className='text-lg text-slate-500 font-medium'>{member.year} {member.major}</p>
+                    </h3>
+                    <p className="text-sm text-primary font-bold uppercase tracking-widest">
+                        {member.year} • {member.major}
+                    </p>
                 </div>
 
-                <div className='font-light text-lg text-slate-600 leading-relaxed max-w-xl'>
-                    {member.description.slice(0, 180)}...
-                </div>
+                <p className="text-slate-500 leading-relaxed line-clamp-3 text-[0.95rem]">
+                    {member.description}
+                </p>
 
-                <Link href={`/about/${member.slug}`}>
+                <Link href={`/about/${member.slug}`} className="mt-2">
                     <Button
-                        className="bg-primary text-black font-bold px-8 py-6 rounded-full hover:scale-105 transition-transform text-base shadow-lg hover:shadow-primary/20 flex items-center gap-2 group cursor-pointer"
+                        variant="ghost"
+                        className="p-0 h-auto text-slate-900 font-bold hover:text-primary hover:bg-transparent flex items-center gap-2 group/btn"
                     >
-                        Read More <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                        Learn More
+                        <span className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover/btn:bg-primary/20 group-hover/btn:text-primary transition-all">
+                            <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
+                        </span>
                     </Button>
                 </Link>
             </div>

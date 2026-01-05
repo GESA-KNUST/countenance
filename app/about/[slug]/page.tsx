@@ -20,7 +20,7 @@ const TeamMemberPage = () => {
     return (
         <div className="min-h-screen bg-slate-50 font-poppins pb-32">
             {/* Hero Section */}
-            <div className="relative h-[calc(100vh-var(--navbar-height))] w-full bg-slate-900 overflow-hidden flex items-end shadow-2xl">
+            <div className="relative h-[50vh] min-h-[500px] lg:h-[85vh] w-full bg-slate-900 overflow-hidden flex items-end shadow-2xl">
                 {/* Background Image / Texture */}
                 <div className="absolute inset-0 z-0">
 
@@ -32,7 +32,7 @@ const TeamMemberPage = () => {
                                 src={member.image}
                                 alt={member.name}
                                 fill
-                                className="object-cover object-top"
+                                className="object-cover object-top opacity-80"
                             />
                         </div>
                     ) : (
