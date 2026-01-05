@@ -16,7 +16,7 @@ interface ClubDetailProps {
 }
 
 const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
-    const { clubName, description, clubLogo, clubType, clubLink, isActivelyRecruitingMembers, aboutclub, sys } = club;
+    const { clubName, clubLogo, clubType, clubLink, isActivelyRecruitingMembers, aboutclub, sys } = club;
     const { addToRecentlyViewed } = useStore();
 
     useEffect(() => {
@@ -137,11 +137,7 @@ const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
                             </h2>
 
                             <div className="prose prose-lg text-gray-600 max-w-none">
-                                {description.split('\n').map((paragraph, idx) => (
-                                    <p key={idx} className="mb-6 leading-relaxed text-lg">
-                                        {paragraph}
-                                    </p>
-                                ))}
+                                {aboutclub && aboutclub.json && documentToReactComponents(aboutclub.json, options)}
                             </div>
 
                             {/* Mobile Quick Overview - Visible only on mobile */}
@@ -149,18 +145,6 @@ const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
                                 <h3 className="text-xl font-bold text-gray-900 mb-6 font-header">Quick Overview</h3>
                                 <QuickOverview />
                             </div>
-
-                            {aboutclub && aboutclub.json && (
-                                <div className="mt-12 border-t border-gray-100 pt-12">
-                                    <h2 className="text-2xl font-bold text-gray-900 mb-8 font-header flex items-center gap-3">
-                                        <Info className="text-primary w-6 h-6" />
-                                        More Information
-                                    </h2>
-                                    <div className="prose prose-lg text-gray-600 max-w-none">
-                                        {documentToReactComponents(aboutclub.json, options)}
-                                    </div>
-                                </div>
-                            )}
 
                             <div className="mt-12 pt-10 border-t border-gray-100 flex flex-wrap gap-4">
                                 <a

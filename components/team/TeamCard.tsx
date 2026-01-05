@@ -63,7 +63,7 @@ const TeamCard = ({ member, index }: { member: TeamMember, index: number }) => {
                     {member.description}
                 </p>
 
-                <Link href={`/about/${member.slug}`} className="mt-2">
+                <Link href={`/team/${member.slug}`} className="mt-2">
                     <Button
                         className="bg-slate-900 text-white hover:bg-primary hover:text-black rounded-full px-8 py-6 text-base font-bold group transition-all duration-300 shadow-lg hover:shadow-primary/25"
                     >
