@@ -1,9 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { Globe, ArrowLeft, Share2, ExternalLink } from 'lucide-react';
-import { ClubItems } from '@/hooks/useClubs';
 import Link from 'next/link';
+import { documentToReactComponents, Options } from '@contentful/rich-text-react-renderer';
+import { BLOCKS } from '@contentful/rich-text-types';
+import { Globe, ArrowLeft, Share2, ExternalLink, Info } from 'lucide-react';
+import { ClubItems } from '@/hooks/useClubs';
 import Container from '../custom/Container';
 
 interface ClubDetailProps {
@@ -11,7 +13,62 @@ interface ClubDetailProps {
 }
 
 const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
-    const { clubName, description, clubLogo, clubType, clubLink, isActivelyRecruitingMembers } = club;
+    const { clubName, description, clubLogo, clubType, clubLink, isActivelyRecruitingMembers, aboutclub } = club;
+
+    const options: Options = {
+        renderNode: {
+            [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
+                const assetId = node.data.target.sys.id;
+                const asset = aboutclub?.links?.assets?.block?.find((a: any) => a.sys.id === assetId);
+
+                if (!asset) return null;
+
+                return (
+                    <div className="my-8 w-full rounded-2xl overflow-hidden shadow-lg">
+                        <Image
+                            src={asset.url}
+                            alt={asset.title || "Embedded Asset"}
+                            width={asset.width || 800}
+                            height={asset.height || 600}
+                            className="w-full h-auto object-cover"
+                        />
+                    </div>
+                );
+            },
+        },
+    };
+
+    const QuickOverview = () => (
+        <div className="space-y-6">
+            <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 space-y-1">
+                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Category</span>
+                <p className="font-bold text-gray-900">{clubType}</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 space-y-1">
+                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Membership</span>
+                <p className="font-bold text-gray-900">Open to all GESA Students</p>
+            </div>
+
+            <div className="pt-6 border-t border-gray-100">
+                {isActivelyRecruitingMembers ? (
+                    <div className="flex items-center gap-4 p-4 rounded-2xl bg-primary/5 border border-primary/10">
+                        <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                        <p className="text-sm font-medium text-gray-700 italic">
+                            Currently accepting new members for the academic year.
+                        </p>
+                    </div>
+                ) : (
+                    <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                        <div className="w-2 h-2 rounded-full bg-gray-400" />
+                        <p className="text-sm font-medium text-gray-500 italic">
+                            Membership recruitment is currently closed. Please check back later.
+                        </p>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
 
     return (
         <div className="min-h-screen bg-gray-50 pb-20 font-poppins">
@@ -77,6 +134,24 @@ const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
                                 ))}
                             </div>
 
+                            {/* Mobile Quick Overview - Visible only on mobile */}
+                            <div className="mt-12 border-t border-gray-100 pt-12 lg:hidden">
+                                <h3 className="text-xl font-bold text-gray-900 mb-6 font-header">Quick Overview</h3>
+                                <QuickOverview />
+                            </div>
+
+                            {aboutclub && aboutclub.json && (
+                                <div className="mt-12 border-t border-gray-100 pt-12">
+                                    <h2 className="text-2xl font-bold text-gray-900 mb-8 font-header flex items-center gap-3">
+                                        <Info className="text-primary w-6 h-6" />
+                                        More Information
+                                    </h2>
+                                    <div className="prose prose-lg text-gray-600 max-w-none">
+                                        {documentToReactComponents(aboutclub.json, options)}
+                                    </div>
+                                </div>
+                            )}
+
                             <div className="mt-12 pt-10 border-t border-gray-100 flex flex-wrap gap-4">
                                 <a
                                     href={clubLink}
@@ -91,40 +166,11 @@ const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
                         </div>
                     </div>
 
-                    {/* Sidebar */}
-                    <div className="lg:col-span-4 space-y-8">
+                    {/* Sidebar - Visible only on desktop */}
+                    <div className="hidden lg:block lg:col-span-4 space-y-8">
                         <div className="bg-white rounded-[2rem] p-8 shadow-xl shadow-gray-200/50 border border-gray-100 sticky top-24">
                             <h3 className="text-xl font-bold text-gray-900 mb-6 font-header">Quick Overview</h3>
-
-                            <div className="space-y-6">
-                                <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 space-y-1">
-                                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Category</span>
-                                    <p className="font-bold text-gray-900">{clubType}</p>
-                                </div>
-
-                                <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 space-y-1">
-                                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Membership</span>
-                                    <p className="font-bold text-gray-900">Open to all GESA Students</p>
-                                </div>
-
-                                <div className="pt-6 border-t border-gray-100">
-                                    {isActivelyRecruitingMembers ? (
-                                        <div className="flex items-center gap-4 p-4 rounded-2xl bg-primary/5 border border-primary/10">
-                                            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                                            <p className="text-sm font-medium text-gray-700 italic">
-                                                Currently accepting new members for the academic year.
-                                            </p>
-                                        </div>
-                                    ) : (
-                                        <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                                            <div className="w-2 h-2 rounded-full bg-gray-400" />
-                                            <p className="text-sm font-medium text-gray-500 italic">
-                                                Membership recruitment is currently closed. Please check back later.
-                                            </p>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
+                            <QuickOverview />
                         </div>
                     </div>
                 </div>
