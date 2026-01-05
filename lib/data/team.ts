@@ -16,6 +16,21 @@ export interface TeamMember {
 
 export const teamMembers: TeamMember[] = [
     {
+        name: "Professor Carl Danso Kwarteng",
+        role: "Team Lead",
+        year: "4th Year",
+        major: "Electrical Engineering",
+        description: "As the Team Lead, Professor Carl Danso Kwarteng provides strategic guidance and leadership to the GESA Software Engineering Team. His expertise and vision are crucial in steering the team towards success and innovation.",
+        image: "/images/Prof.jpg",
+        funFact: "Real life RIchard Hendricks.",
+        socials: {
+            linkedin: "https://www.linkedin.com/in/carl-danso-304663258/",
+            github: "https://github.com/ProfCarl"
+        },
+        slug: "carl-danso-kwarteng",
+        about: "As the **Team Lead**, Professor Carl Danso Kwarteng plays a pivotal role in the GESA Software Engineering Team. Currently in his 4th year offering Electrical Engineering, he brings leadership and technical insight to the project, ensuring that our initiatives align with the broader goals of the association and effectively serve the student body."
+    },
+    {
         name: "Prince Asiedu",
         role: "Project Manager",
         year: "4th Year",
@@ -24,8 +39,8 @@ export const teamMembers: TeamMember[] = [
         image: "/images/Prince.jpg",
         funFact: "Can coordinate a project timeline in his sleep.",
         socials: {
-            linkedin: "https://linkedin.com",
-            github: "https://github.com"
+            linkedin: "https://www.linkedin.com/in/princek-asiedu/",
+            github: "https://github.com/Asiedu13"
         },
         slug: "prince-asiedu",
         about: "As the **Project Manager**, Prince has been instrumental in the GESA Software Engineering Team. With a robust background in software engineering and technology, and currently in 4th year pursuing Agricultural Engineering, he brings a unique perspective to the project, ensuring that our solutions are not just technically sound but also relevant to the students we serve."
@@ -54,8 +69,8 @@ export const teamMembers: TeamMember[] = [
         image: "/images/Joy.jpg",
         funFact: "Real life Betram Gilfoyle.",
         socials: {
-            github: "https://github.com",
-            linkedin: "https://linkedin.com"
+            github: "https://github.com/Joylinton04",
+            linkedin: "https://www.linkedin.com/in/joy-adu989/"
         },
         slug: "joy-adu-atakora",
         about: "As the **Lead Developer together with Obrempong**, Joy has been instrumental in the GESA Software Engineering Team. With a robust background in software engineering and technology, and currently in 3rd year pursuing Telecom Engineering, he brings a unique perspective to the project, ensuring that our solutions are not just technically sound but also relevant to the students we serve."
@@ -69,8 +84,8 @@ export const teamMembers: TeamMember[] = [
         image: "/images/Logical.jpg",
         funFact: "Sees the world in hex codes.",
         socials: {
-            github: "https://github.com",
-            linkedin: "https://linkedin.com"
+            github: "https://github.com/Logical883",
+            linkedin: "https://www.linkedin.com/in/agyapong-albert-yeboah/"
         },
         slug: "albert-yeboah",
         about: "As the **UI Designer**, Albert has been instrumental in the GESA Digital Team. With a robust background in software engineering and technology, and currently in 3rd year pursuing Computer Engineering, he brings a unique perspective to the project, ensuring that our solutions are not just technically sound but also relevant to the students we serve."
