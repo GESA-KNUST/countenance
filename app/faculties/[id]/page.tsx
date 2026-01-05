@@ -78,6 +78,7 @@ const FacultyDetailPage = () => {
                 subtitle="FACULTY"
                 text={`Official page of the ${faculty.name} at KNUST.`}
                 images={faculty.facultyMainImageCollection?.items?.map(item => item.url) || ['/images/img2.png', '/images/img1.png']}
+                titleClassName="text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight"
             />
             <Container size='xl'>
                 <div className='py-8'>

@@ -27,6 +27,7 @@
     "lucide-react": "^0.548.0",
     "motion": "^12.23.24",
     "next": "^16.1.1",
+    "posthog-js": "^1.313.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-markdown": "^10.1.0",
@@ -45,7 +46,7 @@
     "typescript": "5.9.3"
   },
   "optionalDependencies": {
-    "lightningcss-linux-x64-gnu": "1.30.2",
-    "@tailwindcss/oxide-linux-x64-gnu": "4.1.18"
+    "@tailwindcss/oxide-linux-x64-gnu": "4.1.18",
+    "lightningcss-linux-x64-gnu": "1.30.2"
   }
 }
