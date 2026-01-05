@@ -10,11 +10,12 @@ import { Globe, School, LayoutGrid, ChevronRight, Mail, Music2 } from 'lucide-re
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useFaculty } from '@/hooks/useFaculty'
-import StarSpinner from '@/components/ui/StarSpinner'
-import whatsapp2 from '@/public/images/whatsapp2.svg'
 import twitter from '@/public/images/twitter.svg'
 import linkedin2 from '@/public/images/linkedin2.svg'
 import { useStore } from '@/store/useStore'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import { FacultyDetailSkeleton } from '@/components/faculty/FacultyDetailSkeleton'
 
 const FacultyContent = () => {
     const searchParams = useSearchParams();
@@ -30,8 +31,8 @@ const FacultyContent = () => {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <StarSpinner />
+            <div className="min-h-screen bg-white">
+                <FacultyDetailSkeleton />
             </div>
         );
     }
@@ -105,7 +106,27 @@ const FacultyContent = () => {
                                 <h1 className='text-4xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>{faculty.name}</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
                                 <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
-                                    {faculty.about ? <p>{faculty.about}</p> : <p className="italic text-gray-500">Information coming soon...</p>}
+                                    {faculty.about ? (
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm]}
+                                            components={{
+                                                img: ({ node, ...props }) => (
+                                                    <div className="my-8 w-full rounded-2xl overflow-hidden shadow-lg">
+                                                        <img
+                                                            {...props}
+                                                            className="w-full h-auto object-cover"
+                                                            style={{ maxWidth: '100%' }}
+                                                            alt={props.alt || "Faculty Image"}
+                                                        />
+                                                    </div>
+                                                )
+                                            }}
+                                        >
+                                            {faculty.about}
+                                        </ReactMarkdown>
+                                    ) : (
+                                        <p className="italic text-gray-500">Information coming soon...</p>
+                                    )}
                                 </div>
                                 <div className='flex flex-wrap items-center gap-8 pt-8 border-t border-gray-100'>
                                     {faculty.facultyWebsite && (
