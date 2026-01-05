@@ -43,7 +43,7 @@ const GET_EXECUTIVES = gql`
 `;
 
 export const useExecutiveCollection = () => {
-  const { data, isLoading } = useFetchData<Props>({
+  const { data, isLoading, error } = useFetchData<Props>({
     queryKey: 'executives',
     queryFn: () => contentfulClient.request(GET_EXECUTIVES),
   });
@@ -51,5 +51,6 @@ export const useExecutiveCollection = () => {
   return {
     executives: data?.executiveCollection.items ?? [],
     isLoading,
+    error,
   };
 };

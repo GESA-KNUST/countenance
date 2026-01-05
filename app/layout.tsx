@@ -3,7 +3,9 @@ import "./globals.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import { Metadata, Viewport } from "next";
+import { CSPostHogProvider } from "@/providers/PostHogProvider";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -117,19 +119,22 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body className={`${poppins.variable} ${open_sans.variable} ${montserrat.variable} antialiased`}>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        <div>
-          <Navbar />
-          <ReactQueryProvider>
-            {children}
-          </ReactQueryProvider>
-          <Footer />
-        </div>
-      </body>
+      <CSPostHogProvider>
+        <body className={`${poppins.variable} ${open_sans.variable} ${montserrat.variable} antialiased`}>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+          <div>
+            <ServiceWorkerRegister />
+            <Navbar />
+            <ReactQueryProvider>
+              {children}
+            </ReactQueryProvider>
+            <Footer />
+          </div>
+        </body>
+      </CSPostHogProvider>
     </html>
   );
 }
