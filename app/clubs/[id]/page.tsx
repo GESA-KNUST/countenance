@@ -1,32 +1,71 @@
-'use client';
-
-import { useParams } from 'next/navigation';
-import { useClubById } from '@/hooks/useClubs';
 import ClubDetail from '@/components/clubs/ClubDetail';
-import StarSpinner from '@/components/ui/StarSpinner';
-import { useStore } from '@/store/useStore';
-import { useEffect } from 'react';
+import { contentfulClient } from "@/lib/contentful-client";
+import { gql } from "graphql-request";
+import { ClubItems } from '@/hooks/useClubs';
 
-const ClubDetailPage = () => {
-    const { id } = useParams();
-    const { data: club, isLoading, error } = useClubById(id as string);
-    const { addToRecentlyViewed } = useStore();
+interface ClubCollection {
+    clubCollection: {
+        items: ClubItems[]
+    }
+}
 
-    useEffect(() => {
-        if (club && id) {
-            addToRecentlyViewed(`/clubs/${id}`);
+const GET_CLUB_BY_ID = gql`
+query ClubById($id: String!) {
+  clubCollection(where: { sys: { id: $id } }, limit: 1) {
+    items {
+      sys {
+        id
+      }
+      clubLink
+      clubLogo {
+        description
+        url
+        title
+      }
+      clubName
+      clubType
+      description
+      isFeatured
+      isActivelyRecruitingMembers
+      aboutclub {
+        json
+        links {
+          assets {
+            block {
+              sys {
+                id
+              }
+              url
+              title
+              description
+              width
+              height
+            }
+          }
         }
-    }, [club, id, addToRecentlyViewed]);
+      }
+    }
+  }
+}
+`;
 
-    if (isLoading) {
-        return (
-            <div className="h-[80vh] bg-gray-50 flex items-center justify-center">
-                <StarSpinner />
-            </div>
-        );
+type Props = {
+    params: Promise<{ id: string }>
+}
+
+const ClubDetailPage = async (props: Props) => {
+    const params = await props.params;
+    const { id } = params;
+    let club: ClubItems | null = null;
+
+    try {
+        const data = await contentfulClient.request<ClubCollection>(GET_CLUB_BY_ID, { id });
+        club = data.clubCollection.items[0];
+    } catch (error) {
+        console.error("Failed to fetch club detail", error);
     }
 
-    if (error || !club) {
+    if (!club) {
         return (
             <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
                 <div className="text-center bg-white p-12 rounded-[2.5rem] shadow-xl border border-gray-100 max-w-md">
