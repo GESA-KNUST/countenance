@@ -53,12 +53,12 @@ const Navbar = () => {
       ]
     },
     { name: 'Gallery', link: '/gallery' },
+    { name: 'Team', link: '/team' },
     { name: 'Contact Us', link: '/contact-us' },
-    { name: 'About', link: '/about' },
   ]
 
   return (
-    <div className='flex items-center justify-between md:px-page-x lg:py-page-y px-page-sx font-poppins max-w-360 mx-auto h-(--navbar-height) relative z-50'>
+    <div className='flex items-center justify-between md:px-page-x lg:py-page-y px-page-sx font-poppins max-w-360 mx-auto h-(--navbar-height) relative z-[999]'>
       <Link href="/">
         <Image src={Logo} alt='logo' />
       </Link>
@@ -134,7 +134,7 @@ const Navbar = () => {
                   href={nav.link!}
                   className={`font-semibold ${isActive ? 'bg-primary rounded-full' : ''} md:px-5 md:py-3 py-1.5 whitespace-nowrap`}
                 >
-                  {nav.name}
+                  <span suppressHydrationWarning>{nav.name}</span>
                 </Link>
               </Tab>
             )
@@ -158,7 +158,7 @@ const Navbar = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className='fixed top-0 left-0 h-full w-full z-50 bg-white'
+              className='fixed top-0 left-0 h-full w-full z-[999] bg-white'
             >
               <div className="px-6 pb-4 flex flex-col relative h-full overflow-y-auto">
                 <div
