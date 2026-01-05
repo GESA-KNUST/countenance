@@ -2,7 +2,7 @@
 
 import Container from '@/components/custom/Container'
 import DepartmentHero from '@/components/department/DepartmentHero'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import star from '@/public/images/star.svg'
 import Image from 'next/image'
@@ -11,23 +11,16 @@ import Link from 'next/link'
 import whatsapp2 from '@/public/images/whatsapp2.svg'
 import twitter from '@/public/images/twitter.svg'
 import linkedin2 from '@/public/images/linkedin2.svg'
-import { useSearchParams } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { useDepartment } from '@/hooks/useDepartment'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
+import { BLOCKS } from '@contentful/rich-text-types'
 import StarSpinner from '@/components/ui/StarSpinner'
-import { useStore } from '@/store/useStore'
 
-const DepartmentContent = () => {
-    const searchParams = useSearchParams();
-    const id = searchParams.get('id');
-    const { data: department, isLoading, error } = useDepartment(id as string);
-    const { addToRecentlyViewed } = useStore();
-
-    useEffect(() => {
-        if (department && id) {
-            addToRecentlyViewed(`/department-detail?id=${id}`);
-        }
-    }, [department, id, addToRecentlyViewed]);
+const DepartmentDetailPage = () => {
+    const params = useParams();
+    const id = params.id as string;
+    const { data: department, isLoading, error } = useDepartment(id);
 
     if (isLoading) {
         return (
@@ -37,7 +30,7 @@ const DepartmentContent = () => {
         );
     }
 
-    if (error || !department || !id) {
+    if (error || !department) {
         return (
             <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
                 <div className="text-center max-w-md bg-white p-8 rounded-3xl shadow-xl border border-gray-100">
@@ -46,13 +39,36 @@ const DepartmentContent = () => {
                     </div>
                     <h1 className="text-3xl font-bold mb-4 font-header text-gray-900">Department Not Found</h1>
                     <p className="text-gray-600 mb-8 leading-relaxed">We couldn't load the details for this department. It might have been moved or doesn't exist.</p>
-                    <Link href="/department" className="inline-block bg-black text-white px-10 py-4 rounded-full font-bold hover:bg-gray-900 transition-all shadow-lg hover:shadow-black/20">
+                    <Link href="/departments" className="inline-block bg-black text-white px-10 py-4 rounded-full font-bold hover:bg-gray-900 transition-all shadow-lg hover:shadow-black/20">
                         Back to Departments
                     </Link>
                 </div>
             </div>
         );
     }
+
+    const richTextOptions = {
+        renderNode: {
+            [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
+                const { url, description, width, height } = node.data.target.fields.file;
+                return (
+                    <div className="my-8 rounded-2xl overflow-hidden shadow-lg border border-gray-100 relative">
+                        <Image
+                            src={`https:${url}`}
+                            alt={description || 'Department Image'}
+                            width={width || 800}
+                            height={height || 500}
+                            className="w-full h-auto object-cover"
+                        />
+                        {description && <p className="text-sm text-gray-500 mt-2 text-center italic">{description}</p>}
+                    </div>
+                );
+            },
+            [BLOCKS.PARAGRAPH]: (node: any, children: any) => {
+                return <p className="mb-6 leading-relaxed text-gray-700 text-lg">{children}</p>;
+            },
+        },
+    };
 
     const SocialLinks = () => (
         <div className='flex items-center gap-4 mt-2'>
@@ -91,9 +107,10 @@ const DepartmentContent = () => {
         <div className='font-poppins min-h-screen bg-white'>
             <DepartmentHero
                 title={department.name}
-                subtitle={department.deptAbbreviation || "GESA"}
-                text={department.deptAbbreviation ? `Official page of the Department of ${department.name} at KNUST.` : 'Empowering students with cutting-edge knowledge and tools to shape the future of technology.'}
-                images={['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png']}
+                subtitle={department.deptAbbreviation || "DEPARTMENT"}
+                text={`Official page of the ${department.name} at KNUST.`}
+                images={['/images/img2.png', '/images/img1.png']} // Fallback or fetch specific images if available
+                titleClassName="text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight"
             />
             <Container size='xl'>
                 <div className='py-8'>
@@ -108,13 +125,13 @@ const DepartmentContent = () => {
                             <div className='flex flex-col gap-8'>
                                 <div className='flex items-center gap-3'>
                                     <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
-                                    <p className='text-primary font-bold text-sm tracking-wider uppercase'>{department.deptAbbreviation || 'GESA'} - KNUST</p>
+                                    <p className='text-primary font-bold text-sm tracking-wider uppercase'>{department.deptAbbreviation || 'DEPT'} - KNUST</p>
                                     <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
                                 </div>
                                 <h1 className='text-3xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>{department.name}</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
                                 <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
-                                    {department.about ? documentToReactComponents(department.about.json) : <p className="italic text-gray-500">Information coming soon...</p>}
+                                    {department.about?.json ? documentToReactComponents(department.about.json, richTextOptions) : <p className="italic text-gray-500">Information coming soon...</p>}
                                 </div>
                                 <div className='flex flex-wrap items-center gap-8 pt-8 border-t border-gray-100'>
                                     {department.websiteLink && (
@@ -132,22 +149,13 @@ const DepartmentContent = () => {
                             <div className='flex flex-col gap-8'>
                                 <div className='flex items-center gap-3'>
                                     <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
-                                    <p className='text-primary font-bold text-sm tracking-wider uppercase'>{department.deptAbbreviation || 'GESA'} - KNUST</p>
+                                    <p className='text-primary font-bold text-sm tracking-wider uppercase'>Our Mission</p>
                                     <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
                                 </div>
                                 <h1 className='text-3xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>Our Mission</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
                                 <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
-                                    {department.mission ? documentToReactComponents(department.mission.json) : <p className="italic text-gray-500">Mission details are currently being updated.</p>}
-                                </div>
-                                <div className='flex flex-wrap items-center gap-8 pt-8 border-t border-gray-100'>
-                                    {department.websiteLink && (
-                                        <a href={department.websiteLink} target='_blank' rel='noopener noreferrer' className='bg-primary text-white px-10 py-4 cursor-pointer rounded-full w-max font-bold flex items-center gap-3 hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]'>
-                                            <Globe size={20} />
-                                            Visit Website
-                                        </a>
-                                    )}
-                                    <SocialLinks />
+                                    {department.mission?.json ? documentToReactComponents(department.mission.json) : <p className="italic text-gray-500">Mission details are currently being updated.</p>}
                                 </div>
                             </div>
                         </TabsContent>
@@ -156,22 +164,13 @@ const DepartmentContent = () => {
                             <div className='flex flex-col gap-8'>
                                 <div className='flex items-center gap-3'>
                                     <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
-                                    <p className='text-primary font-bold text-sm tracking-wider uppercase'>{department.deptAbbreviation || 'GESA'} - KNUST</p>
+                                    <p className='text-primary font-bold text-sm tracking-wider uppercase'>Our Vision</p>
                                     <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
                                 </div>
                                 <h1 className='text-3xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>Our Vision</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
                                 <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
-                                    {department.vision ? documentToReactComponents(department.vision.json) : <p className="italic text-gray-500">Vision statement is being finalized.</p>}
-                                </div>
-                                <div className='flex flex-wrap items-center gap-8 pt-8 border-t border-gray-100'>
-                                    {department.websiteLink && (
-                                        <a href={department.websiteLink} target='_blank' rel='noopener noreferrer' className='bg-primary text-white px-10 py-4 cursor-pointer rounded-full w-max font-bold flex items-center gap-3 hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]'>
-                                            <Globe size={20} />
-                                            Visit Website
-                                        </a>
-                                    )}
-                                    <SocialLinks />
+                                    {department.vision?.json ? documentToReactComponents(department.vision.json) : <p className="italic text-gray-500">Vision statement is being finalized.</p>}
                                 </div>
                             </div>
                         </TabsContent>
@@ -182,4 +181,4 @@ const DepartmentContent = () => {
     )
 }
 
-export default DepartmentContent
+export default DepartmentDetailPage

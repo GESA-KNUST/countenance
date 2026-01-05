@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "../ui/StarSpinner";
+import { LogError } from "@/lib/logger";
+import { usePostHog } from 'posthog-js/react';
 
 interface CardProps {
   post: any;
@@ -22,6 +24,7 @@ interface CardProps {
 }
 
 const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) => {
+  const posthog = usePostHog();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const formattedDate = new Date(post.datePublished).toLocaleDateString("en-US", {
@@ -105,7 +108,10 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
                           title: slug,
                           text: `Check out this blog post: ${slug}`,
                           url: url,
-                        }).catch((error) => console.log('Error sharing', error));
+                        }).catch((error) => {
+                          LogError('Error sharing', error);
+                          posthog?.captureException(error);
+                        });
                       } else {
                         navigator.clipboard.writeText(url);
                         alert("Link copied to clipboard");

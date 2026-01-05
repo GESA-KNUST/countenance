@@ -1,5 +1,4 @@
 'use client'
-import React from 'react'
 import Container from '../custom/Container'
 import OpportunityCard from '../hubs/OpportunityCard'
 import { Button } from '../ui/button'
@@ -7,8 +6,8 @@ import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { useHubs } from '@/hooks/useHubs'
 import Image from 'next/image'
-import FetchError from '../custom/FetchError'
-import NoData from '../custom/NoData'
+import EmptyState from '../events/EmptyState'
+import { Briefcase, TriangleAlert } from 'lucide-react'
 
 import { motion } from 'framer-motion'
 
@@ -20,11 +19,30 @@ const HomeHubsPreview = () => {
     }
 
     if (error) {
-        return <FetchError />
+        return (
+            <div className="py-12 bg-white">
+                <EmptyState
+                    title="Failed to Load Opportunities"
+                    message="We encountered an issue loading the opportunities."
+                    icon={TriangleAlert}
+                    showHomeButton={false}
+                    onRefresh={() => window.location.reload()}
+                />
+            </div>
+        )
     }
 
     if (hubs?.length == 0) {
-        return <NoData title='No hubs found' />
+        return (
+            <div className="py-12 bg-white">
+                <EmptyState
+                    title='No opportunities found'
+                    message='There are no opportunities to display.'
+                    icon={Briefcase}
+                    showHomeButton={false}
+                />
+            </div>
+        )
     }
 
     return (

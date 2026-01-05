@@ -11,7 +11,7 @@ interface ClubDetailProps {
 }
 
 const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
-    const { clubName, description, clubLogo, clubType, clubLink } = club;
+    const { clubName, description, clubLogo, clubType, clubLink, isActivelyRecruitingMembers } = club;
 
     return (
         <div className="min-h-screen bg-gray-50 pb-20 font-poppins">
@@ -33,7 +33,7 @@ const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
                             className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-4 transition-all hover:-translate-x-1"
                         >
                             <ArrowLeft className="w-5 h-5" />
-                            <span className="font-medium">Back to Clubs</span>
+                            <span className="font-medium">Back to Clubs and Societies</span>
                         </Link>
 
                         <div className="relative w-24 h-24 sm:w-32 sm:h-32 mx-auto rounded-3xl overflow-hidden border-4 border-white/10 shadow-2xl animate-in zoom-in duration-700">
@@ -108,12 +108,21 @@ const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
                                 </div>
 
                                 <div className="pt-6 border-t border-gray-100">
-                                    <div className="flex items-center gap-4 p-4 rounded-2xl bg-primary/5 border border-primary/10">
-                                        <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                                        <p className="text-sm font-medium text-gray-700 italic">
-                                            Currently accepting new members for the academic year.
-                                        </p>
-                                    </div>
+                                    {isActivelyRecruitingMembers ? (
+                                        <div className="flex items-center gap-4 p-4 rounded-2xl bg-primary/5 border border-primary/10">
+                                            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                                            <p className="text-sm font-medium text-gray-700 italic">
+                                                Currently accepting new members for the academic year.
+                                            </p>
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                                            <div className="w-2 h-2 rounded-full bg-gray-400" />
+                                            <p className="text-sm font-medium text-gray-500 italic">
+                                                Membership recruitment is currently closed. Please check back later.
+                                            </p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>

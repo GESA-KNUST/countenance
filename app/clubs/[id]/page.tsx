@@ -38,7 +38,7 @@ const ClubDetailPage = () => {
                     <h1 className="text-3xl font-bold text-gray-900 mb-4 font-header">Club Not Found</h1>
                     <p className="text-gray-600 mb-8 leading-relaxed">The club you are looking for might have been moved or deleted. Experience something else!</p>
                     <a href="/clubs" className="inline-block bg-black text-white px-10 py-4 rounded-2xl font-bold hover:shadow-lg transition-all hover:scale-[1.02]">
-                        Back to Clubs
+                        Back to Clubs and Societies
                     </a>
                 </div>
             </div>
