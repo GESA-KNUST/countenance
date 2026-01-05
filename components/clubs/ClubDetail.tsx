@@ -8,12 +8,22 @@ import { Globe, ArrowLeft, Share2, ExternalLink, Info } from 'lucide-react';
 import { ClubItems } from '@/hooks/useClubs';
 import Container from '../custom/Container';
 
+import { useStore } from '@/store/useStore';
+import { useEffect } from 'react';
+
 interface ClubDetailProps {
     club: ClubItems;
 }
 
 const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
-    const { clubName, description, clubLogo, clubType, clubLink, isActivelyRecruitingMembers, aboutclub } = club;
+    const { clubName, description, clubLogo, clubType, clubLink, isActivelyRecruitingMembers, aboutclub, sys } = club;
+    const { addToRecentlyViewed } = useStore();
+
+    useEffect(() => {
+        if (club && sys.id) {
+            addToRecentlyViewed(`/clubs/${sys.id}`);
+        }
+    }, [club, sys.id, addToRecentlyViewed]);
 
     const options: Options = {
         renderNode: {
