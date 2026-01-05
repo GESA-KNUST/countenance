@@ -73,11 +73,11 @@ const ContactForm = () => {
             <div className='space-y-4 md:space-y-6'>
               <div className='flex items-center gap-4'>
                 <Phone className="shrink-0 w-5 h-5" />
-                <span className="text-sm md:text-base">024-342-6670</span>
+                <span className="text-sm md:text-base">+233 20 057 6468</span>
               </div>
               <div className='flex items-center gap-4'>
                 <Mail className="shrink-0 w-5 h-5" />
-                <span className="text-sm md:text-base">info@gesaknust.org</span>
+                <span className="text-sm md:text-base">thegesaknust@gmail.com</span>
               </div>
               <div className='flex items-center gap-4'>
                 <MapPin className="shrink-0 w-5 h-5" />

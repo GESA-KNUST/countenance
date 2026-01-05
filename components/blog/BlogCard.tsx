@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Share2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -77,23 +77,45 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
               </div>
 
               <div className="mt-4 pt-4 border-t border-gray-100">
-                <div className="flex gap-3 items-center">
-                  <div className="h-10 w-10 relative rounded-full overflow-hidden shrink-0 border border-gray-100">
-                    <Image
-                      src={author.url}
-                      alt={"author image"}
-                      className="h-full w-full object-cover"
-                      fill
-                    />
+                <div className="flex justify-between items-center">
+                  <div className="flex gap-3 items-center">
+                    <div className="h-10 w-10 relative rounded-full overflow-hidden shrink-0 border border-gray-100">
+                      <Image
+                        src={author.url}
+                        alt={"author image"}
+                        className="h-full w-full object-cover"
+                        fill
+                      />
+                    </div>
+                    <div className="flex flex-col">
+                      <h4 className="font-semibold text-sm text-gray-900 leading-none mb-1">
+                        {author.title}
+                      </h4>
+                      <p className="text-xs text-gray-500 font-medium">
+                        {formattedDate}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex flex-col">
-                    <h4 className="font-semibold text-sm text-gray-900 leading-none mb-1">
-                      {author.title}
-                    </h4>
-                    <p className="text-xs text-gray-500 font-medium">
-                      {formattedDate}
-                    </p>
-                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const url = `${window.location.origin}/blog-2?slug=${post.slug}`;
+                      if (navigator.share) {
+                        navigator.share({
+                          title: slug,
+                          text: `Check out this blog post: ${slug}`,
+                          url: url,
+                        }).catch((error) => console.error('Error sharing', error));
+                      } else {
+                        navigator.clipboard.writeText(url);
+                        alert("Link copied to clipboard");
+                      }
+                    }}
+                    className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500 hover:text-primary"
+                    title="Share"
+                  >
+                    <Share2 className="w-5 h-5" />
+                  </button>
                 </div>
               </div>
             </div>

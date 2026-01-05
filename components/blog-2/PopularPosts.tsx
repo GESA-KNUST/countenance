@@ -2,9 +2,11 @@
 import Image from 'next/image';
 import { Skeleton } from '../../components/ui/skeleton';
 
+import { Share2 } from 'lucide-react';
+
 const SimplifiedBlogCard = ({ post, onPostSelect }) => (
     <div
-        className="h-[116px] w-full max-w-sm shadow-lg cursor-pointer hover:bg-gray-100 transition-colors duration-200 flex flex-row overflow-hidden rounded-xl border border-gray-50"
+        className="h-[116px] w-full max-w-sm shadow-lg cursor-pointer hover:bg-gray-100 transition-colors duration-200 flex flex-row overflow-hidden rounded-xl border border-gray-50 relative group"
         onClick={() => onPostSelect(post)}
     >
         <div className="relative w-28 h-full shrink-0">
@@ -15,9 +17,29 @@ const SimplifiedBlogCard = ({ post, onPostSelect }) => (
                 className="object-cover"
             />
         </div>
-        <div className="flex flex-col justify-center p-4">
+        <div className="flex flex-col justify-center p-4 relative w-full">
             <p className='text-sm text-[#FFBE00] font-bold '>Blog</p>
-            <h3 className='text-lg font-bold text-foreground line-clamp-2 font-header'>{post.title}</h3>
+            <h3 className='text-lg font-bold text-foreground line-clamp-2 font-header pr-6'>{post.title}</h3>
+            <button
+                onClick={(e) => {
+                    e.stopPropagation();
+                    const url = `${window.location.origin}/blog-2?slug=${post.slug}`;
+                    if (navigator.share) {
+                        navigator.share({
+                            title: post.title,
+                            text: `Check out this blog post: ${post.title}`,
+                            url: url,
+                        }).catch((error) => console.error('Error sharing', error));
+                    } else {
+                        navigator.clipboard.writeText(url);
+                        alert("Link copied to clipboard!");
+                    }
+                }}
+                className="absolute bottom-2 right-2 p-2 hover:bg-gray-200 rounded-full transition-colors text-gray-500 hover:text-primary z-10"
+                title="Share"
+            >
+                <Share2 className="w-4 h-4" />
+            </button>
         </div>
     </div>
 );

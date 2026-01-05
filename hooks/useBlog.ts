@@ -20,6 +20,36 @@ const GET_BLOG_BY_SLUG = gql`
         }
         blogContent {
           json
+          links {
+            assets {
+              block {
+                sys {
+                  id
+                }
+                url
+                description
+                width
+                height
+              }
+              hyperlink {
+                sys {
+                  id
+                }
+                url
+                description
+                width
+                height
+              }
+            }
+            entries {
+              inline {
+                sys {
+                  id
+                }
+                __typename
+              }
+            }
+          }
         }
         hook
         tags {
@@ -35,11 +65,11 @@ export const useBlog = (slug: string) => {
   return useQuery({
     queryKey: ["blog", slug],
     queryFn: async () => {
-      const data = await contentfulClient.request(GET_BLOG_BY_SLUG, { 
-        where: { slug } 
+      const data = await contentfulClient.request(GET_BLOG_BY_SLUG, {
+        where: { slug }
       });
       if (data.blogPostCollection.items.length === 0) {
-          return null;
+        return null;
       }
       return data.blogPostCollection.items[0];
     },
