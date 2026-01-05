@@ -15,7 +15,8 @@ import SkeletonLoading from '@/components/hubs/SkeletonLoading'
 import POLoading from '@/components/hubs/POLoading'
 import { useAnnouncements } from '@/hooks/useAnnoucement'
 import FetchError from '@/components/custom/FetchError'
-import NoData from '@/components/custom/NoData'
+import EmptyState from '@/components/events/EmptyState'
+import { Briefcase, TriangleAlert } from 'lucide-react'
 
 const page = () => {
     const [currentId, setCurrentId] = useState<number>(0)
@@ -74,7 +75,17 @@ const page = () => {
     ]
 
     if (error) {
-        return <FetchError />
+        return (
+            <div className="flex items-center justify-center min-h-[50vh]">
+                <EmptyState
+                    title="Failed to Load Opportunities"
+                    message="We encountered an issue loading the opportunities. Please try again later."
+                    icon={TriangleAlert}
+                    showHomeButton={true}
+                    onRefresh={() => window.location.reload()}
+                />
+            </div>
+        )
     }
 
 
@@ -105,7 +116,14 @@ const page = () => {
             </Container>
             <Container size='xl' className='relative'>
                 <div className='grid grid-cols-1 lg:grid-cols-4 gap-8'>
-                    {filteredOpportunities?.length == 0 ? <div className="lg:col-span-3"><NoData /></div> :
+                    {!isLoading && (!filteredOpportunities || filteredOpportunities.length == 0) ? <div className="lg:col-span-3">
+                        <EmptyState
+                            title='No opportunities found'
+                            message='There are no opportunities to display at this time.'
+                            icon={Briefcase}
+                            showHomeButton={false}
+                        />
+                    </div> :
                         <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 content-start relative">
                             {isLoading ? (
                                 <>
