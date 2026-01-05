@@ -15,6 +15,20 @@ export interface DepartmentData {
   };
   about: {
     json: any;
+    links: {
+      assets: {
+        block: {
+          sys: {
+            id: string;
+          };
+          url: string;
+          title: string;
+          description: string;
+          width: number;
+          height: number;
+        }[];
+      };
+    };
   };
   mission: {
     json: any;
@@ -50,6 +64,20 @@ const GET_DEPARTMENT = gql`
         }
         about {
           json
+          links {
+            assets {
+              block {
+                sys {
+                  id
+                }
+                url
+                title
+                description
+                width
+                height
+              }
+            }
+          }
         }
         mission {
           json

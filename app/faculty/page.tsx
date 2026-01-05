@@ -6,10 +6,11 @@ import { Search, Globe, School } from 'lucide-react'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { useFacultyCollection } from '@/hooks/useFacultyCollection'
-import StarSpinner from '@/components/ui/StarSpinner'
 import Image from 'next/image'
 import EmptyState from '@/components/events/EmptyState'
 import { LayoutGrid } from 'lucide-react'
+import { FacultyGridSkeleton } from '@/components/faculty/FacultySkeleton'
+import logo from '@/public/images/logo.png'
 
 const FacultyListPage = () => {
     const [search, setSearch] = useState<string>('');
@@ -50,9 +51,7 @@ const FacultyListPage = () => {
             <Container size='xl'>
                 <div className='pb-20'>
                     {isLoading ? (
-                        <div className="flex justify-center py-20">
-                            <StarSpinner />
-                        </div>
+                        <FacultyGridSkeleton />
                     ) : error ? (
                         <div className="text-center py-20 bg-red-50 rounded-3xl border border-red-100">
                             <p className="text-red-500 font-bold text-lg">Failed to load faculties. Please try again later.</p>
@@ -71,18 +70,14 @@ const FacultyListPage = () => {
                                 <div key={fac.sys.id} className='group bg-white p-8 rounded-[2.5rem] flex flex-col gap-6 w-full border border-gray-100 shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-500 hover:-translate-y-2'>
                                     <div className="flex flex-row md:flex-col items-center md:items-start gap-4 md:gap-6">
                                         <div className='w-16 h-16 shrink-0 rounded-2xl bg-gray-50 p-3 flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-500'>
-                                            {fac.facultyMainImageCollection?.items[0]?.url ? (
-                                                <div className="relative w-full h-full">
-                                                    <Image
-                                                        src={fac.facultyMainImageCollection.items[0].url}
-                                                        alt={fac.name}
-                                                        fill
-                                                        className="object-contain"
-                                                    />
-                                                </div>
-                                            ) : (
-                                                <School size={32} className="text-gray-300 group-hover:text-primary transition-colors" />
-                                            )}
+                                            <div className="relative w-full h-full">
+                                                <Image
+                                                    src={fac.facultyMainImageCollection?.items[0]?.url || logo}
+                                                    alt={fac.name}
+                                                    fill
+                                                    className="object-contain"
+                                                />
+                                            </div>
                                         </div>
                                         <div className="flex flex-col gap-1 md:gap-2">
                                             <div className="flex items-center gap-2">
