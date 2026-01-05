@@ -9,9 +9,12 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
+    console.log('[Service Worker] Installing...');
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
+            console.log('[Service Worker] Precaching shell...');
             return cache.addAll(ASSETS).catch(err => {
+                console.warn('Precache warning:', err);
             });
         })
     );
@@ -19,11 +22,13 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
+    console.log('[Service Worker] Activating...');
     event.waitUntil(
         caches.keys().then((keyList) => {
             return Promise.all(
                 keyList.map((key) => {
                     if (key !== CACHE_NAME && key !== DYNAMIC_CACHE) {
+                        console.log('[Service Worker] Removing old cache.', key);
                         return caches.delete(key);
                     }
                 })
@@ -40,7 +45,7 @@ self.addEventListener('fetch', (event) => {
 
     const url = new URL(event.request.url);
 
-    if (event.request.destination === 'image' || url.pathname.match(/\.(png|jpg|jpeg|svg|gif|webp)$/) || url.pathname.startsWith('/_next/image')) {
+    if (event.request.destination === 'image' || url.pathname.match(/\.(png|jpg|jpeg|svg|gif|webp)$/)) {
         event.respondWith(
             caches.match(event.request).then((response) => {
                 if (response) {
@@ -66,6 +71,7 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
+    // Cache Contentful Data 
     if (url.hostname.includes('contentful.com') || url.hostname.includes('ctfassets.net')) {
         event.respondWith(
             caches.open(DYNAMIC_CACHE).then((cache) => {
@@ -74,6 +80,7 @@ self.addEventListener('fetch', (event) => {
                         return response;
                     }
 
+                    // Fallback to Network if not in cache
                     return fetch(event.request).then((networkResponse) => {
                         if (networkResponse && networkResponse.status === 200) {
                             cache.put(event.request, networkResponse.clone());
@@ -118,6 +125,7 @@ self.addEventListener('fetch', (event) => {
                         return networkResponse;
                     })
                     .catch((err) => {
+                        console.warn('[Service Worker] Fetch failed:', err);
                     });
                 return response || fetchPromise;
             });

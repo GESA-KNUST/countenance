@@ -35,7 +35,6 @@ const Navbar = () => {
 
   const navItems = [
     { name: 'Home', link: '/' },
-    { name: 'About', link: '/about' },
     {
       name: 'Academics',
       sublinks: [
@@ -55,6 +54,7 @@ const Navbar = () => {
     },
     { name: 'Gallery', link: '/gallery' },
     { name: 'Contact Us', link: '/contact-us' },
+    { name: 'About', link: '/about' },
   ]
 
   return (
