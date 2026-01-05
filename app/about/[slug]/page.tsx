@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound, useParams } from 'next/navigation';
@@ -22,7 +21,6 @@ const TeamMemberPage = () => {
         <div className="min-h-screen bg-slate-50 font-poppins pb-32">
             {/* Hero Section */}
             <div className="relative h-[calc(100vh-var(--navbar-height))] w-full bg-slate-900 overflow-hidden flex items-end shadow-2xl">
-                {/* Background Image / Texture */}
                 {/* Background Image / Texture */}
                 <div className="absolute inset-0 z-0">
 
@@ -187,7 +185,7 @@ const TeamMemberPage = () => {
 
                         {/* Navigation Footer */}
                         <div className="pt-12 border-t border-slate-200 mt-12 flex justify-between items-center text-slate-500 text-sm">
-                            <span>GESA Development Team</span>
+                            <span>GESA Web Application Development Team</span>
                             <Link href="/about" className="hover:text-primary transition-colors">
                                 View all members
                             </Link>
