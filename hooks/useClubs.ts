@@ -17,6 +17,23 @@ export interface ClubItems {
   description: string
   isFeatured: boolean
   isActivelyRecruitingMembers: boolean
+  aboutclub: {
+    json: any
+    links: {
+      assets: {
+        block: {
+          sys: {
+            id: string
+          }
+          url: string
+          title: string
+          description: string
+          width: number
+          height: number
+        }[]
+      }
+    }
+  }
 }
 
 interface ClubCollection {
@@ -44,6 +61,23 @@ query ClubCollection {
       description
       isFeatured
       isActivelyRecruitingMembers
+      aboutclub {
+        json
+        links {
+          assets {
+            block {
+              sys {
+                id
+              }
+              url
+              title
+              description
+              width
+              height
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -67,6 +101,23 @@ query ClubById($id: String!) {
       description
       isFeatured
       isActivelyRecruitingMembers
+      aboutclub {
+        json
+        links {
+          assets {
+            block {
+              sys {
+                id
+              }
+              url
+              title
+              description
+              width
+              height
+            }
+          }
+        }
+      }
     }
   }
 }
