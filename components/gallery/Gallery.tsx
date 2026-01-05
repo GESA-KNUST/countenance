@@ -1,6 +1,8 @@
 'use client';
 import GalleryCard from './GalleryCard';
 import { useGalleries } from '../../hooks/useGalleryCollection';
+import EmptyState from '../events/EmptyState';
+import { Image as ImageIcon } from 'lucide-react';
 
 const Gallery = () => {
   const { data: galleries, isLoading, error } = useGalleries();
@@ -25,10 +27,29 @@ const Gallery = () => {
     );
   }
 
-  if (error || !galleries) {
+  if (error) {
     return (
-      <div className="bg-white text-center py-16">
-        <p className="text-red-500">Failed to load galleries.</p>
+      <div className="flex items-center justify-center min-h-[50vh] bg-white">
+        <EmptyState
+          title="Failed to Load Gallery"
+          message="We encountered an issue loading the gallery. Please try again later."
+          icon={ImageIcon}
+          showHomeButton={true}
+          onRefresh={() => window.location.reload()}
+        />
+      </div>
+    );
+  }
+
+  if (!galleries || galleries.length === 0) {
+    return (
+      <div className="flex items-center justify-center min-h-[50vh] bg-white">
+        <EmptyState
+          title="Gallery is Empty"
+          message="We haven't uploaded any photos yet. Check back soon for visual updates from our events and activities."
+          icon={ImageIcon}
+          showHomeButton={true}
+        />
       </div>
     );
   }
