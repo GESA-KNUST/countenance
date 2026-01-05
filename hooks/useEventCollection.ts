@@ -19,6 +19,7 @@ export interface EventItem {
   eventDate: string;
   description: string;
   venue: EventVenue;
+  venueInPlainEnglish: string;
   onlineLink?: string;
   eventImage: EventImage;
 }
@@ -42,6 +43,31 @@ const GET_EVENTS = gql`
           lat
           lon
         }
+        venueInPlainEnglish
+        onlineLink
+        eventImage {
+          url
+          description
+        }
+      }
+    }
+  }
+`;
+
+const GET_EVENT_BY_SLUG = gql`
+  query EventCardBySlug($slug: String!) {
+    eventCardCollection(where: { slug: $slug }, limit: 1) {
+      items {
+        _id
+        title
+        slug
+        eventDate
+        description
+        venue {
+          lat
+          lon
+        }
+        venueInPlainEnglish
         onlineLink
         eventImage {
           url
@@ -63,6 +89,23 @@ const useEventCollection = () => {
         throw err;
       }
     },
+  });
+};
+
+export const useEventBySlug = (slug: string) => {
+  return useFetchData({
+    queryKey: ["event", slug],
+    queryFn: async () => {
+      try {
+        const data = await contentfulClient.request<Props>(GET_EVENT_BY_SLUG, {
+          slug,
+        });
+        return data.eventCardCollection.items[0];
+      } catch (err: any) {
+        throw err;
+      }
+    },
+    enabled: !!slug,
   });
 };
 
