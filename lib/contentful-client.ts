@@ -16,8 +16,11 @@ if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_ACCESS_TOKEN) {
 export const contentfulClient = new GraphQLClient(
   `https://graphql.contentful.com/content/v1/spaces/${CONTENTFUL_SPACE_ID || "undefined"}`,
   {
+    method: 'GET',
     headers: {
       ...(CONTENTFUL_ACCESS_TOKEN ? { Authorization: `Bearer ${CONTENTFUL_ACCESS_TOKEN}` } : {}),
     },
+    // @ts-ignore 
+    next: { revalidate: 3600 },
   }
 );
