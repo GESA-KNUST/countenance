@@ -110,6 +110,7 @@ const DepartmentDetailPage = () => {
                 subtitle={department.deptAbbreviation || "DEPARTMENT"}
                 text={`Official page of the ${department.name} at KNUST.`}
                 images={['/images/img2.png', '/images/img1.png']} // Fallback or fetch specific images if available
+                titleClassName="text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight"
             />
             <Container size='xl'>
                 <div className='py-8'>
