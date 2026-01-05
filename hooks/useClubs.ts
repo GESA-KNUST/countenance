@@ -61,23 +61,7 @@ query ClubCollection {
       description
       isFeatured
       isActivelyRecruitingMembers
-      aboutclub {
-        json
-        links {
-          assets {
-            block {
-              sys {
-                id
-              }
-              url
-              title
-              description
-              width
-              height
-            }
-          }
-        }
-      }
+
     }
   }
 }
