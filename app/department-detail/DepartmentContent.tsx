@@ -13,9 +13,10 @@ import twitter from '@/public/images/twitter.svg'
 import linkedin2 from '@/public/images/linkedin2.svg'
 import { useSearchParams } from 'next/navigation'
 import { useDepartment } from '@/hooks/useDepartment'
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
-import StarSpinner from '@/components/ui/StarSpinner'
+import { documentToReactComponents, Options } from '@contentful/rich-text-react-renderer'
+import { BLOCKS } from '@contentful/rich-text-types'
 import { useStore } from '@/store/useStore'
+import { DepartmentDetailSkeleton } from '@/components/department/DepartmentDetailSkeleton'
 
 const DepartmentContent = () => {
     const searchParams = useSearchParams();
@@ -29,10 +30,33 @@ const DepartmentContent = () => {
         }
     }, [department, id, addToRecentlyViewed]);
 
+    const options: Options = {
+        renderNode: {
+            [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
+                const assetId = node.data.target.sys.id;
+                const asset = department?.about?.links?.assets?.block?.find((a: any) => a.sys.id === assetId);
+
+                if (!asset) return null;
+
+                return (
+                    <div className="my-8 w-full rounded-2xl overflow-hidden shadow-lg">
+                        <Image
+                            src={asset.url}
+                            alt={asset.title || "Embedded Asset"}
+                            width={asset.width || 800}
+                            height={asset.height || 600}
+                            className="w-full h-auto object-cover"
+                        />
+                    </div>
+                );
+            },
+        },
+    };
+
     if (isLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <StarSpinner />
+            <div className="min-h-screen bg-white">
+                <DepartmentDetailSkeleton />
             </div>
         );
     }
@@ -114,7 +138,7 @@ const DepartmentContent = () => {
                                 <h1 className='text-3xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>{department.name}</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
                                 <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
-                                    {department.about ? documentToReactComponents(department.about.json) : <p className="italic text-gray-500">Information coming soon...</p>}
+                                    {department.about ? documentToReactComponents(department.about.json, options) : <p className="italic text-gray-500">Information coming soon...</p>}
                                 </div>
                                 <div className='flex flex-wrap items-center gap-8 pt-8 border-t border-gray-100'>
                                     {department.websiteLink && (

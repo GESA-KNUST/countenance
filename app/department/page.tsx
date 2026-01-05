@@ -6,10 +6,10 @@ import { Search, Globe } from 'lucide-react'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { useDepartmentCollection } from '@/hooks/useDepartmentCollection'
-import StarSpinner from '@/components/ui/StarSpinner'
 import Image from 'next/image'
 import EmptyState from '@/components/events/EmptyState'
 import { LayoutGrid } from 'lucide-react'
+import { DepartmentGridSkeleton } from '@/components/department/DepartmentSkeleton'
 
 const DepartmentListPage = () => {
     const [search, setSearch] = useState<string>('');
@@ -51,9 +51,7 @@ const DepartmentListPage = () => {
             <Container size='xl'>
                 <div className='pb-20'>
                     {isLoading ? (
-                        <div className="flex justify-center py-20">
-                            <StarSpinner />
-                        </div>
+                        <DepartmentGridSkeleton />
                     ) : error ? (
                         <div className="text-center py-20 bg-red-50 rounded-3xl border border-red-100">
                             <p className="text-red-500 font-bold text-lg">Failed to load departments. Please try again later.</p>
