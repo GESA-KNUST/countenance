@@ -81,6 +81,7 @@ const HeroSection = ({
         opts={{
           loop: true,
           duration: 80,
+
         }}
       >
         <CarouselContent className="h-full">

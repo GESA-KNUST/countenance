@@ -16,6 +16,7 @@ import { useDepartment } from '@/hooks/useDepartment'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { BLOCKS } from '@contentful/rich-text-types'
 import StarSpinner from '@/components/ui/StarSpinner'
+import { richTextParagraphRenderer } from '@/lib/richTextOptions'
 
 const DepartmentDetailPage = () => {
     const params = useParams();
@@ -64,9 +65,7 @@ const DepartmentDetailPage = () => {
                     </div>
                 );
             },
-            [BLOCKS.PARAGRAPH]: (node: any, children: any) => {
-                return <p className="mb-6 leading-relaxed text-gray-700 text-lg">{children}</p>;
-            },
+            ...richTextParagraphRenderer,
         },
     };
 
@@ -109,7 +108,7 @@ const DepartmentDetailPage = () => {
                 title={department.name}
                 subtitle={department.deptAbbreviation || "DEPARTMENT"}
                 text={`Official page of the ${department.name} at KNUST.`}
-                images={['/images/img2.png', '/images/img1.png']} // Fallback or fetch specific images if available
+                images={['/images/img2.png', '/images/img1.png']}
                 titleClassName="text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight"
             />
             <Container size='xl'>
