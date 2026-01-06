@@ -81,8 +81,8 @@ const HistorySection = () => {
                     {/* Section 1: History */}
                     <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-20">
                         <motion.div
-                            initial={{ opacity: 0, x: -50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             className="w-full lg:w-[55%] relative"
                         >
                             <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-xl relative z-10 border border-slate-100 bg-white">
@@ -96,8 +96,8 @@ const HistorySection = () => {
                         </motion.div>
 
                         <motion.div
-                            initial={{ opacity: 0, x: 50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             className="w-full lg:w-[45%] space-y-8"
                         >
                             <div className="flex items-center gap-4 text-primary">
@@ -120,8 +120,8 @@ const HistorySection = () => {
                     {/* Section 2: Activities (Reversed) */}
                     <div className="flex flex-col lg:flex-row-reverse items-center gap-16 lg:gap-20">
                         <motion.div
-                            initial={{ opacity: 0, x: 50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             className="w-full lg:w-[55%] relative"
                         >
                             <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-xl relative z-10 border border-slate-100 bg-white">
@@ -135,8 +135,8 @@ const HistorySection = () => {
                         </motion.div>
 
                         <motion.div
-                            initial={{ opacity: 0, x: -50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             className="w-full lg:w-[45%] space-y-8"
                         >
                             <div className="flex items-center gap-4 text-primary">
@@ -164,10 +164,11 @@ const HistorySection = () => {
                                     key={i}
                                     initial={{ opacity: 0, scale: 0.8 }}
                                     whileInView={{ opacity: 1, scale: 1 }}
+                                    viewport={{ once: true }}
                                     transition={{
                                         type: "spring",
-                                        stiffness: 100,
-                                        damping: 15,
+                                        stiffness: 70,
+                                        damping: 20,
                                         delay: i * 0.1
                                     }}
                                     className="p-8 rounded-3xl bg-gray-50 hover:bg-white hover:shadow-xl transition-all duration-500 border border-transparent hover:border-primary/20 group"
