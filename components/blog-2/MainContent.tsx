@@ -5,6 +5,7 @@ import Link from 'next/link';
 import SkeletonLoading from './SkeletonLoading';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS, INLINES } from '@contentful/rich-text-types';
+import { richTextParagraphRenderer } from '@/lib/richTextOptions';
 
 const MainContent = ({ selectedPost }) => {
 
@@ -33,7 +34,6 @@ const MainContent = ({ selectedPost }) => {
     });
   }
 
-  // Also needed for inline entries if any
   const entryMap = new Map();
   if (selectedPost.blogContent?.links?.entries?.inline) {
     selectedPost.blogContent.links.entries.inline.forEach((entry) => {
@@ -73,9 +73,7 @@ const MainContent = ({ selectedPost }) => {
 
   const richTextOptions = {
     renderNode: {
-      [BLOCKS.PARAGRAPH]: (node, children) => {
-        return <p className="mb-6 leading-relaxed text-gray-700 text-lg">{children}</p>;
-      },
+      ...richTextParagraphRenderer,
       [BLOCKS.EMBEDDED_ASSET]: renderAsset,
       [INLINES.EMBEDDED_ENTRY]: (node) => {
         return null;
