@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '../ui/button';
 import Image from 'next/image';
 import Container from '../custom/Container';
@@ -56,8 +56,8 @@ const Personality = () => {
 
 
               <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 className='flex flex-col gap-4 xl:max-w-xl lg:w-1/2 w-full'
               >
@@ -86,7 +86,7 @@ const Personality = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-100 flex items-center justify-center px-4 py-6 sm:px-6"
+            className="fixed inset-0 z-[1000] flex items-center justify-center px-4 py-6 sm:px-6"
           >
             <div
               className="absolute inset-0 bg-black/60 backdrop-blur-sm"
@@ -97,7 +97,7 @@ const Personality = () => {
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 10 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              transition={{ type: "spring", damping: 20, stiffness: 260 }}
               className="bg-white relative z-10 w-full max-w-5xl max-h-[90vh] rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row"
             >
               <button

@@ -1,5 +1,4 @@
 "use client"
-import React from 'react'
 import Container from '../custom/Container';
 import { Button } from '../ui/button';
 import Link from 'next/link';
@@ -22,8 +21,8 @@ const Contribute = () => {
         <Container size='xl' className='font-poppins py-16'>
             <div className="flex flex-col gap-12">
                 <motion.div
-                    initial={{ opacity: 0, x: 50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
                     className="flex justify-between items-center"
                 >

@@ -21,12 +21,9 @@ const TeamMemberPage = () => {
     return (
         <div className="min-h-screen bg-slate-50 font-poppins pb-12" suppressHydrationWarning>
             {/* Hero Section */}
-            <div className="relative h-[50vh] min-h-[500px] lg:h-[85vh] w-full bg-slate-900 overflow-hidden flex items-end shadow-2xl">
+            <div className="relative h-[40vh] min-h-[400px] lg:h-[60vh] w-full bg-slate-900 overflow-hidden flex items-end shadow-2xl">
                 {/* Background Image / Texture */}
                 <div className="absolute inset-0 z-0">
-
-
-                    {/* HERE IS WHERE THE PERSON'S PICTURE IS USED ON THE HERO */}
                     {member.image ? (
                         <div className="absolute right-0 top-0 w-full md:w-2/3 h-full">
                             <Image
@@ -70,7 +67,7 @@ const TeamMemberPage = () => {
                             </span>
                             <span className="h-px flex-1 bg-gradient-to-r from-slate-700 to-transparent"></span>
                         </div>
-                        <h1 className="text-5xl md:text-7xl font-bold font-header text-white tracking-tight leading-none mb-4 drop-shadow-lg">
+                        <h1 className="text-3xl md:text-5xl font-bold font-header text-white tracking-tight leading-none mb-4 drop-shadow-lg">
                             {member.name}
                         </h1>
                         <p className="text-xl md:text-2xl text-yellow-500 font-medium max-w-2xl drop-shadow-lg">
