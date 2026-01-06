@@ -4,9 +4,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { documentToReactComponents, Options } from '@contentful/rich-text-react-renderer';
 import { BLOCKS } from '@contentful/rich-text-types';
-import { Globe, ArrowLeft, Share2, ExternalLink, Info } from 'lucide-react';
+import { Globe, ArrowLeft, Share2, ExternalLink } from 'lucide-react';
 import { ClubItems } from '@/hooks/useClubs';
 import Container from '../custom/Container';
+import { richTextParagraphRenderer } from '@/lib/richTextOptions';
 
 import { useStore } from '@/store/useStore';
 import { useEffect } from 'react';
@@ -27,6 +28,7 @@ const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
 
     const options: Options = {
         renderNode: {
+            ...richTextParagraphRenderer,
             [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
                 const assetId = node.data.target.sys.id;
                 const asset = aboutclub?.links?.assets?.block?.find((a: any) => a.sys.id === assetId);

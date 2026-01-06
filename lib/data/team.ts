@@ -61,7 +61,7 @@ export const teamMembers: TeamMember[] = [
         about: "As the **Lead Developer alongside Joy**, Obrempong has been instrumental in the GESA Software Engineering Team. With a strong background in software engineering and technology, and currently in his third year pursuing Geomatic Engineering, he aims to merge technology with the construction industry, particularly surveying, by integrating geospatial tools, data analytics, and modern digital solutions to improve accuracy, efficiency, and decision-making in construction projects, working closely with his sister, **Architect Abigail Nana Akua Osei-Wusu** and  his mentor **Surv.Hubert Owusu Boateng**. In his role as Lead Developer, he brings this interdisciplinary perspective to the GESA Web Application project, ensuring that the team’s solutions are not only technically sound but also practical, innovative, and aligned with the needs of the students they serve."
     },
     {
-        name: "Joy Atakora Adu",
+        name: "Adu Joy Atakora",
         role: "Lead Developer",
         year: "3rd Year",
         major: "Telecom Engineering",
@@ -72,7 +72,7 @@ export const teamMembers: TeamMember[] = [
             github: "https://github.com/Joylinton04",
             linkedin: "https://www.linkedin.com/in/joy-adu989/"
         },
-        slug: "joy-adu-atakora",
+        slug: "adu-joy-atakora",
         about: "As the **Lead Developer together with Obrempong**, Joy has been instrumental in the GESA Software Engineering Team. With a robust background in software engineering and technology, and currently in 3rd year pursuing Telecom Engineering, he brings a unique perspective to the project, ensuring that our solutions are not just technically sound but also relevant to the students we serve."
     },
     {

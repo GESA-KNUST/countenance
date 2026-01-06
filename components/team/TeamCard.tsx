@@ -19,7 +19,7 @@ const TeamCard = ({ member, index }: { member: TeamMember, index: number }) => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                className='w-full md:w-[480px] lg:w-[500px] h-[400px] sm:h-[450px] overflow-hidden shadow-2xl relative rounded-[2.5rem] group'
+                className='w-full md:w-[480px] lg:w-[500px] h-[350px] sm:h-[400px] overflow-hidden shadow-2xl relative rounded-[2.5rem] group'
             >
                 {member.image ? (
                     <Image
@@ -50,7 +50,7 @@ const TeamCard = ({ member, index }: { member: TeamMember, index: number }) => {
                     <div className="inline-block px-4 py-1.5 bg-primary text-black font-bold text-xs uppercase tracking-[0.2em] rounded-full">
                         {member.role}
                     </div>
-                    <h3 className="font-bold text-3xl md:text-4xl lg:text-5xl font-header text-slate-900 leading-[1.1]">
+                    <h3 className="font-bold text-2xl md:text-3xl lg:text-4xl font-header text-slate-900 leading-[1.1]">
                         {member.name}
                     </h3>
                     <p className="text-lg text-slate-500 font-medium flex items-center gap-2">

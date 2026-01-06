@@ -10,7 +10,7 @@ import Contribute from '@/components/home/Contribute';
 
 const Home = () => {
   return (
-    <div className='font-poppins min-h-screen'>
+    <div className='font-poppins min-h-screen overflow-x-hidden w-full'>
       <HeroSection
         title="Engineering Beyond Classrooms"
         highlight="Engineering"
