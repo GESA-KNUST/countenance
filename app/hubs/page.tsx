@@ -30,8 +30,7 @@ const page = () => {
     const announcements = useMemo(() => {
         if (!announcementsData) return [];
         return [...announcementsData]
-            .sort((a, b) => new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime())
-            .slice(0, 3);
+            .sort((a, b) => new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime());
     }, [announcementsData]);
 
 
@@ -56,16 +55,8 @@ const page = () => {
     }, [currentId])
 
     const renderBorderColor = (index: number) => {
-        switch (index) {
-            case 0:
-                return "bg-primary"
-            case 1:
-                return "bg-[#B1B1B1]/50"
-            case 2:
-                return "bg-black"
-            default:
-                return "bg-black"
-        }
+        const colors = ["bg-primary", "bg-[#B1B1B1]/50", "bg-black"];
+        return colors[index % colors.length];
     }
 
     const applicationTips = [
@@ -96,7 +87,7 @@ const page = () => {
                 title="Explore New Opportunities"
                 highlight="Opportunities"
                 text='Discover upcoming opportunities—from internships to scholarships and financial support—carefully curated to help you grow and succeed.'
-                images={['/images/img1.png', '/images/img2.png']}
+                images={['/images/opportunities/opportunities-1.JPG', '/images/opportunities/opportunities-2.JPG', '/images/opportunities/opportunities-3.JPG']}
                 button={false}
             />
             <Container size='lg'>
@@ -161,13 +152,13 @@ const page = () => {
                                         <Image src={announcement} alt="" />
                                         <p className='text-[#111827] font-medium text-lg'>Latest Announcements</p>
                                     </div>
-                                    <div className='flex flex-col gap-2 py-2'>
+                                    <div className='flex flex-col gap-2 py-2 max-h-[290px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-primary scrollbar-track-slate-100'>
                                         {announcements?.map((announcement, index) => (
-                                            <a href={announcement.actionLink} target="_blank" rel="noopener noreferrer" className='flex gap-4 hover:bg-slate-200/20 py-2 rounded-xl transition-all duration-300' key={index}>
-                                                <div className={`${renderBorderColor(index)} h-16 w-1.5`}></div>
+                                            <a href={announcement.actionLink} target="_blank" rel="noopener noreferrer" className='flex gap-4 hover:bg-slate-200/20 py-2 rounded-xl transition-all duration-300 shrink-0' key={index}>
+                                                <div className={`${renderBorderColor(index)} h-16 w-1.5 shrink-0`}></div>
                                                 <div className='flex flex-col gap-2'>
-                                                    <p className='font-medium'>{announcement.title}</p>
-                                                    <p className='text-gray-600 text-sm'>{announcement.description.slice(0, 50) + '...'}</p>
+                                                    <p className='font-medium line-clamp-2'>{announcement.title}</p>
+                                                    <p className='text-gray-600 text-sm line-clamp-2'>{announcement.description}</p>
                                                 </div>
                                             </a>
                                         ))}

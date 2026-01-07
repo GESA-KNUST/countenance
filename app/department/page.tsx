@@ -23,10 +23,10 @@ const DepartmentListPage = () => {
     return (
         <div className='font-poppins min-h-screen bg-white'>
             <DepartmentHero
-                title="FIND YOUR"
-                subtitle="DEPARTMENT"
+                title="Find Your"
+                subtitle="Department"
                 text='Choose from our diverse departments designed to equip you with skills, knowledge, and hands-on experience.'
-                images={['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png']}
+                images={['/images/dept/dept-3.jpg', '/images/dept/dept-2.jpeg', '/images/dept/dept-1.jpeg']}
             />
             <Container size='xl'>
                 <div className='flex flex-col md:flex-row items-center justify-center gap-6 py-6 md:py-12'>

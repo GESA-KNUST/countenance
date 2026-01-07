@@ -8,7 +8,6 @@ import React, { useState } from 'react'
 import { useFacultyCollection } from '@/hooks/useFacultyCollection'
 import Image from 'next/image'
 import EmptyState from '@/components/events/EmptyState'
-import { LayoutGrid } from 'lucide-react'
 import { FacultyGridSkeleton } from '@/components/faculty/FacultySkeleton'
 import logo from '@/public/images/logo.png'
 
@@ -23,10 +22,10 @@ const FacultyListPage = () => {
     return (
         <div className='font-poppins min-h-screen bg-white'>
             <DepartmentHero
-                title="EXPLORE"
-                subtitle="FACULTIES"
+                title="Explore"
+                subtitle="Faculties"
                 text='Discover the diverse academic faculties within the College of Engineering, each dedicated to excellence and innovation.'
-                images={['/images/img1.png', '/images/img2.png']}
+                images={['/images/faculty/faculty-1.jpg', '/images/faculty/faculty-2.jpg', '/images/faculty/faculty-3.JPG']}
             />
             <Container size='xl'>
                 <div className='flex flex-col md:flex-row items-center justify-center gap-6 py-6 md:py-12'>

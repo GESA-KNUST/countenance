@@ -15,7 +15,7 @@ interface HeroProps {
 }
 
 const Hero = ({
-  images = ['/images/image 26.png', '/images/img2.png', '/images/img1.png', '/images/img2.png'],
+  images = ['/images/gallery/gallery-1.jpg', '/images/gallery/gallery-2.jpeg', '/images/gallery/gallery-3.JPG'],
 }: HeroProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -88,9 +88,9 @@ const Hero = ({
 
       <div className='relative z-20 flex flex-col justify-center items-start h-full text-white p-10 md:p-20 lg:p-40'>
         <h1 className='text-6xl md:text-8xl font-bold mb-4 font-header'>
-          <span className="font-header">CAPTURED</span>
+          <span className="font-header">Captured</span>
           <br />
-          <span className="text-yellow-500 font-header">MOMENTS</span>
+          <span className="text-yellow-500 font-header">Moments</span>
         </h1>
         <p className='text-sm md:text-xl mb-8'>
           Explore photos from our events,activities and unforgettable memories across our community.
