@@ -21,7 +21,7 @@ const DepartmentHero = ({
     title,
     subtitle,
     text,
-    images = ['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png'],
+    images = ['/images/dept/dept-4.jpg', '/images/dept/dept-2.jpeg', '/images/dept/dept-1.jpeg'],
     titleClassName,
 }: DepartmentHeroProps) => {
     const [api, setApi] = useState<CarouselApi>();

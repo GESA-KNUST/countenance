@@ -1,7 +1,7 @@
 'use client';
 import Autoplay from "embla-carousel-autoplay";
 import Image, { StaticImageData } from 'next/image';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Hand } from 'lucide-react';
 import EventCard from './EventsCard';
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "../ui/carousel";
@@ -39,6 +39,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   items,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [api, setApi] = useState<CarouselApi>();
+  const [mobileApi, setMobileApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
   const MOBILE_CARD_HEIGHT = 460;
   const total = items?.length || 0;
 
@@ -59,8 +63,22 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     setCurrentIndex((prev) => (prev - 1 + total) % total);
   };
 
-  const [api, setApi] = useState<CarouselApi>();
-  const [mobileApi, setMobileApi] = useState<CarouselApi>();
+  useEffect(() => {
+    if (!api) return;
+
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap());
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
+
+  const handleDotClick = (index: number) => {
+    if (!api) return;
+    api.scrollTo(index);
+  };
+
   const plugin = useRef(
     Autoplay({ delay: 5000, stopOnMouseEnter: true, stopOnInteraction: false })
   );
@@ -223,6 +241,20 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
         )}
 
+      </div>
+
+      {/* Progressive Dots */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30">
+        <div className="flex gap-x-2">
+          {Array.from({ length: count }).map((_, index) => (
+            <button
+              onClick={() => handleDotClick(index)}
+              key={index}
+              aria-label={`Go to slide ${index + 1}`}
+              className={`w-3 h-3 sm:w-4 sm:h-4 ${current === index ? 'bg-white' : 'bg-white/30'} rounded-full cursor-pointer transition-all duration-300 hover:bg-white/60`}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
