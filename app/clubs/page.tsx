@@ -6,9 +6,9 @@ import ClubsList from '@/components/clubs/ClubsList';
 import { ClubItems } from '@/hooks/useClubs';
 
 interface ClubCollection {
-    clubCollection: {
-        items: ClubItems[]
-    }
+  clubCollection: {
+    items: ClubItems[]
+  }
 }
 
 const GET_CLUBS = gql`
@@ -35,27 +35,27 @@ query ClubCollection {
 `;
 
 const ClubsPage = async () => {
-    let clubs: ClubItems[] = [];
+  let clubs: ClubItems[] = [];
 
-    try {
-        const data = await contentfulClient.request<ClubCollection>(GET_CLUBS);
-        clubs = data.clubCollection.items;
-    } catch (error) {
-        console.error("Failed to fetch clubs", error);
-    }
+  try {
+    const data = await contentfulClient.request<ClubCollection>(GET_CLUBS);
+    clubs = data.clubCollection.items;
+  } catch (error) {
+    console.error("Failed to fetch clubs", error);
+  }
 
-    return (
-        <div className='font-poppins min-h-screen'>
-            <HeroSection
-                title="Explore Our Clubs and Societies"
-                highlight="Clubs and Societies"
-                text='Connect, learn, and grow with clubs and societies that support your passions, goals, and personal development.'
-                images={['/images/img1.png', '/images/img2.png']}
-                button={false}
-            />
-            <ClubsList clubs={clubs} />
-        </div>
-    )
+  return (
+    <div className='font-poppins min-h-screen'>
+      <HeroSection
+        title="Explore Our Clubs and Societies"
+        highlight="Clubs and Societies"
+        text='Connect, learn, and grow with clubs and societies that support your passions, goals, and personal development.'
+        images={['/images/clubs/clubs-1.jpeg', '/images/clubs/clubs-2.jpg', '/images/clubs/clubs-3.jpg']}
+        button={false}
+      />
+      <ClubsList clubs={clubs} />
+    </div>
+  )
 }
 
 export default ClubsPage;

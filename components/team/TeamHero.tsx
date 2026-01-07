@@ -5,8 +5,8 @@ import HeroSection from '../home/HeroSection';
 const TeamHero = () => {
     return (
         <HeroSection
-            title="BEHIND THE GESA WEB APPLICATION"
-            highlight="WEB APPLICATION"
+            title="Behind The GESA "
+            highlight="Web Application"
             text={
                 <span>
                     A dedicated team of engineering students united by a passion for technology and a commitment to the GESA community.{" "}

@@ -117,7 +117,17 @@ const DepartmentContent = () => {
                 title={department.name}
                 subtitle={department.deptAbbreviation || "GESA"}
                 text={department.deptAbbreviation ? `Official page of the Department of ${department.name} at KNUST.` : 'Empowering students with cutting-edge knowledge and tools to shape the future of technology.'}
-                images={['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png']}
+                images={
+                    id === '5DubyPtyt83ot1Zz3M6IAG'
+                        ? ['/images/electrical-dept/electrical-dept-1.jpeg']
+                        : id === '2Gv7b1DF3myjGGSWWTLCZ'
+                            ? ['/images/biomed-dept/biomed-dept-1.jpg', '/images/biomed-dept/biomed-dept-2.jpg', '/images/biomed-dept/biomed-dept-3.jpg']
+                            : id === '327nW8BQQ1VP3PQtlWWQWy'
+                                ? ['/images/agric-dept/agric-dept-1.jpeg', '/images/agric-dept/agric-dept-2.jpeg', '/images/agric-dept/ages-dept-1.jpg']
+                                : id === '55DSL3hJVQFf9UNctzCkOv'
+                                    ? ['/images/ages-dept/ages-dept-1.jpg', '/images/ages-dept/ages-dept-2.jpg', '/images/ages-dept/ages-dept-3.jpg']
+                                    : ['/images/dept/dept-3.jpg', '/images/dept/dept-2.jpeg', '/images/dept/dept-1.jpeg']
+                }
             />
             <Container size='xl'>
                 <div className='py-8'>

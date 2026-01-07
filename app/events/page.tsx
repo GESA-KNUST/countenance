@@ -10,7 +10,7 @@ const EventsPage = () => {
   return (
     <div className='font-poppins min-h-screen'>
       <HeroSection
-        images={["/images/img1.png", "/images/img2.png", "/images/img1.png", "/images/img2.png"]}
+        images={['/images/event/event-1.jpg', '/images/event/event-5.jpg', '/images/event/event-4.jpg']}
         title="Upcoming"
         subtitle="Explore insights, innovations, and student experiences from the heart of KNUST’s engineering community."
         items={events ?? []}
