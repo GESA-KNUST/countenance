@@ -57,10 +57,12 @@ export const metadata: Metadata = {
     description: "Building Civilization. The official website of the Ghana Engineering Students Association (GESA) at KNUST. Empowering students with innovation, technology, and leadership.",
     images: [
       {
-        url: "/images/logo.png?v=2",
+        url: "https://www.gesaknust.com/images/logo.png?v=3",
+        secureUrl: "https://www.gesaknust.com/images/logo.png?v=3",
         width: 800,
         height: 800,
         alt: "GESA-KNUST Logo",
+        type: "image/png",
       },
     ],
   },
@@ -69,7 +71,7 @@ export const metadata: Metadata = {
     title: "GESA-KNUST",
     description: "Official website of the Ghana Engineering Students Association (GESA) at KNUST.",
     creator: "@thegesaknust",
-    images: ["/images/logo.png?v=2"],
+    images: ["https://www.gesaknust.com/images/logo.png?v=3"],
   },
   robots: {
     index: true,
@@ -88,7 +90,13 @@ export const metadata: Metadata = {
     title: "GESA-KNUST",
   },
   icons: {
+    icon: "/images/logo.png",
+    shortcut: "/images/logo.png",
     apple: "/images/logo.png",
+    other: {
+      rel: 'apple-touch-icon-precomposed',
+      url: '/images/logo.png',
+    },
   },
 };
 
