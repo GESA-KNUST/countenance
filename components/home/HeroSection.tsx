@@ -71,7 +71,7 @@ const HeroSection = ({
 
 
   return (
-    <div className='relative h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden'>
+    <div className='relative h-[40vh] md:h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden'>
 
       {/* Background Image Carousel */}
       <Carousel
@@ -86,7 +86,7 @@ const HeroSection = ({
       >
         <CarouselContent className="h-full">
           {images.map((img, index) => (
-            <CarouselItem key={index} className="relative h-[calc(100vh-var(--navbar-height))] w-full">
+            <CarouselItem key={index} className="relative h-[40vh] md:h-[calc(100vh-var(--navbar-height))] w-full">
               <Image
                 src={img}
                 alt={`Hero image ${index + 1}`}
@@ -104,7 +104,7 @@ const HeroSection = ({
       <div className='absolute inset-0 bg-black/65 z-10' />
 
       {/* Content */}
-      <div className='relative z-20 flex flex-col items-center justify-center text-white px-4 text-center max-w-360 mx-auto gap-2 -mt-32'>
+      <div className='relative z-20 flex flex-col items-center justify-center text-white px-4 text-center max-w-360 mx-auto gap-2 md:-mt-32'>
         <h1 className='font-bold font-header text-3xl leading-tight sm:text-[50px] sm:leading-tight md:text-[68px] md:leading-[76px] lg:text-[75px] xl:text-[85px] lg:leading-[90px]'>
           {titleParts[0]}
           <span className="text-yellow-500 font-header">{highlight}</span>
