@@ -152,7 +152,7 @@ const page = () => {
                                         <Image src={announcement} alt="" />
                                         <p className='text-[#111827] font-medium text-lg'>Latest Announcements</p>
                                     </div>
-                                    <div className='flex flex-col gap-2 py-2 max-h-[290px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-primary scrollbar-track-slate-100'>
+                                    <div className='flex flex-col gap-2 py-2 max-h-[290px] overflow-y-auto pr-2 scrollbar-visible'>
                                         {announcements?.map((announcement, index) => (
                                             <a href={announcement.actionLink} target="_blank" rel="noopener noreferrer" className='flex gap-4 hover:bg-slate-200/20 py-2 rounded-xl transition-all duration-300 shrink-0' key={index}>
                                                 <div className={`${renderBorderColor(index)} h-16 w-1.5 shrink-0`}></div>
