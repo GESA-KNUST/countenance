@@ -67,7 +67,7 @@ export const teamMembers: TeamMember[] = [
         major: "Telecom Engineering",
         description: "As a Lead Developer together with Obrempong, Joy played a critical role in bringing the GESA vision to life. He expertly handled both the creative frontend implementation and robust backend logic, crafting fluid animations and responsive layouts while ensuring system stability. His versatile skills delivered a cohesive, polished, and dynamic application.",
         image: "/images/Joy.jpg",
-        funFact: "Real life Betram Gilfoyle.",
+        funFact: "Real life Bertram Gilfoyle.",
         socials: {
             github: "https://github.com/Joylinton04",
             linkedin: "https://www.linkedin.com/in/joy-adu989/"
