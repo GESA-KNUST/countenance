@@ -117,6 +117,8 @@ const DepartmentContent = () => {
                 title={department.name}
                 subtitle={department.deptAbbreviation || "GESA"}
                 text={department.deptAbbreviation ? `Official page of the Department of ${department.name} at KNUST.` : 'Empowering students with cutting-edge knowledge and tools to shape the future of technology.'}
+                backLink="/department"
+                backText="Back to Departments"
                 images={
                     id === '5DubyPtyt83ot1Zz3M6IAG'
                         ? ['/images/electrical-dept/electrical-dept-1.jpeg']

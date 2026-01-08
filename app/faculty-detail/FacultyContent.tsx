@@ -84,6 +84,8 @@ const FacultyContent = () => {
                 title={faculty.name}
                 subtitle={"GESA"}
                 text={'Leading the way in engineering education and innovative research.'}
+                backLink="/faculty"
+                backText="Back to Faculties"
                 images={['/images/img2.png', '/images/img1.png']}
             />
             <Container size='xl'>
