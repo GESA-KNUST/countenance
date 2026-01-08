@@ -17,8 +17,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         };
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://gesa-knust.com';
-    const imageUrl = member.image ? `${baseUrl}${member.image}` : `${baseUrl}/images/logo.png`;
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.gesaknust.com';
+    const imageUrl = member.image ? `${baseUrl}${member.image}?v=1` : `${baseUrl}/images/logo.png?v=1`;
 
     return {
         title: `${member.name} | GESA Team`,
@@ -26,6 +26,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         openGraph: {
             title: `${member.name} | GESA Team`,
             description: member.description,
+            siteName: 'GESA-KNUST',
+            locale: 'en_GH',
             images: [
                 {
                     url: imageUrl,
