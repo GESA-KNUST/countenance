@@ -59,7 +59,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ gallery, large = false }) => 
   return (
     <div
       className={`relative ${large ? 'h-[350px] md:h-[660px]' : 'h-[350px]'
-        } w-full md:flex-1 group overflow-hidden font-poppins ${gallery?.picturesLink ? 'cursor-pointer' : 'cursor-default'
+        } w-full md:flex-1 group rounded-3xl overflow-hidden font-poppins ${gallery?.picturesLink ? 'cursor-pointer' : 'cursor-default'
         }`}
       onClick={openPicturesLink}
     >
