@@ -12,15 +12,15 @@ const Gallery = () => {
       <div className="bg-white">
         <div className="px-4 sm:px-6 md:px-10 lg:px-20 py-16 space-y-8">
           <div className="flex flex-col md:flex-row gap-5">
-            <div className="h-[350px] w-full md:flex-1 bg-gray-300 animate-pulse rounded-md" />
-            <div className="h-[350px] w-full md:flex-1 bg-gray-300 animate-pulse rounded-md" />
-            <div className="h-[350px] w-full md:flex-1 bg-gray-300 animate-pulse rounded-md" />
-            <div className="h-[350px] w-full md:flex-1 bg-gray-300 animate-pulse rounded-md" />
+            <div className="h-[350px] w-full md:flex-1 bg-gray-300 animate-pulse rounded-3xl" />
+            <div className="h-[350px] w-full md:flex-1 bg-gray-300 animate-pulse rounded-3xl" />
+            <div className="h-[350px] w-full md:flex-1 bg-gray-300 animate-pulse rounded-3xl" />
+            <div className="h-[350px] w-full md:flex-1 bg-gray-300 animate-pulse rounded-3xl" />
           </div>
           <div className="flex flex-col md:flex-row gap-5">
-            <div className="h-[350px] md:h-[660px] w-full md:flex-1 bg-gray-300 animate-pulse rounded-md" />
-            <div className="h-[350px] md:h-[660px] w-full md:flex-1 bg-gray-300 animate-pulse rounded-md" />
-            <div className="h-[350px] md:h-[660px] w-full md:flex-1 bg-gray-300 animate-pulse rounded-md" />
+            <div className="h-[350px] md:h-[660px] w-full md:flex-1 bg-gray-300 animate-pulse rounded-3xl" />
+            <div className="h-[350px] md:h-[660px] w-full md:flex-1 bg-gray-300 animate-pulse rounded-3xl" />
+            <div className="h-[350px] md:h-[660px] w-full md:flex-1 bg-gray-300 animate-pulse rounded-3xl" />
           </div>
         </div>
       </div>
