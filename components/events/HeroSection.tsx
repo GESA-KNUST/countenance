@@ -91,7 +91,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   };
 
   return (
-    <div className="relative min-h-[calc(100vh-var(--navbar-height))] w-full flex items-center justify-center overflow-auto">
+    <div className="relative h-[40vh] md:min-h-[calc(100vh-var(--navbar-height))] w-full flex items-center justify-center overflow-auto">
 
       <Carousel
         plugins={[plugin.current]}
@@ -103,7 +103,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           {images.map((img, index) => (
             <CarouselItem
               key={index}
-              className="relative h-[calc(100vh-var(--navbar-height))] w-full pl-0"
+              className="relative h-[40vh] md:h-[calc(100vh-var(--navbar-height))] w-full pl-0"
             >
               <Image
                 src={img}
@@ -120,7 +120,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
       <div className="absolute inset-0 bg-black/60 z-10" />
 
-      <div className="relative z-20 w-full flex flex-col lg:flex-row items-center justify-between text-white p-4 sm:p-8 md:p-12 lg:p-20 xl:p-24 gap-6">
+      <div className="relative z-20 w-full flex flex-col lg:flex-row items-center justify-center lg:justify-between text-white p-4 sm:p-8 md:p-12 lg:p-20 xl:p-24 gap-6 md:-mt-32">
 
         <div className="max-w-xl text-center lg:text-left">
           <h1 className='font-bold font-header text-4xl leading-12 sm:text-[60px] sm:leading-16 md:text-[72px] md:leading-[76px] xl:text-[90px] lg:leading-[90px]'>
@@ -152,6 +152,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
         {total > 0 ? (
           <>
+            {/* Desktop Cards */}
             <div className="hidden lg:block w-[800px] overflow-hidden">
               <div
                 className="flex gap-6 items-stretch transition-transform duration-500 ease-in-out"
@@ -183,52 +184,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               </div>
             </div>
 
-            <div className="lg:hidden w-full max-w-sm mx-auto mt-4">
-              <Carousel
-                className="w-full"
-                setApi={setMobileApi}
-                plugins={[]}
-                opts={{
-                  align: "start",
-                  loop: true,
-                }}
-              >
-                <CarouselContent className="-ml-4">
-                  {items?.map((item) => (
-                    <CarouselItem key={item._id} className="pl-4 basis-full">
-                      <div
-                        onClick={() => scrollToEvent(item.slug)}
-                        className="h-full"
-                      >
-                        <EventCard
-                          isHeroCard={true}
-                          title={item.title}
-                          description={item.description}
-                          headerImg={item.eventImage}
-                          date={item.eventDate}
-                          venue={item.venue}
-                          onlineLink={item.onlineLink}
-                          slug={item.slug}
-                        />
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <div className="flex items-center justify-center gap-2 mt-4 text-white/50">
-                  <motion.div
-                    animate={{ y: [-5, 5, -5] }}
-                    transition={{
-                      repeat: Infinity,
-                      duration: 1.5,
-                      ease: "easeInOut"
-                    }}
-                  >
-                    <Hand className="w-5 h-5" />
-                  </motion.div>
-                  <span className="text-xs font-medium tracking-wide">Swipe to explore</span>
-                </div>
-              </Carousel>
-            </div>
           </>
         ) : (
           <div className="w-full lg:w-1/2">
