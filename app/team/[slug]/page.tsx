@@ -17,14 +17,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         };
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.gesaknust.com';
-    const imageUrl = member.image ? `${baseUrl}${member.image}?v=1` : `${baseUrl}/images/logo.png?v=1`;
+    const domain = 'https://www.gesaknust.com';
+    const imageUrl = member.image ? `${domain}${member.image}?v=1` : `${domain}/images/logo.png?v=1`;
 
     return {
-        title: `${member.name} | GESA Team`,
+        title: `${member.name} | ${member.role}`,
         description: member.description,
         openGraph: {
-            title: `${member.name} | GESA Team`,
+            title: `${member.name} | ${member.role}`,
             description: member.description,
             siteName: 'GESA-KNUST',
             locale: 'en_GH',
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         },
         twitter: {
             card: 'summary_large_image',
-            title: `${member.name} | GESA Team`,
+            title: `${member.name} | ${member.role}`,
             description: member.description,
             images: [imageUrl],
         },
