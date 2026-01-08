@@ -88,7 +88,7 @@ const DepartmentHero = ({
             </Carousel>
 
             {/* Overlay */}
-            <div className='absolute inset-0 bg-black/65 z-10' />
+            <div className='absolute inset-0 bg-black/40 z-10' />
 
             {/* Content */}
             <div className='relative z-20 flex flex-col items-center justify-center text-white px-4 text-center max-w-5xl mx-auto gap-4 md:-mt-32'>
@@ -101,7 +101,7 @@ const DepartmentHero = ({
                         <span className="text-sm font-medium">{backText || 'Back'}</span>
                     </Link>
                 )}
-                <h1 className={`font-bold font-header flex flex-col items-center gap-2 ${titleClassName || 'text-4xl leading-12 sm:text-[60px] sm:leading-none md:text-[72px] md:leading-none xl:text-[85px] lg:leading-none'}`}>
+                <h1 className={`font-bold font-header flex flex-col items-center gap-0 ${titleClassName || 'text-4xl leading-12 sm:text-[60px] sm:leading-none md:text-[72px] md:leading-none xl:text-[85px] lg:leading-none'}`}>
                     <span className="block">{title}</span>
                     <span className="text-yellow-500 font-header block">
                         {subtitle}
