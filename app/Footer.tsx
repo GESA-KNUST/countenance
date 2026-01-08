@@ -161,12 +161,12 @@ const Footer = () => {
 
         {/* bottom */}
         <div className='flex flex-col sm:flex-row justify-between gap-4 text-warm-gray text-sm text-center'>
-          <h2>&copy;2025  GESA KNUST - All rights reserved</h2>
-          <div className='flex gap-2 items-center justify-center sm:justify-start'>
+          <h2>&copy;{new Date().getFullYear()}  GESA KNUST - All rights reserved</h2>
+          {/* <div className='flex gap-2 items-center justify-center sm:justify-start'>
             <Link href="/">Privacy</Link>
             <span className='block rounded-full w-1 h-1 bg-white/80'></span>
             <Link href="/">Terms & Conditions</Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
