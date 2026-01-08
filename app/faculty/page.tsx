@@ -2,7 +2,7 @@
 
 import Container from '@/components/custom/Container'
 import DepartmentHero from '@/components/department/DepartmentHero'
-import { Search, Globe, School } from 'lucide-react'
+import { Search, School } from 'lucide-react'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { useFacultyCollection } from '@/hooks/useFacultyCollection'
