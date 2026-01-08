@@ -37,15 +37,18 @@ const DepartmentContent = () => {
                 const asset = department?.about?.links?.assets?.block?.find((a: any) => a.sys.id === assetId);
 
                 if (!asset) return null;
+                const baseImageUrl = asset.url.startsWith('//') ? `https:${asset.url}` : asset.url;
+                const imageUrl = `${baseImageUrl}${baseImageUrl.includes('?') ? '&' : '?'}q=100`;
 
                 return (
-                    <div className="my-8 w-full rounded-2xl overflow-hidden shadow-lg">
+                    <div className="my-8 w-full max-w-2xl mx-auto rounded-2xl overflow-hidden shadow-lg">
                         <Image
-                            src={asset.url}
+                            src={imageUrl}
                             alt={asset.title || "Embedded Asset"}
                             width={asset.width || 800}
                             height={asset.height || 600}
                             className="w-full h-auto object-cover"
+                            unoptimized={true}
                         />
                     </div>
                 );
