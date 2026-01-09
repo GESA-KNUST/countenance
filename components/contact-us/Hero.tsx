@@ -77,7 +77,7 @@ const Hero = ({
       </Carousel>
 
 
-      <div className='absolute inset-0 bg-black/65 z-10' />
+      <div className='absolute inset-0 bg-black/40 z-10' />
 
 
       <div className='relative z-20 flex flex-col justify-center h-full w-full'>
