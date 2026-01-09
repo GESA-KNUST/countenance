@@ -112,16 +112,22 @@ const FacultyContent = () => {
                                         <ReactMarkdown
                                             remarkPlugins={[remarkGfm]}
                                             components={{
-                                                img: ({ node, ...props }) => (
-                                                    <div className="my-8 w-full rounded-2xl overflow-hidden shadow-lg">
-                                                        <img
-                                                            {...props}
-                                                            className="w-full h-auto object-cover"
-                                                            style={{ maxWidth: '100%' }}
-                                                            alt={props.alt || "Faculty Image"}
-                                                        />
-                                                    </div>
-                                                )
+                                                img: ({ node, ...props }) => {
+                                                    const src = (props.src as string) || '';
+                                                    const imageUrl = `${src}${src.includes('?') ? '&' : '?'}q=100`;
+                                                    return (
+                                                        <div className="my-8 w-full max-w-2xl mx-auto rounded-2xl overflow-hidden shadow-lg">
+                                                            <Image
+                                                                src={imageUrl}
+                                                                alt={props.alt || "Faculty Image"}
+                                                                width={1200}
+                                                                height={800}
+                                                                className="w-full h-auto object-cover"
+                                                                unoptimized={true}
+                                                            />
+                                                        </div>
+                                                    );
+                                                }
                                             }}
                                         >
                                             {faculty.about}
