@@ -118,7 +118,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         </CarouselContent>
       </Carousel>
 
-      <div className="absolute inset-0 bg-black/60 z-10" />
+      <div className="absolute inset-0 bg-black/40 z-10" />
 
       <div className="relative z-20 w-full flex flex-col lg:flex-row items-center justify-center lg:justify-between text-white p-4 sm:p-8 md:p-12 lg:p-20 xl:p-24 gap-6 md:-mt-32">
 
