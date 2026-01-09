@@ -129,7 +129,7 @@ const DepartmentContent = () => {
                         : id === '2Gv7b1DF3myjGGSWWTLCZ'
                             ? ['/images/biomed-dept/biomed-dept-1.jpg', '/images/biomed-dept/biomed-dept-2.jpg', '/images/biomed-dept/biomed-dept-3.jpg']
                             : id === '327nW8BQQ1VP3PQtlWWQWy'
-                                ? ['/images/agric-dept/agric-dept-1.jpeg', '/images/agric-dept/agric-dept-2.0.jpeg', '/images/agric-dept/ages-dept-1.jpg']
+                                ? ['/images/agric-dept/agric-dept-1.jpeg', '/images/agric-dept/agric-dept-2.0.jpeg', '/images/agric-dept/agric-dept-3.jpg']
                                 : id === '55DSL3hJVQFf9UNctzCkOv'
                                     ? ['/images/ages-dept/ages-dept-1.jpg', '/images/ages-dept/ages-dept-2.jpg', '/images/ages-dept/ages-dept-3.jpg']
                                     : ['/images/dept/dept-3.jpg', '/images/dept/dept-2.jpeg', '/images/dept/dept-1.jpeg']
