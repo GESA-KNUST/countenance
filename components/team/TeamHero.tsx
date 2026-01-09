@@ -15,6 +15,7 @@ const TeamHero = () => {
             }
             images={['/images/Team/Team-1.png', '/images/Team/Team-2.png', '/images/Team/Team-3.png', '/images/Team/Team-4.png', '/images/Team/Team-5.png']}
             button={false}
+            overlayOpacity="bg-black/10"
         />
     );
 };
