@@ -6,11 +6,11 @@ import { teamMembers } from '@/lib/data/team';
 
 const TeamSection = () => {
     return (
-        <section className="py-24 bg-white font-poppins relative">
+        <section className="py-4 bg-white font-poppins relative">
             <Container size="xl">
-                <div className="text-center mb-20 space-y-4">
+                <div className="text-center mb-12 space-y-4">
                     <span className="text-primary font-bold tracking-widest uppercase text-sm">The Creators</span>
-                    <h2 className="text-4xl md:text-5xl font-bold font-header text-slate-900">
+                    <h2 className="text-lg sm:text-3xl md:text-5xl font-bold font-header text-slate-900 whitespace-nowrap">
                         Meet the <span className="text-primary">Development Team</span>
                     </h2>
                     <p className="text-slate-500 max-w-2xl mx-auto text-lg leading-relaxed">

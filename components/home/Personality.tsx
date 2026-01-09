@@ -33,8 +33,8 @@ const Personality = () => {
       ) :
         isLoading ?
           <LoadingPOTW /> :
-          <Container size='xl'>
-            <div className='my-16 flex flex-col lg:flex-row items-center gap-10 justify-center overflow-hidden'>
+          <Container size='xl' className="!pb-0">
+            <div className='mt-8 mb-0 md:my-16 flex flex-col lg:flex-row items-center gap-10 justify-center overflow-hidden'>
 
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
