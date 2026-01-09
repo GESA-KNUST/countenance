@@ -47,8 +47,8 @@ const historyData = {
 
 const HistorySection = () => {
     return (
-        <section className="py-24 bg-white font-header">
-            <Container size="xl">
+        <section className="pt-0 pb-8 md:py-24 bg-white font-header">
+            <Container size="xl" className="!pt-0">
                 <div className="flex flex-col gap-24">
                     {/* Header */}
                     <div className="text-center space-y-6 max-w-3xl mx-auto">
