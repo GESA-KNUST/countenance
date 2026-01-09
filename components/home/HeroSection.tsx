@@ -18,6 +18,7 @@ interface HeroSectionProps {
   text: string | React.ReactNode;
   images?: (string | StaticImageData)[];
   button?: boolean;
+  overlayOpacity?: string;
 }
 
 const HeroSection = ({
@@ -26,6 +27,7 @@ const HeroSection = ({
   text,
   images = ['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png'],
   button = true,
+  overlayOpacity = 'bg-black/40',
 }: HeroSectionProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -101,7 +103,7 @@ const HeroSection = ({
       </Carousel>
 
       {/* Overlay */}
-      <div className='absolute inset-0 bg-black/40 z-10' />
+      <div className={`absolute inset-0 ${overlayOpacity} z-10`} />
 
       {/* Content */}
       <div className='relative z-20 flex flex-col items-center justify-center text-white px-4 text-center max-w-360 mx-auto gap-2 md:-mt-32'>
