@@ -61,7 +61,7 @@ const HomeHubsPreview = () => {
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "-100px" }}
+                        viewport={{ once: true }}
                         className="flex justify-between items-center"
                     >
                         <div className="space-y-1">
@@ -81,7 +81,7 @@ const HomeHubsPreview = () => {
                                 key={index}
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: "-100px" }}
+                                viewport={{ once: true, margin: "-50px" }}
                                 transition={{ delay: index * 0.1 }}
                             >
                                 <OpportunityCard {...hub} />
