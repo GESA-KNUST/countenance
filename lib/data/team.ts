@@ -16,7 +16,7 @@ export interface TeamMember {
 
 export const teamMembers: TeamMember[] = [
     {
-        name: "Professor Carl Danso Kwarteng",
+        name: "Prof Carl Danso Kwarteng",
         role: "Team Lead",
         year: "4th Year",
         major: "Electrical Engineering",
