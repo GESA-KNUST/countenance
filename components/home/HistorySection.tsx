@@ -55,7 +55,7 @@ const HistorySection = () => {
                         <motion.span
                             initial={{ opacity: 0 }}
                             whileInView={{ opacity: 1 }}
-                            viewport={{ once: true, margin: "-100px" }}
+                            viewport={{ once: true }}
                             className="inline-block bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider mb-4 relative z-10"
                         >
                             Our Heritage
@@ -63,6 +63,7 @@ const HistorySection = () => {
                         <motion.h2
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
                             transition={{ delay: 0.1 }}
                             className="text-4xl md:text-5xl font-bold text-gray-900"
                         >
@@ -71,6 +72,7 @@ const HistorySection = () => {
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
                             transition={{ delay: 0.2 }}
                             className="text-lg text-gray-600 leading-relaxed"
                         >
@@ -83,6 +85,7 @@ const HistorySection = () => {
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
                             className="w-full lg:w-[55%] relative"
                         >
                             <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-xl relative z-10 border border-slate-100 bg-white">
@@ -98,6 +101,7 @@ const HistorySection = () => {
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
                             className="w-full lg:w-[45%] space-y-8"
                         >
                             <div className="flex items-center gap-4 text-primary">
@@ -122,6 +126,7 @@ const HistorySection = () => {
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
                             className="w-full lg:w-[55%] relative"
                         >
                             <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-xl relative z-10 border border-slate-100 bg-white">
@@ -137,6 +142,7 @@ const HistorySection = () => {
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
                             className="w-full lg:w-[45%] space-y-8"
                         >
                             <div className="flex items-center gap-4 text-primary">
@@ -164,7 +170,7 @@ const HistorySection = () => {
                                     key={i}
                                     initial={{ opacity: 0, scale: 0.8 }}
                                     whileInView={{ opacity: 1, scale: 1 }}
-                                    viewport={{ once: true }}
+                                    viewport={{ once: true, margin: "-50px" }}
                                     transition={{
                                         type: "spring",
                                         stiffness: 70,
