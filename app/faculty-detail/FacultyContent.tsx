@@ -91,7 +91,7 @@ const FacultyContent = () => {
             <Container size='xl'>
                 <div className='py-8'>
                     <Tabs defaultValue="about" className="w-full">
-                        <TabsList className='flex items-center justify-start md:justify-center gap-2 w-full h-auto bg-gray-50/50 p-1.5 rounded-2xl border border-gray-100 overflow-x-auto no-scrollbar'>
+                        <TabsList className='flex items-center justify-center gap-2 w-full h-auto bg-gray-50/50 p-1.5 rounded-2xl border border-gray-100 overflow-x-auto no-scrollbar'>
                             <TabsTrigger className='flex-shrink-0 flex-1 cursor-pointer py-2.5 px-4 text-sm sm:text-base whitespace-nowrap data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all rounded-xl' value="about">About Faculty</TabsTrigger>
                             <TabsTrigger className='flex-shrink-0 flex-1 cursor-pointer py-2.5 px-4 text-sm sm:text-base whitespace-nowrap data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all rounded-xl' value="departments">Departments</TabsTrigger>
                             <TabsTrigger className='flex-shrink-0 flex-1 cursor-pointer py-2.5 px-4 text-sm sm:text-base whitespace-nowrap data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all rounded-xl' value="mission">Mission</TabsTrigger>
@@ -99,13 +99,13 @@ const FacultyContent = () => {
                         </TabsList>
 
                         <TabsContent value="about" className='py-12 animate-in fade-in slide-in-from-bottom-4 duration-500'>
-                            <div className='flex flex-col gap-8'>
+                            <div className='flex flex-col gap-8 items-start text-left w-full'>
                                 <div className='flex items-center gap-3'>
                                     <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
                                     <p className='text-primary font-bold text-sm tracking-wider uppercase'>GESA - KNUST</p>
                                     <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
                                 </div>
-                                <h1 className='text-4xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>{faculty.name}</h1>
+                                <h1 className='text-3xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>{faculty.name}</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
                                 <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
                                     {faculty.about ? (
