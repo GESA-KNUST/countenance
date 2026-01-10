@@ -39,7 +39,7 @@ const Personality = () => {
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
+                viewport={{ once: true }}
                 className='w-full md:w-[480px] lg:w-[520px] sm:h-[450px] h-[350px] overflow-hidden shadow-lg relative rounded-2xl'
               >
                 {personality?.image?.url ? (
@@ -58,7 +58,7 @@ const Personality = () => {
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
+                viewport={{ once: true }}
                 className='flex flex-col gap-4 xl:max-w-xl lg:w-1/2 w-full'
               >
                 <div className="space-y-2">

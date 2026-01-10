@@ -29,7 +29,7 @@ const Gallery = () => {
                 <motion.h1
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-100px" }}
+                    viewport={{ once: true }}
                     className='font-header font-bold text-4xl md:text-5xl text-gray-900 px-4 md:px-0'
                 >
                     Gallery
@@ -55,7 +55,7 @@ const Gallery = () => {
                                 key={index}
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: "-100px" }}
+                                viewport={{ once: true, margin: "-50px" }}
                                 transition={{ delay: index * 0.1 }}
                                 className={`relative rounded-3xl overflow-hidden group cursor-pointer ${getSpanClasses(index)} shadow-sm hover:shadow-2xl transition-all duration-500`}
                                 aria-label={`Gallery image ${index + 1}`}
@@ -90,7 +90,7 @@ const Gallery = () => {
                         <motion.button
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-100px" }}
+                            viewport={{ once: true }}
                             className="bg-primary rounded-2xl px-10 py-4 text-black font-bold text-base hover:shadow-2xl hover:bg-primary/90 transition-all duration-300 flex items-center gap-3 cursor-pointer"
                             whileTap={{ scale: 0.95 }}
                         >
