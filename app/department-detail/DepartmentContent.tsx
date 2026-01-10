@@ -41,7 +41,7 @@ const DepartmentContent = () => {
                 const imageUrl = `${baseImageUrl}${baseImageUrl.includes('?') ? '&' : '?'}q=100`;
 
                 return (
-                    <div className="my-8 w-full max-w-2xl mx-auto rounded-2xl overflow-hidden shadow-lg">
+                    <div className="my-8 w-full max-w-2xl mx-auto rounded-[2rem] overflow-hidden shadow-lg">
                         <Image
                             src={imageUrl}
                             alt={asset.title || "Embedded Asset"}
@@ -178,7 +178,7 @@ const DepartmentContent = () => {
                                 <h1 className='text-3xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>Our Mission</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
                                 <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
-                                    {department.mission ? documentToReactComponents(department.mission.json) : <p className="italic text-gray-500">Mission details are currently being updated.</p>}
+                                    {department.mission ? documentToReactComponents(department.mission.json, options) : <p className="italic text-gray-500">Mission details are currently being updated.</p>}
                                 </div>
                                 <div className='flex flex-wrap items-center gap-8 pt-8 border-t border-gray-100'>
                                     {department.websiteLink && (
@@ -202,7 +202,7 @@ const DepartmentContent = () => {
                                 <h1 className='text-3xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>Our Vision</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
                                 <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
-                                    {department.vision ? documentToReactComponents(department.vision.json) : <p className="italic text-gray-500">Vision statement is being finalized.</p>}
+                                    {department.vision ? documentToReactComponents(department.vision.json, options) : <p className="italic text-gray-500">Vision statement is being finalized.</p>}
                                 </div>
                                 <div className='flex flex-wrap items-center gap-8 pt-8 border-t border-gray-100'>
                                     {department.websiteLink && (
