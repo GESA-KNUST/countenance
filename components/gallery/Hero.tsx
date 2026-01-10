@@ -55,7 +55,7 @@ const Hero = ({
   };
 
   return (
-    <div className='relative h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden'>
+    <div className='relative h-[50vh] md:h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden'>
 
       <Carousel
         plugins={[plugin.current]}
@@ -68,7 +68,7 @@ const Hero = ({
       >
         <CarouselContent className="h-full">
           {images.map((img, index) => (
-            <CarouselItem key={index} className="relative h-[calc(100vh-var(--navbar-height))] w-full">
+            <CarouselItem key={index} className="relative h-[50vh] md:h-[calc(100vh-var(--navbar-height))] w-full">
               <Image
                 src={img}
                 alt={`Hero image ${index + 1}`}
@@ -83,7 +83,7 @@ const Hero = ({
       </Carousel>
 
 
-      <div className='absolute inset-0 bg-black/65 z-10' />
+      <div className='absolute inset-0 bg-black/40 z-10' />
 
 
       <div className='relative z-20 flex flex-col justify-center items-start h-full text-white p-10 md:p-20 lg:p-40'>
