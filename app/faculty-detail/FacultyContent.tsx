@@ -116,7 +116,7 @@ const FacultyContent = () => {
                                                     const src = (props.src as string) || '';
                                                     const imageUrl = `${src}${src.includes('?') ? '&' : '?'}q=100`;
                                                     return (
-                                                        <div className="my-8 w-full max-w-2xl mx-auto rounded-2xl overflow-hidden shadow-lg">
+                                                        <div className="my-8 w-full max-w-2xl mx-auto rounded-[2rem] overflow-hidden shadow-lg">
                                                             <Image
                                                                 src={imageUrl}
                                                                 alt={props.alt || "Faculty Image"}
