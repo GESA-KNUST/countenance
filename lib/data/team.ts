@@ -21,7 +21,7 @@ export const teamMembers: TeamMember[] = [
         year: "4th Year",
         major: "Electrical Engineering",
         description: "As the Team Lead, Professor Carl Danso Kwarteng provided strategic guidance and leadership to the GESA Software Engineering Team. His expertise and vision were crucial in steering the team towards success and innovation.",
-        image: "/images/Prof.jpg",
+        image: "/images/ProfCarl.jpg",
         funFact: "Real life RIchard Hendricks.",
         socials: {
             linkedin: "https://www.linkedin.com/in/carl-danso-304663258/",
@@ -36,7 +36,7 @@ export const teamMembers: TeamMember[] = [
         year: "4th Year",
         major: "Agricultural Engineering",
         description: "Led the vision and execution of the GESA platform, ensuring milestones were met and the team remained cohesive. His leadership was pivotal in bridging the gap between technical execution and stakeholder requirements.",
-        image: "/images/Prince.jpg",
+        image: "/images/PrinceAsiedu.jpg",
         funFact: "Can coordinate a project timeline in his sleep.",
         socials: {
             linkedin: "https://www.linkedin.com/in/princek-asiedu/",
@@ -67,7 +67,7 @@ export const teamMembers: TeamMember[] = [
         major: "Telecom Engineering",
         description: "As a Lead Developer together with Obrempong, Joy played a critical role in bringing the GESA vision to life. He expertly handled both the creative frontend implementation and robust backend logic, crafting fluid animations and responsive layouts while ensuring system stability. His versatile skills delivered a cohesive, polished, and dynamic application.",
         image: "/images/Joy.jpg",
-        funFact: "Real life Betram Gilfoyle.",
+        funFact: "Real life Bertram Gilfoyle.",
         socials: {
             github: "https://github.com/Joylinton04",
             linkedin: "https://www.linkedin.com/in/joy-adu989/"
@@ -81,7 +81,7 @@ export const teamMembers: TeamMember[] = [
         year: "3rd Year",
         major: "Computer Engineering",
         description: "A creative powerhouse with a deep background in graphics design, Logical brought the GESA platform to life through his expert use of Figma. He meticulously crafted the web interfaces, establishing the premium visual identity that balances aesthetic appeal with intuitive user experience.",
-        image: "/images/Logical.jpg",
+        image: "/images/Albert.jpg",
         funFact: "Sees the world in hex codes.",
         socials: {
             github: "https://github.com/Logical883",

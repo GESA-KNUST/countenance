@@ -55,7 +55,7 @@ const RecentEvent = () => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true }}
           className="flex flex-col gap-8"
         >
           <h2 className="font-header font-bold text-4xl text-white">
@@ -119,7 +119,7 @@ const RecentEvent = () => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true }}
           className="flex flex-col gap-8"
         >
           <div className="flex items-center justify-between">

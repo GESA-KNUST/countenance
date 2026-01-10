@@ -84,12 +84,14 @@ const FacultyContent = () => {
                 title={faculty.name}
                 subtitle={"GESA"}
                 text={'Leading the way in engineering education and innovative research.'}
+                backLink="/faculty"
+                backText="Back to Faculties"
                 images={['/images/img2.png', '/images/img1.png']}
             />
             <Container size='xl'>
                 <div className='py-8'>
                     <Tabs defaultValue="about" className="w-full">
-                        <TabsList className='flex items-center justify-start md:justify-center gap-2 w-full h-auto bg-gray-50/50 p-1.5 rounded-2xl border border-gray-100 overflow-x-auto no-scrollbar'>
+                        <TabsList className='flex items-center justify-center gap-2 w-full h-auto bg-gray-50/50 p-1.5 rounded-2xl border border-gray-100 overflow-x-auto no-scrollbar'>
                             <TabsTrigger className='flex-shrink-0 flex-1 cursor-pointer py-2.5 px-4 text-sm sm:text-base whitespace-nowrap data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all rounded-xl' value="about">About Faculty</TabsTrigger>
                             <TabsTrigger className='flex-shrink-0 flex-1 cursor-pointer py-2.5 px-4 text-sm sm:text-base whitespace-nowrap data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all rounded-xl' value="departments">Departments</TabsTrigger>
                             <TabsTrigger className='flex-shrink-0 flex-1 cursor-pointer py-2.5 px-4 text-sm sm:text-base whitespace-nowrap data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all rounded-xl' value="mission">Mission</TabsTrigger>
@@ -97,29 +99,35 @@ const FacultyContent = () => {
                         </TabsList>
 
                         <TabsContent value="about" className='py-12 animate-in fade-in slide-in-from-bottom-4 duration-500'>
-                            <div className='flex flex-col gap-8'>
+                            <div className='flex flex-col gap-8 items-start text-left w-full'>
                                 <div className='flex items-center gap-3'>
                                     <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
                                     <p className='text-primary font-bold text-sm tracking-wider uppercase'>GESA - KNUST</p>
                                     <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
                                 </div>
-                                <h1 className='text-4xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>{faculty.name}</h1>
+                                <h1 className='text-3xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>{faculty.name}</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
                                 <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
                                     {faculty.about ? (
                                         <ReactMarkdown
                                             remarkPlugins={[remarkGfm]}
                                             components={{
-                                                img: ({ node, ...props }) => (
-                                                    <div className="my-8 w-full rounded-2xl overflow-hidden shadow-lg">
-                                                        <img
-                                                            {...props}
-                                                            className="w-full h-auto object-cover"
-                                                            style={{ maxWidth: '100%' }}
-                                                            alt={props.alt || "Faculty Image"}
-                                                        />
-                                                    </div>
-                                                )
+                                                img: ({ node, ...props }) => {
+                                                    const src = (props.src as string) || '';
+                                                    const imageUrl = `${src}${src.includes('?') ? '&' : '?'}q=100`;
+                                                    return (
+                                                        <div className="my-8 w-full max-w-2xl mx-auto rounded-[2rem] overflow-hidden shadow-lg">
+                                                            <Image
+                                                                src={imageUrl}
+                                                                alt={props.alt || "Faculty Image"}
+                                                                width={1200}
+                                                                height={800}
+                                                                className="w-full h-auto object-cover"
+                                                                unoptimized={true}
+                                                            />
+                                                        </div>
+                                                    );
+                                                }
                                             }}
                                         >
                                             {faculty.about}
