@@ -56,7 +56,7 @@ const HeroSection = ({
 
 
   return (
-    <div className='relative h-[40vh] md:h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden'>
+    <div className='relative h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden'>
 
       {/* Background Image Carousel */}
       <Carousel
@@ -70,7 +70,7 @@ const HeroSection = ({
       >
         <CarouselContent className="h-full">
           {images.map((img, index) => (
-            <CarouselItem key={index} className="relative h-[40vh] md:h-[calc(100vh-var(--navbar-height))] w-full">
+            <CarouselItem key={index} className="relative h-[calc(100vh-var(--navbar-height))] w-full">
               <Image
                 src={img}
                 alt={`Hero image ${index + 1}`}

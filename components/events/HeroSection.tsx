@@ -91,7 +91,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   };
 
   return (
-    <div className="relative h-[40vh] md:min-h-[calc(100vh-var(--navbar-height))] w-full flex items-center justify-center overflow-auto">
+    <div className="relative h-[calc(100vh-var(--navbar-height))] w-full flex items-center justify-center overflow-auto">
 
       <Carousel
         plugins={[plugin.current]}
@@ -103,7 +103,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           {images.map((img, index) => (
             <CarouselItem
               key={index}
-              className="relative h-[40vh] md:h-[calc(100vh-var(--navbar-height))] w-full pl-0"
+              className="relative h-[calc(100vh-var(--navbar-height))] w-full pl-0"
             >
               <Image
                 src={img}
