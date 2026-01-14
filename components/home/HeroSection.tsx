@@ -18,6 +18,7 @@ interface HeroSectionProps {
   highlight?: string;
   text: string | React.ReactNode;
   images?: (string | StaticImageData)[];
+  mobileImages?: (string | StaticImageData)[];
   button?: boolean;
   overlayOpacity?: string;
 }
@@ -27,6 +28,7 @@ const HeroSection = ({
   highlight,
   text,
   images = ['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png'],
+  mobileImages,
   button = true,
   overlayOpacity = 'bg-black/40',
 }: HeroSectionProps) => {
@@ -34,6 +36,7 @@ const HeroSection = ({
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
 
   const plugin = useRef(
@@ -43,6 +46,18 @@ const HeroSection = ({
       stopOnInteraction: false,
     })
   );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Initial check
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (!api) {
@@ -74,7 +89,7 @@ const HeroSection = ({
 
 
   return (
-    <div className='relative h-[40vh] md:h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden'>
+    <div className='relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden'>
 
       {/* Background Image Carousel */}
       <Carousel
@@ -88,8 +103,8 @@ const HeroSection = ({
         }}
       >
         <CarouselContent className="h-full">
-          {images.map((img, index) => (
-            <CarouselItem key={index} className="relative h-[40vh] md:h-[calc(100vh-var(--navbar-height))] w-full">
+          {(isMobile && mobileImages ? mobileImages : images).map((img, index) => (
+            <CarouselItem key={index} className="relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full">
               <Image
                 src={img}
                 alt={`Hero image ${index + 1}`}
