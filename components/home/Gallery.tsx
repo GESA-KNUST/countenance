@@ -5,10 +5,37 @@ import img1 from '../../public/images/img1.png'
 import img2 from '../../public/images/potw.png'
 import img3 from '../../public/images/galleryImg.png'
 import img4 from '../../public/images/galleryimg2.png'
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import Link from "next/link";
 import { useGalleries } from "@/hooks/useGalleryCollection";
 import FetchError from "../custom/FetchError";
+
+const getSpanClasses = (i: number) => {
+    switch (i) {
+        case 0: return "md:col-span-2 md:row-span-2";
+        case 1: return "md:col-span-1 md:row-span-2";
+        case 2: return "md:col-span-1 md:row-span-1";
+        case 3: return "md:col-span-1 md:row-span-1";
+        case 4: return "md:col-span-2 md:row-span-1";
+        case 5: return "md:col-span-2 md:row-span-1";
+        default: return "md:col-span-1 md:row-span-1";
+    }
+};
+
+const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    show: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.1
+        }
+    }
+};
+
+const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 50, damping: 20 } }
+};
 
 const Gallery = () => {
     const { data: galleries, isLoading, error } = useGalleries()
@@ -36,27 +63,18 @@ const Gallery = () => {
                 </motion.h1>
 
 
-                <div className="grid grid-cols-1 md:grid-cols-4 auto-rows-[250px] gap-4">
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, margin: "-50px" }}
+                    className="grid grid-cols-1 md:grid-cols-4 auto-rows-[250px] gap-4"
+                >
                     {galleries?.map((img, index) => {
-                        const getSpanClasses = (i: number) => {
-                            switch (i) {
-                                case 0: return "md:col-span-2 md:row-span-2";
-                                case 1: return "md:col-span-1 md:row-span-2";
-                                case 2: return "md:col-span-1 md:row-span-1";
-                                case 3: return "md:col-span-1 md:row-span-1";
-                                case 4: return "md:col-span-2 md:row-span-1";
-                                case 5: return "md:col-span-2 md:row-span-1";
-                                default: return "md:col-span-1 md:row-span-1";
-                            }
-                        };
-
                         return (
                             <motion.div
                                 key={index}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, amount: 0.2 }}
-                                transition={{ delay: index * 0.1 }}
+                                variants={itemVariants}
                                 className={`relative rounded-3xl overflow-hidden group cursor-pointer ${getSpanClasses(index)} shadow-sm hover:shadow-2xl transition-all duration-500`}
                                 aria-label={`Gallery image ${index + 1}`}
                                 onClick={() => openPicturesLink(img.picturesLink)}
@@ -83,7 +101,7 @@ const Gallery = () => {
                             </motion.div>
                         );
                     })}
-                </div>
+                </motion.div>
 
                 <div className='flex justify-center mt-12'>
                     <Link href='/gallery'>
