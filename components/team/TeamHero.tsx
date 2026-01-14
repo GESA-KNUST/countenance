@@ -14,7 +14,7 @@ const TeamHero = () => {
                 </span>
             }
             images={['/images/Team/Team-1.png', '/images/Team/Team-2.png', '/images/Team/Team-3.png', '/images/Team/Team-4.png', '/images/Team/Team-5.png']}
-            mobileImages={['/images/Team/teammobile-1.png', '/images/Team/teammobile-2.png', '/images/Team/teammobile-3.png', '/images/Team/teammobile-4.png', '/images/Team/teammobile-5.png']}
+            mobileImages={['/images/Team/teammobile1.png', '/images/Team/teammobile-2.png', '/images/Team/teammobile-3.png', '/images/Team/teammobile-4.png', '/images/Team/teammobile-5.png']}
             button={false}
             overlayOpacity="bg-black/10"
         />
