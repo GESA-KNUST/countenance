@@ -91,7 +91,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   };
 
   return (
-    <div className="relative h-[calc(100vh-var(--navbar-height))] w-full flex items-center justify-center overflow-auto">
+    <div className="relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full flex items-center justify-center overflow-auto">
 
       <Carousel
         plugins={[plugin.current]}
@@ -103,7 +103,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           {images.map((img, index) => (
             <CarouselItem
               key={index}
-              className="relative h-[calc(100vh-var(--navbar-height))] w-full pl-0"
+              className="relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full pl-0"
             >
               <Image
                 src={img}
@@ -131,9 +131,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </p>
 
           <div className="mt-6 flex flex-col items-center lg:items-start gap-4">
-            <button onClick={handleExploreMore} className="bg-[#FFBE00] text-black px-5 py-3 rounded-lg font-semibold flex items-center gap-2 text-sm sm:text-base">
+            <button onClick={handleExploreMore} className="bg-[#FFBE00] text-black px-5 py-3 rounded-full md:rounded-lg font-semibold flex items-center gap-2 text-xs sm:text-base">
               <span>Explore more</span>
-              <ArrowUpRight className="h-5 w-5" />
+              <ArrowUpRight className="h-4 w-4 md:h-5 md:w-5" />
             </button>
 
             {total > 0 && (

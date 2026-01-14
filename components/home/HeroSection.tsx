@@ -17,6 +17,7 @@ interface HeroSectionProps {
   highlight?: string;
   text: string | React.ReactNode;
   images?: (string | StaticImageData)[];
+  mobileImages?: (string | StaticImageData)[];
   button?: boolean;
   overlayOpacity?: string;
 }
@@ -26,6 +27,7 @@ const HeroSection = ({
   highlight,
   text,
   images = ['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png'],
+  mobileImages,
   button = true,
   overlayOpacity = 'bg-black/40',
 }: HeroSectionProps) => {
@@ -33,6 +35,7 @@ const HeroSection = ({
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
 
   const plugin = useRef(
@@ -42,6 +45,18 @@ const HeroSection = ({
       stopOnInteraction: false,
     })
   );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Initial check
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (!api) {
@@ -73,7 +88,7 @@ const HeroSection = ({
 
 
   return (
-    <div className='relative h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden'>
+    <div className='relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden'>
 
       {/* Background Image Carousel */}
       <Carousel
@@ -87,8 +102,8 @@ const HeroSection = ({
         }}
       >
         <CarouselContent className="h-full">
-          {images.map((img, index) => (
-            <CarouselItem key={index} className="relative h-[calc(100vh-var(--navbar-height))] w-full">
+          {(isMobile && mobileImages ? mobileImages : images).map((img, index) => (
+            <CarouselItem key={index} className="relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full">
               <Image
                 src={img}
                 alt={`Hero image ${index + 1}`}
@@ -124,8 +139,8 @@ const HeroSection = ({
               <StarSpinner />
             </div>
           ) : (
-            <button onClick={handleClick} className="bg-primary font-semibold rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-sm hover:scale-105 transition-transform">
-              Explore more <ArrowUpRight className='text-black' strokeWidth={2.5} size={28} />
+            <button onClick={handleClick} className="bg-primary font-semibold rounded-full md:rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-xs hover:scale-105 transition-transform">
+              Explore more <ArrowUpRight className='text-black w-5 h-5 md:w-7 md:h-7' strokeWidth={2.5} />
             </button>
           )
         )}
