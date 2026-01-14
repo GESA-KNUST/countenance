@@ -34,21 +34,26 @@ const Personality = () => {
         isLoading ?
           <LoadingPOTW /> :
           <Container size='xl' className="!pb-0">
-            <div className='mt-8 mb-0 md:my-16 flex flex-col lg:flex-row items-center gap-10 justify-center overflow-hidden'>
+            <div className='mt-8 mb-0 md:my-16 flex flex-col lg:flex-row items-center gap-10 justify-center overflow-hidden perspective-1000'>
 
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className='w-full md:w-[480px] lg:w-[520px] sm:h-[450px] h-[350px] overflow-hidden shadow-lg relative rounded-2xl'
+                initial={{ opacity: 0, x: -50, rotateY: -10 }}
+                whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 1.2, type: "spring", bounce: 0.2 }}
+                className='w-full md:w-[480px] lg:w-[520px] sm:h-[450px] h-[350px] overflow-hidden shadow-2xl relative rounded-2xl group cursor-pointer'
+                onClick={() => setShowModal(true)}
               >
                 {personality?.image?.url ? (
-                  <Image
-                    src={personality.image.url}
-                    alt='potw'
-                    fill
-                    className='object-cover hover:scale-105 transition-transform duration-500'
-                  />
+                  <>
+                    <Image
+                      src={personality.image.url}
+                      alt='potw'
+                      fill
+                      className='object-cover group-hover:scale-110 transition-transform duration-1000 ease-out'
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
+                  </>
                 ) : (
                   <div className="w-full h-full bg-gray-200 animate-pulse" />
                 )}
@@ -56,24 +61,62 @@ const Personality = () => {
 
 
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: {
+                    opacity: 1,
+                    transition: { staggerChildren: 0.3 }
+                  }
+                }}
                 className='flex flex-col gap-4 xl:max-w-xl lg:w-1/2 w-full'
               >
                 <div className="space-y-2">
-                  <h1 className='font-bold xl:text-3xl text-2xl font-header'>PERSONALITY OF THE WEEK</h1>
-                  <p className='xl:text-[22px] text-medium-dark text-lg'>Celebrating Excellence and Innovation.</p>
+                  <motion.h1
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+                    }}
+                    className='font-bold xl:text-3xl text-2xl font-header'
+                  >
+                    PERSONALITY OF THE WEEK
+                  </motion.h1>
+                  <motion.p
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+                    }}
+                    className='xl:text-[22px] text-medium-dark text-lg'
+                  >
+                    Celebrating Excellence and Innovation.
+                  </motion.p>
                 </div>
-                <div className='font-light xl:text-xl'>{getDescription.slice(0, 400) + '...'}</div>
-                <Button
-                  onClick={() => setShowModal(true)}
-                  variant="default"
-                  size="default"
-                  className="xl:px-6 py-3 cursor-pointer text-black w-max xl:text-base text-sm"
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+                  }}
+                  className='font-light xl:text-xl'
                 >
-                  Read more
-                </Button>
+                  {getDescription.slice(0, 400) + '...'}
+                </motion.div>
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+                  }}
+                >
+                  <Button
+                    onClick={() => setShowModal(true)}
+                    variant="default"
+                    size="default"
+                    className="xl:px-6 py-3 cursor-pointer text-black w-max xl:text-base text-sm hover:translate-x-1 transition-transform"
+                  >
+                    Read more
+                  </Button>
+                </motion.div>
               </motion.div>
 
             </div>
