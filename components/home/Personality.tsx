@@ -27,7 +27,7 @@ const Personality = () => {
     }
   }, [potw])
   return (
-    <div className='md:px-page-x lg:py-page-y font-poppins'>
+    <div id="personality-of-the-week" className='md:px-page-x lg:py-page-y font-poppins scroll-mt-20'>
       {error ? (
         <FetchError />
       ) :
