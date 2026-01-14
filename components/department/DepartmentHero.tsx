@@ -60,7 +60,7 @@ const DepartmentHero = ({
     };
 
     return (
-        <div className='relative min-h-[40vh] md:h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden py-12 md:py-0'>
+        <div className='relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden py-12 md:py-0'>
             {/* Background Image Carousel */}
             <Carousel
                 plugins={[plugin.current]}
@@ -73,7 +73,7 @@ const DepartmentHero = ({
             >
                 <CarouselContent className="h-full">
                     {images.map((img, index) => (
-                        <CarouselItem key={index} className="relative min-h-[40vh] md:h-[calc(100vh-var(--navbar-height))] w-full">
+                        <CarouselItem key={index} className="relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full">
                             <Image
                                 src={img}
                                 alt={`Hero image ${index + 1}`}
