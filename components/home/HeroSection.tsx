@@ -20,6 +20,8 @@ interface HeroSectionProps {
   images?: (string | StaticImageData)[];
   mobileImages?: (string | StaticImageData)[];
   button?: boolean;
+  buttonTarget?: string;
+  isScroll?: boolean;
   overlayOpacity?: string;
 }
 
@@ -30,6 +32,8 @@ const HeroSection = ({
   images = ['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png'],
   mobileImages,
   button = true,
+  buttonTarget,
+  isScroll = false,
   overlayOpacity = 'bg-black/40',
 }: HeroSectionProps) => {
   const [api, setApi] = useState<CarouselApi>();
@@ -81,9 +85,16 @@ const HeroSection = ({
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    if (isScroll && buttonTarget) {
+      const element = document.getElementById(buttonTarget);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+      return;
+    }
     setLoading(true);
     setTimeout(() => {
-      router.push('/blog');
+      router.push(buttonTarget || '/blog');
     }, 1000);
   };
 

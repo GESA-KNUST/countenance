@@ -16,6 +16,8 @@ const Home = () => {
         highlight="Engineering"
         text="Empowering students with cutting-edge knowledge, hands-on experience, and the tools to shape the future of technology and innovation."
         images={['/images/img1.png', '/images/home/home-1.jpg', '/images/home/home-4.jpg']}
+        buttonTarget="personality-of-the-week"
+        isScroll={true}
       />
       <Personality />
       <HistorySection />
