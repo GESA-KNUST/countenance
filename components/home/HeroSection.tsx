@@ -184,8 +184,8 @@ const HeroSection = ({
                 <StarSpinner />
               </div>
             ) : (
-              <button onClick={handleClick} className="bg-primary font-semibold rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-sm hover:scale-105 transition-transform">
-                Explore more <ArrowUpRight className='text-black' strokeWidth={2.5} size={28} />
+              <button onClick={handleClick} className="bg-primary font-semibold rounded-full md:rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-xs hover:scale-105 transition-transform">
+                Explore more <ArrowUpRight className='text-black w-5 h-5 md:w-7 md:h-7' strokeWidth={2.5} />
               </button>
             )}
           </motion.div>
