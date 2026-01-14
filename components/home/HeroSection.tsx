@@ -2,6 +2,7 @@
 import Autoplay from "embla-carousel-autoplay"
 import Image, { StaticImageData } from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
+import { motion } from "framer-motion";
 import { ArrowUpRight } from 'lucide-react';
 import { useRouter } from "next/navigation";
 import {
@@ -121,30 +122,64 @@ const HeroSection = ({
       <div className={`absolute inset-0 ${overlayOpacity} z-10`} />
 
       {/* Content */}
-      <div className='relative z-20 flex flex-col items-center justify-center text-white px-4 text-center max-w-360 mx-auto gap-2 md:-mt-32'>
-        <h1 className='font-bold font-header text-3xl leading-tight sm:text-[50px] sm:leading-tight md:text-[68px] md:leading-[76px] lg:text-[75px] xl:text-[85px] lg:leading-[90px]'>
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0, y: 30 },
+          visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+              staggerChildren: 0.2,
+              duration: 0.8,
+              ease: "easeOut"
+            }
+          }
+        }}
+        className='relative z-20 flex flex-col items-center justify-center text-white px-4 text-center max-w-360 mx-auto gap-2 md:-mt-32'
+      >
+        <motion.h1
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+          }}
+          className='font-bold font-header text-3xl leading-tight sm:text-[50px] sm:leading-tight md:text-[68px] md:leading-[76px] lg:text-[75px] xl:text-[85px] lg:leading-[90px]'
+        >
           {titleParts[0]}
           <span className="text-yellow-500 font-header">{highlight}</span>
           {titleParts[1]}
-        </h1>
+        </motion.h1>
 
-        <p className='text-sm sm:text-lg md:text-xl max-w-3xl mx-auto'>
+        <motion.p
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+          }}
+          className='text-sm sm:text-lg md:text-xl max-w-3xl mx-auto'
+        >
           {text}
-        </p>
+        </motion.p>
 
         {button && (
-
-          loading ? (
-            <div className="flex items-center justify-center w-full h-12" >
-              <StarSpinner />
-            </div>
-          ) : (
-            <button onClick={handleClick} className="bg-primary font-semibold rounded-full md:rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-xs hover:scale-105 transition-transform">
-              Explore more <ArrowUpRight className='text-black w-5 h-5 md:w-7 md:h-7' strokeWidth={2.5} />
-            </button>
-          )
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+            }}
+          >
+            {loading ? (
+              <div className="flex items-center justify-center w-full h-12" >
+                <StarSpinner />
+              </div>
+            ) : (
+              <button onClick={handleClick} className="bg-primary font-semibold rounded-lg flex items-center gap-1 md:px-6 px-4 py-2 cursor-pointer text-black md:text-base text-sm hover:scale-105 transition-transform">
+                Explore more <ArrowUpRight className='text-black' strokeWidth={2.5} size={28} />
+              </button>
+            )}
+          </motion.div>
         )}
-      </div>
+      </motion.div>
 
       {/* Progress Dots */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30">
