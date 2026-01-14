@@ -55,7 +55,7 @@ const Hero = ({
   };
 
   return (
-    <div className='relative h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden'>
+    <div className='relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden'>
 
       <Carousel
         plugins={[plugin.current]}
@@ -68,7 +68,7 @@ const Hero = ({
       >
         <CarouselContent className="h-full">
           {images.map((img, index) => (
-            <CarouselItem key={index} className="relative h-[calc(100vh-var(--navbar-height))] w-full">
+            <CarouselItem key={index} className="relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full">
               <Image
                 src={img}
                 alt={`Hero image ${index + 1}`}
@@ -97,10 +97,10 @@ const Hero = ({
         </p>
         <button
           onClick={handleExploreMore}
-          className="bg-primary text-black font-semibold py-3 px-6 rounded-lg flex items-center gap-2 hover:scale-105 transition-transform"
+          className="bg-primary text-black font-semibold py-3 px-6 rounded-full md:rounded-lg flex items-center gap-2 hover:scale-105 transition-transform text-xs md:text-base"
         >
           <span>Explore more</span>
-          <ArrowUpRight />
+          <ArrowUpRight className="w-4 h-4 md:w-5 md:h-5" />
         </button>
       </div>
 
