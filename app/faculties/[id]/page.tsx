@@ -141,7 +141,7 @@ const FacultyDetailPage = () => {
                                         faculty.departmentsUnderFacultyCollection.items.map((dept) => (
                                             <Link
                                                 key={dept.sys.id}
-                                                href={`/departments/${dept.sys.id}`}
+                                                href={`/department-detail?id=${dept.sys.id}`}
                                                 className="group bg-white border border-gray-100 p-6 rounded-3xl hover:shadow-xl hover:border-primary/20 transition-all duration-300 flex items-center gap-4"
                                             >
                                                 <div className="w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center p-2 group-hover:bg-primary/10 transition-colors">
