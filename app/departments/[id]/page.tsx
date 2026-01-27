@@ -40,7 +40,7 @@ const DepartmentDetailPage = () => {
                     </div>
                     <h1 className="text-3xl font-bold mb-4 font-header text-gray-900">Department Not Found</h1>
                     <p className="text-gray-600 mb-8 leading-relaxed">We couldn't load the details for this department. It might have been moved or doesn't exist.</p>
-                    <Link href="/departments" className="inline-block bg-black text-white px-10 py-4 rounded-full font-bold hover:bg-gray-900 transition-all shadow-lg hover:shadow-black/20">
+                    <Link href="/department" className="inline-block bg-black text-white px-10 py-4 rounded-full font-bold hover:bg-gray-900 transition-all shadow-lg hover:shadow-black/20">
                         Back to Departments
                     </Link>
                 </div>
