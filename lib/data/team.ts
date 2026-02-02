@@ -52,7 +52,7 @@ export const teamMembers: TeamMember[] = [
         major: "Geomatic Engineering",
         description: "As a Lead Developer together with Joy, Obrempong was a driving force behind the entire GESA platform. He seamlessly bridged the gap between backend architecture and frontend elegance, implementing both the secure core infrastructure and the stunning, interactive user interfaces. His full-stack expertise ensured a performant, pixel-perfect experience from the database to the screen.",
         image: "/images/Obrempong.jpg",
-        funFact: "A young daring Ghanaian, totally out of his comfort zone living his epic vision for Africa and Ghana, with hunger in his bones.",
+        funFact: "A young daring Ghanaian, totally out of his comfort zone living his epic vision for the Church, Africa and Ghana, with hunger in his bones.",
         socials: {
             github: "https://github.com/Obrempong-1",
             linkedin: "https://www.linkedin.com/in/obrempong-kwabena-osei-wusu-7b0217257/"
@@ -78,7 +78,7 @@ export const teamMembers: TeamMember[] = [
     {
         name: "Albert Agyapong Yeboah (Logical)",
         role: "UI Designer",
-        year: "3rd Year",
+        year: "4th Year",
         major: "Computer Engineering",
         description: "A creative powerhouse with a deep background in graphics design, Logical brought the GESA platform to life through his expert use of Figma. He meticulously crafted the web interfaces, establishing the premium visual identity that balances aesthetic appeal with intuitive user experience.",
         image: "/images/Albert.jpg",
