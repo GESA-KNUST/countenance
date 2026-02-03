@@ -135,9 +135,45 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
                         >
                             <h2 className="text-3xl font-bold font-header text-slate-900 mb-6">About</h2>
                             <div className="prose prose-lg prose-slate max-w-none text-slate-600 leading-8 text-[1.05rem]">
-                                <p className="mb-6">{member.description}</p>
+                                <div className="mb-6">
+                                    <ReactMarkdown components={{
+                                        a: ({ node, href, children, ...props }) => {
+                                            const isInternal = href?.startsWith('/');
+                                            if (isInternal) {
+                                                return (
+                                                    <Link href={href as string} className="text-primary hover:underline font-bold" {...props}>
+                                                        {children}
+                                                    </Link>
+                                                );
+                                            }
+                                            return (
+                                                <a href={href} className="text-primary hover:underline font-bold" target='_blank' rel="noopener noreferrer" {...props}>
+                                                    {children}
+                                                </a>
+                                            );
+                                        }
+                                    }}>
+                                        {member.description}
+                                    </ReactMarkdown>
+                                </div>
                                 {member.about && (
-                                    <ReactMarkdown>
+                                    <ReactMarkdown components={{
+                                        a: ({ node, href, children, ...props }) => {
+                                            const isInternal = href?.startsWith('/');
+                                            if (isInternal) {
+                                                return (
+                                                    <Link href={href as string} className="text-primary hover:underline font-bold" {...props}>
+                                                        {children}
+                                                    </Link>
+                                                );
+                                            }
+                                            return (
+                                                <a href={href} className="text-primary hover:underline font-bold" target='_blank' rel="noopener noreferrer" {...props}>
+                                                    {children}
+                                                </a>
+                                            );
+                                        }
+                                    }}>
                                         {member.about}
                                     </ReactMarkdown>
                                 )}
