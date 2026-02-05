@@ -4,7 +4,9 @@ import { gql } from "graphql-request";
 import { contentfulClient } from "../lib/contentful-client";
 
 export interface POTWItem {
-  _id: string;
+  sys: {
+    id: string;
+  };
   image: {
     url: string;
     description: string;
@@ -26,7 +28,9 @@ const GET_POTW = gql`
  query PersonalityOfTheWeekCollection {
   personalityOfTheWeekCollection {
     items {
-      _id
+      sys {
+        id
+      }
       image {
         url
         description
