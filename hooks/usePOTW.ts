@@ -15,7 +15,7 @@ export interface POTWItem {
   description: {
     json: any;
   };
-  linkedin?: string;
+  linkedinUrl?: string;
 }
 
 interface POTWCollection {
@@ -39,7 +39,7 @@ const GET_POTW = gql`
       description {
         json
       }
-      linkedin
+      linkedinUrl
     }
   }
 }`
