@@ -166,9 +166,9 @@ const Personality = () => {
                     <h2 className="text-3xl font-bold font-header mb-2 text-primary">PERSONALITY OF THE WEEK</h2>
                     <p className="text-lg text-gray-500 font-medium">Celebrating Excellence</p>
                   </div>
-                  {personality.linkedin && (
+                  {personality.linkedinUrl && (
                     <a
-                      href={personality.linkedin}
+                      href={personality.linkedinUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="mt-2 p-3 bg-[#0077b5] text-white rounded-lg hover:bg-[#006097] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
