@@ -22,13 +22,6 @@ export interface EventItem {
   venueInPlainEnglish: string;
   onlineLink?: string;
   eventImage: EventImage;
-  eventImagesCollection?: {
-    items: {
-      title: string;
-      description: string;
-      url: string;
-    }[];
-  };
 }
 
 interface Props {
@@ -56,13 +49,6 @@ const GET_EVENTS = gql`
           url
           description
         }
-        eventImagesCollection {
-          items {
-            title
-            description
-            url
-          }
-        }
       }
     }
   }
@@ -86,13 +72,6 @@ const GET_EVENT_BY_SLUG = gql`
         eventImage {
           url
           description
-        }
-        eventImagesCollection {
-          items {
-            title
-            description
-            url
-          }
         }
       }
     }

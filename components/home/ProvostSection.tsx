@@ -32,13 +32,13 @@ const ProvostSection = () => {
     return (
         <section className="py-24 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
             <Container size="xl">
-                <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+                <div className="flex flex-col lg:flex-row items-start gap-16 lg:gap-24">
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="relative w-full lg:w-1/2"
+                        className="relative w-full lg:w-1/2 flex flex-col gap-12 lg:-mt-4"
                     >
                         <div className="relative group">
                             <div className="absolute -inset-4 bg-primary/10 rounded-[2.5rem] -rotate-3 transition-transform group-hover:rotate-0 duration-500" />
@@ -65,6 +65,29 @@ const ProvostSection = () => {
                                 <p className="text-primary font-bold text-lg mb-1">GESA Patron</p>
                                 <p className="text-gray-500 text-sm font-medium leading-tight">Celebrating Excellence &<br />Leadership at KNUST</p>
                             </motion.div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4 pt-4">
+                            {highlights.map((item, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 0.4 + (index * 0.1) }}
+                                    className="p-4 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
+                                >
+                                    <div className="text-primary mb-2 bg-primary/5 w-fit p-2 rounded-lg">
+                                        {item.icon}
+                                    </div>
+                                    <p className="font-bold text-gray-900 group-hover:text-primary transition-colors">
+                                        {item.text}
+                                    </p>
+                                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">
+                                        {item.label}
+                                    </p>
+                                </motion.div>
+                            ))}
                         </div>
                     </motion.div>
 
@@ -105,29 +128,6 @@ const ProvostSection = () => {
                                 {`Prof Nyarko has over one hundred (100) publications in peer-reviewed journals, conference proceedings, and technical reports.`}
                             </p>
                         </motion.div>
-
-                        <div className="grid grid-cols-2 gap-4 pt-4">
-                            {highlights.map((item, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: 0.4 + (index * 0.1) }}
-                                    className="p-4 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
-                                >
-                                    <div className="text-primary mb-2 bg-primary/5 w-fit p-2 rounded-lg">
-                                        {item.icon}
-                                    </div>
-                                    <p className="font-bold text-gray-900 group-hover:text-primary transition-colors">
-                                        {item.text}
-                                    </p>
-                                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">
-                                        {item.label}
-                                    </p>
-                                </motion.div>
-                            ))}
-                        </div>
                     </div>
                 </div>
             </Container>
