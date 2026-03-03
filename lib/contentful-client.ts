@@ -21,6 +21,6 @@ export const contentfulClient = new GraphQLClient(
       ...(CONTENTFUL_ACCESS_TOKEN ? { Authorization: `Bearer ${CONTENTFUL_ACCESS_TOKEN}` } : {}),
     },
     // @ts-ignore 
-    next: { revalidate: 3600 },
+    next: { revalidate: 600 },
   }
 );

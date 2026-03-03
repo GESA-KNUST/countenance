@@ -1,4 +1,5 @@
 import Personality from '../components/home/Personality';
+import ProvostSection from '../components/home/ProvostSection';
 import HeroSection from '../components/home/HeroSection'
 import React from 'react'
 import RecentEvent from '../components/home/RecentEvent';
@@ -20,6 +21,7 @@ const Home = () => {
         isScroll={true}
       />
       <Personality />
+      <ProvostSection />
       <HistorySection />
       <HomeHubsPreview />
       <HomeClubsPreview />
