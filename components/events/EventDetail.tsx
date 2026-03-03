@@ -16,7 +16,7 @@ interface EventDetailProps {
 const EventDetail: React.FC<EventDetailProps> = ({ event }) => {
     const [mapLoading, setMapLoading] = useState(true);
 
-    const { title, description, eventDate, eventImage, venue, onlineLink, eventImagesCollection } = event;
+    const { title, description, eventDate, eventImage, venue, onlineLink } = event;
 
     const dateObj = new Date(eventDate);
     const formattedDate = dateObj.toLocaleDateString("en-US", {
@@ -83,49 +83,29 @@ const EventDetail: React.FC<EventDetailProps> = ({ event }) => {
                                         p: ({ node, ...props }: any) => <p className="mb-6 leading-relaxed text-gray-700 text-lg" {...props} />,
                                         ul: ({ node, ...props }: any) => <ul className="list-disc pl-6 mb-6 text-gray-700 text-lg" {...props} />,
                                         ol: ({ node, ...props }: any) => <ol className="list-decimal pl-6 mb-6 text-gray-700 text-lg" {...props} />,
-                                        li: ({ node, ...props }: any) => <li className="mb-2 pl-2" {...props} />
+                                        li: ({ node, ...props }: any) => <li className="mb-2 pl-2" {...props} />,
+                                        img: ({ node, ...props }: any) => (
+                                            <div className="my-8 flex flex-col items-center">
+                                                <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+                                                    <img
+                                                        {...props}
+                                                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.02]"
+                                                        style={{ display: 'block' }}
+                                                    />
+                                                </div>
+                                                {props.alt && (
+                                                    <p className="mt-3 text-sm text-gray-500 italic text-center">
+                                                        {props.alt}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        )
                                     }}
                                 >
                                     {description}
                                 </ReactMarkdown>
                             </div>
                         </section>
-
-                        {/* Media Gallery Section */}
-                        {eventImagesCollection && eventImagesCollection.items.length > 0 && (
-                            <section className="bg-white rounded-3xl p-8 sm:p-10 shadow-sm border border-gray-100">
-                                <div className="flex items-center gap-3 mb-8">
-                                    <div className="bg-primary/10 p-2 rounded-xl">
-                                        <ImageIcon className="text-primary w-6 h-6" />
-                                    </div>
-                                    <h2 className="text-2xl font-bold text-gray-900 font-header">Media & Gallery</h2>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    {eventImagesCollection.items.map((asset, index) => (
-                                        <div
-                                            key={index}
-                                            className="group relative h-[300px] w-full rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
-                                        >
-                                            <Image
-                                                src={asset.url}
-                                                alt={asset.description || asset.title || `Event item ${index + 1}`}
-                                                fill
-                                                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                                            />
-                                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-                                            {asset.title && (
-                                                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent translate-y-full group-hover:translate-y-0 transition-transform">
-                                                    <p className="text-white font-medium text-sm">{asset.title}</p>
-                                                    {asset.description && (
-                                                        <p className="text-white/70 text-xs mt-1 line-clamp-1">{asset.description}</p>
-                                                    )}
-                                                </div>
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
-                            </section>
-                        )}
 
                         {/* Map Section */}
                         <section className="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100">
