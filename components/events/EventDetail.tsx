@@ -1,13 +1,14 @@
 'use client';
 
 import Image from 'next/image';
-import { MapPin, Calendar, ExternalLink, ArrowLeft, Image as ImageIcon } from 'lucide-react';
+import { MapPin, Calendar, ExternalLink, ArrowLeft } from 'lucide-react';
 import { EventItem } from '@/hooks/useEventCollection';
 import Link from 'next/link';
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
+import { markdownComponents } from '@/lib/markdownComponents';
 
 interface EventDetailProps {
     event: EventItem;
@@ -80,13 +81,11 @@ const EventDetail: React.FC<EventDetailProps> = ({ event }) => {
                                 <ReactMarkdown
                                     remarkPlugins={[remarkGfm, remarkBreaks]}
                                     components={{
-                                        p: ({ node, ...props }: any) => <p className="mb-6 leading-relaxed text-gray-700 text-lg" {...props} />,
-                                        ul: ({ node, ...props }: any) => <ul className="list-disc pl-6 mb-6 text-gray-700 text-lg" {...props} />,
-                                        ol: ({ node, ...props }: any) => <ol className="list-decimal pl-6 mb-6 text-gray-700 text-lg" {...props} />,
-                                        li: ({ node, ...props }: any) => <li className="mb-2 pl-2" {...props} />,
-                                        img: ({ node, ...props }: any) => (
+                                        ...markdownComponents,
+                                        img: ({ node: _node, ...props }) => (
                                             <div className="my-8 flex flex-col items-center">
                                                 <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+                                                    {/* eslint-disable-next-line @next/next/no-img-element */}
                                                     <img
                                                         {...props}
                                                         className="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.02]"

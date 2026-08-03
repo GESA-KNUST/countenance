@@ -12,18 +12,17 @@ const ExecutivesPage = () => {
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
 
   const academicYears = useMemo(() => {
-    if (executives.length === 0) return [];
-    const years = [...new Set(executives.map((exec) => exec.academicYear))];
-    if (!selectedYear) {
-      setSelectedYear(years[0]);
-    }
-    return years;
-  }, [executives, selectedYear]);
+    return [...new Set(executives.map((exec) => exec.academicYear))];
+  }, [executives]);
+
+  // Fall back to the most recent year until the user picks one, instead of
+  // calling setState during render.
+  const effectiveYear = selectedYear ?? academicYears[0] ?? null;
 
   const filteredExecutives = useMemo(() => {
-    if (!selectedYear) return [];
-    return executives.filter((exec) => exec.academicYear === selectedYear);
-  }, [executives, selectedYear]);
+    if (!effectiveYear) return [];
+    return executives.filter((exec) => exec.academicYear === effectiveYear);
+  }, [executives, effectiveYear]);
 
   if (error) {
     return (
@@ -44,7 +43,7 @@ const ExecutivesPage = () => {
       <Hero />
       <Intro
         academicYears={academicYears}
-        selectedYear={selectedYear}
+        selectedYear={effectiveYear}
         setSelectedYear={setSelectedYear}
       />
       <Executives executives={filteredExecutives} isLoading={isLoading} />
