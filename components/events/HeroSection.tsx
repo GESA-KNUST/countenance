@@ -2,10 +2,9 @@
 import Autoplay from "embla-carousel-autoplay";
 import Image, { StaticImageData } from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, Hand } from 'lucide-react';
+import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import EventCard from './EventsCard';
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "../ui/carousel";
-import { motion } from "framer-motion";
 import EmptyState from './EmptyState';
 
 interface ItemsProps {
@@ -40,10 +39,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [api, setApi] = useState<CarouselApi>();
-  const [mobileApi, setMobileApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
-  const MOBILE_CARD_HEIGHT = 460;
   const total = items?.length || 0;
 
   const scrollToEvent = (slug: string) => {

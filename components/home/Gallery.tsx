@@ -1,10 +1,5 @@
 'use client'
 import Image from 'next/image';
-import React from 'react'
-import img1 from '../../public/images/img1.png'
-import img2 from '../../public/images/potw.png'
-import img3 from '../../public/images/galleryImg.png'
-import img4 from '../../public/images/galleryimg2.png'
 import { motion, Variants } from "framer-motion";
 import Link from "next/link";
 import { useGalleries } from "@/hooks/useGalleryCollection";
@@ -38,7 +33,7 @@ const itemVariants: Variants = {
 };
 
 const Gallery = () => {
-    const { data: galleries, isLoading, error } = useGalleries()
+    const { data: galleries, error } = useGalleries()
     const openPicturesLink = (pictureLink: string) => {
         if (pictureLink) {
             window.open(pictureLink, '_blank');

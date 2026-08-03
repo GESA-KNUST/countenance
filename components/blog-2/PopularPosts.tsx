@@ -1,6 +1,5 @@
 'use client';
 import Image from 'next/image';
-import { Skeleton } from '../../components/ui/skeleton';
 
 import { Share2 } from 'lucide-react';
 import { LogError } from '@/lib/logger';
