@@ -1,6 +1,47 @@
-import { useQuery } from "@tanstack/react-query";
 import { gql } from "graphql-request";
+import { useFetchData } from "./useFetchData";
 import { contentfulClient } from "../lib/contentful-client";
+
+import type { Document } from "@contentful/rich-text-types";
+
+export interface BlogAsset {
+  sys: { id: string };
+  url: string;
+  title: string;
+  description: string;
+  width: number;
+  height: number;
+}
+
+export interface BlogPost {
+  headerImage: { title: string; url: string };
+  slug: string;
+  author: {
+    name: string;
+    authorProfilePicture: { url: string; title: string };
+  };
+  blogContent: {
+    json: Document;
+    links: {
+      assets: {
+        block: BlogAsset[];
+        hyperlink: BlogAsset[];
+      };
+      entries: {
+        inline: { sys: { id: string }; __typename: string }[];
+      };
+    };
+  };
+  hook: string;
+  tags: { tags: string[] };
+  title: string;
+}
+
+interface BlogPostResponse {
+  blogPostCollection: {
+    items: BlogPost[];
+  };
+}
 
 const GET_BLOG_BY_SLUG = gql`
   query BlogPostCollection($where: BlogPostFilter) {
@@ -62,16 +103,14 @@ const GET_BLOG_BY_SLUG = gql`
 `;
 
 export const useBlog = (slug: string) => {
-  return useQuery({
+  return useFetchData({
     queryKey: ["blog", slug],
     queryFn: async () => {
-      const data = await contentfulClient.request(GET_BLOG_BY_SLUG, {
-        where: { slug }
+      const data = await contentfulClient.request<BlogPostResponse>(GET_BLOG_BY_SLUG, {
+        where: { slug },
       });
-      if (data.blogPostCollection.items.length === 0) {
-        return null;
-      }
-      return data.blogPostCollection.items[0];
+      return data.blogPostCollection.items[0] ?? null;
     },
+    enabled: !!slug,
   });
 };

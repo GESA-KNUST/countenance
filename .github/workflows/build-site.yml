@@ -13,8 +13,14 @@ jobs:
         uses: actions/checkout@v4
       - name: setup nodeJS
         uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
       - name: install packages
         run: npm ci
+      - name: typecheck
+        run: npm run typecheck
+      - name: lint
+        run: npm run lint
       - name: build site
         run: npm run build
-

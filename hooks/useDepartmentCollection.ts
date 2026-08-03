@@ -40,12 +40,8 @@ export const useDepartmentCollection = () => {
     return useFetchData({
         queryKey: ["departments"],
         queryFn: async () => {
-            try {
-                const data = await contentfulClient.request<Props>(GET_DEPARTMENTS);
-                return data.departmentCollection.items;
-            } catch (err: any) {
-                throw err;
-            }
+            const data = await contentfulClient.request<Props>(GET_DEPARTMENTS);
+            return data.departmentCollection.items;
         },
     });
 };

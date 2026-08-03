@@ -42,13 +42,8 @@ export const useFacultyCollection = () => {
   return useFetchData<FacultySummary[]>({
     queryKey: ["faculties"],
     queryFn: async () => {
-      try {
-        const data = await contentfulClient.request<Props>(GET_FACULTIES);
-        return data.facultyCollection.items;
-      } catch (err: any) {
-        console.error("Error fetching faculties:", err);
-        throw err;
-      }
+      const data = await contentfulClient.request<Props>(GET_FACULTIES);
+      return data.facultyCollection.items;
     },
   });
 };

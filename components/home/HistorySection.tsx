@@ -100,7 +100,7 @@ const HistorySection = () => {
                             }}
                             className="text-lg text-gray-600 leading-relaxed"
                         >
-                            Since 1967, the Ghana Engineering Students' Association has been at the forefront of academic excellence, student leadership, and industrial innovation at KNUST.
+                            Since 1967, the Ghana Engineering Students&apos; Association has been at the forefront of academic excellence, student leadership, and industrial innovation at KNUST.
                         </motion.p>
                     </motion.div>
 
