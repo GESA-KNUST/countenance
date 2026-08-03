@@ -2,7 +2,7 @@
 import Container from '@/components/custom/Container'
 import HeroSection from '@/components/home/HeroSection'
 import OpportunityCard from '@/components/hubs/OpportunityCard'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import internship from '@/public/images/internship.svg'
 import scholarship from '@/public/images/scholarship.svg'
 import financialAid from '@/public/images/financial-aid.svg'
@@ -14,7 +14,6 @@ import { useHubs, hubItem } from '@/hooks/useHubs'
 import SkeletonLoading from '@/components/hubs/SkeletonLoading'
 import POLoading from '@/components/hubs/POLoading'
 import { useAnnouncements } from '@/hooks/useAnnoucement'
-import FetchError from '@/components/custom/FetchError'
 import EmptyState from '@/components/events/EmptyState'
 import { Briefcase, TriangleAlert } from 'lucide-react'
 
@@ -24,7 +23,6 @@ const HubsPage = () => {
     const {
         data: announcementsData,
         isLoading: loadingAnnouncements,
-        error: announcementError
     } = useAnnouncements()
 
     const announcements = useMemo(() => {
@@ -133,9 +131,6 @@ const HubsPage = () => {
                                 </>
                             )}
                             {error && <p className='text-red-500 text-sm'>Error loading opportunities</p>}
-                            {/* <div className=' w-full h-full'>
-                        {filteredOpportunities?.length == 0 && <NoData/>}
-                    </div> */}
                         </div>
                     }
                     <div className="lg:col-span-1 space-y-8">
