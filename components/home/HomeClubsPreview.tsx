@@ -77,7 +77,7 @@ const HomeClubsPreview = () => {
                             >
                                 <div className='w-16 h-16 bg-primary/10 rounded-2xl p-0 flex items-center justify-center group-hover:scale-110 transition-transform relative overflow-hidden'>
                                     <Image
-                                        src={club?.clubLogo.url || null}
+                                        src={club?.clubLogo?.url || '/images/logo.svg'}
                                         alt=""
                                         className="w-full h-full object-cover"
                                         fill

@@ -1,4 +1,3 @@
-import React from 'react'
 import BigStory from '../../components/blog/BigStory'
 import RecentBlog from '../../components/blog/RecentBlogs'
 import img1 from "public/images/img1.png";
@@ -6,7 +5,7 @@ import img2 from "public/images/img2.png";
 import HeroSection from '@/components/home/HeroSection';
 import BlogContribute from '@/components/blog/BlogContribute';
 
-const page = () => {
+const BlogPage = () => {
   return (
     <div className='font-poppins min-h-screen'>
       <HeroSection
@@ -23,4 +22,4 @@ const page = () => {
   )
 }
 
-export default page;
+export default BlogPage;

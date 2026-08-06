@@ -3,26 +3,22 @@ import Image from 'next/image';
 import { Separator } from '../ui/separator';
 import Link from 'next/link';
 import SkeletonLoading from './SkeletonLoading';
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-import { BLOCKS, INLINES } from '@contentful/rich-text-types';
+import { documentToReactComponents, Options } from '@contentful/rich-text-react-renderer';
+import { BLOCKS, INLINES, Block, Inline } from '@contentful/rich-text-types';
 import { richTextParagraphRenderer } from '@/lib/richTextOptions';
+import type { BlogPost, BlogAsset } from '@/hooks/useBlog';
 
-const MainContent = ({ selectedPost }) => {
+interface MainContentProps {
+  selectedPost: BlogPost | null;
+}
+
+const MainContent = ({ selectedPost }: MainContentProps) => {
 
   if (!selectedPost) return <SkeletonLoading />;
 
-  const getTags = () => {
-    if (!selectedPost.tags) return [];
-    if (Array.isArray(selectedPost.tags)) return selectedPost.tags;
-    if (typeof selectedPost.tags === 'object' && Array.isArray(selectedPost.tags.tags)) {
-      return selectedPost.tags.tags;
-    }
-    return [];
-  };
+  const tags = selectedPost.tags?.tags ?? [];
 
-  const tags = getTags();
-
-  const assetMap = new Map();
+  const assetMap = new Map<string, BlogAsset>();
   if (selectedPost.blogContent?.links?.assets?.block) {
     selectedPost.blogContent.links.assets.block.forEach((asset) => {
       assetMap.set(asset.sys.id, asset);
@@ -34,14 +30,7 @@ const MainContent = ({ selectedPost }) => {
     });
   }
 
-  const entryMap = new Map();
-  if (selectedPost.blogContent?.links?.entries?.inline) {
-    selectedPost.blogContent.links.entries.inline.forEach((entry) => {
-      entryMap.set(entry.sys.id, entry);
-    });
-  }
-
-  const renderAsset = (node) => {
+  const renderAsset = (node: Block | Inline) => {
     const assetId = node.data.target.sys.id;
     const asset = assetMap.get(assetId);
 
@@ -71,13 +60,11 @@ const MainContent = ({ selectedPost }) => {
     return null;
   };
 
-  const richTextOptions = {
+  const richTextOptions: Options = {
     renderNode: {
       ...richTextParagraphRenderer,
       [BLOCKS.EMBEDDED_ASSET]: renderAsset,
-      [INLINES.EMBEDDED_ENTRY]: (node) => {
-        return null;
-      }
+      [INLINES.EMBEDDED_ENTRY]: () => null,
     },
   };
 
@@ -103,11 +90,10 @@ const MainContent = ({ selectedPost }) => {
         </div>
         <div className="flex flex-wrap justify-center gap-2 mt-4">
           {tags.map((tag, index) => {
-            const tagContent = typeof tag === 'string' ? tag : tag.title;
-            if (!tagContent) return null;
+            if (!tag) return null;
             return (
               <span key={index} className="bg-primary/10 text-primary text-sm font-medium px-2.5 py-0.5 rounded-full">
-                {tagContent}
+                {tag}
               </span>
             );
           })}
@@ -119,7 +105,7 @@ const MainContent = ({ selectedPost }) => {
       <div className="relative w-full mb-8 overflow-hidden rounded-2xl shadow-lg border border-gray-100">
         <Image
           src={selectedPost.headerImage.url}
-          alt={selectedPost.headerImage.description || selectedPost.title}
+          alt={selectedPost.headerImage.title || selectedPost.title}
           width={800}
           height={574}
           className="w-full h-auto"

@@ -240,8 +240,20 @@ const Navbar = () => {
 
 export default Navbar;
 
-const Tab = ({ children, setPosition, onClick = () => { } }) => {
-  const ref = useRef(null);
+interface Position {
+  left: number;
+  width: number;
+  opacity: number;
+}
+
+interface TabProps {
+  children: React.ReactNode;
+  setPosition: React.Dispatch<React.SetStateAction<Position>>;
+  onClick?: () => void;
+}
+
+const Tab = ({ children, setPosition, onClick = () => { } }: TabProps) => {
+  const ref = useRef<HTMLLIElement>(null);
 
   return (
     <li
@@ -265,7 +277,7 @@ const Tab = ({ children, setPosition, onClick = () => { } }) => {
   );
 };
 
-const Cursor = ({ position }) => {
+const Cursor = ({ position }: { position: Position }) => {
   return (
     <motion.li
       animate={{
