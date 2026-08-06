@@ -82,12 +82,8 @@ const useEventCollection = () => {
   return useFetchData({
     queryKey: ["events"],
     queryFn: async () => {
-      try {
-        const data = await contentfulClient.request<Props>(GET_EVENTS);
-        return data.eventCardCollection.items;
-      } catch (err: any) {
-        throw err;
-      }
+      const data = await contentfulClient.request<Props>(GET_EVENTS);
+      return data.eventCardCollection.items;
     },
   });
 };
@@ -96,14 +92,10 @@ export const useEventBySlug = (slug: string) => {
   return useFetchData({
     queryKey: ["event", slug],
     queryFn: async () => {
-      try {
-        const data = await contentfulClient.request<Props>(GET_EVENT_BY_SLUG, {
-          slug,
-        });
-        return data.eventCardCollection.items[0];
-      } catch (err: any) {
-        throw err;
-      }
+      const data = await contentfulClient.request<Props>(GET_EVENT_BY_SLUG, {
+        slug,
+      });
+      return data.eventCardCollection.items[0];
     },
     enabled: !!slug,
   });

@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
 import { gql } from "graphql-request";
+import { useFetchData } from "./useFetchData";
 import { contentfulClient } from "../lib/contentful-client";
 
 export interface ClubItems {
@@ -108,7 +108,7 @@ query ClubById($id: String!) {
 `;
 
 export const useClubs = () => {
-  return useQuery({
+  return useFetchData({
     queryKey: ["clubs"],
     queryFn: async () => {
       const data = await contentfulClient.request<ClubCollection>(GET_CLUBS);
@@ -118,7 +118,7 @@ export const useClubs = () => {
 };
 
 export const useClubById = (id: string) => {
-  return useQuery({
+  return useFetchData({
     queryKey: ["club", id],
     queryFn: async () => {
       const data = await contentfulClient.request<ClubCollection>(GET_CLUB_BY_ID, { id });

@@ -12,11 +12,11 @@ import { Separator } from '../ui/separator';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import StarSpinner from '../ui/StarSpinner';
-import useBlogCollection from '../../hooks/useBlogCollection';
+import useBlogCollection, { type Blog } from '../../hooks/useBlogCollection';
 
 const BigStory = () => {
   const [loading, setLoading] = useState(false);
-  const [post, setPost] = useState(null);
+  const [post, setPost] = useState<Blog | null>(null);
   const { data: allPosts } = useBlogCollection();
   const router = useRouter();
 
@@ -24,29 +24,17 @@ const BigStory = () => {
     if (allPosts) {
       const slug = 'the-ghana-engineering-students-association-gesa-knust';
       const foundPost = allPosts.find(p => p.slug === slug);
-      setPost(foundPost);
+      setPost(foundPost ?? null);
     }
   }, [allPosts]);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    if (!post) return;
     setLoading(true);
     setTimeout(() => {
       router.push(`/blog-2?slug=${post.slug}`);
     }, 1000);
-  };
-
-  const getTag = () => {
-    if (!post || !post.tags) return 'Uncategorized';
-    if (Array.isArray(post.tags) && post.tags.length > 0) {
-      const tag = post.tags[0];
-      return typeof tag === 'string' ? tag : tag.title;
-    }
-    if (typeof post.tags === 'object' && Array.isArray(post.tags.tags) && post.tags.tags.length > 0) {
-      const tag = post.tags.tags[0];
-      return typeof tag === 'string' ? tag : tag.title;
-    }
-    return 'Uncategorized';
   };
 
   if (!post) {
@@ -124,7 +112,7 @@ const BigStory = () => {
         <div className="w-full h-[304px] md:h-[424px] lg:h-[500px] rounded-md overflow-hidden relative">
           <Image
             src={post.headerImage.url}
-            alt={post.headerImage.description || post.title}
+            alt={post.headerImage.title || post.title}
             className="object-cover rounded"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

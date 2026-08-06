@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import { Metadata, Viewport } from "next";
+import type { ReactNode } from "react";
 import { CSPostHogProvider } from "@/providers/PostHogProvider";
 
 const poppins = Poppins({
@@ -100,7 +101,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",

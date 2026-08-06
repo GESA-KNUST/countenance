@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { documentToReactComponents, Options } from '@contentful/rich-text-react-renderer';
 import { BLOCKS } from '@contentful/rich-text-types';
-import { Globe, ArrowLeft, Share2, ExternalLink } from 'lucide-react';
+import { Globe, ArrowLeft, ExternalLink } from 'lucide-react';
 import { ClubItems } from '@/hooks/useClubs';
 import Container from '../custom/Container';
 import { richTextParagraphRenderer } from '@/lib/richTextOptions';

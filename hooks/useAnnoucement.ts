@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
 import { gql } from "graphql-request";
+import { useFetchData } from "./useFetchData";
 import { contentfulClient } from "../lib/contentful-client";
 
 interface Announcement {
@@ -31,7 +31,7 @@ const GET_ANNOUNCEMENTS = gql`
 `;
 
 export const useAnnouncements = () => {
-    return useQuery({
+    return useFetchData({
         queryKey: ["announcements"],
         queryFn: async () => {
             const data = await contentfulClient.request<AnnouncementCollection>(GET_ANNOUNCEMENTS);

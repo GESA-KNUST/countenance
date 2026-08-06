@@ -1,6 +1,5 @@
-
-import { useQuery } from "@tanstack/react-query";
 import { gql } from "graphql-request";
+import { useFetchData } from "./useFetchData";
 import { contentfulClient } from "../lib/contentful-client";
 
 export interface POTWItem {
@@ -45,8 +44,8 @@ const GET_POTW = gql`
 }`
 
 export const usePOTW = () => {
-  return useQuery({
-    queryKey: ["pots"],
+  return useFetchData({
+    queryKey: ["potw"],
     queryFn: async () => {
       const data = await contentfulClient.request<POTWCollection>(GET_POTW);
       if (data.personalityOfTheWeekCollection.items.length === 0) {

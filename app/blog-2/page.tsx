@@ -1,9 +1,10 @@
 import { Suspense } from 'react';
 import BlogContent from './BlogContent';
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata } from 'next';
 import { gql } from "graphql-request";
 import { contentfulClient } from "@/lib/contentful-client";
 import StarSpinner from '@/components/ui/StarSpinner';
+import { LogError } from '@/lib/logger';
 
 type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -23,10 +24,7 @@ const GET_BLOG_BY_SLUG = gql`
     }
 `;
 
-export async function generateMetadata(
-  props: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
   const searchParams = await props.searchParams;
   const slug = searchParams.slug;
 
@@ -56,7 +54,7 @@ export async function generateMetadata(
       },
     }
   } catch (error) {
-    console.error(error);
+    LogError('Error generating blog metadata:', error);
     return {
       title: 'Blog & News',
     };
