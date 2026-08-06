@@ -1,14 +1,19 @@
 'use client';
 import Image from 'next/image';
-import { Skeleton } from '../../components/ui/skeleton';
 
 import { Share2 } from 'lucide-react';
 import { LogError } from '@/lib/logger';
 import { usePostHog } from 'posthog-js/react';
 import EmptyState from '../events/EmptyState';
 import { FileText } from 'lucide-react';
+import type { Blog } from '@/hooks/useBlogCollection';
 
-const SimplifiedBlogCard = ({ post, onPostSelect }) => {
+interface SimplifiedBlogCardProps {
+    post: Blog;
+    onPostSelect: (post: Blog) => void;
+}
+
+const SimplifiedBlogCard = ({ post, onPostSelect }: SimplifiedBlogCardProps) => {
     const posthog = usePostHog();
 
     return (
@@ -55,7 +60,12 @@ const SimplifiedBlogCard = ({ post, onPostSelect }) => {
     );
 };
 
-const PopularPosts = ({ allPosts, onPostSelect }) => {
+interface PopularPostsProps {
+    allPosts: Blog[] | undefined;
+    onPostSelect: (post: Blog) => void;
+}
+
+const PopularPosts = ({ allPosts, onPostSelect }: PopularPostsProps) => {
 
     if (!allPosts || allPosts.length === 0) {
         return (

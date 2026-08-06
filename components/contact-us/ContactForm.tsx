@@ -50,7 +50,7 @@ const ContactForm = () => {
       'template_vjomjvq',
       templateParams,
       'nsEZld8wCEmOsyI4w'
-    ).then((response) => {
+    ).then(() => {
       setFeedback({ message: 'Your message has been sent successfully.', type: 'success' });
       setFirstName('');
       setLastName('');
@@ -58,7 +58,7 @@ const ContactForm = () => {
       setPhone('');
       setSubject('General Inquiry');
       setMessage('');
-    }, (err) => {
+    }, () => {
       setFeedback({ message: 'Failed to send message. Please try again later.', type: 'error' });
     });
   };

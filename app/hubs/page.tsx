@@ -2,7 +2,7 @@
 import Container from '@/components/custom/Container'
 import HeroSection from '@/components/home/HeroSection'
 import OpportunityCard from '@/components/hubs/OpportunityCard'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import internship from '@/public/images/internship.svg'
 import scholarship from '@/public/images/scholarship.svg'
 import financialAid from '@/public/images/financial-aid.svg'
@@ -10,21 +10,19 @@ import Image from 'next/image'
 import announcement from '@/public/images/announcement.svg'
 import tips from '@/public/images/tips.svg'
 import correctBullet from '@/public/images/corectBullet.svg'
-import { useHubs } from '@/hooks/useHubs'
+import { useHubs, hubItem } from '@/hooks/useHubs'
 import SkeletonLoading from '@/components/hubs/SkeletonLoading'
 import POLoading from '@/components/hubs/POLoading'
 import { useAnnouncements } from '@/hooks/useAnnoucement'
-import FetchError from '@/components/custom/FetchError'
 import EmptyState from '@/components/events/EmptyState'
 import { Briefcase, TriangleAlert } from 'lucide-react'
 
-const page = () => {
+const HubsPage = () => {
     const [currentId, setCurrentId] = useState<number>(0)
     const { data: hubs, isLoading, error } = useHubs()
     const {
         data: announcementsData,
         isLoading: loadingAnnouncements,
-        error: announcementError
     } = useAnnouncements()
 
     const announcements = useMemo(() => {
@@ -41,15 +39,15 @@ const page = () => {
         { name: 'Financial Aid', value: 'financial aid', icon: financialAid },
     ]
 
-    const [filteredOpportunities, setFilteredOpportunities] = useState(hubs)
+    const [filteredOpportunities, setFilteredOpportunities] = useState<hubItem[]>(hubs ?? [])
     useEffect(() => {
-        setFilteredOpportunities(hubs)
+        setFilteredOpportunities(hubs ?? [])
     }, [hubs])
     useEffect(() => {
         if (currentId === 0) {
-            setFilteredOpportunities(hubs)
+            setFilteredOpportunities(hubs ?? [])
         } else {
-            const filtered = hubs.filter(opportunity => opportunity.opportunityType.toLowerCase() === navItems[currentId].value)
+            const filtered = (hubs ?? []).filter(opportunity => opportunity.opportunityType.toLowerCase() === navItems[currentId].value)
             setFilteredOpportunities(filtered)
         }
     }, [currentId])
@@ -133,9 +131,6 @@ const page = () => {
                                 </>
                             )}
                             {error && <p className='text-red-500 text-sm'>Error loading opportunities</p>}
-                            {/* <div className=' w-full h-full'>
-                        {filteredOpportunities?.length == 0 && <NoData/>}
-                    </div> */}
                         </div>
                     }
                     <div className="lg:col-span-1 space-y-8">
@@ -177,7 +172,7 @@ const page = () => {
                                 <div className='flex flex-col gap-4 shadow-md rounded-xl p-2 px-4'>
                                     <h1 className='font-semibold text-lg font-header'>Popular Opportunities</h1>
                                     <div className='flex flex-col gap-2 py-2'>
-                                        {hubs.slice(0, 3)?.map((opp, index) => (
+                                        {(hubs ?? []).slice(0, 3).map((opp, index) => (
                                             <a href={opp.source} target='_blank' className='flex gap-2 cursor-pointer hover:bg-slate-200/20 p-2 rounded-xl' key={index}>
                                                 <div className='flex flex-col gap-2'>
                                                     <p className='font-medium'>{opp.title}</p>
@@ -212,4 +207,4 @@ const page = () => {
     )
 }
 
-export default page
+export default HubsPage

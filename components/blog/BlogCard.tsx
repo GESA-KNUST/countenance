@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowUpRight, Share2 } from "lucide-react";
+import { Share2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useRouter } from "next/navigation";

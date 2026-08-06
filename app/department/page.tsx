@@ -99,7 +99,7 @@ const DepartmentListPage = () => {
                                     </p>
                                     <div className='w-full pt-4 mt-auto'>
                                         <Link
-                                            href={`/department-detail?id=${dept.sys.id}`}
+                                            href={`/departments/${dept.sys.id}`}
                                             className='bg-black text-white px-6 py-4 rounded-2xl w-full font-bold hover:bg-primary transition-all duration-300 flex items-center justify-center gap-2 group/btn shadow-lg shadow-black/5 hover:shadow-primary/20'
                                         >
                                             View Department

@@ -1,6 +1,5 @@
 import React from 'react'
-import Image, { StaticImageData } from 'next/image'
-import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 import { ArrowRight, Calendar } from 'lucide-react'
 import internship from '@/public/images/internship.svg'
 import scholarship from '@/public/images/scholarship.svg'

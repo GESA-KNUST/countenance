@@ -4,14 +4,14 @@ import Container from '@/components/custom/Container'
 import DepartmentHero from '@/components/department/DepartmentHero'
 import React, { useEffect } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import star from '@/public/images/star.svg'
 import Image from 'next/image'
 import { Mail, Globe, Music2 } from 'lucide-react'
-import Link from 'next/link'
+import NotFoundCard from '@/components/common/NotFoundCard'
+import SectionEyebrow from '@/components/common/SectionEyebrow'
 import whatsapp2 from '@/public/images/whatsapp2.svg'
 import twitter from '@/public/images/twitter.svg'
 import linkedin2 from '@/public/images/linkedin2.svg'
-import { useSearchParams } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { useDepartment } from '@/hooks/useDepartment'
 import { documentToReactComponents, Options } from '@contentful/rich-text-react-renderer'
 import { BLOCKS } from '@contentful/rich-text-types'
@@ -19,14 +19,14 @@ import { useStore } from '@/store/useStore'
 import { DepartmentDetailSkeleton } from '@/components/department/DepartmentDetailSkeleton'
 
 const DepartmentContent = () => {
-    const searchParams = useSearchParams();
-    const id = searchParams.get('id');
-    const { data: department, isLoading, error } = useDepartment(id as string);
+    const params = useParams();
+    const id = params.id as string;
+    const { data: department, isLoading, error } = useDepartment(id);
     const { addToRecentlyViewed } = useStore();
 
     useEffect(() => {
         if (department && id) {
-            addToRecentlyViewed(`/department-detail?id=${id}`);
+            addToRecentlyViewed(`/departments/${id}`);
         }
     }, [department, id, addToRecentlyViewed]);
 
@@ -66,18 +66,13 @@ const DepartmentContent = () => {
 
     if (error || !department || !id) {
         return (
-            <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
-                <div className="text-center max-w-md bg-white p-8 rounded-3xl shadow-xl border border-gray-100">
-                    <div className="bg-red-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <Globe className="text-red-500 w-8 h-8" />
-                    </div>
-                    <h1 className="text-3xl font-bold mb-4 font-header text-gray-900">Department Not Found</h1>
-                    <p className="text-gray-600 mb-8 leading-relaxed">We couldn't load the details for this department. It might have been moved or doesn't exist.</p>
-                    <Link href="/department" className="inline-block bg-black text-white px-10 py-4 rounded-full font-bold hover:bg-gray-900 transition-all shadow-lg hover:shadow-black/20">
-                        Back to Departments
-                    </Link>
-                </div>
-            </div>
+            <NotFoundCard
+                icon={Globe}
+                title="Department Not Found"
+                message="We couldn't load the details for this department. It might have been moved or doesn't exist."
+                backHref="/department"
+                backText="Back to Departments"
+            />
         );
     }
 
@@ -146,11 +141,7 @@ const DepartmentContent = () => {
 
                         <TabsContent value="about" className='py-12 animate-in fade-in slide-in-from-bottom-4 duration-500'>
                             <div className='flex flex-col gap-8'>
-                                <div className='flex items-center gap-3'>
-                                    <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
-                                    <p className='text-primary font-bold text-sm tracking-wider uppercase'>{department.deptAbbreviation || 'GESA'} - KNUST</p>
-                                    <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
-                                </div>
+                                <SectionEyebrow label={`${department.deptAbbreviation || 'GESA'} - KNUST`} />
                                 <h1 className='text-3xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>{department.name}</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
                                 <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
@@ -170,11 +161,7 @@ const DepartmentContent = () => {
 
                         <TabsContent value="mission" className='py-12 animate-in fade-in slide-in-from-bottom-4 duration-500'>
                             <div className='flex flex-col gap-8'>
-                                <div className='flex items-center gap-3'>
-                                    <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
-                                    <p className='text-primary font-bold text-sm tracking-wider uppercase'>{department.deptAbbreviation || 'GESA'} - KNUST</p>
-                                    <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
-                                </div>
+                                <SectionEyebrow label={`${department.deptAbbreviation || 'GESA'} - KNUST`} />
                                 <h1 className='text-3xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>Our Mission</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
                                 <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
@@ -194,11 +181,7 @@ const DepartmentContent = () => {
 
                         <TabsContent value="vision" className='py-12 animate-in fade-in slide-in-from-bottom-4 duration-500'>
                             <div className='flex flex-col gap-8'>
-                                <div className='flex items-center gap-3'>
-                                    <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
-                                    <p className='text-primary font-bold text-sm tracking-wider uppercase'>{department.deptAbbreviation || 'GESA'} - KNUST</p>
-                                    <Image src={star} alt="star" width={14} height={14} className='w-4 h-4' />
-                                </div>
+                                <SectionEyebrow label={`${department.deptAbbreviation || 'GESA'} - KNUST`} />
                                 <h1 className='text-3xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>Our Vision</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
                                 <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
