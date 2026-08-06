@@ -5,7 +5,7 @@ import AllEvents from '../../components/events/AllEvents';
 import useEventCollection from '../../hooks/useEventCollection';
 
 const EventsPage = () => {
-  const { data: events, isLoading, error } = useEventCollection();
+  const { data: events } = useEventCollection();
 
   return (
     <div className='font-poppins min-h-screen'>

@@ -3,9 +3,10 @@
 import { useParams } from 'next/navigation';
 import { useEventBySlug } from '@/hooks/useEventCollection';
 import EventDetail from '@/components/events/EventDetail';
-import SkeletonLoadingCard from '@/components/events/SkeletonLoadingCard';
 import { useStore } from '@/store/useStore';
 import { useEffect } from 'react';
+import NotFoundCard from '@/components/common/NotFoundCard';
+import { CalendarX } from 'lucide-react';
 
 const EventDetailPage = () => {
     const { slug } = useParams();
@@ -32,15 +33,13 @@ const EventDetailPage = () => {
 
     if (error || !event) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-                <div className="text-center">
-                    <h1 className="text-4xl font-bold text-gray-900 mb-4 font-header">Event Not Found</h1>
-                    <p className="text-gray-600 mb-8">The event you are looking for might have been moved or deleted.</p>
-                    <a href="/events" className="bg-black text-white px-8 py-3 rounded-xl font-bold hover:bg-gray-900 transition-colors">
-                        Back to Events
-                    </a>
-                </div>
-            </div>
+            <NotFoundCard
+                icon={CalendarX}
+                title="Event Not Found"
+                message="The event you are looking for might have been moved or deleted."
+                backHref="/events"
+                backText="Back to Events"
+            />
         );
     }
 

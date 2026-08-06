@@ -76,15 +76,10 @@ export const useFaculty = (id: string) => {
   return useFetchData<FacultyData>({
     queryKey: ["faculty", id],
     queryFn: async () => {
-      try {
-        const data = await contentfulClient.request<Props>(GET_FACULTY, {
-          facultyId: id,
-        });
-        return data.faculty;
-      } catch (err: any) {
-        console.error("Error fetching faculty:", err);
-        throw err;
-      }
+      const data = await contentfulClient.request<Props>(GET_FACULTY, {
+        facultyId: id,
+      });
+      return data.faculty;
     },
     enabled: !!id,
   });

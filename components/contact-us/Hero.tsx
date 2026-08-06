@@ -1,8 +1,7 @@
 'use client';
 import Autoplay from "embla-carousel-autoplay"
 import Image, { StaticImageData } from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import Container from '../custom/Container';
 import {
   Carousel,

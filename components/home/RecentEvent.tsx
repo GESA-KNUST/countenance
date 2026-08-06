@@ -227,7 +227,7 @@ const JoinCommunityCard = () => (
     <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-3xl -mr-16 -mt-16 transition-all duration-500 group-hover:bg-primary/30"></div>
     <div className="relative z-10">
       <h3 className="font-bold text-xl lg:text-2xl mb-2 font-header">Join the Community</h3>
-      <p className="text-gray-400 text-sm mb-6 leading-relaxed">Don't miss out on future events and opportunities from the biggest engineering body on campus.</p>
+      <p className="text-gray-400 text-sm mb-6 leading-relaxed">Don&apos;t miss out on future events and opportunities from the biggest engineering body on campus.</p>
       <Link href="/events" className="inline-flex items-center text-sm font-bold text-primary hover:text-white transition-colors gap-2 group-link">
         View All Events <ArrowRight className="w-4 h-4 group-link-hover:translate-x-1 transition-transform" />
       </Link>

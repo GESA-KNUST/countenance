@@ -1,6 +1,6 @@
 'use client';
 import { gql } from "graphql-request";
-import { useQuery } from "@tanstack/react-query";
+import { useFetchData } from "./useFetchData";
 import { contentfulClient } from "@/lib/contentful-client";
 
 export interface Gallery {
@@ -53,7 +53,7 @@ const GET_GALLERIES = gql`
 `;
 
 export const useGalleries = () => {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error } = useFetchData({
     queryKey: ["galleries"],
     queryFn: async () => {
       const { galleryGroupCollection } = await contentfulClient.request<{
@@ -67,7 +67,7 @@ export const useGalleries = () => {
 };
 
 export const useGalleryCollection = (galleryGroupId: string) => {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error } = useFetchData({
     queryKey: ["gallery", galleryGroupId],
     queryFn: async () => {
       if (!galleryGroupId) return null;

@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
 import { gql } from "graphql-request";
+import { useFetchData } from "./useFetchData";
 import { contentfulClient } from "../lib/contentful-client";
 
 export interface hubItem {
@@ -32,7 +32,7 @@ query Items {
 }`
 
 export const useHubs = () => {
-  return useQuery({
+  return useFetchData({
     queryKey: ["hubs"],
     queryFn: async () => {
       const data = await contentfulClient.request<HubCollection>(GET_HUBS);

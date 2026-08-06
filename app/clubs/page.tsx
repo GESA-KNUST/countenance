@@ -4,6 +4,7 @@ import { contentfulClient } from '@/lib/contentful-client';
 import { gql } from 'graphql-request';
 import ClubsList from '@/components/clubs/ClubsList';
 import { ClubItems } from '@/hooks/useClubs';
+import { LogError } from '@/lib/logger';
 
 interface ClubCollection {
   clubCollection: {
@@ -41,7 +42,7 @@ const ClubsPage = async () => {
     const data = await contentfulClient.request<ClubCollection>(GET_CLUBS);
     clubs = data.clubCollection.items;
   } catch (error) {
-    console.error("Failed to fetch clubs", error);
+    LogError("Failed to fetch clubs", error);
   }
 
   return (

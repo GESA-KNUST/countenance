@@ -1,6 +1,6 @@
 'use client';
-import { useQuery } from "@tanstack/react-query";
 import { gql } from "graphql-request";
+import { useFetchData } from "./useFetchData";
 import { contentfulClient } from "../lib/contentful-client";
 
 interface Author {
@@ -11,7 +11,7 @@ interface Author {
     };
 }
 
-interface Blog {
+export interface Blog {
     title: string;
     slug: string;
     headerImage: {
@@ -24,10 +24,10 @@ interface Blog {
         tags: string[];
     };
     blogContent: {
-        json: any;
+        json: unknown;
     };
     datePublished: string;
-    _id
+    _id: string;
 }
 
 interface Props {
@@ -68,7 +68,7 @@ const GET_BLOGS = gql`
 `;
 
 const useBlogCollection = () => {
-    return useQuery({
+    return useFetchData({
         queryKey: ["blogs"],
         queryFn: async () => {
             const data = await contentfulClient.request<Props>(GET_BLOGS);

@@ -1,7 +1,6 @@
 'use client';
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
-import Link from 'next/link';
 import { ArrowUpRight, MapPin, X } from 'lucide-react';
 
 interface ImageType {

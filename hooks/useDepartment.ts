@@ -98,14 +98,10 @@ export const useDepartment = (id: string) => {
   return useFetchData({
     queryKey: ["department", id],
     queryFn: async () => {
-      try {
-        const data = await contentfulClient.request<Props>(GET_DEPARTMENT, {
-          id,
-        });
-        return data.departmentCollection.items[0];
-      } catch (err: any) {
-        throw err;
-      }
+      const data = await contentfulClient.request<Props>(GET_DEPARTMENT, {
+        id,
+      });
+      return data.departmentCollection.items[0];
     },
     enabled: !!id,
   });

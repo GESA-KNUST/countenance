@@ -137,7 +137,7 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
                             <div className="prose prose-lg prose-slate max-w-none text-slate-600 leading-8 text-[1.05rem]">
                                 <div className="mb-6">
                                     <ReactMarkdown components={{
-                                        a: ({ node, href, children, ...props }) => {
+                                        a: ({ node: _node, href, children, ...props }) => {
                                             const isInternal = href?.startsWith('/');
                                             if (isInternal) {
                                                 return (
@@ -158,7 +158,7 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
                                 </div>
                                 {member.about && (
                                     <ReactMarkdown components={{
-                                        a: ({ node, href, children, ...props }) => {
+                                        a: ({ node: _node, href, children, ...props }) => {
                                             const isInternal = href?.startsWith('/');
                                             if (isInternal) {
                                                 return (
