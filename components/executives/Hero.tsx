@@ -9,6 +9,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "../ui/carousel";
+import { usePageHero } from "@/hooks/usePageHero";
 
 interface HeroProps {
   images?: (string | StaticImageData)[];
@@ -22,19 +23,10 @@ const Hero = ({
   const [count, setCount] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
-  const desktopImages = [
-    '/images/executive/executivehero-1.jpg',
-    '/images/executive/executivehero-2.jpg',
-    '/images/executive/executivehero-3.png'
-  ];
+  const { hero } = usePageHero('executives');
+  const mobileImages = hero.mobileImages.length > 0 ? hero.mobileImages : hero.images;
 
-  const mobileImages = [
-    '/images/executive/executiveimage-1.png',
-    '/images/executive/executiveimage-2.png',
-    '/images/executive/executiveimage-3.jpg'
-  ];
-
-  const images = initialImages || (isMobile ? mobileImages : desktopImages);
+  const images = initialImages || (isMobile ? mobileImages : hero.images);
 
   const plugin = useRef(
     Autoplay({
@@ -101,9 +93,7 @@ const Hero = ({
         </CarouselContent>
       </Carousel>
 
-
       <div className='absolute inset-0 bg-black/40 z-10' />
-
 
       <div className="relative z-20 flex flex-col justify-center items-center text-center md:items-start md:text-left h-full text-white p-6 sm:p-12 md:p-16 lg:p-20">
         <div className="flex flex-col gap-4 sm:gap-6 max-w-4xl">

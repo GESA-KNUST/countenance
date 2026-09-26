@@ -9,14 +9,16 @@ import {
   CarouselContent,
   CarouselItem,
 } from "../ui/carousel";
+import { usePageHero } from "@/hooks/usePageHero";
 
 interface HeroProps {
   images?: (string | StaticImageData)[];
 }
 
-const Hero = ({
-  images = ['/images/img2.png', '/images/img1.png', '/images/img2.png'],
-}: HeroProps) => {
+const Hero = ({ images: imagesProp }: HeroProps) => {
+  const { hero } = usePageHero('contact-us');
+  const images = imagesProp ?? hero.images;
+
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -75,9 +77,7 @@ const Hero = ({
         </CarouselContent>
       </Carousel>
 
-
       <div className='absolute inset-0 bg-black/40 z-10' />
-
 
       <div className='relative z-20 flex flex-col justify-center h-full w-full'>
         <Container size="xl" className="!py-0 text-white">
