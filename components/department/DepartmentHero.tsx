@@ -11,6 +11,7 @@ import {
 
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { usePageHero } from '@/hooks/usePageHero';
 
 interface DepartmentHeroProps {
     title: string;
@@ -26,11 +27,14 @@ const DepartmentHero = ({
     title,
     subtitle,
     text,
-    images = ['/images/dept/dept-4.jpg', '/images/dept/dept-2.jpeg', '/images/dept/dept-1.jpeg'],
+    images: imagesProp,
     titleClassName,
     backLink,
     backText,
 }: DepartmentHeroProps) => {
+    const { hero } = usePageHero('department');
+    const images = imagesProp ?? hero.images;
+
     const [api, setApi] = useState<CarouselApi>();
     const [current, setCurrent] = useState(0);
     const [count, setCount] = useState(0);
@@ -107,7 +111,6 @@ const DepartmentHero = ({
                         {subtitle}
                     </span>
                 </h1>
-
 
                 <p className='text-xs sm:text-lg md:text-xl max-w-3xl mx-auto text-gray-200 mt-2'>
                     {text}

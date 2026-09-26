@@ -7,6 +7,7 @@ import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { CSPostHogProvider } from "@/providers/PostHogProvider";
+import { getPageHero, ogImageMetadata } from "@/lib/data/page-hero";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -32,74 +33,72 @@ export const viewport: Viewport = {
   maximumScale: 5,
 };
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://www.gesaknust.com'),
-  title: {
-    default: "GESA-KNUST | Ghana Engineering Students Association",
-    template: "%s | GESA-KNUST"
-  },
-  description: "Official website of the Ghana Engineering Students Association (GESA) at Kwame Nkrumah University of Science and Technology (KNUST), Kumasi. Empowering future engineers in the College of Engineering.",
-  keywords: [
-    "GESA", "GESA-KNUST", "Ghana Engineering Students Association", "KNUST", "Kumasi",
-    "College of Engineering", "Engineering Students", "Technology", "Innovation", "Student Association",
-    "STEM", "Engineering Society", "Tech Community", "Student Leadership", "Academic Excellence",
-    "Engineering Projects", "Career Development", "Mentorship", "Hackathons", "Industrial Training",
-    "Engineering Workshops", "Future Engineers", "Ghana Tech", "University Students"
-  ],
-  authors: [{ name: "GESA-KNUST" }],
-  creator: "GESA-KNUST",
-  publisher: "GESA-KNUST",
-  openGraph: {
-    type: "website",
-    locale: "en_GH",
-    url: "https://www.gesaknust.com",
-    siteName: "GESA-KNUST",
-    title: "GESA-KNUST | Ghana Engineering Students Association",
-    description: "Building Civilization. The official website of the Ghana Engineering Students Association (GESA) at KNUST. Empowering students with innovation, technology, and leadership.",
-    images: [
-      {
-        url: "https://www.gesaknust.com/images/executive/executivehero-1.jpg?v=4",
-        secureUrl: "https://www.gesaknust.com/images/executive/executivehero-1.jpg?v=4",
-        width: 1200,
-        height: 630,
-        alt: "GESA-KNUST | Ghana Engineering Students Association",
-        type: "image/jpeg",
-      },
+const SITE_OG_ALT = "GESA-KNUST | Ghana Engineering Students Association";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const hero = await getPageHero("home");
+  const ogImages = ogImageMetadata(hero, SITE_OG_ALT);
+
+  return {
+    metadataBase: new URL('https://www.gesaknust.com'),
+    title: {
+      default: "GESA-KNUST | Ghana Engineering Students Association",
+      template: "%s | GESA-KNUST"
+    },
+    description: "Official website of the Ghana Engineering Students Association (GESA) at Kwame Nkrumah University of Science and Technology (KNUST), Kumasi. Empowering future engineers in the College of Engineering.",
+    keywords: [
+      "GESA", "GESA-KNUST", "Ghana Engineering Students Association", "KNUST", "Kumasi",
+      "College of Engineering", "Engineering Students", "Technology", "Innovation", "Student Association",
+      "STEM", "Engineering Society", "Tech Community", "Student Leadership", "Academic Excellence",
+      "Engineering Projects", "Career Development", "Mentorship", "Hackathons", "Industrial Training",
+      "Engineering Workshops", "Future Engineers", "Ghana Tech", "University Students"
     ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "GESA-KNUST",
-    description: "Official website of the Ghana Engineering Students Association (GESA) at KNUST.",
-    creator: "@thegesaknust",
-    images: ["https://www.gesaknust.com/images/executive/executivehero-1.jpg?v=4"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+    authors: [{ name: "GESA-KNUST" }],
+    creator: "GESA-KNUST",
+    publisher: "GESA-KNUST",
+    openGraph: {
+      type: "website",
+      locale: "en_GH",
+      url: "https://www.gesaknust.com",
+      siteName: "GESA-KNUST",
+      title: "GESA-KNUST | Ghana Engineering Students Association",
+      description: "Building Civilization. The official website of the Ghana Engineering Students Association (GESA) at KNUST. Empowering students with innovation, technology, and leadership.",
+      images: ogImages,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "GESA-KNUST",
+      description: "Official website of the Ghana Engineering Students Association (GESA) at KNUST.",
+      creator: "@thegesaknust",
+      images: ogImages.map((image) => image.url),
+    },
+    robots: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-    title: "GESA-KNUST",
-  },
-  icons: {
-    icon: "/images/logo.png",
-    shortcut: "/images/logo.png",
-    apple: "/images/logo.png",
-    other: {
-      rel: 'apple-touch-icon-precomposed',
-      url: '/images/logo.png',
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "default",
+      title: "GESA-KNUST",
     },
-  },
-};
+    icons: {
+      icon: "/images/logo.png",
+      shortcut: "/images/logo.png",
+      apple: "/images/logo.png",
+      other: {
+        rel: 'apple-touch-icon-precomposed',
+        url: '/images/logo.png',
+      },
+    },
+  };
+}
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const jsonLd = {
