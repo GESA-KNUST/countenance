@@ -1,8 +1,11 @@
 'use client';
 
 import HeroSection from '../home/HeroSection';
+import { usePageHero } from '@/hooks/usePageHero';
 
 const TeamHero = () => {
+    const { hero } = usePageHero('team');
+
     return (
         <HeroSection
             title="Behind The GESA "
@@ -13,8 +16,8 @@ const TeamHero = () => {
                     <span className="text-yellow-500 font-bold">Built for engineers by engineers.</span>
                 </span>
             }
-            images={['/images/Team/Team-1.png', '/images/Team/Team-2.png', '/images/Team/Team-3.png', '/images/Team/Team-4.png', '/images/Team/Team-5.png']}
-            mobileImages={['/images/Team/teammobile1.png', '/images/Team/teammobile-2.png', '/images/Team/teammobile-3.png', '/images/Team/teammobile-4.png', '/images/Team/teammobile-5.png']}
+            images={hero.images}
+            mobileImages={hero.mobileImages.length > 0 ? hero.mobileImages : undefined}
             button={false}
             overlayOpacity="bg-black/10"
         />

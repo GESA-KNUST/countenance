@@ -8,15 +8,19 @@ import HistorySection from '../components/home/HistorySection';
 import HomeHubsPreview from '../components/home/HomeHubsPreview';
 import HomeClubsPreview from '../components/home/HomeClubsPreview';
 import Contribute from '@/components/home/Contribute';
+import { getPageHero } from '@/lib/data/page-hero';
 
-const Home = () => {
+const Home = async () => {
+  const hero = await getPageHero('home');
+
   return (
     <div className='font-poppins min-h-screen overflow-x-hidden w-full'>
       <HeroSection
         title="Engineering Beyond Classrooms"
         highlight="Engineering"
         text="Empowering students with cutting-edge knowledge, hands-on experience, and the tools to shape the future of technology and innovation."
-        images={['/images/img1.png', '/images/home/home-1.jpg', '/images/home/home-4.jpg']}
+        images={hero.images}
+        mobileImages={hero.mobileImages.length > 0 ? hero.mobileImages : undefined}
         buttonTarget="personality-of-the-week"
         isScroll={true}
       />
