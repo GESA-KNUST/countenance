@@ -38,7 +38,7 @@ const RecentEvent = () => {
   }
 
   return (
-    <section className="px-page-sx md:px-page-x py-12 lg:py-24 font-header bg-background/50 overflow-hidden relative">
+    <section className="px-4 sm:px-page-sx md:px-page-x py-12 lg:py-24 font-header bg-background/50 overflow-hidden relative">
       <video
         className="absolute top-0 left-0 w-full h-full object-cover z-0"
         src="/videos/coenight.mp4"
@@ -153,7 +153,7 @@ const EventCard = ({ event, type }: { event: any; type: 'upcoming' | 'recent' })
   if (type === 'upcoming') {
     return (
       <Link href={`/events#event-${event.slug}`} className="group block w-full">
-        <div className="flex items-center gap-4 p-4 lg:pr-5 pr-4 bg-white/95 backdrop-blur-sm dark:bg-card hover:bg-white dark:hover:bg-accent/50 rounded-2xl border-2 border-transparent hover:border-primary/30 transition-all duration-300 group-hover:scale-[1.02] shadow-sm">
+        <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-white/95 backdrop-blur-sm dark:bg-card hover:bg-white dark:hover:bg-accent/50 rounded-2xl border-2 border-transparent hover:border-primary/30 transition-all duration-300 group-hover:scale-[1.02] shadow-sm">
           <div className="flex flex-col items-center justify-center w-14 h-14 lg:w-16 lg:h-16 rounded-xl bg-primary/10 text-primary border border-primary/20 shrink-0">
             <span className="text-[10px] lg:text-xs font-bold uppercase tracking-wider">
               {format(new Date(event.eventDate), "MMM")}
@@ -164,7 +164,7 @@ const EventCard = ({ event, type }: { event: any; type: 'upcoming' | 'recent' })
           </div>
 
           <div className="flex-1 min-w-0">
-            <h3 className="font-bold text-gray-900 dark:text-gray-100 line-clamp-2 group-hover:text-primary transition-colors font-header text-lg">
+            <h3 className="font-bold text-gray-900 dark:text-gray-100 line-clamp-2 group-hover:text-primary transition-colors font-header text-base sm:text-lg">
               {event.title}
             </h3>
             <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
@@ -172,7 +172,7 @@ const EventCard = ({ event, type }: { event: any; type: 'upcoming' | 'recent' })
             </p>
           </div>
 
-          <div className="text-muted-foreground group-hover:text-primary transition-transform duration-300 group-hover:translate-x-1">
+          <div className="text-muted-foreground shrink-0 group-hover:text-primary transition-transform duration-300 group-hover:translate-x-1">
             <ArrowRight className="w-5 h-5" />
           </div>
         </div>
@@ -182,37 +182,38 @@ const EventCard = ({ event, type }: { event: any; type: 'upcoming' | 'recent' })
 
   return (
     <Link href={`/events#event-${event.slug}`} className="group block w-full">
-      <div className="bg-white/95 backdrop-blur-sm dark:bg-card border-2 border-transparent hover:border-primary/30 shadow-sm hover:shadow-2xl transition-all duration-300 rounded-3xl overflow-hidden flex flex-row h-auto sm:h-[180px] p-3 sm:p-0 gap-4 group-hover:-translate-y-1">
-        <div className="relative w-20 h-20 sm:w-[220px] sm:h-full shrink-0 overflow-hidden rounded-xl sm:rounded-none">
+      <div className="bg-white/95 backdrop-blur-sm dark:bg-card border-2 border-transparent hover:border-primary/30 shadow-sm hover:shadow-2xl transition-all duration-300 rounded-2xl sm:rounded-3xl overflow-hidden flex flex-row items-stretch gap-3 sm:gap-4 p-3 group-hover:-translate-y-1">
+        <div className="relative shrink-0 w-20 sm:w-28 lg:w-24 xl:w-32 aspect-square rounded-xl overflow-hidden bg-gray-100">
           <Image
             src={event.eventImage.url}
-            alt="Event Image"
+            alt=""
             className="object-cover transition-transform duration-700 group-hover:scale-110"
             fill
+            sizes="(max-width: 640px) 80px, (max-width: 1024px) 112px, 128px"
           />
           <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
         </div>
 
-        <div className="flex flex-col justify-center sm:justify-between py-1 sm:py-5 pr-2 sm:pr-7 flex-1 min-w-0 gap-1 sm:gap-0">
-          <div>
-            <div className="flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-widest mb-2">
-              <Clock className="w-3 h-3" />
-              completed
-            </div>
-            <h3 className="font-header font-bold text-base sm:text-xl text-gray-900 truncate sm:line-clamp-2 group-hover:text-primary transition-colors mb-0.5 sm:mb-2 leading-tight">
-              {event.title}
-            </h3>
-            <p className="text-gray-500 text-[10px] sm:text-sm line-clamp-1 sm:line-clamp-2 leading-relaxed">
-              {event.description}
-            </p>
+        <div className="flex flex-col flex-1 min-w-0 gap-1">
+          <div className="flex items-center gap-1.5 text-primary font-bold text-[10px] uppercase tracking-widest">
+            <Clock className="w-3 h-3 shrink-0" />
+            completed
           </div>
 
-          <div className="flex items-center justify-between mt-auto pt-2">
-            <span className="text-[10px] sm:text-xs font-bold text-gray-400 flex items-center gap-1.5 sm:gap-2 uppercase tracking-wide">
-              <CalendarDays className="w-3 h-3 sm:w-4 h-4" />
+          <h3 className="font-header font-bold text-sm sm:text-lg text-gray-900 line-clamp-2 group-hover:text-primary transition-colors leading-tight">
+            {event.title}
+          </h3>
+
+          <p className="text-gray-500 text-[11px] sm:text-sm line-clamp-2 leading-snug">
+            {event.description}
+          </p>
+
+          <div className="flex items-center justify-between gap-2 mt-auto pt-1.5">
+            <span className="text-[10px] sm:text-xs font-bold text-gray-400 flex items-center gap-1.5 uppercase tracking-wide min-w-0 truncate">
+              <CalendarDays className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
               {format(new Date(event.eventDate), "MMM do, yyyy")}
             </span>
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300 transform group-hover:translate-x-1 shadow-sm">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gray-50 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-300 transform group-hover:translate-x-1 shadow-sm">
               <ArrowRight className="w-4 h-4" />
             </div>
           </div>
@@ -228,8 +229,8 @@ const JoinCommunityCard = () => (
     <div className="relative z-10">
       <h3 className="font-bold text-xl lg:text-2xl mb-2 font-header">Join the Community</h3>
       <p className="text-gray-400 text-sm mb-6 leading-relaxed">Don&apos;t miss out on future events and opportunities from the biggest engineering body on campus.</p>
-      <Link href="/events" className="inline-flex items-center text-sm font-bold text-primary hover:text-white transition-colors gap-2 group-link">
-        View All Events <ArrowRight className="w-4 h-4 group-link-hover:translate-x-1 transition-transform" />
+      <Link href="/events" className="group/link inline-flex items-center text-sm font-bold text-primary hover:text-white transition-colors gap-2">
+        View All Events <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
       </Link>
     </div>
   </div>

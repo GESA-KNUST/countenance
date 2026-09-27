@@ -32,7 +32,7 @@ interface Props {
 
 const GET_EVENTS = gql`
   query EventCardCollection {
-    eventCardCollection {
+    eventCardCollection(order: [order_ASC]) {
       items {
         _id
         title

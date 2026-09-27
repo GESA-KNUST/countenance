@@ -12,6 +12,18 @@ export interface DepartmentData {
   };
   vision: {
     json: any;
+    links?: {
+      assets: {
+        block: {
+          sys: { id: string };
+          url: string;
+          title: string | null;
+          description: string | null;
+          width: number | null;
+          height: number | null;
+        }[];
+      };
+    };
   };
   about: {
     json: any;
@@ -32,6 +44,18 @@ export interface DepartmentData {
   };
   mission: {
     json: any;
+    links?: {
+      assets: {
+        block: {
+          sys: { id: string };
+          url: string;
+          title: string | null;
+          description: string | null;
+          width: number | null;
+          height: number | null;
+        }[];
+      };
+    };
   };
   websiteLink: string;
   deptPhone: string;
@@ -61,6 +85,18 @@ const GET_DEPARTMENT = gql`
         }
         vision {
           json
+          links {
+            assets {
+              block {
+                sys { id }
+                url
+                title
+                description
+                width
+                height
+              }
+            }
+          }
         }
         about {
           json
@@ -81,6 +117,18 @@ const GET_DEPARTMENT = gql`
         }
         mission {
           json
+          links {
+            assets {
+              block {
+                sys { id }
+                url
+                title
+                description
+                width
+                height
+              }
+            }
+          }
         }
         websiteLink
         deptPhone

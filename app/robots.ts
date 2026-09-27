@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
         rules: {
             userAgent: '*',
             allow: '/',
-            disallow: '/private/',
+            disallow: ['/private/', '/admin', '/api/'],
         },
         sitemap: 'https://www.gesaknust.com/sitemap.xml',
     };

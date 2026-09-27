@@ -22,7 +22,7 @@ const GET_GALLERY_COLLECTION = gql`
       sys { id }
       eventName
       picturesLink
-      sampleImagesCollection {
+      sampleImagesCollection(limit: 50) {
         items {
           title
           description
@@ -35,7 +35,7 @@ const GET_GALLERY_COLLECTION = gql`
 
 const GET_GALLERIES = gql`
   query GetGalleries {
-    galleryGroupCollection {
+    galleryGroupCollection(order: [order_ASC]) {
       items {
         sys { id }
         eventName
