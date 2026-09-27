@@ -113,8 +113,8 @@ const HubsPage = () => {
                 </div>
             </Container>
             <Container size='xl' className='relative'>
-                <div className='grid grid-cols-1 lg:grid-cols-4 gap-8'>
-                    {!isLoading && (!filteredOpportunities || filteredOpportunities.length == 0) ? <div className="order-2 lg:order-1 lg:col-span-3">
+                <div className='grid grid-cols-1 items-start gap-8 lg:grid-cols-4 lg:grid-rows-[auto_auto]'>
+                    {!isLoading && (!filteredOpportunities || filteredOpportunities.length == 0) ? <div className="order-2 lg:order-1 lg:col-span-3 lg:row-span-2">
                         <EmptyState
                             title='No opportunities found'
                             message='There are no opportunities to display at this time.'
@@ -122,7 +122,7 @@ const HubsPage = () => {
                             showHomeButton={false}
                         />
                     </div> :
-                        <div className="order-2 lg:order-1 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 content-start relative">
+                        <div className="order-2 lg:order-1 lg:col-span-3 lg:row-span-2 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 content-start relative">
                             {isLoading ? (
                                 <>
                                     <SkeletonLoading />
@@ -142,7 +142,7 @@ const HubsPage = () => {
                             {error && <p className='text-red-500 text-sm'>Error loading opportunities</p>}
                         </div>
                     }
-                    <div className="order-1 lg:order-2 lg:col-span-1 space-y-8">
+                    <div className="order-1 lg:order-2 lg:col-start-4 lg:row-start-1 space-y-8">
                         {
                             loadingAnnouncements ? (
                                 <>
@@ -195,7 +195,7 @@ const HubsPage = () => {
                         }
                     </div>
 
-                    <div className="order-3 lg:order-3 lg:col-span-1 lg:col-start-4">
+                    <div className="order-3 lg:col-start-4 lg:row-start-2">
                         <div className='flex flex-col gap-4 shadow-md rounded-xl py-4 px-4 bg-black'>
                             <h1 className='flex items-center gap-2 font-semibold text-lg xl:text-xl text-primary font-header'>
                                 <Image src={tips} alt="" />
