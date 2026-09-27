@@ -10,8 +10,10 @@ import Link from 'next/link';
 import { Separator } from '../components/ui/separator';
 
 import { useState, FormEvent } from 'react';
+import { siteLink, useSiteBase } from '@/hooks/useSiteBase';
 
 const Footer = () => {
+  const siteBase = useSiteBase();
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
@@ -147,7 +149,7 @@ const Footer = () => {
                   <ul className='text-warm-gray space-y-4'>
                     {link.path.map((link, i) => (
                       <li key={i}>
-                        <Link href={link.to} className='hover:underline transition-all'>{link.page}</Link>
+                        <Link href={siteLink(siteBase, link.to)} className='hover:underline transition-all'>{link.page}</Link>
                       </li>
                     ))}
                   </ul>
@@ -163,9 +165,9 @@ const Footer = () => {
         <div className='flex flex-col sm:flex-row justify-between gap-4 text-warm-gray text-sm text-center'>
           <h2>&copy;{new Date().getFullYear()}  GESA KNUST - All rights reserved</h2>
           {/* <div className='flex gap-2 items-center justify-center sm:justify-start'>
-            <Link href="/">Privacy</Link>
+            <Link href={siteLink(siteBase, "/")}>Privacy</Link>
             <span className='block rounded-full w-1 h-1 bg-white/80'></span>
-            <Link href="/">Terms & Conditions</Link>
+            <Link href={siteLink(siteBase, "/")}>Terms &amp; Conditions</Link>
           </div> */}
         </div>
       </div>
