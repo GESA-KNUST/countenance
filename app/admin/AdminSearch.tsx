@@ -1,7 +1,7 @@
 'use client';
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { Search, X, ChevronRight, EyeOff } from 'lucide-react';
+import { X, ChevronRight, EyeOff } from 'lucide-react';
 import type { SearchableEntry } from '@/lib/admin/entries';
 
 export interface SearchableSection {
@@ -47,23 +47,22 @@ const AdminSearch = ({ entries, sections, children }: AdminSearchProps) => {
 
     return (
         <div>
-            <div className="relative mb-8">
-                <Search className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <div className="mb-8 flex items-center gap-3 rounded-xl border border-gray-300 bg-white px-4 focus-within:border-black">
                 <input
                     type="search"
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
                     placeholder="Search for anything on the website"
                     aria-label="Search everything"
-                    className="w-full appearance-none rounded-xl border border-gray-300 bg-white pl-12 pr-11 py-3.5 text-base outline-none focus:border-black [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
+                    className="min-w-0 flex-1 appearance-none border-0 bg-transparent py-3.5 text-base outline-none [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
                 />
                 {query && (
                     <button
                         onClick={() => setQuery('')}
                         aria-label="Clear search"
-                        className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-md hover:bg-gray-100 cursor-pointer"
+                        className="-mr-1 shrink-0 cursor-pointer rounded-md p-1.5 hover:bg-gray-100"
                     >
-                        <X className="w-4 h-4 text-gray-500" />
+                        <X className="h-4 w-4 text-gray-500" />
                     </button>
                 )}
             </div>
