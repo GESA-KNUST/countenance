@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
 
   try {
     await setEntryOrder(type, ids);
-    refreshSite();
+    refreshSite(type);
     return NextResponse.json({ ok: true });
   } catch (error) {
     LogError("[/api/admin/reorder]", type, error);
