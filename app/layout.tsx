@@ -8,6 +8,7 @@ import { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { CSPostHogProvider } from "@/providers/PostHogProvider";
 import { getPageHero, ogImageMetadata } from "@/lib/data/page-hero";
+import { getSiteContact } from "@/lib/data/site-contact";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -100,7 +101,9 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const contact = await getSiteContact();
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -110,18 +113,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     "logo": "https://www.gesaknust.com/images/logo.png?v=1",
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "+233 20 057 6468",
+      "telephone": contact.phone,
       "contactType": "customer service",
-      "email": "thegesaknust@gmail.com",
+      "email": contact.email,
       "areaServed": "GH",
       "availableLanguage": "en"
     },
-    "sameAs": [
-      "https://x.com/thegesaknust",
-      "https://www.instagram.com/thegesaknust",
-      "https://www.linkedin.com/company/gesa-knust/",
-      "https://whatsapp.com/channel/0029Vb6ndaFDeON4BBZULN0A"
-    ]
+    "sameAs": [contact.x, contact.instagram, contact.linkedin, contact.whatsapp].filter(Boolean)
   };
 
   return (
@@ -139,7 +137,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <ReactQueryProvider>
               {children}
             </ReactQueryProvider>
-            <Footer />
+            <Footer contact={contact} />
           </div>
         </body>
       </CSPostHogProvider>

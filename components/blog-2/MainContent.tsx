@@ -7,12 +7,14 @@ import { documentToReactComponents, Options } from '@contentful/rich-text-react-
 import { BLOCKS, INLINES, Block, Inline } from '@contentful/rich-text-types';
 import { richTextParagraphRenderer } from '@/lib/richTextOptions';
 import type { BlogPost, BlogAsset } from '@/hooks/useBlog';
+import { useSiteContact } from '@/hooks/useSiteContact';
 
 interface MainContentProps {
   selectedPost: BlogPost | null;
 }
 
 const MainContent = ({ selectedPost }: MainContentProps) => {
+  const contact = useSiteContact();
 
   if (!selectedPost) return <SkeletonLoading />;
 
@@ -121,16 +123,16 @@ const MainContent = ({ selectedPost }: MainContentProps) => {
           <Separator orientation="vertical" className="w-full" />
         </div>
         <div className="flex gap-2">
-          <Link href="https://whatsapp.com/channel/0029Vb6ndaFDeON4BBZULN0A">
+          <Link href={contact.whatsapp}>
             <Image src="/images/whatsapp2.svg" alt="WhatsApp" width={40} height={40} />
           </Link>
-          <Link href="https://x.com/thegesaknust?s=11">
+          <Link href={contact.x}>
             <Image src="/images/twitter.svg" alt="Twitter" width={40} height={40} />
           </Link>
           <Link href="https://youtube.com/@knust-college_of_engineering?si=jtCCfu6aXxDdSXid">
             <Image src="/images/yt.svg" alt="YouTube" width={40} height={40} />
           </Link>
-          <Link href="https://www.linkedin.com/company/gesa-knust/">
+          <Link href={contact.linkedin}>
             <Image src="/images/linkedin2.svg" alt="LinkedIn" width={40} height={40} />
           </Link>
         </div>

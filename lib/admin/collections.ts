@@ -117,10 +117,13 @@ export const COLLECTIONS: CollectionSpec[] = [
     label: "Personality of the week",
     singular: "personality",
     hint: "The one person featured on the front page",
-    titleField: "linkedinUrl",
+    titleField: "name",
+    slugUrl: "gesaknust.com/personality/",
     thumbField: "image",
     singleton: true,
     fields: [
+      { id: "name", label: "Their name", kind: "text", required: true },
+      { id: "role", label: "What they do", kind: "text", hint: "For example: Telecommunications Engineering student." },
       { id: "image", label: "Photo", kind: "image", required: true },
       {
         id: "description",
@@ -130,6 +133,7 @@ export const COLLECTIONS: CollectionSpec[] = [
         allowImages: false,
       },
       { id: "linkedinUrl", label: "LinkedIn page", kind: "url" },
+      { id: "slug", label: "Web address", kind: "text", hint: "Leave this empty and it is made from their name automatically." },
     ],
   },
   {
@@ -304,12 +308,13 @@ export const COLLECTIONS: CollectionSpec[] = [
     type: "generalSiteContent",
     label: "Contact details",
     singular: "contact details",
-    hint: "Phone, email and social links used site-wide",
+    hint: "Phone, email and social links shown in the footer and contact page",
     titleField: "gesaEmail",
     singleton: true,
     fields: [
       { id: "phone", label: "Phone", kind: "phone", required: true },
       { id: "gesaEmail", label: "Email", kind: "email", required: true },
+      { id: "gesaWhatsappLink", label: "WhatsApp channel", kind: "url" },
       { id: "gesaFacebookLink", label: "Facebook", kind: "url" },
       { id: "gesaInstagramLink", label: "Instagram", kind: "url" },
       { id: "gesaTwitter", label: "X (Twitter)", kind: "url" },
