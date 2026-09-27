@@ -10,16 +10,16 @@ import { usePostHog } from 'posthog-js/react';
 interface CardProps {
   post: any;
   slug: string;
-  author: {
-    title: string;
-    url: string;
+  author?: {
+    title?: string;
+    url?: string;
     description?: string;
-  };
-  headerImg: {
-    url: string;
+  } | null;
+  headerImg?: {
+    url?: string;
     description?: string;
     title?: string;
-  };
+  } | null;
   onPostSelect?: (post: any) => void;
 }
 
@@ -63,13 +63,15 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
         ) : (
           <>
             {/* Image */}
-            <div className="h-60 relative shrink-0 rounded-t-sm">
-              <Image
-                src={headerImg.url}
-                alt={headerImg.title || "Blog post header image"}
-                className="w-full h-full object-cover rounded-t-sm"
-                fill
-              />
+            <div className="h-60 relative shrink-0 rounded-t-sm bg-gray-100">
+              {headerImg?.url && (
+                <Image
+                  src={headerImg.url}
+                  alt={headerImg.title || "Blog post header image"}
+                  className="w-full h-full object-cover rounded-t-sm"
+                  fill
+                />
+              )}
             </div>
             {/* Content Container */}
             <div className="flex flex-col grow justify-between p-6">
@@ -82,17 +84,19 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
               <div className="mt-4 pt-4 border-t border-gray-100">
                 <div className="flex justify-between items-center">
                   <div className="flex gap-3 items-center">
-                    <div className="h-10 w-10 relative rounded-full overflow-hidden shrink-0 border border-gray-100">
-                      <Image
-                        src={author.url}
-                        alt={"author image"}
-                        className="h-full w-full object-cover"
-                        fill
-                      />
+                    <div className="h-10 w-10 relative rounded-full overflow-hidden shrink-0 border border-gray-100 bg-gray-100">
+                      {author?.url && (
+                        <Image
+                          src={author.url}
+                          alt={"author image"}
+                          className="h-full w-full object-cover"
+                          fill
+                        />
+                      )}
                     </div>
                     <div className="flex flex-col">
                       <h4 className="font-semibold text-sm text-gray-900 leading-none mb-1">
-                        {author.title}
+                        {author?.title}
                       </h4>
                       <p className="text-xs text-gray-500 font-medium">
                         {formattedDate}
