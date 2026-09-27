@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { revalidateTag } from "next/cache";
 import { isSignedIn } from "@/lib/admin/session";
+import { refreshSite } from "@/lib/admin/refresh";
 import { isWriteConfigured } from "@/lib/admin/cma";
 import { findCollection } from "@/lib/admin/collections";
 import { saveEntry, type FieldValue } from "@/lib/admin/entries";
-import { CONTENTFUL_CACHE_TAG } from "@/lib/contentful-client";
 import { LogError } from "@/lib/logger";
 
 export const maxDuration = 60;
@@ -54,7 +53,7 @@ export async function POST(request: NextRequest) {
       body.values as Record<string, FieldValue>,
       lockedFields
     );
-    revalidateTag(CONTENTFUL_CACHE_TAG, "seconds");
+    refreshSite(type);
     return NextResponse.json(result);
   } catch (error) {
     LogError("[/api/admin/entry]", type, id, error);

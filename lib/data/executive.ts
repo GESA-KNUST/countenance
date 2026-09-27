@@ -87,11 +87,20 @@ export function hasBioContent(executive: Executive) {
 
 export function executiveSlug(executive: Executive) {
   if (executive.slug) return executive.slug;
-  const fromName = executive.fullName
+
+  const name = executive.fullName
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
-  return fromName ? `${fromName}-${executive.sys.id.slice(0, 6)}` : executive.sys.id;
+
+  const year = (executive.academicYear ?? "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  if (name && year) return `${name}-${year}`;
+  if (name) return name;
+  return executive.sys.id;
 }
 
 export function sortAcademicYears(years: string[]) {

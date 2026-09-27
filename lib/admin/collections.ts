@@ -43,6 +43,10 @@ export interface CollectionSpec {
   singular: string;
   hint: string;
   titleField: string;
+  /** Fields joined to build the slug when it is left empty. */
+  slugFrom?: string[];
+  /** What the public address looks like, for showing the editor a preview. */
+  slugUrl?: string;
   thumbField?: string;
   singleton?: boolean;
   fields: FieldSpec[];
@@ -52,6 +56,7 @@ export const COLLECTIONS: CollectionSpec[] = [
   {
     type: "blogPost",
     group: "Blog",
+    slugUrl: "gesaknust.com/blog-2?slug=",
     label: "Blog posts",
     singular: "blog post",
     hint: "Articles on the blog",
@@ -79,11 +84,12 @@ export const COLLECTIONS: CollectionSpec[] = [
         refField: "tags",
         hint: "Topics this article covers, like \"study tips\" or \"internships\". Type one and press Enter.",
       },
-      { id: "slug", label: "Web address", kind: "text", hint: "Leave empty to use the title." },
+      { id: "slug", label: "Web address", kind: "text", hint: "Leave this empty and it is made from the title automatically." },
     ],
   },
   {
     type: "eventCard",
+    slugUrl: "gesaknust.com/events#event-",
     label: "Events",
     singular: "event",
     hint: "Upcoming and past events",
@@ -95,9 +101,15 @@ export const COLLECTIONS: CollectionSpec[] = [
       { id: "eventImage", label: "Photo", kind: "image", required: true },
       { id: "eventDate", label: "Date and time", kind: "datetime", required: true },
       { id: "venueInPlainEnglish", label: "Where (in words)", kind: "text", required: true, hint: "For example: Engineering Auditorium, KNUST." },
-      { id: "venue", label: "Map location", kind: "location", required: true },
+      {
+        id: "venue",
+        label: "Where it is on the map",
+        kind: "location",
+        required: true,
+        hint: "Search for the place or tap the map to drop the pin.",
+      },
       { id: "onlineLink", label: "Online link", kind: "url", hint: "Only if people can join online." },
-      { id: "slug", label: "Web address", kind: "text", hint: "Leave empty to use the name." },
+      { id: "slug", label: "Web address", kind: "text", hint: "Leave this empty and it is made from the name automatically." },
     ],
   },
   {
@@ -173,6 +185,8 @@ export const COLLECTIONS: CollectionSpec[] = [
     singular: "executive",
     hint: "Student leaders, by academic year",
     titleField: "fullName",
+    slugFrom: ["fullName", "academicYear"],
+    slugUrl: "gesaknust.com/executives/",
     thumbField: "officialImage",
     fields: [
       { id: "fullName", label: "Full name", kind: "text", required: true },
@@ -190,7 +204,7 @@ export const COLLECTIONS: CollectionSpec[] = [
       { id: "instagramUrl", label: "Instagram", kind: "url" },
       { id: "xUrl", label: "X (Twitter)", kind: "url" },
       { id: "email", label: "Email", kind: "email" },
-      { id: "slug", label: "Web address", kind: "text", hint: "Leave empty to use their name." },
+      { id: "slug", label: "Web address", kind: "text", hint: "Leave this empty and it is made from their name automatically." },
     ],
   },
   {
