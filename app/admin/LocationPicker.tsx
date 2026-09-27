@@ -11,6 +11,10 @@ interface LocationPickerProps {
 
 const KNUST: Point = { lat: 6.6745, lon: -1.5716 };
 
+const TILE_URL = 'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png';
+const TILE_ATTRIBUTION =
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+
 interface Suggestion {
     label: string;
     lat: number;
@@ -42,9 +46,9 @@ const LocationPicker = ({ value, onChange }: LocationPickerProps) => {
             });
 
             leaflet
-                .tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                .tileLayer(TILE_URL, {
                     maxZoom: 19,
-                    attribution: '&copy; OpenStreetMap contributors',
+                    attribution: TILE_ATTRIBUTION,
                 })
                 .addTo(map);
 
@@ -110,26 +114,24 @@ const LocationPicker = ({ value, onChange }: LocationPickerProps) => {
         setResults([]);
 
         try {
-            const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&q=${encodeURIComponent(term)}`;
-            const res = await fetch(url, { headers: { Accept: 'application/json' } });
-            if (!res.ok) throw new Error('search failed');
+            const res = await fetch(`/api/admin/geocode?q=${encodeURIComponent(term)}`);
+            const payload = (await res.json()) as { results?: Suggestion[]; message?: string };
 
-            const found = (await res.json()) as { display_name: string; lat: string; lon: string }[];
+            if (!res.ok) {
+                setNote(payload.message ?? 'Could not search right now. Tap the map to place the pin instead.');
+                return;
+            }
+
+            const found = payload.results ?? [];
             if (found.length === 0) {
                 setNote('No place found with that name. Try a nearby landmark, or tap the map.');
             }
-            setResults(
-                found.map((item) => ({
-                    label: item.display_name,
-                    lat: Number(item.lat),
-                    lon: Number(item.lon),
-                }))
-            );
+            setResults(found);
         } catch {
             setNote('Could not search right now. Tap the map to place the pin instead.');
+        } finally {
+            setSearching(false);
         }
-
-        setSearching(false);
     };
 
     const choose = (suggestion: Suggestion) => {
