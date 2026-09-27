@@ -22,7 +22,7 @@ interface Props {
 
 const GET_FACULTIES = gql`
   query GetFaculties {
-    facultyCollection {
+    facultyCollection(order: [order_ASC]) {
       items {
         sys {
           id

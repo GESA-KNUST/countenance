@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from '../ui/button';
 import Image from 'next/image';
 import Container from '../custom/Container';
@@ -8,6 +8,7 @@ import { extractText } from '@/lib/extractText';
 import LoadingPOTW from './LoadingPOTW';
 import FetchError from '../custom/FetchError';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { proseRichTextOptions } from '@/lib/richTextOptions';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -17,13 +18,54 @@ const Personality = () => {
   const [personality, setPersonality] = useState<POTWItem>()
   const [getDescription, setDescription] = useState<string>('')
   const [showModal, setShowModal] = useState(false);
+  const pushedHistory = useRef(false);
 
+  const openModal = useCallback(() => {
+    setShowModal(true);
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ potwModal: true }, '');
+      pushedHistory.current = true;
+    }
+  }, []);
+
+  const closeModal = useCallback(() => {
+    if (pushedHistory.current) {
+      pushedHistory.current = false;
+      window.history.back();
+      return;
+    }
+    setShowModal(false);
+  }, []);
+
+  useEffect(() => {
+    if (!showModal) return;
+
+    const onPopState = () => {
+      pushedHistory.current = false;
+      setShowModal(false);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeModal();
+    };
+
+    window.addEventListener('popstate', onPopState);
+    window.addEventListener('keydown', onKeyDown);
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      window.removeEventListener('popstate', onPopState);
+      window.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [showModal, closeModal]);
 
   useEffect(() => {
     if (potw && potw.length > 0) {
       const item = potw[0]
       setPersonality(item)
-      setDescription(extractText(item.description.json))
+      setDescription(extractText(item.description?.json))
     }
   }, [potw])
   return (
@@ -42,12 +84,12 @@ const Personality = () => {
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 1.2, type: "spring", bounce: 0.2 }}
                 className='w-full md:w-[480px] lg:w-[520px] sm:h-[450px] h-[350px] overflow-hidden shadow-2xl relative rounded-2xl group cursor-pointer'
-                onClick={() => setShowModal(true)}
+                onClick={openModal}
               >
                 {personality?.image?.url ? (
                   <>
                     <Image
-                      src={personality.image.url}
+                      src={personality.image?.url ?? '/images/logo.png'}
                       alt='potw'
                       fill
                       className='object-cover group-hover:scale-110 transition-transform duration-1000 ease-out'
@@ -109,7 +151,7 @@ const Personality = () => {
                   }}
                 >
                   <Button
-                    onClick={() => setShowModal(true)}
+                    onClick={openModal}
                     variant="default"
                     size="default"
                     className="xl:px-6 py-3 cursor-pointer text-black w-max xl:text-base text-sm hover:translate-x-1 transition-transform"
@@ -133,7 +175,7 @@ const Personality = () => {
           >
             <div
               className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-              onClick={() => setShowModal(false)}
+              onClick={closeModal}
             />
 
             <motion.div
@@ -144,7 +186,7 @@ const Personality = () => {
               className="bg-white relative z-10 w-full max-w-5xl max-h-[90vh] rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row"
             >
               <button
-                onClick={() => setShowModal(false)}
+                onClick={closeModal}
                 className="absolute top-4 right-4 z-20 p-2 bg-black/10 hover:bg-black/20 rounded-full transition-colors"
                 aria-label="Close modal"
               >
@@ -182,7 +224,9 @@ const Personality = () => {
                 </div>
 
                 <div className="text-gray-700 leading-relaxed space-y-4">
-                  {documentToReactComponents(personality.description.json)}
+                  {personality.description?.json
+                    ? documentToReactComponents(personality.description.json, proseRichTextOptions(personality.description.links?.assets?.block ?? []))
+                    : null}
                 </div>
               </div>
             </motion.div>

@@ -45,7 +45,7 @@ interface ClubCollection {
 
 const GET_CLUBS = gql`
 query ClubCollection {
-  clubCollection {
+  clubCollection(order: [order_ASC]) {
     items {
       sys {
         id
