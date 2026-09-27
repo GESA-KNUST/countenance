@@ -12,6 +12,7 @@ import {
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { usePageHero } from '@/hooks/usePageHero';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 interface DepartmentHeroProps {
     title: string;
@@ -33,7 +34,9 @@ const DepartmentHero = ({
     backText,
 }: DepartmentHeroProps) => {
     const { hero } = usePageHero('department');
-    const images = imagesProp ?? hero.images;
+    const isMobile = useIsMobile();
+    const phoneImages = hero.mobileImages.length > 0 ? hero.mobileImages : hero.images;
+    const images = imagesProp ?? (isMobile ? phoneImages : hero.images);
 
     const [api, setApi] = useState<CarouselApi>();
     const [current, setCurrent] = useState(0);

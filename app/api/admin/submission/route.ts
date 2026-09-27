@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
   try {
     if (action === "approve") await approveSubmission(id);
     else await rejectSubmission(id);
-    refreshSite();
+    refreshSite("blogPost");
     return NextResponse.json({ ok: true });
   } catch (error) {
     LogError("[/api/admin/submission]", action, id, error);

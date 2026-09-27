@@ -13,8 +13,8 @@ import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 
-const Personality = () => {
-  const { data: potw, isLoading, error } = usePOTW()
+const Personality = ({ initial }: { initial?: POTWItem[] | null }) => {
+  const { data: potw, isLoading, error } = usePOTW(initial)
   const [personality, setPersonality] = useState<POTWItem>()
   const [getDescription, setDescription] = useState<string>('')
   const [showModal, setShowModal] = useState(false);

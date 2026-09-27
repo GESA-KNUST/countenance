@@ -8,6 +8,7 @@ import {
   saveHeroEntry,
 } from "@/lib/admin/contentful-write";
 import { PAGE_HERO_FALLBACKS, type PageHeroKey } from "@/lib/data/page-hero";
+import { ADMIN_PAGES } from "@/lib/admin/pages";
 import { LogError } from "@/lib/logger";
 
 export const maxDuration = 60;
@@ -69,7 +70,8 @@ export async function POST(request: NextRequest) {
       { status: 502 }
     );
   }
-    refreshSite();
+    const page = ADMIN_PAGES.find((item) => item.key === pageKey);
+    refreshSite(undefined, page ? [page.path] : []);
 
   return NextResponse.json({ ok: true });
 }

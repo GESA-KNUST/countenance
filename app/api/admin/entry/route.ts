@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
       body.values as Record<string, FieldValue>,
       lockedFields
     );
-    refreshSite();
+    refreshSite(type);
     return NextResponse.json(result);
   } catch (error) {
     LogError("[/api/admin/entry]", type, id, error);

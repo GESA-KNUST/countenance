@@ -10,6 +10,7 @@ import {
   CarouselItem,
 } from "../ui/carousel";
 import { usePageHero } from "@/hooks/usePageHero";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface HeroProps {
   images?: (string | StaticImageData)[];
@@ -17,7 +18,9 @@ interface HeroProps {
 
 const Hero = ({ images: imagesProp }: HeroProps) => {
   const { hero } = usePageHero('gallery');
-  const images = imagesProp ?? hero.images;
+  const isMobile = useIsMobile();
+  const phoneImages = hero.mobileImages.length > 0 ? hero.mobileImages : hero.images;
+  const images = imagesProp ?? (isMobile ? phoneImages : hero.images);
 
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
