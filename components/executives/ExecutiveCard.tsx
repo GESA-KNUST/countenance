@@ -9,7 +9,7 @@ const ExecutiveCard = ({ executive }: { executive: Executive }) => {
 
   const card = (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-500 h-full flex flex-col">
-      <div className="relative h-[252px] shrink-0 bg-gray-100">
+      <div className="relative aspect-4/3 shrink-0 overflow-hidden bg-gray-100">
         {officialImage?.url && (() => {
           const portrait = contentfulImage(officialImage.url, {
             widths: [320, 480, 640, 960],
