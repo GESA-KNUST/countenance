@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Plus, ChevronRight, Search, X, ChevronUp, ChevronDown } from 'lucide-react';
+import { Plus, ChevronRight, X, ChevronUp, ChevronDown, ArrowUpDown } from 'lucide-react';
 import type { CollectionSpec } from '@/lib/admin/collections';
 import type { EntrySummary } from '@/lib/admin/entries';
 import VisibilityToggle from './VisibilityToggle';
@@ -67,22 +67,21 @@ const EntryList = ({ collection, entries }: EntryListProps) => {
         <div>
             <div className="flex items-center gap-3 mb-5">
                 {showSearch && (
-                    <div className="relative flex-1">
-                        <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <div className="flex flex-1 items-center gap-2.5 rounded-lg border border-gray-300 bg-white px-3.5 focus-within:border-black">
                         <input
                             type="search"
                             value={query}
                             onChange={(event) => setQuery(event.target.value)}
                             placeholder={`Search ${collection.label.toLowerCase()}`}
-                            className="w-full appearance-none rounded-lg border border-gray-300 bg-white pl-10 pr-10 py-2.5 text-base outline-none focus:border-black [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
+                            className="min-w-0 flex-1 appearance-none border-0 bg-transparent py-2.5 text-base outline-none [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
                         />
                         {query && (
                             <button
                                 onClick={() => setQuery('')}
                                 aria-label="Clear search"
-                                className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 rounded-md hover:bg-gray-100 cursor-pointer"
+                                className="-mr-1 shrink-0 cursor-pointer rounded-md p-1 hover:bg-gray-100"
                             >
-                                <X className="w-4 h-4 text-gray-500" />
+                                <X className="h-4 w-4 text-gray-500" />
                             </button>
                         )}
                     </div>
@@ -104,6 +103,14 @@ const EntryList = ({ collection, entries }: EntryListProps) => {
                 </p>
             )}
 
+            {reorderable && (
+                <p className="mb-3 flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2 text-sm text-gray-600">
+                    <ArrowUpDown className="h-4 w-4 shrink-0 text-gray-400" />
+                    This is the order they appear on the website. Use the arrows to move things up or
+                    down &mdash; it saves straight away.
+                </p>
+            )}
+
             {orderError && <p className="text-sm text-red-600 mb-3">{orderError}</p>}
 
             {entries.length > 0 && filtered.length === 0 && (
@@ -116,8 +123,33 @@ const EntryList = ({ collection, entries }: EntryListProps) => {
                 {filtered.map((entry, index) => (
                     <div
                         key={entry.id}
-                        className="bg-white border border-gray-200 rounded-xl flex items-center gap-3 pr-3 hover:border-black transition-colors"
+                        className="bg-white border border-gray-200 rounded-xl flex items-center gap-2 pr-3 hover:border-black transition-colors"
                     >
+                        {reorderable && (
+                            <div className="flex flex-col items-center gap-0.5 self-stretch justify-center border-r border-gray-100 py-2 pl-2 pr-2.5">
+                                <button
+                                    onClick={() => move(index, -1)}
+                                    disabled={index === 0 || savingOrder}
+                                    aria-label={`Move ${entry.title} up`}
+                                    title="Move up"
+                                    className="rounded-md p-1 text-gray-500 hover:bg-gray-100 hover:text-black disabled:opacity-20 cursor-pointer"
+                                >
+                                    <ChevronUp className="h-4 w-4" />
+                                </button>
+                                <span className="text-[11px] font-semibold text-gray-400 tabular-nums">
+                                    {index + 1}
+                                </span>
+                                <button
+                                    onClick={() => move(index, 1)}
+                                    disabled={index === filtered.length - 1 || savingOrder}
+                                    aria-label={`Move ${entry.title} down`}
+                                    title="Move down"
+                                    className="rounded-md p-1 text-gray-500 hover:bg-gray-100 hover:text-black disabled:opacity-20 cursor-pointer"
+                                >
+                                    <ChevronDown className="h-4 w-4" />
+                                </button>
+                            </div>
+                        )}
                         <Link
                             href={`/admin/c/${collection.type}/${entry.id}`}
                             className="flex items-center gap-4 p-4 flex-1 min-w-0"
@@ -151,27 +183,6 @@ const EntryList = ({ collection, entries }: EntryListProps) => {
 
                             <ChevronRight className="w-5 h-5 text-gray-400 shrink-0" />
                         </Link>
-
-                        {reorderable && (
-                            <div className="flex flex-col shrink-0">
-                                <button
-                                    onClick={() => move(index, -1)}
-                                    disabled={index === 0 || savingOrder}
-                                    aria-label={`Move ${entry.title} up`}
-                                    className="p-1 rounded hover:bg-gray-100 disabled:opacity-25 cursor-pointer"
-                                >
-                                    <ChevronUp className="w-4 h-4" />
-                                </button>
-                                <button
-                                    onClick={() => move(index, 1)}
-                                    disabled={index === filtered.length - 1 || savingOrder}
-                                    aria-label={`Move ${entry.title} down`}
-                                    className="p-1 rounded hover:bg-gray-100 disabled:opacity-25 cursor-pointer"
-                                >
-                                    <ChevronDown className="w-4 h-4" />
-                                </button>
-                            </div>
-                        )}
 
                         <VisibilityToggle id={entry.id} published={entry.published} />
                     </div>

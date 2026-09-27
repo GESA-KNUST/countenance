@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Container from '@/components/custom/Container';
 import ContributeForm from './ContributeForm';
+import { getBlogAuthors } from '@/lib/data/blog-authors';
 
 export const metadata: Metadata = {
     title: 'Write for the GESA blog',
@@ -12,7 +13,9 @@ export const metadata: Metadata = {
     },
 };
 
-const ContributePage = () => {
+const ContributePage = async () => {
+    const authors = await getBlogAuthors();
+
     return (
         <div className="font-poppins min-h-screen bg-white">
             <div className="bg-[#252638] text-white">
@@ -32,7 +35,7 @@ const ContributePage = () => {
             </div>
 
             <Container size="lg">
-                <ContributeForm />
+                <ContributeForm authors={authors} />
             </Container>
         </div>
     );

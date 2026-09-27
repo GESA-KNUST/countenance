@@ -43,6 +43,35 @@ export const contentfulDirect = new GraphQLClient(
   requestConfig
 );
 
+interface PartialErrorShape {
+  response?: { data?: unknown; errors?: { message?: string }[] };
+}
+
+/**
+ * Contentful answers HTTP 200 with usable `data` alongside non-fatal errors
+ * such as UNRESOLVABLE_LINK (a published entry pointing at an unpublished
+ * asset). graphql-request throws on any `errors`, which would take a whole page
+ * down over one missing image, so partial data is served and logged instead.
+ */
+export async function requestTolerant<T>(query: string, variables?: Variables): Promise<T> {
+  try {
+    return await contentfulDirect.request<T>(query, variables);
+  } catch (error) {
+    const partial = error as PartialErrorShape;
+    const data = partial.response?.data;
+
+    if (data && typeof data === "object") {
+      const messages = (partial.response?.errors ?? [])
+        .map((item) => item.message)
+        .filter(Boolean);
+      LogError("[contentful] serving partial data despite errors", messages);
+      return data as T;
+    }
+
+    throw error;
+  }
+}
+
 async function request<T>(query: string, variables?: Variables): Promise<T> {
   // On the server, hit Contentful directly so we benefit from the shared
   // Data Cache. In the browser, proxy through our own route handler so the
@@ -50,7 +79,7 @@ async function request<T>(query: string, variables?: Variables): Promise<T> {
   // calls flat no matter how many people are online, and keeps the access
   // token off the client.
   if (typeof window === "undefined") {
-    return contentfulDirect.request<T>(query, variables);
+    return requestTolerant<T>(query, variables);
   }
 
   const params = new URLSearchParams({ query });

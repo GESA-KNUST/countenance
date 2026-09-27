@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { contentfulDirect, CONTENTFUL_REVALIDATE_SECONDS } from "@/lib/contentful-client";
+import { CONTENTFUL_REVALIDATE_SECONDS, requestTolerant } from "@/lib/contentful-client";
 import { LogError } from "@/lib/logger";
 
 interface ContentfulProxyBody {
@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     }
 
     try {
-        const data = await contentfulDirect.request(query, variables);
+        const data = await requestTolerant(query, variables);
         return NextResponse.json(data, { headers: CACHE_HEADERS });
     } catch (error) {
         LogError("[/api/contentful] request failed", error);
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-        const data = await contentfulDirect.request(body.query, body.variables);
+        const data = await requestTolerant(body.query, body.variables);
         return NextResponse.json(data, { headers: CACHE_HEADERS });
     } catch (error) {
         LogError("[/api/contentful] request failed", error);

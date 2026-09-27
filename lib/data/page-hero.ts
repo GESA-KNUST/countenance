@@ -1,5 +1,5 @@
 import { gql } from "graphql-request";
-import { contentfulClient, contentfulDirect } from "../contentful-client";
+import { contentfulClient, requestTolerant } from "../contentful-client";
 import { LogError } from "../logger";
 
 export type PageHeroKey =
@@ -157,7 +157,7 @@ export function resolvePageHero(data: PageHeroResponse | null, pageKey: PageHero
 
 export async function getPageHero(pageKey: PageHeroKey): Promise<PageHero> {
   try {
-    const data = await contentfulDirect.request<PageHeroResponse>(GET_PAGE_HERO, { pageKey });
+    const data = await requestTolerant<PageHeroResponse>(GET_PAGE_HERO, { pageKey });
     return resolvePageHero(data, pageKey);
   } catch (error) {
     LogError("[getPageHero] falling back to bundled images", pageKey, error);
