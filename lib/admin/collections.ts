@@ -77,7 +77,7 @@ export const COLLECTIONS: CollectionSpec[] = [
         kind: "tagWords",
         refType: "blogTaglist",
         refField: "tags",
-        hint: "Type a tag and press Enter. These are saved with the post.",
+        hint: "Topics this article covers, like \"study tips\" or \"internships\". Type one and press Enter.",
       },
       { id: "slug", label: "Web address", kind: "text", hint: "Leave empty to use the title." },
     ],

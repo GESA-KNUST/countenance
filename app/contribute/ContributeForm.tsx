@@ -5,15 +5,18 @@ import { Check, Plus, X, Send } from 'lucide-react';
 import StarSpinner from '@/components/ui/StarSpinner';
 import MarkdownEditor from '@/app/admin/MarkdownEditor';
 import { MAX_ORIGINAL_BYTES, resizeForHero } from '@/lib/admin/resize';
+import type { BlogAuthorOption } from '@/lib/data/blog-authors';
 
 const labelClass = 'block font-semibold mb-1';
 const inputClass =
     'w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-base outline-none focus:border-black';
 
-const ContributeForm = () => {
+const ContributeForm = ({ authors }: { authors: BlogAuthorOption[] }) => {
     const [title, setTitle] = useState('');
     const [hook, setHook] = useState('');
     const [name, setName] = useState('');
+    const [authorId, setAuthorId] = useState('');
+    const [returning, setReturning] = useState<boolean | null>(authors.length > 0 ? null : false);
     const [email, setEmail] = useState('');
     const [body, setBody] = useState('');
     const [tags, setTags] = useState<string[]>([]);
@@ -81,6 +84,7 @@ const ContributeForm = () => {
                     contributorName: name,
                     contributorEmail: email,
                     coverImage: cover?.id ?? '',
+                    authorId,
                     tags,
                     website,
                 }),
@@ -152,6 +156,75 @@ const ContributeForm = () => {
                 />
             </div>
 
+            {authors.length > 0 && (
+                <div>
+                    <span className={labelClass}>Have you written for GESA before?</span>
+                    <p className="text-sm text-gray-500 mb-3">
+                        Pick yourself from the list and we will use the name and photo already on
+                        your other articles.
+                    </p>
+
+                    <div className="flex flex-wrap gap-2">
+                        {authors.map((author) => {
+                            const active = authorId === author.id;
+                            return (
+                                <button
+                                    key={author.id}
+                                    type="button"
+                                    onClick={() => {
+                                        setReturning(true);
+                                        setAuthorId(author.id);
+                                        setName(author.name);
+                                    }}
+                                    className={`inline-flex items-center gap-2.5 rounded-full border py-1.5 pl-1.5 pr-4 text-sm font-medium transition-colors cursor-pointer ${
+                                        active
+                                            ? 'border-[#252638] bg-[#252638] text-white'
+                                            : 'border-gray-300 bg-white text-gray-700 hover:border-black'
+                                    }`}
+                                >
+                                    <span className="relative block h-8 w-8 shrink-0 overflow-hidden rounded-full bg-gray-200">
+                                        {author.photoUrl && (
+                                            <Image
+                                                src={`${author.photoUrl}?w=64&h=64&fit=fill&f=face&fm=webp&q=80`}
+                                                alt=""
+                                                fill
+                                                className="object-cover"
+                                                sizes="32px"
+                                                unoptimized
+                                            />
+                                        )}
+                                    </span>
+                                    {author.name}
+                                </button>
+                            );
+                        })}
+
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setReturning(false);
+                                setAuthorId('');
+                                setName('');
+                            }}
+                            className={`inline-flex items-center rounded-full border px-4 py-2.5 text-sm font-medium transition-colors cursor-pointer ${
+                                returning === false
+                                    ? 'border-[#252638] bg-[#252638] text-white'
+                                    : 'border-gray-300 bg-white text-gray-700 hover:border-black'
+                            }`}
+                        >
+                            This is my first article
+                        </button>
+                    </div>
+
+                    {authorId && (
+                        <p className="mt-3 text-sm text-green-700">
+                            Writing as <span className="font-semibold">{name}</span>. Your existing
+                            photo will be used.
+                        </p>
+                    )}
+                </div>
+            )}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label htmlFor="c-name" className={labelClass}>
@@ -162,7 +235,8 @@ const ContributeForm = () => {
                         value={name}
                         onChange={(event) => setName(event.target.value)}
                         maxLength={120}
-                        className={inputClass}
+                        readOnly={Boolean(authorId)}
+                        className={`${inputClass} ${authorId ? 'bg-gray-50 text-gray-600' : ''}`}
                     />
                 </div>
                 <div>
@@ -239,8 +313,18 @@ const ContributeForm = () => {
             </div>
 
             <div>
-                <span className={labelClass}>Tags</span>
-                <p className="text-sm text-gray-500 mb-2">Up to 8. Press Enter after each one.</p>
+                <span className={labelClass}>Topics</span>
+                <p className="text-sm text-gray-500 mb-1">
+                    A few words describing what your article is about &mdash; like{' '}
+                    <span className="font-medium text-gray-700">study tips</span>,{' '}
+                    <span className="font-medium text-gray-700">internships</span> or{' '}
+                    <span className="font-medium text-gray-700">first year</span>. They help readers
+                    find articles on the same subject.
+                </p>
+                <p className="text-sm text-gray-500 mb-2">
+                    Type one and press Enter, then add another. Two or three is plenty, and you can
+                    leave this empty if you are not sure.
+                </p>
                 <div className="rounded-lg border border-gray-300 bg-white p-3 flex flex-col gap-3">
                     {tags.length > 0 && (
                         <div className="flex flex-wrap gap-2">
@@ -268,7 +352,7 @@ const ContributeForm = () => {
                                 addTag();
                             }
                         }}
-                        placeholder="Type a tag, press Enter"
+                        placeholder="e.g. study tips"
                         className="rounded-lg border border-gray-300 px-3 py-2 text-base outline-none focus:border-black"
                     />
                 </div>
