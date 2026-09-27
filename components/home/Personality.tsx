@@ -9,14 +9,15 @@ import LoadingPOTW from './LoadingPOTW';
 import FetchError from '../custom/FetchError';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { proseRichTextOptions } from '@/lib/richTextOptions';
+import { contentfulImage } from '@/lib/contentful-image';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 
 const Personality = ({ initial }: { initial?: POTWItem[] | null }) => {
   const { data: potw, isLoading, error } = usePOTW(initial)
-  const [personality, setPersonality] = useState<POTWItem>()
-  const [getDescription, setDescription] = useState<string>('')
+  const personality = potw && potw.length > 0 ? potw[0] : undefined;
+  const getDescription = personality ? extractText(personality.description?.json) : '';
   const [showModal, setShowModal] = useState(false);
   const pushedHistory = useRef(false);
 
@@ -61,13 +62,7 @@ const Personality = ({ initial }: { initial?: POTWItem[] | null }) => {
     };
   }, [showModal, closeModal]);
 
-  useEffect(() => {
-    if (potw && potw.length > 0) {
-      const item = potw[0]
-      setPersonality(item)
-      setDescription(extractText(item.description?.json))
-    }
-  }, [potw])
+
   return (
     <div id="personality-of-the-week" className='md:px-page-x lg:py-page-y font-poppins scroll-mt-20'>
       {error ? (
@@ -88,12 +83,22 @@ const Personality = ({ initial }: { initial?: POTWItem[] | null }) => {
               >
                 {personality?.image?.url ? (
                   <>
-                    <Image
-                      src={personality.image?.url ?? '/images/logo.png'}
-                      alt='potw'
-                      fill
-                      className='object-cover group-hover:scale-110 transition-transform duration-1000 ease-out'
-                    />
+                    {(() => {
+                      const portrait = contentfulImage(personality.image.url, {
+                        widths: [480, 640, 960, 1040],
+                        aspect: 520 / 450,
+                        focus: 'face',
+                      });
+                      return (
+                        <img
+                          src={portrait.src}
+                          srcSet={portrait.srcSet || undefined}
+                          sizes="(max-width: 768px) 100vw, 520px"
+                          alt={personality.image.title || 'Personality of the week'}
+                          className='absolute inset-0 h-full w-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out'
+                        />
+                      );
+                    })()}
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
                   </>
                 ) : (
@@ -198,7 +203,8 @@ const Personality = ({ initial }: { initial?: POTWItem[] | null }) => {
                   src={personality.image.url}
                   alt={personality.image.title || 'POTW'}
                   fill
-                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 640px"
+                  className="object-cover object-top"
                 />
               </div>
 
