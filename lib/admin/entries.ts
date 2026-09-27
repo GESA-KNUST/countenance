@@ -215,6 +215,39 @@ export async function readEntry(type: string, id: string): Promise<EntryDetail |
   };
 }
 
+function linkedAssetIds(fields: unknown, found = new Set<string>()): Set<string> {
+  if (Array.isArray(fields)) {
+    for (const item of fields) linkedAssetIds(item, found);
+    return found;
+  }
+  if (fields && typeof fields === "object") {
+    const sys = (fields as { sys?: { linkType?: string; id?: string } }).sys;
+    if (sys?.linkType === "Asset" && sys.id) found.add(sys.id);
+    for (const value of Object.values(fields as Record<string, unknown>)) {
+      linkedAssetIds(value, found);
+    }
+  }
+  return found;
+}
+
+/**
+ * A published entry pointing at an unpublished asset makes Contentful refuse to
+ * resolve the link, so every asset an entry references is published with it.
+ */
+async function publishLinkedAssets(fields: unknown) {
+  for (const id of linkedAssetIds(fields)) {
+    try {
+      const asset = await cma(`/assets/${id}`);
+      if (!asset || asset.sys.publishedVersion) continue;
+      if (!asset.fields?.file?.[LOCALE]?.url) continue;
+      await cma(`/assets/${id}/published`, { method: "PUT", version: asset.sys.version });
+    } catch {
+      // A single asset that refuses to publish must not fail the whole save;
+      // the site tolerates an unresolved link and the editor sees the entry saved.
+    }
+  }
+}
+
 async function nextOrder(type: string) {
   const items = await cmaAll(`/entries?content_type=${type}&order=-fields.order`);
   const highest = items
@@ -467,6 +500,8 @@ export async function saveEntry(
   } else if (existing?.fields?.order?.[LOCALE] !== undefined) {
     fields.order = { [LOCALE]: existing.fields.order[LOCALE] };
   }
+
+  await publishLinkedAssets(fields);
 
   const path = id ? `/entries/${id}` : "/entries";
   const saved = await cma(path, {

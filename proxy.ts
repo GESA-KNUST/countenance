@@ -19,7 +19,9 @@ function isLocal(hostname: string) {
 function isAdminHost(hostname: string) {
   if (isLocal(hostname)) return true;
   if (ADMIN_HOSTS.includes(hostname)) return true;
-  return hostname.endsWith(".vercel.app");
+  // Preview deployments keep the dashboard reachable for testing, but the
+  // production build never exposes it on a *.vercel.app alias.
+  return process.env.VERCEL_ENV !== "production" && hostname.endsWith(".vercel.app");
 }
 
 function isAdminPath(pathname: string) {
