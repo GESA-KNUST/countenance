@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { MapPin, Search, Crosshair, X } from 'lucide-react';
+import { PIN_HTML, TILE_ATTRIBUTION, TILE_MAX_ZOOM, TILE_URL } from '@/lib/map';
 
 type Point = { lat: number; lon: number };
 
@@ -11,9 +12,6 @@ interface LocationPickerProps {
 
 const KNUST: Point = { lat: 6.6745, lon: -1.5716 };
 
-const TILE_URL = 'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png';
-const TILE_ATTRIBUTION =
-    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
 
 interface Suggestion {
     label: string;
@@ -46,34 +44,30 @@ const LocationPicker = ({ value, onChange }: LocationPickerProps) => {
             });
 
             leaflet
-                .tileLayer(TILE_URL, {
-                    maxZoom: 19,
-                    attribution: TILE_ATTRIBUTION,
-                })
+                .tileLayer(TILE_URL, { maxZoom: TILE_MAX_ZOOM, attribution: TILE_ATTRIBUTION })
                 .addTo(map);
 
             const pin = leaflet.divIcon({
                 className: '',
-                html: '<span style="display:block;width:22px;height:22px;border-radius:9999px;background:#FFBE00;border:3px solid #252638;box-shadow:0 2px 6px rgba(0,0,0,.35)"></span>',
+                html: PIN_HTML,
                 iconSize: [22, 22],
                 iconAnchor: [11, 11],
             });
 
             const place = (point: Point) => {
-                if (markerRef.current) {
-                    (markerRef.current as { setLatLng: (p: [number, number]) => void }).setLatLng([
-                        point.lat,
-                        point.lon,
-                    ]);
-                } else {
-                    markerRef.current = leaflet
-                        .marker([point.lat, point.lon], { icon: pin, draggable: true })
-                        .addTo(map)
-                        .on('dragend', (event: { target: { getLatLng: () => { lat: number; lng: number } } }) => {
-                            const next = event.target.getLatLng();
-                            onChange({ lat: Number(next.lat.toFixed(6)), lon: Number(next.lng.toFixed(6)) });
-                        });
+                const existing = markerRef.current as { setLatLng: (p: [number, number]) => void } | null;
+                if (existing) {
+                    existing.setLatLng([point.lat, point.lon]);
+                    return;
                 }
+
+                markerRef.current = leaflet
+                    .marker([point.lat, point.lon], { icon: pin, draggable: true })
+                    .addTo(map)
+                    .on('dragend', (event: { target: { getLatLng: () => { lat: number; lng: number } } }) => {
+                        const next = event.target.getLatLng();
+                        onChange({ lat: Number(next.lat.toFixed(6)), lon: Number(next.lng.toFixed(6)) });
+                    });
             };
 
             if (value) place(value);
