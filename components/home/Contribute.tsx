@@ -86,7 +86,7 @@ const Contribute = () => {
                         </div>
 
                         <div className="relative z-10 pt-10">
-                            <Link href="https://forms.gle/kxMYY1xN5JWMiZdYA" className="cursor-pointer">
+                            <Link href="/contribute" className="cursor-pointer">
                                 <Button className="w-full bg-black text-white hover:bg-gray-900 border-0 h-14 rounded-2xl font-bold text-lg transition-all duration-300 group-hover:shadow-xl shadow-md">
                                     Contribute Now <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
                                 </Button>

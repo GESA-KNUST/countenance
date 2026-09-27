@@ -2,41 +2,19 @@
 import { useFetchData } from './useFetchData';
 import { contentfulClient } from '@/lib/contentful-client';
 import { gql } from 'graphql-request';
-
-interface ItemsProps {
-  _id: string;
-  academicYear: string;
-  executivePositionHeld: string;
-  fullName: string;
-  primarySocialLink: string;
-  officialImage: {
-    title: string;
-    description: string;
-    url: string;
-  };
-}
-
+import { EXECUTIVE_LIST_FIELDS, type Executive } from '@/lib/data/executive';
 
 interface Props {
   executiveCollection: {
-    items: ItemsProps[];
+    items: Executive[];
   };
 }
 
 const GET_EXECUTIVES = gql`
   query ExecutiveCollection {
-    executiveCollection {
+    executiveCollection(limit: 200, order: [order_ASC]) {
       items {
-        _id
-        academicYear
-        executivePositionHeld
-        fullName
-        primarySocialLink
-        officialImage {
-          title
-          description
-          url
-        }
+        ${EXECUTIVE_LIST_FIELDS}
       }
     }
   }

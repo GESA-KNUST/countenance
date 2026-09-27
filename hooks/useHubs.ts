@@ -19,7 +19,7 @@ interface HubCollection {
 
 const GET_HUBS = gql`
 query Items {
-  hubCollection {
+  hubCollection(order: [order_ASC]) {
     items {
       title
       _id

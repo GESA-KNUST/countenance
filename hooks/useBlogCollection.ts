@@ -38,7 +38,7 @@ interface Props {
 
 const GET_BLOGS = gql`
     query {
-        blogPostCollection {
+        blogPostCollection(order: [order_ASC]) {
             items {
                 headerImage {
                     title
