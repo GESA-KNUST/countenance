@@ -7,6 +7,7 @@ import {
   hasProfile,
 } from '@/lib/data/executive';
 import ExecutiveProfile from '@/components/executives/ExecutiveProfile';
+import { ogImage } from '@/lib/data/og-image';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description =
     executive.quote?.trim() ||
     `${executive.fullName} served as ${executive.executivePositionHeld} of GESA-KNUST in ${executive.academicYear}.`;
-  const image = executive.officialImage?.url;
+  const share = ogImage(executive.officialImage?.url, executive.fullName, 'face');
 
   return {
     title,
@@ -31,15 +32,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       type: 'profile',
-      images: image
-        ? [{ url: `${image}?w=1200&h=630&fit=fill&f=face&fm=jpg&q=80`, width: 1200, height: 630, alt: executive.fullName }]
-        : [],
+      images: share,
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: image ? [`${image}?w=1200&h=630&fit=fill&f=face&fm=jpg&q=80`] : [],
+      images: share.map((image) => image.url),
     },
   };
 }
