@@ -50,13 +50,17 @@ const DepartmentHero = ({
     useEffect(() => {
         if (!api) return;
 
-        setCount(api.scrollSnapList().length);
+      api.reInit();
+      setCount(api.scrollSnapList().length);
         setCurrent(api.selectedScrollSnap());
 
-        api.on("select", () => {
-            setCurrent(api.selectedScrollSnap());
-        });
-    }, [api]);
+        const onSelect = () => setCurrent(api.selectedScrollSnap());
+        api.on("select", onSelect);
+
+        return () => {
+          api.off("select", onSelect);
+        };
+    }, [api, images.length]);
 
     const handleDotClick = (index: number) => {
         if (!api) return;

@@ -13,6 +13,7 @@ import activityIcon from '@/public/images/activity.svg'
 import EmptyState from '@/components/events/EmptyState';
 import { Users } from 'lucide-react';
 
+import { CLUB_TYPES, matchesClubType } from '@/lib/data/taxonomy'
 interface ClubsListProps {
     clubs: ClubItems[];
 }
@@ -23,11 +24,7 @@ const ClubsList = ({ clubs }: ClubsListProps) => {
 
     const navItems = [
         { name: 'All Clubs', value: 'all' },
-        { name: 'Tech Clubs', value: 'Tech Clubs' },
-        { name: 'Creative & Arts', value: 'Creative & Arts' },
-        { name: 'Leadership & Service', value: 'Leadership & Service' },
-        { name: 'Sport & Fitness', value: 'Sport & Fitness' },
-        { name: 'Academic Societies', value: 'Academic Societies' },
+        ...CLUB_TYPES.map((type) => ({ name: type.label, value: type.value })),
     ]
 
     const [filteredClubs, setFilteredClubs] = useState<ClubItems[]>(clubs || []);
@@ -37,7 +34,7 @@ const ClubsList = ({ clubs }: ClubsListProps) => {
 
         // Filter by category
         if (currentId !== 0) {
-            result = result.filter((club) => club.clubType === navItems[currentId].value);
+            result = result.filter((club) => matchesClubType(club.clubType, navItems[currentId].value));
         }
 
         // Filter by search
@@ -58,7 +55,7 @@ const ClubsList = ({ clubs }: ClubsListProps) => {
                 return creativeIcon;
             case 'Leadership & Service':
                 return leadershipIcon;
-            case 'Sport & Fitness':
+            case 'Sports & Fitness':
                 return activityIcon;
             case 'Academic Societies':
                 return academicIcon;
