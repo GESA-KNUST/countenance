@@ -21,7 +21,7 @@ interface Props {
 
 const GET_DEPARTMENTS = gql`
   query GetDepartments {
-    departmentCollection {
+    departmentCollection(order: [order_ASC]) {
       items {
         sys {
           id

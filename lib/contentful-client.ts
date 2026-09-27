@@ -14,7 +14,9 @@ if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_ACCESS_TOKEN) {
 // How long (seconds) a cached Contentful response is served before revalidation.
 // Because this cache lives on the server, one refresh serves every visitor, so
 // the number of origin calls stays roughly constant regardless of traffic.
-export const CONTENTFUL_REVALIDATE_SECONDS = 600;
+export const CONTENTFUL_REVALIDATE_SECONDS = 3600;
+
+export const CONTENTFUL_CACHE_TAG = "contentful";
 
 // `next` is a Next.js fetch extension not covered by graphql-request's types.
 type GraphQLClientConfig = ConstructorParameters<typeof GraphQLClient>[1];
@@ -28,7 +30,7 @@ const requestConfig: NextRequestConfig = {
   headers: CONTENTFUL_ACCESS_TOKEN
     ? { Authorization: `Bearer ${CONTENTFUL_ACCESS_TOKEN}` }
     : {},
-  next: { revalidate: CONTENTFUL_REVALIDATE_SECONDS },
+  next: { revalidate: CONTENTFUL_REVALIDATE_SECONDS, tags: [CONTENTFUL_CACHE_TAG] },
 };
 
 /**
@@ -51,11 +53,20 @@ async function request<T>(query: string, variables?: Variables): Promise<T> {
     return contentfulDirect.request<T>(query, variables);
   }
 
-  const res = await fetch("/api/contentful", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query, variables }),
-  });
+  const params = new URLSearchParams({ query });
+  if (variables && Object.keys(variables).length > 0) {
+    params.set("variables", JSON.stringify(variables));
+  }
+
+  const url = `/api/contentful?${params.toString()}`;
+  const res =
+    url.length < 6000
+      ? await fetch(url)
+      : await fetch("/api/contentful", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query, variables }),
+        });
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));

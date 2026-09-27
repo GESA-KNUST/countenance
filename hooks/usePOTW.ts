@@ -13,6 +13,18 @@ export interface POTWItem {
   };
   description: {
     json: any;
+    links?: {
+      assets: {
+        block: {
+          sys: { id: string };
+          url: string;
+          title: string | null;
+          description: string | null;
+          width: number | null;
+          height: number | null;
+        }[];
+      };
+    };
   };
   linkedinUrl?: string;
 }
@@ -25,7 +37,7 @@ interface POTWCollection {
 
 const GET_POTW = gql`
  query PersonalityOfTheWeekCollection {
-  personalityOfTheWeekCollection {
+  personalityOfTheWeekCollection(order: [order_ASC], limit: 1) {
     items {
       sys {
         id
@@ -37,6 +49,18 @@ const GET_POTW = gql`
       }
       description {
         json
+        links {
+          assets {
+            block {
+              sys { id }
+              url
+              title
+              description
+              width
+              height
+            }
+          }
+        }
       }
       linkedinUrl
     }

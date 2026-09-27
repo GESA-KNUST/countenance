@@ -2,28 +2,16 @@ import ExecutiveCard from './ExecutiveCard';
 import SkeletonLoadingCard from './SkeletonLoadingCard';
 import EmptyState from '../events/EmptyState';
 import { Users } from 'lucide-react';
-
-interface ItemsProps {
-  _id: string;
-  academicYear: string;
-  executivePositionHeld: string;
-  fullName: string;
-  primarySocialLink: string;
-  officialImage: {
-    title: string;
-    description: string;
-    url: string;
-  };
-}
+import type { Executive } from '@/lib/data/executive';
 
 interface ExecutivesProps {
-  executives: ItemsProps[];
+  executives: Executive[];
   isLoading: boolean;
 }
 
 const Executives = ({ executives, isLoading }: ExecutivesProps) => {
   return (
-    <div className="bg-white p-8 sm:p-12 md:p-16 lg:p-20">
+    <div className="bg-white px-8 pb-8 sm:px-12 sm:pb-12 md:px-16 md:pb-16 lg:px-20 lg:pb-20">
       {!isLoading && executives.length === 0 ? (
         <EmptyState
           title="No Executives Found"
@@ -34,17 +22,9 @@ const Executives = ({ executives, isLoading }: ExecutivesProps) => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {isLoading
-            ? Array.from({ length: 9 }).map((_, index) => (
-              <SkeletonLoadingCard key={index} />
-            ))
+            ? Array.from({ length: 9 }).map((_, index) => <SkeletonLoadingCard key={index} />)
             : executives.map((executive) => (
-              <ExecutiveCard
-                key={executive._id}
-                image={executive.officialImage.url}
-                name={executive.fullName}
-                position={executive.executivePositionHeld}
-                primarySocialLink={executive.primarySocialLink}
-              />
+              <ExecutiveCard key={executive.sys.id} executive={executive} />
             ))}
         </div>
       )}
