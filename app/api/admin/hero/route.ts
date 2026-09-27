@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { revalidateTag } from "next/cache";
 import { isSignedIn } from "@/lib/admin/session";
+import { refreshSite } from "@/lib/admin/refresh";
 import {
   MAX_IMAGES_PER_STRIP,
   assertPublishedAsset,
   isWriteConfigured,
   saveHeroEntry,
 } from "@/lib/admin/contentful-write";
-import { CONTENTFUL_CACHE_TAG } from "@/lib/contentful-client";
 import { PAGE_HERO_FALLBACKS, type PageHeroKey } from "@/lib/data/page-hero";
+import { ADMIN_PAGES } from "@/lib/admin/pages";
 import { LogError } from "@/lib/logger";
 
 export const maxDuration = 60;
@@ -70,8 +70,8 @@ export async function POST(request: NextRequest) {
       { status: 502 }
     );
   }
-
-  revalidateTag(CONTENTFUL_CACHE_TAG, "seconds");
+    const page = ADMIN_PAGES.find((item) => item.key === pageKey);
+    refreshSite(undefined, page ? [page.path] : []);
 
   return NextResponse.json({ ok: true });
 }

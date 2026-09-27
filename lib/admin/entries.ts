@@ -1,5 +1,6 @@
 import { type CmaEntryItem, CmaError, LOCALE, assetLink, cma, cmaAll, entryLink, linkIds } from "./cma";
 import { assetUrls } from "./assets";
+import { buildSlug } from "./slug";
 import { type CollectionSpec, type FieldSpec, findCollection } from "./collections";
 import {
   assetIdsInDocument,
@@ -213,6 +214,23 @@ export async function readEntry(type: string, id: string): Promise<EntryDetail |
     lockedFields,
     published: Boolean(entry.sys.publishedVersion),
   };
+}
+
+async function uniqueSlug(type: string, base: string, selfId: string | null) {
+  const existing = await cmaAll(`/entries?content_type=${type}`);
+  const taken = new Set(
+    existing
+      .filter((item) => item.sys.id !== selfId)
+      .map((item) => item.fields?.slug?.[LOCALE])
+      .filter((value): value is string => typeof value === "string")
+  );
+
+  if (!taken.has(base)) return base;
+  for (let suffix = 2; suffix < 60; suffix += 1) {
+    const candidate = `${base}-${suffix}`;
+    if (!taken.has(candidate)) return candidate;
+  }
+  return `${base}-${Date.now().toString(36)}`;
 }
 
 function linkedAssetIds(fields: unknown, found = new Set<string>()): Set<string> {
@@ -499,6 +517,16 @@ export async function saveEntry(
     fields.order = { [LOCALE]: await nextOrder(type) };
   } else if (existing?.fields?.order?.[LOCALE] !== undefined) {
     fields.order = { [LOCALE]: existing.fields.order[LOCALE] };
+  }
+
+  const slugField = collection.fields.find((field) => field.id === "slug");
+  if (slugField && !fields.slug) {
+    const sources = collection.slugFrom ?? (collection.titleField ? [collection.titleField] : []);
+    const base = buildSlug(sources.map((fieldId) => resolved[fieldId] as string | undefined));
+
+    if (base) {
+      fields.slug = { [LOCALE]: await uniqueSlug(type, base, id) };
+    }
   }
 
   await publishLinkedAssets(fields);

@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { revalidateTag } from "next/cache";
 import { isSignedIn } from "@/lib/admin/session";
+import { refreshSite } from "@/lib/admin/refresh";
 import { isWriteConfigured } from "@/lib/admin/cma";
 import { approveSubmission, rejectSubmission } from "@/lib/admin/submissions";
-import { CONTENTFUL_CACHE_TAG } from "@/lib/contentful-client";
 import { LogError } from "@/lib/logger";
 
 export const maxDuration = 60;
@@ -32,8 +31,7 @@ export async function POST(request: NextRequest) {
   try {
     if (action === "approve") await approveSubmission(id);
     else await rejectSubmission(id);
-
-    revalidateTag(CONTENTFUL_CACHE_TAG, "seconds");
+    refreshSite("blogPost");
     return NextResponse.json({ ok: true });
   } catch (error) {
     LogError("[/api/admin/submission]", action, id, error);

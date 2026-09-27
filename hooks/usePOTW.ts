@@ -35,7 +35,7 @@ interface POTWCollection {
   }
 }
 
-const GET_POTW = gql`
+export const GET_POTW = gql`
  query PersonalityOfTheWeekCollection {
   personalityOfTheWeekCollection(order: [order_ASC], limit: 1) {
     items {
@@ -67,9 +67,10 @@ const GET_POTW = gql`
   }
 }`
 
-export const usePOTW = () => {
+export const usePOTW = (initialData?: POTWItem[] | null) => {
   return useFetchData({
     queryKey: ["potw"],
+    initialData: initialData ?? undefined,
     queryFn: async () => {
       const data = await contentfulClient.request<POTWCollection>(GET_POTW);
       if (data.personalityOfTheWeekCollection.items.length === 0) {
