@@ -1,5 +1,5 @@
 import { gql } from "graphql-request";
-import { contentfulDirect } from "../contentful-client";
+import { requestTolerant } from "../contentful-client";
 import { LogError } from "../logger";
 import type { EmbeddedAsset } from "../richTextOptions";
 
@@ -119,7 +119,7 @@ const GET_ONE = gql`
 
 export async function getExecutives(): Promise<Executive[]> {
   try {
-    const data = await contentfulDirect.request<{
+    const data = await requestTolerant<{
       executiveCollection: { items: Executive[] };
     }>(GET_ALL);
     return data.executiveCollection.items ?? [];
@@ -135,7 +135,7 @@ export async function getExecutiveBySlug(slug: string): Promise<Executive | null
   if (!match) return null;
 
   try {
-    const data = await contentfulDirect.request<{ executive: Executive | null }>(GET_ONE, {
+    const data = await requestTolerant<{ executive: Executive | null }>(GET_ONE, {
       id: match.sys.id,
     });
     return data.executive ?? match;

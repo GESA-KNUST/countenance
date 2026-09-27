@@ -33,6 +33,7 @@ export interface SubmissionInput {
   contributorEmail: string;
   coverImage: string;
   tags: string[];
+  authorId: string;
 }
 
 export interface SubmissionSummary {
@@ -58,10 +59,12 @@ export function readSubmission(body: Record<string, unknown>): SubmissionInput |
   const contributorName = clean(body.contributorName, SUBMISSION_LIMITS.name);
   const contributorEmail = clean(body.contributorEmail, SUBMISSION_LIMITS.email);
   const coverImage = clean(body.coverImage, 64);
+  const authorId = clean(body.authorId, 64);
 
   if (!title || !hook || !article || !contributorName || !coverImage) return null;
   if (contributorEmail && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contributorEmail)) return null;
   if (coverImage && !/^sub-[A-Za-z0-9._-]{1,58}$/.test(coverImage)) return null;
+  if (authorId && !/^[A-Za-z0-9._-]{1,64}$/.test(authorId)) return null;
 
   const tags = Array.isArray(body.tags)
     ? [...new Set(
@@ -71,7 +74,7 @@ export function readSubmission(body: Record<string, unknown>): SubmissionInput |
       )].slice(0, SUBMISSION_LIMITS.tags)
     : [];
 
-  return { title, hook, body: article, contributorName, contributorEmail, coverImage, tags };
+  return { title, hook, body: article, contributorName, contributorEmail, coverImage, tags, authorId };
 }
 
 async function submissionAssetExists(id: string) {
@@ -79,9 +82,21 @@ async function submissionAssetExists(id: string) {
   return Boolean(asset?.fields?.file?.[LOCALE]?.url);
 }
 
+async function publishedAuthorExists(id: string) {
+  const entry = await cma(`/entries/${id}`);
+  return Boolean(
+    entry &&
+      entry.sys.contentType?.sys?.id === "blogAuthor" &&
+      entry.sys.publishedVersion
+  );
+}
+
 export async function createSubmission(input: SubmissionInput) {
   if (input.coverImage && !(await submissionAssetExists(input.coverImage))) {
     throw new Error("cover image does not exist");
+  }
+  if (input.authorId && !(await publishedAuthorExists(input.authorId))) {
+    throw new Error("author does not exist");
   }
 
   const fields: Record<string, Record<string, unknown>> = {
@@ -98,6 +113,11 @@ export async function createSubmission(input: SubmissionInput) {
   }
   if (input.coverImage) {
     fields.headerImage = { [LOCALE]: assetLink(input.coverImage) };
+  }
+  if (input.authorId) {
+    fields.author = {
+      [LOCALE]: { sys: { type: "Link", linkType: "Entry", id: input.authorId } },
+    };
   }
 
   const created = await cma("/entries", {
@@ -179,6 +199,7 @@ export async function approveSubmission(id: string) {
   if (!entry.fields?.author?.[LOCALE]?.sys?.id) {
     throw new Error("Choose an author first, then approve.");
   }
+
 
   await publishLinkedAssets(entry);
 

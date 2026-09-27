@@ -46,6 +46,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: true, id: result.id });
   } catch (error) {
     LogError("[/api/contribute]", error);
+    if (error instanceof Error && error.message === "author does not exist") {
+      return NextResponse.json(
+        { message: "That writer could not be found. Please pick again." },
+        { status: 400 }
+      );
+    }
     if (error instanceof Error && error.message === "cover image does not exist") {
       return NextResponse.json(
         { message: "That cover photo could not be found. Please add it again." },
