@@ -24,6 +24,7 @@ export function contentfulImage(
     intrinsicWidth?: number | null;
     intrinsicHeight?: number | null;
     aspect?: number;
+    focus?: "center" | "face" | "top";
   } = {}
 ): ResponsiveImage {
   const base = absolute(url);
@@ -43,7 +44,7 @@ export function contentfulImage(
     if (options.aspect) {
       params.set("h", String(Math.round(width / options.aspect)));
       params.set("fit", "fill");
-      params.set("f", "center");
+      params.set("f", options.focus ?? "center");
     }
     return `${base}?${params.toString()}`;
   };

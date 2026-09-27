@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { revalidateTag } from "next/cache";
 import { isSignedIn } from "@/lib/admin/session";
+import { refreshSite } from "@/lib/admin/refresh";
 import { isWriteConfigured } from "@/lib/admin/cma";
 import { setEntryPublished } from "@/lib/admin/entries";
-import { CONTENTFUL_CACHE_TAG } from "@/lib/contentful-client";
 import { LogError } from "@/lib/logger";
 
 export async function POST(request: NextRequest) {
@@ -31,7 +30,7 @@ export async function POST(request: NextRequest) {
 
   try {
     await setEntryPublished(body.id, body.published);
-    revalidateTag(CONTENTFUL_CACHE_TAG, "seconds");
+    refreshSite();
     return NextResponse.json({ ok: true });
   } catch (error) {
     LogError("[/api/admin/publish]", body.id, error);

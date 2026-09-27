@@ -9,9 +9,10 @@ import HomeHubsPreview from '../components/home/HomeHubsPreview';
 import HomeClubsPreview from '../components/home/HomeClubsPreview';
 import Contribute from '@/components/home/Contribute';
 import { getPageHero } from '@/lib/data/page-hero';
+import { getPersonalityOfTheWeek } from '@/lib/data/potw';
 
 const Home = async () => {
-  const hero = await getPageHero('home');
+  const [hero, potw] = await Promise.all([getPageHero('home'), getPersonalityOfTheWeek()]);
 
   return (
     <div className='font-poppins min-h-screen overflow-x-hidden w-full'>
@@ -24,7 +25,7 @@ const Home = async () => {
         buttonTarget="personality-of-the-week"
         isScroll={true}
       />
-      <Personality />
+      <Personality initial={potw} />
       <ProvostSection />
       <HistorySection />
       <HomeHubsPreview />

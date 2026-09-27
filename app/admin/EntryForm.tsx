@@ -8,6 +8,8 @@ import type { CollectionSpec, FieldSpec } from '@/lib/admin/collections';
 import type { EntryDetail, FieldValue, RefOption } from '@/lib/admin/entries';
 import ImagePicker from './ImagePicker';
 import MarkdownEditor from './MarkdownEditor';
+import LocationPicker from './LocationPicker';
+import { buildSlug } from '@/lib/admin/slug';
 
 interface EntryFormProps {
     collection: CollectionSpec;
@@ -46,11 +48,25 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
     const [saved, setSaved] = useState(false);
+    const [slugTouched, setSlugTouched] = useState(
+        typeof detail.values.slug === 'string' && detail.values.slug !== ''
+    );
     const router = useRouter();
+
+    const slugSources = collection.slugFrom ?? (collection.titleField ? [collection.titleField] : []);
+    const autoSlug = buildSlug(slugSources.map((id) => values[id] as string | undefined));
+    const effectiveSlug =
+        slugTouched && typeof values.slug === 'string' && values.slug ? values.slug : autoSlug;
 
     const set = (id: string, value: FieldValue) => {
         setSaved(false);
-        setValues((current) => ({ ...current, [id]: value }));
+        setValues((current) => {
+            const next = { ...current, [id]: value };
+            if (!slugTouched && slugSources.includes(id)) {
+                next.slug = buildSlug(slugSources.map((source) => next[source] as string | undefined));
+            }
+            return next;
+        });
     };
 
     const startFresh = () => {
@@ -116,6 +132,36 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
                     onBusy={setBusy}
                     onError={setError}
                 />
+            );
+        }
+
+        if (field.id === 'slug') {
+            return (
+                <>
+                    <input
+                        type="text"
+                        value={typeof value === 'string' ? value : ''}
+                        onChange={(event) => {
+                            setSlugTouched(event.target.value !== '');
+                            set(field.id, event.target.value);
+                        }}
+                        placeholder={autoSlug}
+                        className={inputClass}
+                    />
+                    <p className="mt-1.5 text-sm text-gray-500">
+                        {effectiveSlug ? (
+                            <>
+                                Address:{' '}
+                                <span className="font-medium text-gray-700 break-all">
+                                    {collection.slugUrl ?? ''}
+                                    {effectiveSlug}
+                                </span>
+                            </>
+                        ) : (
+                            <>Fill in the title above and the address appears here.</>
+                        )}
+                    </p>
+                </>
             );
         }
 
@@ -191,137 +237,7 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
 
         if (field.kind === 'location') {
             const point = (value ?? null) as { lat: number; lon: number } | null;
-            return (
-                <div className="flex gap-3">
-                    {(['lat', 'lon'] as const).map((part) => (
-                        <label key={part} className="flex-1">
-                            <span className="block text-xs text-gray-500 mb-1">
-                                {part === 'lat' ? 'Latitude' : 'Longitude'}
-                            </span>
-                            <input
-                                type="number"
-                                step="any"
-                                value={point?.[part] ?? ''}
-                                onChange={(event) => {
-                                    const next = Number(event.target.value);
-                                    set(field.id, {
-                                        lat: part === 'lat' ? next : point?.lat ?? 0,
-                                        lon: part === 'lon' ? next : point?.lon ?? 0,
-                                    });
-                                }}
-                                className={inputClass}
-                            />
-                        </label>
-                    ))}
-                </div>
-            );
-        }
-
-        if (field.kind === 'select') {
-            return (
-                <select
-                    value={typeof value === 'string' ? value : ''}
-                    onChange={(event) => set(field.id, event.target.value)}
-                    className={`${inputClass} cursor-pointer`}
-                >
-                    <option value="">Not chosen</option>
-                    {(field.options ?? []).map((option) => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
-                        </option>
-                    ))}
-                </select>
-            );
-        }
-
-        if (field.kind === 'inlineRef') {
-            const options = refOptions[field.refType ?? ''] ?? [];
-            const pending =
-                typeof value === 'object' && value !== null && '__new' in value
-                    ? (value as { __new: true; name: string; image: string })
-                    : null;
-
-            if (pending) {
-                return (
-                    <div className="rounded-lg border border-gray-300 bg-white p-4 flex flex-col gap-4">
-                        <div className="flex items-center justify-between gap-3">
-                            <p className="text-sm font-medium">New {field.label.toLowerCase()}</p>
-                            <button
-                                type="button"
-                                onClick={() => set(field.id, '')}
-                                className="text-sm text-gray-500 underline hover:text-black cursor-pointer"
-                            >
-                                Pick an existing one
-                            </button>
-                        </div>
-
-                        <input
-                            type="text"
-                            value={pending.name}
-                            placeholder="Their name"
-                            autoFocus
-                            onChange={(event) =>
-                                set(field.id, { ...pending, name: event.target.value })
-                            }
-                            className={inputClass}
-                        />
-
-                        {field.inlineCreate?.imageField && (
-                            <div>
-                                <p className="text-sm text-gray-500 mb-2">
-                                    {field.inlineCreate.imageLabel ?? 'Photo'}
-                                </p>
-                                <ImagePicker
-                                    value={pending.image ? [pending.image] : []}
-                                    urls={urls}
-                                    multiple={false}
-                                    onChange={(ids, nextUrls) => {
-                                        setUrls(nextUrls);
-                                        set(field.id, { ...pending, image: ids[0] ?? '' });
-                                    }}
-                                    onBusy={setBusy}
-                                    onError={setError}
-                                />
-                            </div>
-                        )}
-                    </div>
-                );
-            }
-
-            return (
-                <div className="flex flex-col sm:flex-row gap-2">
-                    <select
-                        value={typeof value === 'string' ? value : ''}
-                        onChange={(event) => set(field.id, event.target.value)}
-                        className={`${inputClass} cursor-pointer`}
-                    >
-                        <option value="">Not chosen</option>
-                        {options.map((option) => (
-                            <option key={option.id} value={option.id}>
-                                {option.label}
-                            </option>
-                        ))}
-                    </select>
-
-                    <button
-                        type="button"
-                        onClick={() => set(field.id, { __new: true, name: '', image: '' })}
-                        className="shrink-0 inline-flex items-center justify-center gap-1.5 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold hover:border-black cursor-pointer"
-                    >
-                        <Plus className="w-4 h-4" /> New
-                    </button>
-                </div>
-            );
-        }
-
-        if (field.kind === 'tagWords') {
-            const words = Array.isArray(value) ? (value as string[]) : [];
-            return (
-                <TagInput
-                    words={words}
-                    onChange={(next) => set(field.id, next)}
-                />
-            );
+            return <LocationPicker value={point} onChange={(next) => set(field.id, next)} />;
         }
 
         if (field.kind === 'entryRef' || field.kind === 'entryRefs') {
