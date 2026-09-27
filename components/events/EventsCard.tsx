@@ -1,7 +1,8 @@
 'use client';
 import Image from 'next/image';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { ArrowUpRight, MapPin, X } from 'lucide-react';
+import VenueMap from './VenueMap';
 
 interface ImageType {
   url: string;
@@ -35,8 +36,6 @@ const EventCard: React.FC<EventCardProps> = ({
   isHeroCard,
 }) => {
   const [showMap, setShowMap] = useState(false);
-  const [mapLoading, setMapLoading] = useState(true);
-  const [mapError, setMapError] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   const dateObj = new Date(date);
@@ -48,15 +47,10 @@ const EventCard: React.FC<EventCardProps> = ({
 
   const { url: imgUrl, description: imgDesc } = headerImg;
   const { lat, lon } = venue;
-  const googleMapsUrl = `https://maps.google.com/maps?q=${lat},${lon}&output=embed`;
 
   const handleMapToggle = (e: React.MouseEvent, show: boolean) => {
     e.stopPropagation();
     setShowMap(show);
-    if (show) {
-      setMapLoading(true);
-      setMapError(false);
-    }
   };
 
   const hasOnlineLink = !!onlineLink;
@@ -67,16 +61,6 @@ const EventCard: React.FC<EventCardProps> = ({
     // Navigate to the event detail page
     window.location.href = `/events/${slug}`;
   };
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (showMap && mapLoading) {
-      timer = setTimeout(() => {
-        if (mapLoading) setMapError(true);
-      }, 10000);
-    }
-    return () => clearTimeout(timer);
-  }, [showMap, mapLoading]);
 
   // Unified card style matching BlogCard
   const cardClasses = "flex flex-col bg-white overflow-hidden shadow-lg rounded-xl cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300 min-h-[440px] h-full";
@@ -154,39 +138,7 @@ const EventCard: React.FC<EventCardProps> = ({
               </button>
             </div>
 
-            <div className="relative h-64 w-full bg-gray-50">
-              {/* Loading State */}
-              {mapLoading && !mapError && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-yellow-500 font-semibold animate-pulse">Loading Map...</span>
-                </div>
-              )}
-
-              {/* Error State */}
-              {mapError && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
-                  <p className="text-red-500 font-medium mb-1">Unable to load map</p>
-                  <button
-                    onClick={() => setMapLoading(true)}
-                    className="text-xs text-blue-500 underline"
-                  >
-                    Retry
-                  </button>
-                </div>
-              )}
-
-              {!mapError && (
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src={googleMapsUrl}
-                  allowFullScreen
-                  loading="lazy"
-                  className={`border-0 w-full h-full transition-opacity duration-300 ${mapLoading ? 'opacity-0' : 'opacity-100'}`}
-                  onLoad={() => setMapLoading(false)}
-                />
-              )}
-            </div>
+            <VenueMap lat={lat} lon={lon} className="h-64" />
             <div className="p-3 bg-gray-50 text-xs text-center text-gray-500 border-t">
               Click outside to close
             </div>
