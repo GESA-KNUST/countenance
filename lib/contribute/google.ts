@@ -14,7 +14,6 @@ export const STATE_COOKIE = "gesa_writer_state";
 export interface GoogleIdentity {
   email: string;
   name: string;
-  picture: string;
 }
 
 export function newState() {
@@ -65,10 +64,11 @@ function readIdToken(idToken: string): GoogleIdentity | null {
   if (audience !== process.env.AUTH_GOOGLE_ID) return null;
   if (!expiry || Date.now() > expiry) return null;
 
+  // Only the name and address are kept. Writers choose their own photo, so
+  // Google's avatar is never copied onto the site.
   return {
     email,
     name: typeof claims.name === "string" ? claims.name : email.split("@")[0],
-    picture: typeof claims.picture === "string" ? claims.picture : "",
   };
 }
 

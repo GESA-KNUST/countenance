@@ -39,7 +39,6 @@ export interface SubmissionInput {
 export interface VerifiedWriter {
   email: string;
   name: string;
-  picture: string;
 }
 
 export interface SubmissionSummary {
@@ -99,7 +98,7 @@ export async function createSubmission(input: SubmissionInput, writer: VerifiedW
     throw new Error("cover image does not exist");
   }
 
-  const authorId = await authorForEmail(writer.email, writer.name, writer.picture);
+  const authorId = await authorForEmail(writer.email, writer.name);
 
   const fields: Record<string, Record<string, unknown>> = {
     title: { [LOCALE]: input.title },

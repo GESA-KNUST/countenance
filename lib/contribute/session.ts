@@ -2,7 +2,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 
 export const WRITER_COOKIE = "gesa_writer";
-const SESSION_DAYS = 30;
+const SESSION_DAYS = 180;
 
 /**
  * The writer session is signed with a key derived from the admin secret rather
@@ -17,7 +17,6 @@ const SECRET = ADMIN_SECRET
 export interface Writer {
   email: string;
   name: string;
-  picture: string;
 }
 
 function sign(payload: string) {
@@ -57,7 +56,7 @@ export function readWriterValue(value: string | undefined): Writer | null {
     };
     if (!data.expiry || Date.now() > data.expiry) return null;
     if (!data.email) return null;
-    return { email: data.email, name: data.name ?? "", picture: data.picture ?? "" };
+    return { email: data.email, name: data.name ?? "" };
   } catch {
     return null;
   }
