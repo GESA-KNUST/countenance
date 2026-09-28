@@ -1,5 +1,6 @@
 'use client'
 import Container from '../custom/Container'
+import { ctfSrc } from '@/lib/contentful-src';
 import { Button } from '../ui/button'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
@@ -77,10 +78,11 @@ const HomeClubsPreview = () => {
                             >
                                 <div className='w-16 h-16 bg-primary/10 rounded-2xl p-0 flex items-center justify-center group-hover:scale-110 transition-transform relative overflow-hidden'>
                                     <Image
-                                        src={club?.clubLogo?.url || '/images/logo.svg'}
+                                        src={ctfSrc(club?.clubLogo?.url || '/images/logo.svg', 160)}
                                         alt=""
                                         className="w-full h-full object-cover"
                                         fill
+                                        unoptimized
                                     />
                                 </div>
                                 <div className="flex-1">

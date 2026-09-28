@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ctfSrc } from '@/lib/contentful-src';
 import Image from 'next/image';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import type { Document } from '@contentful/rich-text-types';
@@ -36,12 +37,13 @@ const PersonalityProfile = ({ person }: { person: POTWItem }) => {
                             <div className="relative aspect-4/5 overflow-hidden rounded-3xl bg-gray-100 shadow-xl ring-1 ring-black/5">
                                 {person.image?.url && (
                                     <Image
-                                        src={person.image.url}
+                                        src={ctfSrc(person.image.url, 640)}
                                         alt={person.image.title || name}
                                         fill
                                         className="object-cover"
                                         sizes="(max-width: 768px) 280px, 320px"
                                         priority
+                                        unoptimized
                                     />
                                 )}
                             </div>

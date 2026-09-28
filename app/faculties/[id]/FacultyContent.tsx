@@ -1,6 +1,7 @@
 'use client'
 
 import Container from '@/components/custom/Container'
+import { ctfSrc } from '@/lib/contentful-src';
 import DepartmentHero from '@/components/department/DepartmentHero'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Image from 'next/image'
@@ -135,7 +136,7 @@ const FacultyContent = () => {
                                             >
                                                 <div className="w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center p-2 group-hover:bg-primary/10 transition-colors">
                                                     {dept.deptLogo?.url ? (
-                                                        <Image src={dept.deptLogo.url} alt={dept.name} width={40} height={40} className="object-contain" />
+                                                        <Image src={ctfSrc(dept.deptLogo.url, 96)} alt={dept.name} width={40} height={40} className="object-contain" unoptimized />
                                                     ) : (
                                                         <LayoutGrid size={24} className="text-gray-300 group-hover:text-primary" />
                                                     )}

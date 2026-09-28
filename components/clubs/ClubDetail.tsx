@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { ctfSrc } from '@/lib/contentful-src';
 import Link from 'next/link';
 import { documentToReactComponents, Options } from '@contentful/rich-text-react-renderer';
 import { BLOCKS } from '@contentful/rich-text-types';
@@ -38,11 +39,12 @@ const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
                 return (
                     <div className="my-8 w-full rounded-2xl overflow-hidden shadow-lg">
                         <Image
-                            src={asset.url}
+                            src={ctfSrc(asset.url, 1200)}
                             alt={asset.title || "Embedded Asset"}
                             width={asset.width || 800}
                             height={asset.height || 600}
                             className="w-full h-auto object-cover"
+                            unoptimized
                         />
                     </div>
                 );
@@ -87,11 +89,12 @@ const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
             {/* Hero Section */}
             <div className="relative h-[40vh] sm:h-[50vh] w-full overflow-hidden bg-gray-900">
                 <Image
-                    src={clubLogo.url}
+                    src={ctfSrc(clubLogo.url, 400)}
                     alt={clubLogo.title || clubName}
                     fill
                     className="object-cover opacity-60 scale-105 blur-[2px]"
                     priority
+                    unoptimized
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent" />
 
@@ -107,10 +110,11 @@ const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
 
                         <div className="relative w-24 h-24 sm:w-32 sm:h-32 mx-auto rounded-3xl overflow-hidden border-4 border-white/10 shadow-2xl animate-in zoom-in duration-700">
                             <Image
-                                src={clubLogo.url}
+                                src={ctfSrc(clubLogo.url, 400)}
                                 alt={clubName}
                                 fill
                                 className="object-contain bg-white p-2"
+                                unoptimized
                             />
                         </div>
 

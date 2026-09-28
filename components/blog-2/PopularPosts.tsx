@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import { ctfSrc } from '@/lib/contentful-src';
 
 import { Share2 } from 'lucide-react';
 import { LogError } from '@/lib/logger';
@@ -26,10 +27,11 @@ const SimplifiedBlogCard = ({ post, onPostSelect }: SimplifiedBlogCardProps) => 
         >
             <div className="relative w-28 h-full shrink-0">
                 <Image
-                    src={post.headerImage.url}
+                    src={ctfSrc(post.headerImage.url, 240)}
                     alt={post.title}
                     fill
                     className="object-cover"
+                    unoptimized
                 />
             </div>
             <div className="flex flex-col justify-center p-4 relative w-full">
