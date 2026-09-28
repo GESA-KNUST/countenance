@@ -73,7 +73,7 @@ export const COLLECTIONS: CollectionSpec[] = [
   {
     type: "blogPost",
     group: "Blog",
-    slugUrl: "gesaknust.com/blog-2?slug=",
+    slugUrl: "gesaknust.com/blog/",
     label: "Blog posts",
     singular: "blog post",
     hint: "Articles on the blog",

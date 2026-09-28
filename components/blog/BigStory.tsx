@@ -35,7 +35,7 @@ const BigStory = () => {
     if (!post) return;
     setLoading(true);
     setTimeout(() => {
-      router.push(`/blog-2?slug=${post.slug}`);
+      router.push(`/blog/${encodeURIComponent(post.slug)}`);
     }, 1000);
   };
 
