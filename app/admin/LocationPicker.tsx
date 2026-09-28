@@ -1,171 +1,122 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
-import { MapPin, Search, Crosshair, X } from 'lucide-react';
-import { PIN_HTML, TILE_ATTRIBUTION, TILE_MAX_ZOOM, TILE_URL } from '@/lib/map';
-
-type Point = { lat: number; lon: number };
+import { useState } from 'react';
+import { Crosshair, ExternalLink, MapPin, X } from 'lucide-react';
+import {
+    isShortGoogleMapsLink,
+    parseGoogleMapsLink,
+    type Point,
+} from '@/lib/admin/google-maps-link';
 
 interface LocationPickerProps {
     value: Point | null;
     onChange: (value: Point | null) => void;
 }
 
-const KNUST: Point = { lat: 6.6745, lon: -1.5716 };
+const SEARCH_ON_GOOGLE = 'https://www.google.com/maps/search/?api=1&query=KNUST+Kumasi';
 
-
-interface Suggestion {
-    label: string;
-    lat: number;
-    lon: number;
-}
+const embedUrl = (point: Point) =>
+    `https://maps.google.com/maps?q=${point.lat},${point.lon}&z=16&output=embed`;
 
 const LocationPicker = ({ value, onChange }: LocationPickerProps) => {
-    const container = useRef<HTMLDivElement>(null);
-    const mapRef = useRef<unknown>(null);
-    const markerRef = useRef<unknown>(null);
-
-    const [query, setQuery] = useState('');
-    const [results, setResults] = useState<Suggestion[]>([]);
-    const [searching, setSearching] = useState(false);
+    const [link, setLink] = useState('');
     const [note, setNote] = useState('');
+    const [working, setWorking] = useState(false);
 
-    useEffect(() => {
-        let cancelled = false;
+    const apply = async () => {
+        const pasted = link.trim();
+        if (!pasted) return;
 
-        const load = async () => {
-            const leaflet = await import('leaflet');
-            if (cancelled || !container.current || mapRef.current) return;
-
-            const start = value ?? KNUST;
-            const map = leaflet.map(container.current, {
-                center: [start.lat, start.lon],
-                zoom: value ? 16 : 14,
-                scrollWheelZoom: false,
-            });
-
-            leaflet
-                .tileLayer(TILE_URL, { maxZoom: TILE_MAX_ZOOM, attribution: TILE_ATTRIBUTION })
-                .addTo(map);
-
-            const pin = leaflet.divIcon({
-                className: '',
-                html: PIN_HTML,
-                iconSize: [22, 22],
-                iconAnchor: [11, 11],
-            });
-
-            const place = (point: Point) => {
-                const existing = markerRef.current as { setLatLng: (p: [number, number]) => void } | null;
-                if (existing) {
-                    existing.setLatLng([point.lat, point.lon]);
-                    return;
-                }
-
-                markerRef.current = leaflet
-                    .marker([point.lat, point.lon], { icon: pin, draggable: true })
-                    .addTo(map)
-                    .on('dragend', (event: { target: { getLatLng: () => { lat: number; lng: number } } }) => {
-                        const next = event.target.getLatLng();
-                        onChange({ lat: Number(next.lat.toFixed(6)), lon: Number(next.lng.toFixed(6)) });
-                    });
-            };
-
-            if (value) place(value);
-
-            map.on('click', (event: { latlng: { lat: number; lng: number } }) => {
-                const point = {
-                    lat: Number(event.latlng.lat.toFixed(6)),
-                    lon: Number(event.latlng.lng.toFixed(6)),
-                };
-                place(point);
-                onChange(point);
-            });
-
-            mapRef.current = map;
-            setTimeout(() => map.invalidateSize(), 60);
-        };
-
-        load();
-
-        return () => {
-            cancelled = true;
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
-        const map = mapRef.current as { setView: (c: [number, number], z: number) => void } | null;
-        if (!map || !value) return;
-        map.setView([value.lat, value.lon], 16);
-    }, [value]);
-
-    const search = async () => {
-        const term = query.trim();
-        if (term.length < 3) return;
-
-        setSearching(true);
         setNote('');
-        setResults([]);
 
+        const direct = parseGoogleMapsLink(pasted);
+        if (direct) {
+            onChange(direct);
+            setLink('');
+            return;
+        }
+
+        if (!isShortGoogleMapsLink(pasted)) {
+            setNote(
+                'That does not look like a Google Maps link. Open the place in Google Maps and copy the link from the address bar.'
+            );
+            return;
+        }
+
+        setWorking(true);
         try {
-            const res = await fetch(`/api/admin/geocode?q=${encodeURIComponent(term)}`);
-            const payload = (await res.json()) as { results?: Suggestion[]; message?: string };
+            const res = await fetch('/api/admin/resolve-map-link', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: pasted }),
+            });
+            const payload = (await res.json()) as Partial<Point> & { message?: string };
 
-            if (!res.ok) {
-                setNote(payload.message ?? 'Could not search right now. Tap the map to place the pin instead.');
+            if (!res.ok || typeof payload.lat !== 'number' || typeof payload.lon !== 'number') {
+                setNote(payload.message ?? 'Could not read that link. Try the long link instead.');
                 return;
             }
 
-            const found = payload.results ?? [];
-            if (found.length === 0) {
-                setNote('No place found with that name. Try a nearby landmark, or tap the map.');
-            }
-            setResults(found);
+            onChange({ lat: payload.lat, lon: payload.lon });
+            setLink('');
         } catch {
-            setNote('Could not search right now. Tap the map to place the pin instead.');
+            setNote('No internet connection. Try again.');
         } finally {
-            setSearching(false);
+            setWorking(false);
         }
-    };
-
-    const choose = (suggestion: Suggestion) => {
-        const point = {
-            lat: Number(suggestion.lat.toFixed(6)),
-            lon: Number(suggestion.lon.toFixed(6)),
-        };
-        const map = mapRef.current as { setView: (c: [number, number], z: number) => void } | null;
-        map?.setView([point.lat, point.lon], 16);
-
-        const marker = markerRef.current as { setLatLng: (p: [number, number]) => void } | null;
-        marker?.setLatLng([point.lat, point.lon]);
-
-        onChange(point);
-        setResults([]);
-        setQuery(suggestion.label.split(',')[0]);
     };
 
     return (
         <div className="flex flex-col gap-3">
+            <div className="rounded-lg bg-gray-50 px-4 py-3 text-sm text-gray-600">
+                <p className="mb-2">
+                    Find the place on{' '}
+                    <a
+                        href={SEARCH_ON_GOOGLE}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 font-semibold text-gray-900 underline"
+                    >
+                        Google Maps <ExternalLink className="h-3.5 w-3.5" />
+                    </a>
+                    , then give us either one:
+                </p>
+                <ul className="flex flex-col gap-1.5">
+                    <li>
+                        <span className="font-semibold text-gray-900">On a computer</span> &mdash;
+                        copy the whole link from the address bar at the top of the browser.
+                    </li>
+                    <li>
+                        <span className="font-semibold text-gray-900">On a phone</span> &mdash; press
+                        and hold the exact spot on the map. Google shows two numbers like{' '}
+                        <span className="font-mono text-gray-900">6.67450, -1.57160</span>. Copy
+                        those.
+                    </li>
+                </ul>
+                <p className="mt-2 text-gray-500">
+                    The Share button&apos;s short link often works too, but the two above are always
+                    exact.
+                </p>
+            </div>
+
             <div className="flex flex-col gap-2 sm:flex-row">
                 <div className="flex flex-1 items-center gap-2.5 rounded-lg border border-gray-300 bg-white px-3.5 focus-within:border-black">
                     <input
-                        value={query}
-                        onChange={(event) => setQuery(event.target.value)}
+                        value={link}
+                        onChange={(event) => setLink(event.target.value)}
                         onKeyDown={(event) => {
                             if (event.key === 'Enter') {
                                 event.preventDefault();
-                                search();
+                                apply();
                             }
                         }}
-                        placeholder="Search a place, e.g. Engineering Auditorium KNUST"
+                        placeholder="Paste the Google Maps link here"
                         className="min-w-0 flex-1 appearance-none border-0 bg-transparent py-2.5 text-base outline-none"
                     />
-                    {query && (
+                    {link && (
                         <button
                             type="button"
                             onClick={() => {
-                                setQuery('');
-                                setResults([]);
+                                setLink('');
                                 setNote('');
                             }}
                             aria-label="Clear"
@@ -178,36 +129,29 @@ const LocationPicker = ({ value, onChange }: LocationPickerProps) => {
 
                 <button
                     type="button"
-                    onClick={search}
-                    disabled={searching || query.trim().length < 3}
-                    className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold hover:border-black disabled:opacity-40 cursor-pointer"
+                    onClick={apply}
+                    disabled={working || link.trim().length === 0}
+                    className="inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold hover:border-black disabled:opacity-40"
                 >
-                    <Search className="h-4 w-4" />
-                    {searching ? 'Searching...' : 'Find'}
+                    <MapPin className="h-4 w-4" />
+                    {working ? 'Reading link...' : 'Use this place'}
                 </button>
             </div>
 
-            {results.length > 0 && (
-                <ul className="divide-y divide-gray-100 overflow-hidden rounded-lg border border-gray-200 bg-white">
-                    {results.map((item) => (
-                        <li key={`${item.lat}-${item.lon}`}>
-                            <button
-                                type="button"
-                                onClick={() => choose(item)}
-                                className="flex w-full items-start gap-2 px-3 py-2.5 text-left text-sm hover:bg-gray-50 cursor-pointer"
-                            >
-                                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gray-400" />
-                                <span className="min-w-0">{item.label}</span>
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            )}
+            {note && <p className="text-sm text-red-600">{note}</p>}
 
-            <div
-                ref={container}
-                className="h-72 w-full overflow-hidden rounded-xl border border-gray-200 bg-gray-100"
-            />
+            {value && (
+                <div className="h-72 w-full overflow-hidden rounded-xl border border-gray-200 bg-gray-100">
+                    <iframe
+                        key={`${value.lat},${value.lon}`}
+                        title="The place you chose"
+                        src={embedUrl(value)}
+                        className="h-full w-full border-0"
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                    />
+                </div>
+            )}
 
             <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
                 {value ? (
@@ -216,21 +160,21 @@ const LocationPicker = ({ value, onChange }: LocationPickerProps) => {
                         Pin set at {value.lat.toFixed(5)}, {value.lon.toFixed(5)}
                     </p>
                 ) : (
-                    <p className="text-gray-500">Tap the map to drop a pin, or search for the place.</p>
+                    <p className="text-gray-500">
+                        No place chosen yet. The event will show without a map.
+                    </p>
                 )}
 
                 {value && (
                     <button
                         type="button"
                         onClick={() => onChange(null)}
-                        className="text-gray-500 underline hover:text-black cursor-pointer"
+                        className="cursor-pointer text-gray-500 underline hover:text-black"
                     >
-                        Clear the pin
+                        Remove the place
                     </button>
                 )}
             </div>
-
-            {note && <p className="text-sm text-amber-700">{note}</p>}
         </div>
     );
 };
