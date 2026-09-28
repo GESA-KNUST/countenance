@@ -1,4 +1,6 @@
+import { cache } from "react";
 import { CLUB_TYPES, OPPORTUNITY_TYPES } from "../data/taxonomy";
+import { generatedCollections } from "./content-model";
 
 
 export type FieldKind =
@@ -10,6 +12,7 @@ export type FieldKind =
   | "phone"
   | "date"
   | "datetime"
+  | "number"
   | "image"
   | "images"
   | "entryRef"
@@ -55,6 +58,14 @@ export interface CollectionSpec {
   slugFollowsTitle?: boolean;
   thumbField?: string;
   singleton?: boolean;
+  /**
+   * Whether entries can be re-ordered. Hand authored types leave this unset
+   * (treated as orderable). It is set to false for a generated type that has no
+   * `order` field in Contentful, so the ordering UI and writes are skipped.
+   */
+  orderable?: boolean;
+  /** True when built from Contentful's content model rather than hand authored. */
+  generated?: boolean;
   fields: FieldSpec[];
 }
 
@@ -330,10 +341,6 @@ export const COLLECTIONS: CollectionSpec[] = [
   },
 ];
 
-export function findCollection(type: string) {
-  return COLLECTIONS.find((collection) => collection.type === type);
-}
-
 export interface CollectionGroup {
   name: CollectionGroupName;
   hint: string;
@@ -345,22 +352,41 @@ const GROUP_HINTS: Record<CollectionGroupName, string> = {
   Blog: "Articles, the people who write them, and tags",
 };
 
-export function collectionGroups(): CollectionGroup[] {
+const HAND_AUTHORED_TYPES = new Set(COLLECTIONS.map((collection) => collection.type));
+
+/**
+ * The hand authored collections plus any content type added in Contentful that
+ * nobody has written a spec for yet. Cached per request so the content model is
+ * fetched once even though several server functions ask for it.
+ */
+export const loadCollections = cache(async (): Promise<CollectionSpec[]> => {
+  const generated = await generatedCollections(HAND_AUTHORED_TYPES);
+  return [...COLLECTIONS, ...generated];
+});
+
+export async function findCollection(type: string): Promise<CollectionSpec | undefined> {
+  return (await loadCollections()).find((collection) => collection.type === type);
+}
+
+export async function collectionGroups(): Promise<CollectionGroup[]> {
+  const collections = await loadCollections();
   const names: CollectionGroupName[] = [];
-  for (const collection of COLLECTIONS) {
+  for (const collection of collections) {
     if (collection.group && !names.includes(collection.group)) names.push(collection.group);
   }
   return names.map((name) => ({
     name,
     hint: GROUP_HINTS[name],
-    collections: COLLECTIONS.filter((collection) => collection.group === name),
+    collections: collections.filter((collection) => collection.group === name),
   }));
 }
 
-export function findGroup(name: string) {
-  return collectionGroups().find((group) => group.name.toLowerCase() === name.toLowerCase());
+export async function findGroup(name: string): Promise<CollectionGroup | undefined> {
+  return (await collectionGroups()).find(
+    (group) => group.name.toLowerCase() === name.toLowerCase()
+  );
 }
 
-export function ungroupedCollections() {
-  return COLLECTIONS.filter((collection) => !collection.group);
+export async function ungroupedCollections(): Promise<CollectionSpec[]> {
+  return (await loadCollections()).filter((collection) => !collection.group);
 }
