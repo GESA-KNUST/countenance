@@ -47,6 +47,12 @@ export interface CollectionSpec {
   slugFrom?: string[];
   /** What the public address looks like, for showing the editor a preview. */
   slugUrl?: string;
+  /**
+   * Rewrite the slug when the title changes, so the web address follows the
+   * subject. Only applies while the slug still matches the one the old title
+   * produced — a slug somebody typed by hand is always left alone.
+   */
+  slugFollowsTitle?: boolean;
   thumbField?: string;
   singleton?: boolean;
   fields: FieldSpec[];
@@ -119,6 +125,7 @@ export const COLLECTIONS: CollectionSpec[] = [
     hint: "The one person featured on the front page",
     titleField: "name",
     slugUrl: "gesaknust.com/personality/",
+    slugFollowsTitle: true,
     thumbField: "image",
     singleton: true,
     fields: [

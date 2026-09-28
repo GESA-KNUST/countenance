@@ -1,21 +1,14 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import type { Document } from '@contentful/rich-text-types';
 import { ArrowLeft, Linkedin, Star } from 'lucide-react';
 import Container from '../custom/Container';
 import { proseRichTextOptions } from '@/lib/richTextOptions';
-import { contentfulImage } from '@/lib/contentful-image';
 import type { POTWItem } from '@/hooks/usePOTW';
 
 const PersonalityProfile = ({ person }: { person: POTWItem }) => {
     const name = person.name ?? 'Personality of the week';
-    const portrait = person.image?.url
-        ? contentfulImage(person.image.url, {
-            widths: [480, 640, 960],
-            aspect: 4 / 5,
-            focus: 'face',
-        })
-        : null;
 
     return (
         <div className="font-poppins min-h-screen bg-white">
@@ -34,20 +27,21 @@ const PersonalityProfile = ({ person }: { person: POTWItem }) => {
                         Back to the homepage
                     </Link>
 
-                    <div className="mt-8 grid grid-cols-1 items-center gap-8 md:mt-10 md:grid-cols-[minmax(0,300px)_1fr] md:gap-12">
-                        <div className="relative mx-auto w-full max-w-[260px] md:mx-0 md:max-w-none">
+                    <div className="mt-8 grid grid-cols-1 items-center gap-8 md:mt-10 md:grid-cols-[minmax(0,320px)_1fr] md:gap-12 lg:gap-16">
+                        <div className="relative mx-auto w-full max-w-[280px] md:mx-0 md:max-w-none">
                             <div
                                 aria-hidden
-                                className="absolute -bottom-3 -right-3 h-24 w-24 rounded-2xl bg-[#FFBE00] md:-bottom-4 md:-right-4 md:h-28 md:w-28"
+                                className="absolute -bottom-3 -left-3 h-24 w-24 rounded-2xl bg-[#FFBE00] md:-bottom-4 md:-left-4 md:h-32 md:w-32"
                             />
                             <div className="relative aspect-4/5 overflow-hidden rounded-3xl bg-gray-100 shadow-xl ring-1 ring-black/5">
-                                {portrait && (
-                                    <img
-                                        src={portrait.src}
-                                        srcSet={portrait.srcSet || undefined}
-                                        sizes="(max-width: 768px) 260px, 300px"
-                                        alt={person.image?.title || name}
-                                        className="absolute inset-0 h-full w-full object-cover"
+                                {person.image?.url && (
+                                    <Image
+                                        src={person.image.url}
+                                        alt={person.image.title || name}
+                                        fill
+                                        className="object-cover"
+                                        sizes="(max-width: 768px) 280px, 320px"
+                                        priority
                                     />
                                 )}
                             </div>
