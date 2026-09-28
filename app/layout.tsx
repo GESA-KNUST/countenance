@@ -8,6 +8,7 @@ import { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { CSPostHogProvider } from "@/providers/PostHogProvider";
 import { getPageHero, ogImageMetadata } from "@/lib/data/page-hero";
+import { getContentVersion } from '@/lib/data/content-version';
 import { getSiteContact } from "@/lib/data/site-contact";
 
 const poppins = Poppins({
@@ -102,7 +103,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  const contact = await getSiteContact();
+  const [contact, contentVersion] = await Promise.all([getSiteContact(), getContentVersion()]);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -126,6 +127,12 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     <html lang="en">
       <CSPostHogProvider>
         <body className={`${poppins.variable} ${open_sans.variable} ${montserrat.variable} antialiased`}>
+          <script
+            suppressHydrationWarning
+            dangerouslySetInnerHTML={{
+              __html: `window.__contentVersion=${JSON.stringify(contentVersion)}`,
+            }}
+          />
           <script
             type="application/ld+json"
             suppressHydrationWarning

@@ -87,6 +87,12 @@ async function request<T>(query: string, variables?: Variables): Promise<T> {
     params.set("variables", JSON.stringify(variables));
   }
 
+  // The page carries the time content last changed. Putting it in the URL means
+  // a publish gives every browser a fresh address, so nobody is served an hour
+  // old copy from the CDN, while unchanged content still hits the cache.
+  const version = (globalThis as { __contentVersion?: string }).__contentVersion;
+  if (version) params.set("v", version);
+
   const url = `/api/contentful?${params.toString()}`;
   const res =
     url.length < 6000
