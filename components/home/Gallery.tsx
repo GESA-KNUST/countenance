@@ -1,5 +1,6 @@
 'use client'
 import Image from 'next/image';
+import { ctfSrc } from '@/lib/contentful-src';
 import { motion, Variants } from "framer-motion";
 import Link from "next/link";
 import { useGalleries } from "@/hooks/useGalleryCollection";
@@ -76,10 +77,11 @@ const Gallery = () => {
                             >
                                 <div className="relative w-full h-full">
                                     <Image
-                                        src={img.sampleImagesCollection.items[0].url}
+                                        src={ctfSrc(img.sampleImagesCollection.items[0].url, 800)}
                                         alt={`Gallery image ${index + 1}`}
                                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                         fill
+                                        unoptimized
                                     />
                                 </div>
                                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/60 transition-colors duration-500" />

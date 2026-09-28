@@ -100,8 +100,7 @@ export interface CmaEntryItem {
 }
 
 export async function cmaAll<T = CmaEntryItem>(pathname: string): Promise<T[]> {
-  // Contentful rejects duplicate query parameters, so strip any limit/skip the
-  // caller supplied before this helper adds its own.
+
   const [base, rawQuery = ""] = pathname.split("?");
   const params = new URLSearchParams(rawQuery);
   params.delete("limit");

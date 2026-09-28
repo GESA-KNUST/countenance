@@ -2,7 +2,6 @@ import { cache } from "react";
 import { CLUB_TYPES, OPPORTUNITY_TYPES } from "../data/taxonomy";
 import { generatedCollections } from "./content-model";
 
-
 export type FieldKind =
   | "text"
   | "longtext"
@@ -46,25 +45,17 @@ export interface CollectionSpec {
   singular: string;
   hint: string;
   titleField: string;
-  /** Fields joined to build the slug when it is left empty. */
+
   slugFrom?: string[];
-  /** What the public address looks like, for showing the editor a preview. */
+
   slugUrl?: string;
-  /**
-   * Rewrite the slug when the title changes, so the web address follows the
-   * subject. Only applies while the slug still matches the one the old title
-   * produced — a slug somebody typed by hand is always left alone.
-   */
+
   slugFollowsTitle?: boolean;
   thumbField?: string;
   singleton?: boolean;
-  /**
-   * Whether entries can be re-ordered. Hand authored types leave this unset
-   * (treated as orderable). It is set to false for a generated type that has no
-   * `order` field in Contentful, so the ordering UI and writes are skipped.
-   */
+
   orderable?: boolean;
-  /** True when built from Contentful's content model rather than hand authored. */
+
   generated?: boolean;
   fields: FieldSpec[];
 }
@@ -354,11 +345,6 @@ const GROUP_HINTS: Record<CollectionGroupName, string> = {
 
 const HAND_AUTHORED_TYPES = new Set(COLLECTIONS.map((collection) => collection.type));
 
-/**
- * The hand authored collections plus any content type added in Contentful that
- * nobody has written a spec for yet. Cached per request so the content model is
- * fetched once even though several server functions ask for it.
- */
 export const loadCollections = cache(async (): Promise<CollectionSpec[]> => {
   const generated = await generatedCollections(HAND_AUTHORED_TYPES);
   return [...COLLECTIONS, ...generated];

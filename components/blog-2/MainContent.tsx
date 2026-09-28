@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import { ctfSrc } from '@/lib/contentful-src';
 import { Separator } from '../ui/separator';
 import Link from 'next/link';
 import SkeletonLoading from './SkeletonLoading';
@@ -43,12 +44,13 @@ const MainContent = ({ selectedPost }: MainContentProps) => {
         <figure className="my-10 w-full mb-10">
           <div className="relative w-full rounded-2xl overflow-hidden shadow-lg border border-gray-100 group">
             <Image
-              src={imageUrl}
+              src={ctfSrc(imageUrl, 1200)}
               alt={asset.description || asset.title || 'Blog Image'}
               width={asset.width || 1200}
               height={asset.height || 800}
               className="w-full h-auto transition-transform duration-500 group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1000px"
+                unoptimized
             />
           </div>
           {asset.description && (
@@ -106,11 +108,12 @@ const MainContent = ({ selectedPost }: MainContentProps) => {
       </section>
       <div className="relative w-full mb-8 overflow-hidden rounded-2xl shadow-lg border border-gray-100">
         <Image
-          src={selectedPost.headerImage.url}
+          src={ctfSrc(selectedPost.headerImage.url, 1200)}
           alt={selectedPost.headerImage.title || selectedPost.title}
           width={800}
           height={574}
           className="w-full h-auto"
+            unoptimized
         />
       </div>
 

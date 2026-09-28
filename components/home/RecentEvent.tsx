@@ -1,5 +1,6 @@
 'use client';
 import Image from "next/image";
+import { ctfSrc } from '@/lib/contentful-src';
 import { format } from "date-fns";
 import { ArrowRight, CalendarDays, Clock } from "lucide-react";
 import Link from "next/link";
@@ -185,11 +186,12 @@ const EventCard = ({ event, type }: { event: any; type: 'upcoming' | 'recent' })
       <div className="bg-white/95 backdrop-blur-sm dark:bg-card border-2 border-transparent hover:border-primary/30 shadow-sm hover:shadow-2xl transition-all duration-300 rounded-2xl sm:rounded-3xl overflow-hidden flex flex-row items-stretch gap-3 sm:gap-4 p-3 group-hover:-translate-y-1">
         <div className="relative shrink-0 w-20 sm:w-28 lg:w-24 xl:w-32 aspect-square rounded-xl overflow-hidden bg-gray-100">
           <Image
-            src={event.eventImage.url}
+            src={ctfSrc(event.eventImage.url, 256)}
             alt=""
             className="object-cover transition-transform duration-700 group-hover:scale-110"
             fill
             sizes="(max-width: 640px) 80px, (max-width: 1024px) 112px, 128px"
+              unoptimized
           />
           <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
         </div>

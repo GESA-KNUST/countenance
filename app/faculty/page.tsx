@@ -1,6 +1,7 @@
 'use client'
 
 import Container from '@/components/custom/Container'
+import { ctfSrc } from '@/lib/contentful-src';
 import DepartmentHero from '@/components/department/DepartmentHero'
 import { Search, School } from 'lucide-react'
 import Link from 'next/link'
@@ -71,10 +72,11 @@ const FacultyListPage = () => {
                                         <div className='w-16 h-16 shrink-0 rounded-2xl bg-gray-50 p-3 flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-500'>
                                             <div className="relative w-full h-full">
                                                 <Image
-                                                    src={fac.facultyMainImageCollection?.items[0]?.url || logo}
+                                                    src={fac.facultyMainImageCollection?.items[0]?.url ? ctfSrc(fac.facultyMainImageCollection.items[0].url, 160) : logo}
                                                     alt={fac.name}
                                                     fill
                                                     className="object-contain"
+                                                    unoptimized
                                                 />
                                             </div>
                                         </div>

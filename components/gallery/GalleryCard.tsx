@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import { ctfSrc } from '@/lib/contentful-src';
 import * as React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { type Gallery } from '@/hooks/useGalleryCollection';
@@ -45,11 +46,12 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ gallery, large = false }) => 
         {gallery.sampleImagesCollection.items.map((image, index) => (
           <Image
             key={index}
-            src={image.url}
+            src={ctfSrc(image.url, 800)}
             alt={image.title}
             fill
             className={`object-cover group-hover:scale-105 transition-all duration-300 ease-in-out ${index === currentIndex ? 'opacity-100' : 'opacity-0'
               }`}
+              unoptimized
           />
         ))}
       </div>

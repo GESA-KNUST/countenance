@@ -1,12 +1,6 @@
 import { parseGoogleMapsLink, type Point } from "@/lib/admin/google-maps-link";
 import { LogError } from "@/lib/logger";
 
-/**
- * Google no longer redirects its share links to a real URL: the short link now
- * serves a JavaScript page, and the place URL behind it carries an address but
- * no coordinates. So a share link is resolved in two steps — read the place out
- * of Google's preview page, then look that address up to get a position.
- */
 const MOBILE_AGENT =
   "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1";
 
@@ -40,11 +34,6 @@ function placeUrlFromHtml(html: string): string | null {
   return match ? decode(match[0]) : null;
 }
 
-/**
- * A place name in front of the address ("Amal Air Condition service, 46 …")
- * often matches nothing, while the address on its own does, so the leading
- * segments are dropped one at a time before giving up.
- */
 async function geocodeWithFallback(address: string): Promise<Point | null> {
   const parts = address.split(",").map((part) => part.trim()).filter(Boolean);
 

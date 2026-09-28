@@ -8,11 +8,6 @@ function isAdminHost(hostname: string) {
     return hostname.startsWith('web-admin.') || hostname.startsWith('admin.');
 }
 
-/**
- * On the admin subdomain the whole app is still served, so links would keep you
- * there. This returns the public site's origin so navigation leaves the
- * dashboard, and an empty string everywhere else.
- */
 export function useSiteBase() {
     const [base, setBase] = useState('');
 

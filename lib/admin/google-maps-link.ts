@@ -13,11 +13,6 @@ const round = (value: number) => Number(value.toFixed(6));
 const point = (lat: number, lon: number): Point | null =>
   isLat(lat) && isLon(lon) ? { lat: round(lat), lon: round(lon) } : null;
 
-/**
- * Google shortens shared links, and the short form carries no coordinates at
- * all, so those have to be followed on the server before anything can be read
- * out of them.
- */
 export function isShortGoogleMapsLink(input: string): boolean {
   try {
     const url = new URL(input.trim());
@@ -35,14 +30,6 @@ const fromPair = (raw: string | null | undefined): Point | null => {
   return point(Number(match[1]), Number(match[2]));
 };
 
-/**
- * Reads coordinates out of whatever someone pasted: a Google Maps URL in any of
- * its shapes, or a plain "lat, lon" pair typed by hand.
- *
- * A place URL carries two different positions. The `!3d!4d` pair is the pin on
- * the place itself, while `@` is only where the camera happened to sit, so the
- * pin wins whenever both are present.
- */
 export function parseGoogleMapsLink(input: string): Point | null {
   const text = input.trim();
   if (!text) return null;

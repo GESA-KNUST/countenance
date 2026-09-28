@@ -5,11 +5,6 @@ import { isShortGoogleMapsLink } from "@/lib/admin/google-maps-link";
 import { resolveShareLink } from "@/lib/admin/google-maps-resolve";
 import { LogError } from "@/lib/logger";
 
-/**
- * A shared Google Maps link is shortened and carries no coordinates, so it has
- * to be followed to the full URL. A browser cannot read that redirect, so it
- * happens here.
- */
 export async function POST(request: NextRequest) {
   if (!(await isSignedIn())) {
     return NextResponse.json({ message: "Please sign in again." }, { status: 401 });

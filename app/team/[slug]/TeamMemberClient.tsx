@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { ctfSrc } from '@/lib/contentful-src';
 import Link from 'next/link';
 import Container from '@/components/custom/Container';
 import { Github, Linkedin, User, ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
@@ -21,10 +22,11 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
                     {member.image ? (
                         <div className="absolute right-0 top-0 w-full md:w-2/3 h-full">
                             <Image
-                                src={member.image}
+                                src={ctfSrc(member.image, 800)}
                                 alt={member.name}
                                 fill
                                 className="object-cover object-top opacity-80"
+                                unoptimized
                             />
                         </div>
                     ) : (
@@ -87,10 +89,11 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
                             <div className="aspect-[4/5] relative rounded-[1.5rem] overflow-hidden bg-slate-200 shadow-inner">
                                 {member.image ? (
                                     <Image
-                                        src={member.image}
+                                        src={ctfSrc(member.image, 800)}
                                         alt={member.name}
                                         fill
                                         className="object-cover"
+                                        unoptimized
                                     />
                                 ) : (
                                     <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 bg-slate-100">

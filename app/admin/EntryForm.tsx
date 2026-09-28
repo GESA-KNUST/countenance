@@ -52,9 +52,6 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
 
     const slugSources = collection.slugFrom ?? (collection.titleField ? [collection.titleField] : []);
 
-    // An address that still matches the one the current title produces was
-    // filled in for the editor, so it keeps following the title. Anything
-    // somebody typed themselves counts as touched and is left alone.
     const [slugTouched, setSlugTouched] = useState(() => {
         const existing = typeof detail.values.slug === 'string' ? detail.values.slug : '';
         if (!existing) return false;
@@ -145,9 +142,7 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
         }
 
         if (field.id === 'slug') {
-            // Where the address is made from the title anyway, showing a box
-            // invites somebody to edit a thing they should not have to think
-            // about — and an out of date box overwrites a good address on save.
+
             if (collection.slugFollowsTitle && !slugTouched) {
                 return (
                     <p className="text-sm text-gray-500">

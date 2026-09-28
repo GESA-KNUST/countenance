@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import { ctfSrc } from '@/lib/contentful-src';
 import { useState, useRef } from 'react';
 import { ArrowUpRight, MapPin, X } from 'lucide-react';
 import VenueMap from './VenueMap';
@@ -74,10 +75,11 @@ const EventCard: React.FC<EventCardProps> = ({
         {/* Image */}
         <div className="h-48 sm:h-60 w-full relative shrink-0 bg-gray-100">
           <Image
-            src={imgUrl}
+            src={ctfSrc(imgUrl, 800)}
             alt={imgDesc}
             fill
             className="w-full h-full object-cover"
+              unoptimized
           />
         </div>
 

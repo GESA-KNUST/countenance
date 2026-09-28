@@ -1,18 +1,6 @@
 import { cma } from "./cma";
 import type { CollectionSpec, FieldKind, FieldSpec } from "./collections";
 
-/**
- * Turns Contentful's content model into collection specs so a content type that
- * was added in Contentful shows up in the admin without a code change. Hand
- * authored specs in COLLECTIONS still win — this only fills in the ones nobody
- * has written by hand yet, with best guesses for labels and field kinds.
- */
-
-/**
- * Content types that already have a screen built for them, or that nothing on
- * the site reads. Generating an editor for these would give the same content
- * two different editors, or invite somebody to file photos into a dead model.
- */
 const NEVER_GENERATE = new Set(["pageHero", "galleryImage"]);
 
 interface Validation {
@@ -55,11 +43,6 @@ function selectOptions(validations: Validation[] | undefined) {
     .map((value) => ({ value, label: value }));
 }
 
-/**
- * Maps a Contentful field to one of the editor's field kinds. Returns null for
- * kinds the editor cannot round-trip safely (numbers, JSON objects), so those
- * fields are left out rather than shown as a broken control.
- */
 function mapField(field: ContentTypeField): FieldSpec | null {
   const base = { id: field.id, label: field.name || field.id, required: field.required };
   const withKind = (kind: FieldKind, extra: Partial<FieldSpec> = {}): FieldSpec => ({
@@ -100,7 +83,7 @@ function mapField(field: ContentTypeField): FieldSpec | null {
       return null;
     }
     default:
-      // Object (JSON) and anything unknown have no matching control.
+
       return null;
   }
 }
@@ -143,11 +126,6 @@ function specFrom(contentType: ContentType): CollectionSpec | null {
   };
 }
 
-/**
- * Reads every content type from Contentful and builds specs for the ones not
- * already hand authored. Returns [] if the model cannot be read, so the admin
- * still works from the hand authored list alone.
- */
 export async function generatedCollections(handAuthored: Set<string>): Promise<CollectionSpec[]> {
   let response: { items?: ContentType[] } | null = null;
   try {

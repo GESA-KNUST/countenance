@@ -3,10 +3,6 @@ import { randomBytes } from "node:crypto";
 const AUTH_ENDPOINT = "https://accounts.google.com/o/oauth2/v2/auth";
 const TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token";
 
-/**
- * Restricts who may sign in, e.g. "st.knust.edu.gh". Left unset, any Google
- * account is accepted.
- */
 const ALLOWED_DOMAIN = process.env.AUTH_ALLOWED_EMAIL_DOMAIN?.trim().toLowerCase();
 
 export const STATE_COOKIE = "gesa_writer_state";
@@ -38,12 +34,6 @@ export function domainAllowed(email: string) {
   return email.toLowerCase().endsWith(`@${ALLOWED_DOMAIN}`);
 }
 
-/**
- * The id token arrives over a direct TLS call to Google's token endpoint, so
- * its contents are trustworthy without a separate signature check. The audience
- * and expiry are still checked, in case a token meant for another app is ever
- * presented here.
- */
 function readIdToken(idToken: string): GoogleIdentity | null {
   const payload = idToken.split(".")[1];
   if (!payload) return null;
@@ -64,8 +54,6 @@ function readIdToken(idToken: string): GoogleIdentity | null {
   if (audience !== process.env.AUTH_GOOGLE_ID) return null;
   if (!expiry || Date.now() > expiry) return null;
 
-  // Only the name and address are kept. Writers choose their own photo, so
-  // Google's avatar is never copied onto the site.
   return {
     email,
     name: typeof claims.name === "string" ? claims.name : email.split("@")[0],

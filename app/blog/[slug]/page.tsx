@@ -5,6 +5,8 @@ import { gql } from "graphql-request";
 import { contentfulClient } from "@/lib/contentful-client";
 import StarSpinner from '@/components/ui/StarSpinner';
 import { LogError } from '@/lib/logger';
+import ContributeNudge from '@/components/blog/ContributeNudge';
+import { currentWriter } from '@/lib/contribute/session';
 import { ogImage } from '@/lib/data/og-image';
 
 type Props = {
@@ -22,7 +24,6 @@ interface BlogMetaResponse {
   blogPostCollection: { items: BlogMetaPost[] };
 }
 
-/** Just the given name, so a share card reads "By Ama" rather than the full name. */
 function firstName(name: string | undefined | null) {
   return (name ?? '').trim().split(/\s+/)[0] ?? '';
 }
@@ -67,8 +68,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
     const title = post.title ?? 'Blog & News';
     const writer = firstName(post.author?.name);
-    // The writer goes first so it survives the truncation every social
-    // platform applies to the tail of a description.
+
     const description = writer ? `By ${writer} · ${post.hook ?? ''}`.trim() : (post.hook ?? '');
     const share = ogImage(post.headerImage?.url, post.headerImage?.description || title);
 
@@ -99,9 +99,14 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function Page(props: Props) {
   const { slug } = await props.params;
 
+  const writer = await currentWriter();
+
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-gray-50"><StarSpinner /></div>}>
-      <BlogContent slug={decodeURIComponent(slug)} />
-    </Suspense>
+    <>
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-gray-50"><StarSpinner /></div>}>
+        <BlogContent slug={decodeURIComponent(slug)} />
+      </Suspense>
+      {!writer && <ContributeNudge />}
+    </>
   );
 }

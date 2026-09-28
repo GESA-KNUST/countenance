@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ctfSrc } from '@/lib/contentful-src';
 import { Share2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -66,10 +67,11 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
             <div className="h-60 relative shrink-0 rounded-t-sm bg-gray-100">
               {headerImg?.url && (
                 <Image
-                  src={headerImg.url}
+                  src={ctfSrc(headerImg.url, 800)}
                   alt={headerImg.title || "Blog post header image"}
                   className="w-full h-full object-cover rounded-t-sm"
                   fill
+                    unoptimized
                 />
               )}
             </div>
@@ -87,10 +89,11 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
                     <div className="h-10 w-10 relative rounded-full overflow-hidden shrink-0 border border-gray-100 bg-gray-100">
                       {author?.url && (
                         <Image
-                          src={author.url}
+                          src={ctfSrc(author.url, 96)}
                           alt={"author image"}
                           className="h-full w-full object-cover"
                           fill
+                            unoptimized
                         />
                       )}
                     </div>

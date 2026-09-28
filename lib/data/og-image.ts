@@ -9,11 +9,6 @@ export interface OgImageEntry {
   type: string;
 }
 
-/**
- * Social platforms want a wide JPEG at a predictable size, so any Contentful
- * asset is cropped to the card shape rather than sent at its own dimensions.
- * WebP is deliberately avoided here: WhatsApp previews are unreliable with it.
- */
 export function ogImage(
   url: string | null | undefined,
   alt: string,

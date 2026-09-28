@@ -7,7 +7,6 @@ import { useSiteContact } from '@/hooks/useSiteContact';
 
 const ContactForm = () => {
   const contact = useSiteContact();
-  //  (keeping existing state and handlers)
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
