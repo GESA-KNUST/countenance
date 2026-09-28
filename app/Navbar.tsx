@@ -127,7 +127,7 @@ const Navbar = () => {
             }
 
             const isActive = currentPath === nav.link ||
-              (currentPath === '/blog-2' && nav.link === '/blog') ||
+              (currentPath.startsWith('/blog/') && nav.link === '/blog') ||
               (nav.link !== '/' && currentPath?.startsWith(`${nav.link}/`));
 
             return (
@@ -218,7 +218,7 @@ const Navbar = () => {
                         ) : (
                           <Link
                             href={siteLink(siteBase, nav.link!)}
-                            className={`block py-3 px-4 font-bold text-lg transition duration-300 rounded-2xl ${(currentPath === nav.link || (currentPath === '/blog-2' && nav.link === '/blog'))
+                            className={`block py-3 px-4 font-bold text-lg transition duration-300 rounded-2xl ${(currentPath === nav.link || (currentPath.startsWith('/blog/') && nav.link === '/blog'))
                               ? 'bg-primary text-white shadow-lg shadow-primary/20'
                               : 'text-gray-900 hover:bg-primary/5'
                               }`}

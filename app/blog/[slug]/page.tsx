@@ -8,7 +8,7 @@ import { LogError } from '@/lib/logger';
 import { ogImage } from '@/lib/data/og-image';
 
 type Props = {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+  params: Promise<{ slug: string }>
 }
 
 interface BlogMetaPost {
@@ -46,10 +46,10 @@ const GET_BLOG_BY_SLUG = gql`
 `;
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
-  const searchParams = await props.searchParams;
-  const slug = searchParams.slug;
+  const { slug: raw } = await props.params;
+  const slug = decodeURIComponent(raw);
 
-  if (!slug || Array.isArray(slug)) {
+  if (!slug) {
     return {
       title: 'Blog & News',
     };
@@ -96,10 +96,12 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 }
 
-export default function Page() {
+export default async function Page(props: Props) {
+  const { slug } = await props.params;
+
   return (
     <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-gray-50"><StarSpinner /></div>}>
-      <BlogContent />
+      <BlogContent slug={decodeURIComponent(slug)} />
     </Suspense>
   );
 }

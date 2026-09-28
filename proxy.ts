@@ -34,6 +34,15 @@ export function proxy(request: NextRequest) {
   const hostname = (request.headers.get("host") ?? "").split(":")[0].toLowerCase();
   const { pathname } = request.nextUrl;
 
+  // Articles used to live at /blog-2?slug=… . Links already shared keep
+  // working, and arrive at the short address with the old query string
+  // dropped rather than trailing along behind it.
+  if (pathname === "/blog-2") {
+    const slug = request.nextUrl.searchParams.get("slug");
+    const target = new URL(slug ? `/blog/${encodeURIComponent(slug)}` : "/blog", request.nextUrl);
+    return NextResponse.redirect(target, 308);
+  }
+
   if (isAdminPath(pathname) && !isAdminHost(hostname)) {
     if (pathname.startsWith("/api/")) {
       return new NextResponse(JSON.stringify({ message: "Not found" }), {
@@ -69,5 +78,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/admin/:path*"],
+  matcher: ["/admin/:path*", "/api/admin/:path*", "/blog-2"],
 };
