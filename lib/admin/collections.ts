@@ -172,10 +172,11 @@ export const COLLECTIONS: CollectionSpec[] = [
       { id: "source", label: "Link to apply", kind: "url", required: true },
       {
         id: "opportunityType",
-        label: "Type",
+        label: "What kind of opportunity is this?",
         kind: "select",
+        required: true,
         options: OPPORTUNITY_TYPES,
-        hint: "This decides which tab it shows under on the website.",
+        hint: "Internships are work placements. Scholarships pay fees or give an award. Financial Aid is help with money that is not a scholarship, like a bursary or grant. This decides which tab it appears under.",
       },
     ],
   },
