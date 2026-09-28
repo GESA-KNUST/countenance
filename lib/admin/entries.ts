@@ -1,6 +1,6 @@
 import { type CmaEntryItem, CmaError, LOCALE, assetLink, cma, cmaAll, entryLink, linkIds } from "./cma";
 import { assetUrls } from "./assets";
-import { buildSlug } from "./slug";
+import { buildSlug, cleanSlug } from "./slug";
 import { type CollectionSpec, type FieldSpec, findCollection, loadCollections } from "./collections";
 import {
   assetIdsInDocument,
@@ -531,7 +531,12 @@ export async function saveEntry(
     const base = buildSlug(sources.map((fieldId) => resolved[fieldId] as string | undefined));
 
     const current = fields.slug?.[LOCALE];
-    const currentSlug = typeof current === "string" ? current : "";
+    const typed = typeof current === "string" ? current : "";
+    const currentSlug = typed ? cleanSlug(typed) : "";
+
+    if (typed && currentSlug && currentSlug !== typed) {
+      fields.slug = { [LOCALE]: currentSlug };
+    }
 
     const previousBase = collection.slugFollowsTitle
       ? buildSlug(

@@ -42,3 +42,15 @@ export function buildSlug(parts: (string | null | undefined)[]) {
     .filter(Boolean)
     .join("-");
 }
+
+export function cleanSlug(value: string) {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/['\u2018\u2019\u201c\u201d]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 90)
+    .replace(/-+$/g, "");
+}

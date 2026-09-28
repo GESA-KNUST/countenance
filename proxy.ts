@@ -7,6 +7,22 @@ const ADMIN_HOSTS = (process.env.ADMIN_HOSTNAMES ?? "web-admin.gesaknust.com")
 
 const ADMIN_PATHS = ["/admin", "/api/admin"];
 
+
+const RENAMED_POSTS: Record<string, string> = {
+  "you-are-not-finished-yet-nietzsches-idea-of-the-overman":
+    "not-finished-yet-nietzsches-idea-overman",
+};
+
+function tidySlug(value: string) {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/['\u2018\u2019\u201c\u201d]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 function isLocal(hostname: string) {
   return (
     hostname === "localhost" ||
@@ -32,6 +48,20 @@ function isAdminPath(pathname: string) {
 export function proxy(request: NextRequest) {
   const hostname = (request.headers.get("host") ?? "").split(":")[0].toLowerCase();
   const { pathname } = request.nextUrl;
+
+  if (pathname.startsWith("/blog/")) {
+    const raw = decodeURIComponent(pathname.slice("/blog/".length));
+
+    if (raw) {
+      const tidy = tidySlug(raw);
+      const renamed = RENAMED_POSTS[tidy];
+      const target = renamed ?? (tidy && tidy !== raw ? tidy : null);
+
+      if (target && target !== raw) {
+        return NextResponse.redirect(new URL(`/blog/${target}`, request.nextUrl), 308);
+      }
+    }
+  }
 
   if (pathname === "/blog-2") {
     const slug = request.nextUrl.searchParams.get("slug");
@@ -74,5 +104,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/admin/:path*", "/blog-2"],
+  matcher: ["/admin/:path*", "/api/admin/:path*", "/blog-2", "/blog/:slug"],
 };
