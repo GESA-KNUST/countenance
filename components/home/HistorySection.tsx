@@ -4,7 +4,7 @@ import React from 'react';
 import Container from '../custom/Container';
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { History, Target, Zap, GraduationCap, Users, Lightbulb } from "lucide-react";
+import { History, Target, UsersRound, GraduationCap, Users, Lightbulb } from "lucide-react";
 
 const historyData = {
     history: [
@@ -38,7 +38,7 @@ const historyData = {
             description: "ENG Week has been a campus highlight for over four decades."
         },
         {
-            icon: Zap,
+            icon: UsersRound,
             title: "Global Alumni",
             description: "GESA alumni lead top sectors in energy, aviation, and tech worldwide."
         }
@@ -55,7 +55,7 @@ const HistorySection = () => {
                     <motion.div
                         initial="hidden"
                         whileInView="visible"
-                        viewport={{ once: true, margin: "-100px" }}
+                        viewport={{ once: true, amount: 0.15 }}
                         variants={{
                             hidden: { opacity: 0 },
                             visible: {
@@ -109,7 +109,7 @@ const HistorySection = () => {
                         <motion.div
                             initial={{ opacity: 0, x: -30, scale: 0.95 }}
                             whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                            viewport={{ once: true, margin: "-100px" }}
+                            viewport={{ once: true, amount: 0.15 }}
                             transition={{ duration: 0.8, ease: "easeOut" }}
                             className="w-full lg:w-[55%] relative"
                         >
@@ -126,7 +126,7 @@ const HistorySection = () => {
                         <motion.div
                             initial="hidden"
                             whileInView="visible"
-                            viewport={{ once: true, margin: "-100px" }}
+                            viewport={{ once: true, amount: 0.15 }}
                             variants={{
                                 hidden: {},
                                 visible: {
@@ -173,7 +173,7 @@ const HistorySection = () => {
                         <motion.div
                             initial={{ opacity: 0, x: 30, scale: 0.95 }}
                             whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                            viewport={{ once: true, margin: "-100px" }}
+                            viewport={{ once: true, amount: 0.15 }}
                             transition={{ duration: 0.8, ease: "easeOut" }}
                             className="w-full lg:w-[55%] relative"
                         >
@@ -190,7 +190,7 @@ const HistorySection = () => {
                         <motion.div
                             initial="hidden"
                             whileInView="visible"
-                            viewport={{ once: true, margin: "-100px" }}
+                            viewport={{ once: true, amount: 0.15 }}
                             variants={{
                                 hidden: {},
                                 visible: {
@@ -238,7 +238,7 @@ const HistorySection = () => {
                             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
                             initial="hidden"
                             whileInView="visible"
-                            viewport={{ once: true, margin: "-50px" }}
+                            viewport={{ once: true, amount: 0.15 }}
                             variants={{
                                 visible: {
                                     transition: {

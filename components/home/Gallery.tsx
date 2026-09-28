@@ -52,7 +52,7 @@ const Gallery = () => {
                 <motion.h1
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: true, amount: 0.15 }}
                     className='font-header font-bold text-4xl md:text-5xl text-gray-900 px-4 md:px-0'
                 >
                     Gallery
@@ -63,7 +63,7 @@ const Gallery = () => {
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="show"
-                    viewport={{ once: true, margin: "-50px" }}
+                    viewport={{ once: true, amount: 0.15 }}
                     className="grid grid-cols-1 md:grid-cols-4 auto-rows-[250px] gap-4"
                 >
                     {galleries?.map((img, index) => {
@@ -105,7 +105,7 @@ const Gallery = () => {
                         <motion.button
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
+                            viewport={{ once: true, amount: 0.15 }}
                             className="bg-primary rounded-2xl px-10 py-4 text-black font-bold text-base hover:shadow-2xl hover:bg-primary/90 transition-all duration-300 flex items-center gap-3 cursor-pointer"
                             whileTap={{ scale: 0.95 }}
                         >

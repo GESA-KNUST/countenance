@@ -52,7 +52,7 @@ const HomeClubsPreview = () => {
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
+                        viewport={{ once: true, amount: 0.15 }}
                         className="flex justify-between items-center"
                     >
                         <div className="space-y-3">
@@ -72,7 +72,7 @@ const HomeClubsPreview = () => {
                                 key={index}
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, amount: 0.2 }}
+                                viewport={{ once: true, amount: 0.15 }}
                                 transition={{ delay: index * 0.1 }}
                                 className='bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-500 flex flex-col gap-6 group hover:-translate-y-1'
                             >
