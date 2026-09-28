@@ -226,7 +226,7 @@ export async function readEntry(type: string, id: string): Promise<EntryDetail |
   };
 }
 
-async function uniqueSlug(type: string, base: string, selfId: string | null) {
+export async function uniqueSlug(type: string, base: string, selfId: string | null) {
   const existing = await cmaAll(`/entries?content_type=${type}`);
   const taken = new Set(
     existing

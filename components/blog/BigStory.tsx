@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import { blogHref } from '@/lib/data/blog-link';
 import { ctfSrc } from '@/lib/contentful-src';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -36,7 +37,8 @@ const BigStory = () => {
     if (!post) return;
     setLoading(true);
     setTimeout(() => {
-      router.push(`/blog/${encodeURIComponent(post.slug)}`);
+      const href = blogHref(post.slug);
+      if (href) router.push(href);
     }, 1000);
   };
 

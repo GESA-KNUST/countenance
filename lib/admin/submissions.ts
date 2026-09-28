@@ -14,6 +14,8 @@ import { assetUrls } from "./assets";
 import { randomUUID } from "node:crypto";
 import { markdownToDocument } from "./richtext";
 import { authorForEmail } from "./author-identity";
+import { uniqueSlug } from "./entries";
+import { buildSlug } from "./slug";
 
 export const SUBMISSION_LIMITS = {
   title: 160,
@@ -96,6 +98,7 @@ export async function createSubmission(input: SubmissionInput, writer: VerifiedW
   }
 
   const authorId = await authorForEmail(writer.email, writer.name);
+  const slug = await uniqueSlug("blogPost", buildSlug([input.title]), null);
 
   const fields: Record<string, Record<string, unknown>> = {
     title: { [LOCALE]: input.title },
@@ -107,6 +110,7 @@ export async function createSubmission(input: SubmissionInput, writer: VerifiedW
     contributorEmail: { [LOCALE]: writer.email },
     headerImage: { [LOCALE]: assetLink(input.coverImage) },
     author: { [LOCALE]: entryLink(authorId) },
+    slug: { [LOCALE]: slug },
   };
 
   const created = await cma("/entries", {
@@ -192,12 +196,22 @@ export async function approveSubmission(id: string) {
   await publishLinkedAssets(entry);
 
   const fresh = await cma(`/entries/${id}`);
+  const fields: Record<string, Record<string, unknown>> = {
+    ...fresh.fields,
+    submissionStatus: { [LOCALE]: "approved" },
+  };
+
+  const existingSlug = fields.slug?.[LOCALE];
+  if (typeof existingSlug !== "string" || existingSlug.trim() === "") {
+    const title = typeof fields.title?.[LOCALE] === "string" ? (fields.title[LOCALE] as string) : "";
+    const base = buildSlug([title]);
+    if (base) fields.slug = { [LOCALE]: await uniqueSlug("blogPost", base, id) };
+  }
+
   const saved = await cma(`/entries/${id}`, {
     method: "PUT",
     version: fresh.sys.version,
-    body: {
-      fields: { ...fresh.fields, submissionStatus: { [LOCALE]: "approved" } },
-    },
+    body: { fields },
   });
 
   try {

@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import { blogHref } from '@/lib/data/blog-link';
 import { ctfSrc } from '@/lib/contentful-src';
 
 import { Share2 } from 'lucide-react';
@@ -37,7 +38,7 @@ const SimplifiedBlogCard = ({ post, onPostSelect }: SimplifiedBlogCardProps) => 
                 <button
                     onClick={(e) => {
                         e.stopPropagation();
-                        const url = `${window.location.origin}/blog/${encodeURIComponent(post.slug)}`;
+                        const url = `${window.location.origin}${blogHref(post.slug) ?? '/blog'}`;
                         if (navigator.share) {
                             navigator.share({
                                 title: post.title,

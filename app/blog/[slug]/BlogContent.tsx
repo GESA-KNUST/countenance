@@ -1,5 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import { blogHref } from '@/lib/data/blog-link';
 import MainContent from '@/components/blog-2/MainContent';
 import PopularPosts from '@/components/blog-2/PopularPosts';
 import useBlogCollection, { type Blog } from '@/hooks/useBlogCollection';
@@ -14,7 +15,8 @@ export default function BlogContent({ slug }: { slug: string }) {
   const { data: detailedPost } = useBlog(activeSlug || '');
 
   const handlePostSelect = (post: Blog) => {
-    router.push(`/blog/${encodeURIComponent(post.slug)}`, { scroll: false });
+    const href = blogHref(post.slug);
+    if (href) router.push(href, { scroll: false });
   };
 
   return (

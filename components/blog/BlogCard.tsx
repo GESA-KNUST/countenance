@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { blogHref } from '@/lib/data/blog-link';
 import { ctfSrc } from '@/lib/contentful-src';
 import { Share2 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -39,14 +40,16 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
     if (onPostSelect) {
       setLoading(true);
       onPostSelect(post);
-      router.push(`/blog/${encodeURIComponent(post.slug)}`, { scroll: false });
+      const href = blogHref(post.slug);
+      if (href) router.push(href, { scroll: false });
       setTimeout(() => {
         setLoading(false);
       }, 1000);
     } else {
       setLoading(true);
       setTimeout(() => {
-        router.push(`/blog/${encodeURIComponent(post.slug)}`);
+        const href = blogHref(post.slug);
+        if (href) router.push(href);
       }, 1000);
     }
   };
@@ -109,7 +112,7 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      const url = `${window.location.origin}/blog/${encodeURIComponent(post.slug)}`;
+                      const url = `${window.location.origin}${blogHref(post.slug) ?? '/blog'}`;
                       if (navigator.share) {
                         navigator.share({
                           title: slug,
