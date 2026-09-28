@@ -1,6 +1,7 @@
 'use client'
 
 import Container from '@/components/custom/Container'
+import RichTextGallery from '@/components/common/RichTextGallery'
 import DepartmentHero from '@/components/department/DepartmentHero'
 import React, { useEffect } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -149,7 +150,13 @@ const DepartmentContent = () => {
                                 <h1 className='text-3xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>{department.name}</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
                                 <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-2xl leading-relaxed'>
-                                    {department.about ? documentToReactComponents(department.about.json, options) : <p className="italic text-gray-500">Information coming soon...</p>}
+                                    {department.about ? (
+                                        <RichTextGallery
+                                            document={department.about.json}
+                                            assets={(department.about.links?.assets?.block ?? []).filter(Boolean)}
+                                            options={options}
+                                        />
+                                    ) : <p className="italic text-gray-500">Information coming soon...</p>}
                                 </div>
                                 <div className='flex flex-wrap items-center gap-8 pt-8 border-t border-gray-100'>
                                     {department.websiteLink && (
@@ -169,7 +176,13 @@ const DepartmentContent = () => {
                                 <h1 className='text-3xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>Our Mission</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
                                 <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-2xl leading-relaxed'>
-                                    {department.mission ? documentToReactComponents(department.mission.json, options) : <p className="italic text-gray-500">Mission details are currently being updated.</p>}
+                                    {department.mission ? (
+                                        <RichTextGallery
+                                            document={department.mission.json}
+                                            assets={(department.mission.links?.assets?.block ?? []).filter(Boolean)}
+                                            options={options}
+                                        />
+                                    ) : <p className="italic text-gray-500">Mission details are currently being updated.</p>}
                                 </div>
                                 <div className='flex flex-wrap items-center gap-8 pt-8 border-t border-gray-100'>
                                     {department.websiteLink && (
@@ -189,7 +202,13 @@ const DepartmentContent = () => {
                                 <h1 className='text-3xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>Our Vision</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
                                 <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-2xl leading-relaxed'>
-                                    {department.vision ? documentToReactComponents(department.vision.json, options) : <p className="italic text-gray-500">Vision statement is being finalized.</p>}
+                                    {department.vision ? (
+                                        <RichTextGallery
+                                            document={department.vision.json}
+                                            assets={(department.vision.links?.assets?.block ?? []).filter(Boolean)}
+                                            options={options}
+                                        />
+                                    ) : <p className="italic text-gray-500">Vision statement is being finalized.</p>}
                                 </div>
                                 <div className='flex flex-wrap items-center gap-8 pt-8 border-t border-gray-100'>
                                     {department.websiteLink && (

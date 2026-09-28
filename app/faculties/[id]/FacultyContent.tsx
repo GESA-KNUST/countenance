@@ -18,6 +18,7 @@ import linkedin2 from '@/public/images/linkedin2.svg'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import remarkBreaks from 'remark-breaks'
+import MarkdownGallery from '@/components/common/MarkdownGallery'
 
 const tabTriggerClass =
     'flex-shrink-0 flex-1 cursor-pointer py-2.5 px-4 text-sm sm:text-base whitespace-nowrap data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all rounded-xl'
@@ -30,9 +31,7 @@ const headingClass = 'text-4xl md:text-5xl font-extrabold font-header text-gray-
 const Markdown = ({ content, fallback }: { content?: string; fallback: string }) => (
     <div className="text-lg text-gray-700 space-y-6 max-w-2xl leading-relaxed">
         {content ? (
-            <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]} components={markdownComponents}>
-                {content}
-            </ReactMarkdown>
+            <MarkdownGallery content={content} />
         ) : (
             <p className="italic text-gray-500">{fallback}</p>
         )}
