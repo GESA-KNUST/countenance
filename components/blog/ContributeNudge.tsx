@@ -8,8 +8,9 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 const DISMISSED_KEY = 'gesa-contribute-nudge';
 const QUIET_FOR_DAYS = 60;
 
-const SCROLL_TRIGGER = 0.45;
-const EARLIEST_MS = 8000;
+const SCROLL_TRIGGER = 0.2;
+const EARLIEST_MS = 2500;
+const DWELL_MS = 12000;
 
 function recentlyDismissed() {
     try {
@@ -38,21 +39,35 @@ const ContributeNudge = () => {
         if (recentlyDismissed()) return;
 
         const readyAt = Date.now() + EARLIEST_MS;
+        let done = false;
 
-        const check = () => {
-            if (Date.now() < readyAt) return;
-
-            const scrollable = document.body.scrollHeight - window.innerHeight;
-            if (scrollable <= 0) return;
-
-            if (window.scrollY / scrollable >= SCROLL_TRIGGER) {
-                setShow(true);
-                window.removeEventListener('scroll', check);
-            }
+        const reveal = () => {
+            if (done) return;
+            done = true;
+            setShow(true);
+            window.removeEventListener('scroll', check);
+            clearTimeout(dwell);
         };
 
+        const check = () => {
+            if (done || Date.now() < readyAt) return;
+
+            const scrollable = document.body.scrollHeight - window.innerHeight;
+            if (scrollable <= 0) {
+                reveal();
+                return;
+            }
+
+            if (window.scrollY / scrollable >= SCROLL_TRIGGER) reveal();
+        };
+
+        const dwell = setTimeout(reveal, DWELL_MS);
+
         window.addEventListener('scroll', check, { passive: true });
-        return () => window.removeEventListener('scroll', check);
+        return () => {
+            window.removeEventListener('scroll', check);
+            clearTimeout(dwell);
+        };
     }, []);
 
     const close = () => {
