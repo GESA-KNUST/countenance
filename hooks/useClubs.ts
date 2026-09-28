@@ -67,46 +67,6 @@ query ClubCollection {
 }
 `;
 
-const GET_CLUB_BY_ID = gql`
-query ClubById($id: String!) {
-  clubCollection(where: { sys: { id: $id } }, limit: 1) {
-    items {
-      sys {
-        id
-      }
-      clubLink
-      clubLogo {
-        description
-        url
-        title
-      }
-      clubName
-      clubType
-      description
-      isFeatured
-      isActivelyRecruitingMembers
-      aboutclub {
-        json
-        links {
-          assets {
-            block {
-              sys {
-                id
-              }
-              url
-              title
-              description
-              width
-              height
-            }
-          }
-        }
-      }
-    }
-  }
-}
-`;
-
 export const useClubs = () => {
   return useFetchData({
     queryKey: ["clubs"],
@@ -114,16 +74,5 @@ export const useClubs = () => {
       const data = await contentfulClient.request<ClubCollection>(GET_CLUBS);
       return data.clubCollection.items;
     },
-  });
-};
-
-export const useClubById = (id: string) => {
-  return useFetchData({
-    queryKey: ["club", id],
-    queryFn: async () => {
-      const data = await contentfulClient.request<ClubCollection>(GET_CLUB_BY_ID, { id });
-      return data.clubCollection.items[0];
-    },
-    enabled: !!id,
   });
 };

@@ -16,7 +16,7 @@ const GroupPage = async ({ params, searchParams }: Props) => {
     const { group: groupName } = await params;
     const { tab } = await searchParams;
 
-    const group = findGroup(groupName);
+    const group = await findGroup(groupName);
     if (!group) notFound();
 
     const active =

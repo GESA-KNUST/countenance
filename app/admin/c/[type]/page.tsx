@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 
 const CollectionList = async ({ params }: { params: Promise<{ type: string }> }) => {
     const { type } = await params;
-    const collection = findCollection(type);
+    const collection = await findCollection(type);
     if (!collection) notFound();
 
     const entries = await listEntries(type);

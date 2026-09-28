@@ -64,10 +64,6 @@ export function assetIdsInDocument(document: unknown): string[] {
   return [...new Set(ids)];
 }
 
-export function emptyDocument(): RichTextDocument {
-  return { nodeType: "document", data: {}, content: [] };
-}
-
 export function canEditAsMarkdown(document: unknown): { ok: true } | { ok: false; reason: string } {
   const unsupported = new Set<string>();
 

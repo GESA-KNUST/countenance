@@ -5,6 +5,7 @@ import {
   assetLink,
   cma,
   cmaAll,
+  entryLink,
   linkIds,
   managementToken,
   UPLOAD_BASE,
@@ -12,6 +13,7 @@ import {
 import { assetUrls } from "./assets";
 import { randomUUID } from "node:crypto";
 import { markdownToDocument } from "./richtext";
+import { authorForEmail } from "./author-identity";
 
 export const SUBMISSION_LIMITS = {
   title: 160,
@@ -29,11 +31,14 @@ export interface SubmissionInput {
   title: string;
   hook: string;
   body: string;
-  contributorName: string;
-  contributorEmail: string;
   coverImage: string;
   tags: string[];
-  authorId: string;
+}
+
+/** Taken from the signed-in writer, never from the request body. */
+export interface VerifiedWriter {
+  email: string;
+  name: string;
 }
 
 export interface SubmissionSummary {
@@ -56,15 +61,12 @@ export function readSubmission(body: Record<string, unknown>): SubmissionInput |
   const title = clean(body.title, SUBMISSION_LIMITS.title);
   const hook = clean(body.hook, SUBMISSION_LIMITS.hook);
   const article = clean(body.body, SUBMISSION_LIMITS.body);
-  const contributorName = clean(body.contributorName, SUBMISSION_LIMITS.name);
-  const contributorEmail = clean(body.contributorEmail, SUBMISSION_LIMITS.email);
   const coverImage = clean(body.coverImage, 64);
-  const authorId = clean(body.authorId, 64);
 
-  if (!title || !hook || !article || !contributorName || !coverImage) return null;
-  if (contributorEmail && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contributorEmail)) return null;
-  if (coverImage && !/^sub-[A-Za-z0-9._-]{1,58}$/.test(coverImage)) return null;
-  if (authorId && !/^[A-Za-z0-9._-]{1,64}$/.test(authorId)) return null;
+  // Who the writer is never comes from here. Anything the browser says about
+  // identity is ignored, so a crafted request cannot claim somebody's name.
+  if (!title || !hook || !article || !coverImage) return null;
+  if (!/^sub-[A-Za-z0-9._-]{1,58}$/.test(coverImage)) return null;
 
   const tags = Array.isArray(body.tags)
     ? [...new Set(
@@ -74,7 +76,7 @@ export function readSubmission(body: Record<string, unknown>): SubmissionInput |
       )].slice(0, SUBMISSION_LIMITS.tags)
     : [];
 
-  return { title, hook, body: article, contributorName, contributorEmail, coverImage, tags, authorId };
+  return { title, hook, body: article, coverImage, tags };
 }
 
 async function submissionAssetExists(id: string) {
@@ -91,13 +93,12 @@ async function publishedAuthorExists(id: string) {
   );
 }
 
-export async function createSubmission(input: SubmissionInput) {
-  if (input.coverImage && !(await submissionAssetExists(input.coverImage))) {
+export async function createSubmission(input: SubmissionInput, writer: VerifiedWriter) {
+  if (!(await submissionAssetExists(input.coverImage))) {
     throw new Error("cover image does not exist");
   }
-  if (input.authorId && !(await publishedAuthorExists(input.authorId))) {
-    throw new Error("author does not exist");
-  }
+
+  const authorId = await authorForEmail(writer.email, writer.name);
 
   const fields: Record<string, Record<string, unknown>> = {
     title: { [LOCALE]: input.title },
@@ -105,20 +106,11 @@ export async function createSubmission(input: SubmissionInput) {
     blogContent: { [LOCALE]: markdownToDocument(input.body) },
     datePublished: { [LOCALE]: new Date().toISOString().slice(0, 10) },
     submissionStatus: { [LOCALE]: "submitted" },
-    contributorName: { [LOCALE]: input.contributorName },
+    contributorName: { [LOCALE]: writer.name || writer.email },
+    contributorEmail: { [LOCALE]: writer.email },
+    headerImage: { [LOCALE]: assetLink(input.coverImage) },
+    author: { [LOCALE]: entryLink(authorId) },
   };
-
-  if (input.contributorEmail) {
-    fields.contributorEmail = { [LOCALE]: input.contributorEmail };
-  }
-  if (input.coverImage) {
-    fields.headerImage = { [LOCALE]: assetLink(input.coverImage) };
-  }
-  if (input.authorId) {
-    fields.author = {
-      [LOCALE]: { sys: { type: "Link", linkType: "Entry", id: input.authorId } },
-    };
-  }
 
   const created = await cma("/entries", {
     method: "POST",

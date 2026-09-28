@@ -2,7 +2,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { CONTENTFUL_CACHE_TAG } from "../contentful-client";
 
 const PATHS_BY_TYPE: Record<string, string[]> = {
-  blogPost: ["/", "/blog", "/blog-2"],
+  blogPost: ["/", "/blog"],
   eventCard: ["/", "/events"],
   personalityOfTheWeek: ["/"],
   galleryGroup: ["/", "/gallery"],
@@ -13,8 +13,8 @@ const PATHS_BY_TYPE: Record<string, string[]> = {
   club: ["/", "/clubs"],
   department: ["/department", "/departments"],
   faculty: ["/faculty", "/faculties"],
-  blogAuthor: ["/blog", "/blog-2"],
-  blogTaglist: ["/blog", "/blog-2"],
+  blogAuthor: ["/blog"],
+  blogTaglist: ["/blog"],
   generalSiteContent: ["/"],
 };
 
