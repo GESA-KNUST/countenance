@@ -23,9 +23,6 @@ export interface Blog {
     tags: {
         tags: string[];
     };
-    blogContent: {
-        json: unknown;
-    };
     datePublished: string;
     _id: string;
 }
@@ -51,9 +48,6 @@ const GET_BLOGS = gql`
                         url
                         title
                     }
-                }
-                blogContent {
-                    json
                 }
                 hook
                 tags {

@@ -29,6 +29,10 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
   const posthog = usePostHog();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const cardTags: string[] = (post?.tags?.tags ?? [])
+    .filter((tag: unknown): tag is string => typeof tag === 'string' && tag.trim() !== '')
+    .slice(0, 3);
+
   const formattedDate = new Date(post.datePublished).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -84,6 +88,19 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
                 <h3 className="font-header text-xl font-bold text-gray-900 leading-tight mb-3 line-clamp-3">
                   {slug}
                 </h3>
+
+                {cardTags.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {cardTags.map((tag: string) => (
+                      <span
+                        key={tag}
+                        className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="mt-4 pt-4 border-t border-gray-100">
