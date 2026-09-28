@@ -482,7 +482,7 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
                 </div>
             </div>
 
-            {detail.id && !collection.singleton && (
+            {detail.id && (
                 <div className="mt-10 border-t border-gray-200 pt-6">
                     {confirmingDelete ? (
                         <div className="rounded-xl border border-red-200 bg-red-50 p-5">
@@ -490,9 +490,9 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
                                 Delete this {collection.singular}?
                             </p>
                             <p className="mt-1 text-sm text-red-800">
-                                It disappears from the website and cannot be brought back. If you
-                                only want it off the website for now, close this and use Hide
-                                instead.
+                                {collection.singleton
+                                    ? 'It disappears from the website and cannot be brought back. You can add a new one afterwards.'
+                                    : 'It disappears from the website and cannot be brought back. If you only want it off the website for now, close this and use Hide instead.'}
                             </p>
 
                             <div className="mt-4 flex flex-wrap items-center gap-2">

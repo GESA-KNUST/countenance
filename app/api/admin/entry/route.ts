@@ -87,13 +87,6 @@ export async function DELETE(request: NextRequest) {
   if (!collection || !/^[A-Za-z0-9._-]{1,64}$/.test(id)) {
     return NextResponse.json({ message: "Unknown item." }, { status: 400 });
   }
-  if (collection.singleton) {
-    return NextResponse.json(
-      { message: "This one cannot be deleted. Edit it instead." },
-      { status: 400 }
-    );
-  }
-
   try {
     const linked = await entriesLinkingTo(id);
     if (linked.length > 0) {

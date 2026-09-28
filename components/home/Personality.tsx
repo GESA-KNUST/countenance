@@ -21,6 +21,8 @@ const Personality = ({ initial }: { initial?: POTWItem[] | null }) => {
   const personality = potw && potw.length > 0 ? potw[0] : undefined;
   const getDescription = personality ? extractText(personality.description?.json) : '';
 
+  if (!isLoading && !error && !personality) return null;
+
 
 
 
