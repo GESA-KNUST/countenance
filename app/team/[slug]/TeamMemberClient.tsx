@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { ctfSrc } from '@/lib/contentful-src';
 import Link from 'next/link';
 import Container from '@/components/custom/Container';
-import { Github, Linkedin, User, ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
+import { Github, Linkedin, User, ArrowLeft, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import { TeamMember } from '@/lib/data/team';
@@ -200,28 +200,32 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
 
                         {/* Fun Fact Section */}
                         {member.funFact && (
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.98 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true }}
-                                className="relative bg-slate-900 rounded-3xl p-8 md:p-10 overflow-hidden shadow-xl"
+                            <motion.figure
+                                initial={{ opacity: 0, y: 12 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, amount: 0.15 }}
+                                className="rounded-2xl border border-slate-200 bg-white p-8 md:p-10"
                             >
-                                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                                <div className="relative z-10 flex flex-col md:flex-row gap-6 items-start md:items-center">
-                                    <div className="bg-white/10 p-4 rounded-2xl backdrop-blur-sm border border-white/10 shrink-0">
-                                        <Sparkles className="text-primary w-8 h-8 fill-primary" />
-                                    </div>
-                                    <div>
-                                        <span className="block text-primary font-bold uppercase tracking-widest text-xs mb-2">Fun Fact</span>
-                                        <p className="text-xl md:text-2xl font-medium text-white italic leading-relaxed">
-                                            {member.slug === 'obrempong-kwabena-osei-wusu'
-                                                ? `"${member.funFact}" - Obrempong Kwabena Osei-Wusu`
-                                                : member.funFact
-                                            }
-                                        </p>
-                                    </div>
-                                </div>
-                            </motion.div>
+                                <figcaption className="flex items-center gap-3">
+                                    <span className="h-px w-8 bg-[#FFBE00]" />
+                                    <span className="font-header text-xs font-bold uppercase tracking-[0.2em] text-[#B88900]">
+                                        Fun fact
+                                    </span>
+                                </figcaption>
+
+                                <blockquote className="mt-5 font-header text-xl leading-relaxed text-slate-800 md:text-2xl">
+                                    {member.slug === 'obrempong-kwabena-osei-wusu'
+                                        ? `“${member.funFact}”`
+                                        : member.funFact}
+                                </blockquote>
+
+                                {member.slug === 'obrempong-kwabena-osei-wusu' && (
+                                    <p className="mt-4 flex items-center gap-3 text-sm text-slate-500">
+                                        <span className="h-px w-6 bg-slate-300" />
+                                        {member.name}
+                                    </p>
+                                )}
+                            </motion.figure>
                         )}
 
                         {/* Navigation Footer */}
