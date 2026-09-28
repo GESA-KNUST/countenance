@@ -96,7 +96,8 @@ const EntryList = ({ collection, entries }: EntryListProps) => {
         return ordered.filter((entry) => entry.title.toLowerCase().includes(trimmed));
     }, [ordered, query]);
 
-    const reorderable = query.trim() === '' && ordered.length > 1;
+    const reorderable =
+        collection.orderable !== false && query.trim() === '' && ordered.length > 1;
 
     const showSearch = entries.length >= SEARCH_THRESHOLD;
 

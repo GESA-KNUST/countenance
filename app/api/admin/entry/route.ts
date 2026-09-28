@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
   }
 
   const type = typeof body.type === "string" ? body.type : "";
-  if (!findCollection(type)) {
+  if (!(await findCollection(type))) {
     return NextResponse.json({ message: "Unknown item type." }, { status: 400 });
   }
 

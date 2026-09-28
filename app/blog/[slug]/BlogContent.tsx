@@ -1,22 +1,20 @@
 'use client';
-import { useSearchParams, useRouter } from 'next/navigation';
-import MainContent from '../../components/blog-2/MainContent';
-import PopularPosts from '../../components/blog-2/PopularPosts';
-import useBlogCollection, { type Blog } from '../../hooks/useBlogCollection';
-import { useBlog } from '../../hooks/useBlog';
+import { useRouter } from 'next/navigation';
+import MainContent from '@/components/blog-2/MainContent';
+import PopularPosts from '@/components/blog-2/PopularPosts';
+import useBlogCollection, { type Blog } from '@/hooks/useBlogCollection';
+import { useBlog } from '@/hooks/useBlog';
 
-export default function BlogContent() {
+export default function BlogContent({ slug }: { slug: string }) {
   const { data: allPosts } = useBlogCollection();
-  const searchParams = useSearchParams();
   const router = useRouter();
 
-  const currentSlug = searchParams.get('slug');
-  const activeSlug = currentSlug || allPosts?.[0]?.slug;
+  const activeSlug = slug || allPosts?.[0]?.slug;
 
   const { data: detailedPost } = useBlog(activeSlug || '');
 
   const handlePostSelect = (post: Blog) => {
-    router.push(`?slug=${post.slug}`, { scroll: false });
+    router.push(`/blog/${encodeURIComponent(post.slug)}`, { scroll: false });
   };
 
   return (

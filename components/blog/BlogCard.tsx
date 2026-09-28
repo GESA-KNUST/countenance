@@ -38,14 +38,14 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
     if (onPostSelect) {
       setLoading(true);
       onPostSelect(post);
-      router.push(`/blog-2?slug=${post.slug}`, { scroll: false });
+      router.push(`/blog/${encodeURIComponent(post.slug)}`, { scroll: false });
       setTimeout(() => {
         setLoading(false);
       }, 1000);
     } else {
       setLoading(true);
       setTimeout(() => {
-        router.push(`/blog-2?slug=${post.slug}`);
+        router.push(`/blog/${encodeURIComponent(post.slug)}`);
       }, 1000);
     }
   };
@@ -106,7 +106,7 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      const url = `${window.location.origin}/blog-2?slug=${post.slug}`;
+                      const url = `${window.location.origin}/blog/${encodeURIComponent(post.slug)}`;
                       if (navigator.share) {
                         navigator.share({
                           title: slug,
