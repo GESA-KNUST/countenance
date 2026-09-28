@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { AlertCircle, Check, Lock, Plus, RotateCcw, Save, X } from 'lucide-react';
+import { AlertCircle, Check, Lock, RotateCcw, Save, X } from 'lucide-react';
 import { useState as useLocalState } from 'react';
 import StarSpinner from '@/components/ui/StarSpinner';
 import type { CollectionSpec, FieldSpec } from '@/lib/admin/collections';
@@ -316,6 +316,15 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
                         </label>
                     ))}
                 </div>
+            );
+        }
+
+        if (field.kind === 'tagWords') {
+            return (
+                <TagInput
+                    words={Array.isArray(value) ? (value as string[]) : []}
+                    onChange={(words) => set(field.id, words)}
+                />
             );
         }
 
