@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { AlertCircle, Check, Lock, RotateCcw, Save, X } from 'lucide-react';
+import { AlertCircle, Check, Lock, RotateCcw, Save, Trash2, X } from 'lucide-react';
 import { useState as useLocalState } from 'react';
 import StarSpinner from '@/components/ui/StarSpinner';
 import type { CollectionSpec, FieldSpec } from '@/lib/admin/collections';
@@ -48,6 +48,8 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
     const [saved, setSaved] = useState(false);
+    const [confirmingDelete, setConfirmingDelete] = useState(false);
+    const [deleting, setDeleting] = useState(false);
     const router = useRouter();
 
     const slugSources = collection.slugFrom ?? (collection.titleField ? [collection.titleField] : []);
@@ -73,6 +75,33 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
             }
             return next;
         });
+    };
+
+    const handleDelete = async () => {
+        setError('');
+        setDeleting(true);
+
+        try {
+            const res = await fetch('/api/admin/entry', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type: collection.type, id: detail.id }),
+            });
+            const payload = await res.json().catch(() => ({}));
+
+            if (!res.ok) {
+                setError(payload.message ?? 'It could not be deleted.');
+                setConfirmingDelete(false);
+                setDeleting(false);
+                return;
+            }
+
+            router.push(`/admin/c/${collection.type}`);
+            router.refresh();
+        } catch {
+            setError('No internet connection. Nothing was deleted.');
+            setDeleting(false);
+        }
     };
 
     const startFresh = () => {
@@ -452,6 +481,52 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
                     </div>
                 </div>
             </div>
+
+            {detail.id && !collection.singleton && (
+                <div className="mt-10 border-t border-gray-200 pt-6">
+                    {confirmingDelete ? (
+                        <div className="rounded-xl border border-red-200 bg-red-50 p-5">
+                            <p className="font-semibold text-red-900">
+                                Delete this {collection.singular}?
+                            </p>
+                            <p className="mt-1 text-sm text-red-800">
+                                It disappears from the website and cannot be brought back. If you
+                                only want it off the website for now, close this and use Hide
+                                instead.
+                            </p>
+
+                            <div className="mt-4 flex flex-wrap items-center gap-2">
+                                <button
+                                    type="button"
+                                    onClick={handleDelete}
+                                    disabled={deleting}
+                                    className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-red-700 disabled:opacity-50"
+                                >
+                                    <Trash2 className="h-4 w-4" />
+                                    {deleting ? 'Deleting...' : `Yes, delete it`}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setConfirmingDelete(false)}
+                                    disabled={deleting}
+                                    className="cursor-pointer rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 hover:border-black disabled:opacity-50"
+                                >
+                                    Keep it
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        <button
+                            type="button"
+                            onClick={() => setConfirmingDelete(true)}
+                            className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-gray-500 hover:text-red-700"
+                        >
+                            <Trash2 className="h-4 w-4" />
+                            Delete this {collection.singular}
+                        </button>
+                    )}
+                </div>
+            )}
         </div>
     );
 };

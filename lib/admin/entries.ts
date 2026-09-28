@@ -1,7 +1,13 @@
 import { type CmaEntryItem, CmaError, LOCALE, assetLink, cma, cmaAll, entryLink, linkIds } from "./cma";
 import { assetUrls } from "./assets";
 import { buildSlug, cleanSlug } from "./slug";
-import { type CollectionSpec, type FieldSpec, findCollection, loadCollections } from "./collections";
+import {
+  COLLECTIONS,
+  type CollectionSpec,
+  type FieldSpec,
+  findCollection,
+  loadCollections,
+} from "./collections";
 import {
   assetIdsInDocument,
   canEditAsMarkdown,
@@ -643,4 +649,40 @@ export async function referenceOptions(refType: string): Promise<RefOption[]> {
         : item.sys.id,
     })
   );
+}
+
+export interface DeleteBlocker {
+  id: string;
+  title: string;
+  type: string;
+}
+
+export async function entriesLinkingTo(id: string): Promise<DeleteBlocker[]> {
+  const items = await cmaAll(`/entries?links_to_entry=${encodeURIComponent(id)}`);
+
+  return items.map((item) => {
+    const type = item.sys?.contentType?.sys?.id ?? "";
+    const collection = COLLECTIONS.find((entry) => entry.type === type);
+    const fields = (item.fields ?? {}) as RawFields;
+    return {
+      id: item.sys.id,
+      title: collection ? titleOf(collection, fields, item.sys.id) : item.sys.id,
+      type,
+    };
+  });
+}
+
+export async function deleteEntry(id: string) {
+  const entry = await cma(`/entries/${id}`);
+  if (!entry) throw new Error("not found");
+
+  if (entry.sys.publishedVersion) {
+    await cma(`/entries/${id}/published`, {
+      method: "DELETE",
+      version: entry.sys.version,
+    });
+  }
+
+  const current = await cma(`/entries/${id}`);
+  await cma(`/entries/${id}`, { method: "DELETE", version: current.sys.version });
 }

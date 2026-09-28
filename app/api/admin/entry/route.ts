@@ -3,7 +3,7 @@ import { isSignedIn } from "@/lib/admin/session";
 import { refreshSite } from "@/lib/admin/refresh";
 import { isWriteConfigured } from "@/lib/admin/cma";
 import { findCollection } from "@/lib/admin/collections";
-import { saveEntry, type FieldValue } from "@/lib/admin/entries";
+import { deleteEntry, entriesLinkingTo, saveEntry, type FieldValue } from "@/lib/admin/entries";
 import { LogError } from "@/lib/logger";
 
 export const maxDuration = 60;
@@ -62,5 +62,56 @@ export async function POST(request: NextRequest) {
         ? error.message
         : "That could not be saved. Please check the fields and try again.";
     return NextResponse.json({ message }, { status: 400 });
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  if (!(await isSignedIn())) {
+    return NextResponse.json({ message: "Please sign in again." }, { status: 401 });
+  }
+  if (!isWriteConfigured()) {
+    return NextResponse.json({ message: "Not set up yet." }, { status: 503 });
+  }
+
+  let body: { type?: unknown; id?: unknown };
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ message: "Something went wrong. Try again." }, { status: 400 });
+  }
+
+  const type = typeof body.type === "string" ? body.type : "";
+  const id = typeof body.id === "string" ? body.id : "";
+  const collection = await findCollection(type);
+
+  if (!collection || !/^[A-Za-z0-9._-]{1,64}$/.test(id)) {
+    return NextResponse.json({ message: "Unknown item." }, { status: 400 });
+  }
+  if (collection.singleton) {
+    return NextResponse.json(
+      { message: "This one cannot be deleted. Edit it instead." },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const linked = await entriesLinkingTo(id);
+    if (linked.length > 0) {
+      const names = linked.slice(0, 3).map((item) => item.title).join(", ");
+      const more = linked.length > 3 ? ` and ${linked.length - 3} more` : "";
+      return NextResponse.json(
+        {
+          message: `This is still used by ${names}${more}. Remove it from those first, then delete it.`,
+        },
+        { status: 409 }
+      );
+    }
+
+    await deleteEntry(id);
+    refreshSite(type);
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    LogError("[/api/admin/entry] delete", error);
+    return NextResponse.json({ message: "It could not be deleted." }, { status: 502 });
   }
 }
