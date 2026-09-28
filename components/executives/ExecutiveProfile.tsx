@@ -78,6 +78,10 @@ const ExecutiveProfile = ({ executive, colleagues }: ExecutiveProfileProps) => {
 
           <div className="mt-8 grid grid-cols-1 items-center gap-8 md:mt-10 md:grid-cols-[minmax(0,320px)_1fr] md:gap-12 lg:gap-16">
             <div className="relative mx-auto w-full max-w-[280px] md:mx-0 md:max-w-none">
+              <div
+                aria-hidden
+                className="absolute -bottom-3 -left-3 h-24 w-24 rounded-2xl bg-[#FFBE00] md:-bottom-4 md:-left-4 md:h-32 md:w-32"
+              />
               <div className="relative aspect-4/5 overflow-hidden rounded-3xl bg-gray-100 shadow-xl ring-1 ring-black/5">
                 {officialImage?.url && (
                   <Image
