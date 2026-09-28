@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { findCollection } from '@/lib/admin/collections';
-import { listEntries } from '@/lib/admin/entries';
+import { listEntries, singletonEntryId } from '@/lib/admin/entries';
 import EntryList from '../../EntryList';
 
 export const dynamic = 'force-dynamic';
@@ -12,11 +12,11 @@ const CollectionList = async ({ params }: { params: Promise<{ type: string }> })
     const collection = await findCollection(type);
     if (!collection) notFound();
 
-    const entries = await listEntries(type);
-
     if (collection.singleton) {
-        redirect(`/admin/c/${type}/${entries[0]?.id ?? 'new'}`);
+        redirect(`/admin/c/${type}/${(await singletonEntryId(type)) ?? 'new'}`);
     }
+
+    const entries = await listEntries(type);
 
     const backHref = collection.group ? `/admin/g/${collection.group}` : '/admin';
     const backLabel = collection.group ?? 'Everything';

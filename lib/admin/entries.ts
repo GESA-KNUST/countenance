@@ -686,3 +686,8 @@ export async function deleteEntry(id: string) {
   const current = await cma(`/entries/${id}`);
   await cma(`/entries/${id}`, { method: "DELETE", version: current.sys.version });
 }
+
+export async function singletonEntryId(type: string): Promise<string | null> {
+  const page = await cma(`/entries?content_type=${type}&limit=1&order=fields.order,-sys.updatedAt`);
+  return page?.items?.[0]?.sys?.id ?? null;
+}

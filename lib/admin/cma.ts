@@ -43,9 +43,10 @@ export async function cma(pathname: string, options: CmaOptions = {}) {
 
   let res = await send();
 
-  if (res.status === 429) {
-    const wait = Number(res.headers.get("x-contentful-ratelimit-reset") ?? 1);
-    await new Promise((resolve) => setTimeout(resolve, Math.min(wait, 5) * 1000));
+  for (let attempt = 0; res.status === 429 && attempt < 4; attempt += 1) {
+    const reset = Number(res.headers.get("x-contentful-ratelimit-reset") ?? 0);
+    const backoff = reset > 0 ? Math.min(reset, 8) : Math.min(2 ** attempt, 8);
+    await new Promise((resolve) => setTimeout(resolve, backoff * 1000));
     res = await send();
   }
 

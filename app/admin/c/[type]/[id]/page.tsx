@@ -29,13 +29,22 @@ const EntryPage = async ({ params }: { params: Promise<{ type: string; id: strin
         refOptions[refType] = loaded[index];
     });
 
+    const backHref = collection.singleton
+        ? collection.group
+            ? `/admin/g/${collection.group}`
+            : '/admin'
+        : `/admin/c/${type}`;
+    const backLabel = collection.singleton
+        ? collection.group ?? 'Everything'
+        : collection.label;
+
     return (
         <div className="max-w-2xl mx-auto px-4 py-10 md:py-16">
             <Link
-                href={`/admin/c/${type}`}
+                href={backHref}
                 className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-black mb-6"
             >
-                <ArrowLeft className="w-4 h-4" /> {collection.label}
+                <ArrowLeft className="w-4 h-4" /> {backLabel}
             </Link>
 
             <h1 className="text-2xl md:text-3xl font-bold font-header mb-1">
