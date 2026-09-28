@@ -5,6 +5,7 @@ import { generatedCollections } from "./content-model";
 export type FieldKind =
   | "text"
   | "longtext"
+  | "markdown"
   | "richtext"
   | "url"
   | "email"
@@ -278,9 +279,9 @@ export const COLLECTIONS: CollectionSpec[] = [
     thumbField: "facultyMainImage",
     fields: [
       { id: "name", label: "Faculty name", kind: "text", required: true },
-      { id: "about", label: "About", kind: "longtext", required: true },
-      { id: "vision", label: "Vision", kind: "longtext", required: true },
-      { id: "mission", label: "Mission", kind: "longtext", required: true },
+      { id: "about", label: "About", kind: "markdown", required: true },
+      { id: "vision", label: "Vision", kind: "markdown", required: true },
+      { id: "mission", label: "Mission", kind: "markdown", required: true },
       { id: "facultyMainImage", label: "Photos", kind: "images" },
       { id: "departmentsUnderFaculty", label: "Departments", kind: "entryRefs", required: true, refType: "department" },
       { id: "facultyWebsite", label: "Website", kind: "url" },

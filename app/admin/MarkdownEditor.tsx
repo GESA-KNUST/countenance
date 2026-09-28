@@ -19,7 +19,9 @@ import {
     X,
 } from 'lucide-react';
 import { MAX_ORIGINAL_BYTES, resizeForHero } from '@/lib/admin/resize';
-import { ASSET_LINE, type Block, nextKey, parseBlocks, serializeBlocks } from '@/lib/admin/markdown-blocks';
+import { ASSET_LINE, IMAGE_LINE, type Block, nextKey, parseBlocks, serializeBlocks } from '@/lib/admin/markdown-blocks';
+
+const thumbUrl = (url: string) => (url.startsWith('//') ? `https:${url}` : url);
 
 interface MarkdownEditorProps {
     value: string;
@@ -276,9 +278,9 @@ const MarkdownEditor = ({
                             <div key={block.key} className="p-3 bg-gray-50/60">
                                 <div className="flex items-start gap-3">
                                     <span className="relative block w-32 h-24 shrink-0 rounded-lg overflow-hidden bg-gray-200">
-                                        {assetUrls[block.id] ? (
+                                        {assetUrls[block.id] || block.url ? (
                                             <NextImage
-                                                src={`${assetUrls[block.id]}?w=256&h=192&fit=fill&fm=jpg&q=70`}
+                                                src={`${thumbUrl(assetUrls[block.id] || block.url || '')}?w=256&h=192&fit=fill&fm=jpg&q=70`}
                                                 alt=""
                                                 fill
                                                 className="object-cover"
@@ -371,8 +373,9 @@ const MarkdownPreview = ({
         }
 
         const assetLine = line.match(ASSET_LINE);
-        if (assetLine) {
-            const url = assetUrls[assetLine[2]];
+        const directLine = assetLine ? null : line.match(IMAGE_LINE);
+        if (assetLine || directLine) {
+            const url = assetLine ? assetUrls[assetLine[2]] : thumbUrl(directLine![2]);
             blocks.push(
                 url ? (
                     <span key={key++} className="block relative w-full max-w-sm aspect-4/3 my-4 rounded-lg overflow-hidden bg-gray-100">

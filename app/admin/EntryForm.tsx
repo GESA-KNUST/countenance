@@ -248,6 +248,19 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
             );
         }
 
+        if (field.kind === 'markdown') {
+            return (
+                <MarkdownEditor
+                    value={typeof value === 'string' ? value : ''}
+                    onChange={(next) => set(field.id, next)}
+                    rows={8}
+                    assetUrls={urls}
+                    onAssetUploaded={(id, url) => setUrls((current) => ({ ...current, [id]: url }))}
+                    onError={setError}
+                />
+            );
+        }
+
         if (field.kind === 'longtext') {
             return (
                 <textarea
