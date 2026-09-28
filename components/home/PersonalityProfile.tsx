@@ -13,13 +13,8 @@ const PersonalityProfile = ({ person }: { person: POTWItem }) => {
 
     return (
         <div className="font-poppins min-h-screen bg-white">
-            <div className="relative overflow-hidden border-b border-gray-100 bg-white">
-                <div
-                    aria-hidden
-                    className="pointer-events-none absolute -top-28 -left-20 h-72 w-72 rounded-full bg-[#FFBE00]/25 blur-3xl"
-                />
-
-                <Container size="xl" className="relative">
+            <div className="border-b border-gray-100 bg-white">
+                <Container size="xl">
                     <Link
                         href="/"
                         className="group inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition-colors hover:text-[#252638]"
