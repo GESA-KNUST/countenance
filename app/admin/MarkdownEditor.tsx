@@ -32,7 +32,6 @@ interface MarkdownEditorProps {
     uploadPath?: string;
 }
 
-
 type Action =
     | { kind: 'wrap'; before: string; after: string; placeholder: string }
     | { kind: 'line'; prefix: string; placeholder: string }

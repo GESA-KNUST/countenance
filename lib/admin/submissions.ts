@@ -35,7 +35,6 @@ export interface SubmissionInput {
   tags: string[];
 }
 
-/** Taken from the signed-in writer, never from the request body. */
 export interface VerifiedWriter {
   email: string;
   name: string;
@@ -63,8 +62,6 @@ export function readSubmission(body: Record<string, unknown>): SubmissionInput |
   const article = clean(body.body, SUBMISSION_LIMITS.body);
   const coverImage = clean(body.coverImage, 64);
 
-  // Who the writer is never comes from here. Anything the browser says about
-  // identity is ignored, so a crafted request cannot claim somebody's name.
   if (!title || !hook || !article || !coverImage) return null;
   if (!/^sub-[A-Za-z0-9._-]{1,58}$/.test(coverImage)) return null;
 
@@ -191,7 +188,6 @@ export async function approveSubmission(id: string) {
   if (!entry.fields?.author?.[LOCALE]?.sys?.id) {
     throw new Error("Choose an author first, then approve.");
   }
-
 
   await publishLinkedAssets(entry);
 

@@ -82,7 +82,6 @@ export async function listEntries(type: string): Promise<EntrySummary[]> {
   const collection = await findCollection(type);
   if (!collection) return [];
 
-  // A generated type may have no `order` field; ordering by it would 400.
   const order = collection.orderable === false ? "-sys.updatedAt" : "fields.order,-sys.updatedAt";
   const items = await cmaAll(`/entries?content_type=${type}&order=${order}`);
 
@@ -253,10 +252,6 @@ function linkedAssetIds(fields: unknown, found = new Set<string>()): Set<string>
   return found;
 }
 
-/**
- * A published entry pointing at an unpublished asset makes Contentful refuse to
- * resolve the link, so every asset an entry references is published with it.
- */
 async function publishLinkedAssets(fields: unknown) {
   for (const id of linkedAssetIds(fields)) {
     try {
@@ -265,8 +260,7 @@ async function publishLinkedAssets(fields: unknown) {
       if (!asset.fields?.file?.[LOCALE]?.url) continue;
       await cma(`/assets/${id}/published`, { method: "PUT", version: asset.sys.version });
     } catch {
-      // A single asset that refuses to publish must not fail the whole save;
-      // the site tolerates an unresolved link and the editor sees the entry saved.
+
     }
   }
 }
@@ -539,9 +533,6 @@ export async function saveEntry(
     const current = fields.slug?.[LOCALE];
     const currentSlug = typeof current === "string" ? current : "";
 
-    // A slug that still matches what the old title produced was made for the
-    // editor, not chosen by them, so it should follow the title rather than
-    // leave a stale address behind. Anything typed by hand survives untouched.
     const previousBase = collection.slugFollowsTitle
       ? buildSlug(
           sources.map((fieldId) => existing?.fields?.[fieldId]?.[LOCALE] as string | undefined)

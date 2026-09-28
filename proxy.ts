@@ -19,8 +19,7 @@ function isLocal(hostname: string) {
 function isAdminHost(hostname: string) {
   if (isLocal(hostname)) return true;
   if (ADMIN_HOSTS.includes(hostname)) return true;
-  // Preview deployments keep the dashboard reachable for testing, but the
-  // production build never exposes it on a *.vercel.app alias.
+
   return process.env.VERCEL_ENV !== "production" && hostname.endsWith(".vercel.app");
 }
 
@@ -34,9 +33,6 @@ export function proxy(request: NextRequest) {
   const hostname = (request.headers.get("host") ?? "").split(":")[0].toLowerCase();
   const { pathname } = request.nextUrl;
 
-  // Articles used to live at /blog-2?slug=… . Links already shared keep
-  // working, and arrive at the short address with the old query string
-  // dropped rather than trailing along behind it.
   if (pathname === "/blog-2") {
     const slug = request.nextUrl.searchParams.get("slug");
     const target = new URL(slug ? `/blog/${encodeURIComponent(slug)}` : "/blog", request.nextUrl);

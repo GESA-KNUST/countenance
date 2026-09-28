@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import { ctfSrc } from '@/lib/contentful-src';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import star from '../../public/images/star.svg';
@@ -113,11 +114,12 @@ const BigStory = () => {
         {/* Image Section */}
         <div className="w-full h-[304px] md:h-[424px] lg:h-[500px] rounded-md overflow-hidden relative">
           <Image
-            src={post.headerImage.url}
+            src={ctfSrc(post.headerImage.url, 1200)}
             alt={post.headerImage.title || post.title}
             className="object-cover rounded"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              unoptimized
           />
         </div>
       </div>

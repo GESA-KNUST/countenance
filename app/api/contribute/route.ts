@@ -23,8 +23,6 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // The rate limit follows the person, not the connection, so one account
-  // cannot flood the queue from several networks.
   const limit = rateLimit(`writer:${writer.email}`, 5, 60 * 60 * 1000);
   if (!limit.allowed) {
     return NextResponse.json(

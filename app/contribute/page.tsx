@@ -26,38 +26,38 @@ const ContributePage = async ({ searchParams }: Props) => {
     const error = typeof params.error === 'string' ? params.error : '';
 
     return (
-        <div className="font-poppins min-h-screen bg-white">
-            <div className="relative overflow-hidden border-b border-gray-100">
-                <div
-                    aria-hidden
-                    className="pointer-events-none absolute -top-56 -right-40 h-[26rem] w-[26rem] rounded-full bg-[#FFBE00]/20 blur-[100px]"
-                />
-                <div
-                    aria-hidden
-                    className="pointer-events-none absolute -bottom-40 left-1/3 h-72 w-72 rounded-full bg-[#252638]/[0.04] blur-[90px]"
-                />
+        <div className="font-poppins bg-white">
+            <div className={writer ? 'border-b border-gray-100' : ''}>
+                <Container size="lg">
+                    <div className="mx-auto max-w-3xl text-center">
+                        <h1 className="text-balance font-header text-4xl font-bold leading-[1.05] tracking-tight text-[#252638] sm:text-5xl lg:text-[3.5rem]">
+                            Your story belongs on the blog.
+                        </h1>
 
-                <Container size="lg" className="relative">
-                    <h1 className="max-w-3xl font-header text-4xl font-bold leading-[1.05] tracking-tight text-[#252638] sm:text-5xl md:text-6xl">
-                        Your story belongs on the blog.
-                    </h1>
+                        <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-gray-600">
+                            The internship that changed your year. The project that nearly broke you.
+                            The thing you wish somebody had told you in first year.
+                        </p>
 
-                    <p className="mt-5 max-w-2xl text-lg leading-relaxed text-gray-600">
-                        The internship that changed your year. The project that nearly broke you.
-                        The thing you wish somebody had told you in first year. Your article stays
-                        yours &mdash; it goes out under your own name, and you can ask us to take it
-                        down whenever you like.
-                    </p>
+                        <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-gray-500">
+                            Your article stays yours, it goes out under your own name, and you can
+                            ask us to take it down whenever you like.
+                        </p>
+
+                        {!writer && (
+                            <div className="mt-10">
+                                <SignInPanel configured={isSignInConfigured()} error={error} />
+                            </div>
+                        )}
+                    </div>
                 </Container>
             </div>
 
-            <Container size="lg">
-                {writer ? (
+            {writer && (
+                <Container size="lg">
                     <ContributeForm writer={writer} savedPhotoUrl={profile?.photoUrl ?? null} />
-                ) : (
-                    <SignInPanel configured={isSignInConfigured()} error={error} />
-                )}
-            </Container>
+                </Container>
+            )}
         </div>
     );
 };

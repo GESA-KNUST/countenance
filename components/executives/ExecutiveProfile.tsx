@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { ctfSrc } from '@/lib/contentful-src';
 import Link from 'next/link';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import type { Document } from '@contentful/rich-text-types';
@@ -93,12 +94,13 @@ const ExecutiveProfile = ({ executive, colleagues }: ExecutiveProfileProps) => {
               <div className="relative aspect-4/5 overflow-hidden rounded-3xl bg-gray-100 shadow-xl ring-1 ring-black/5">
                 {officialImage?.url && (
                   <Image
-                    src={officialImage.url}
+                    src={ctfSrc(officialImage.url, 640)}
                     alt={officialImage.description || fullName}
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 280px, 320px"
                     priority
+                      unoptimized
                   />
                 )}
               </div>
@@ -230,11 +232,12 @@ const ExecutiveProfile = ({ executive, colleagues }: ExecutiveProfileProps) => {
                       <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-gray-100 shrink-0">
                         {colleague.officialImage?.url && (
                           <Image
-                            src={colleague.officialImage.url}
+                            src={ctfSrc(colleague.officialImage.url, 96)}
                             alt={colleague.fullName}
                             fill
                             className="object-cover"
                             sizes="48px"
+                              unoptimized
                           />
                         )}
                       </div>

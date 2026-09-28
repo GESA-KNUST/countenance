@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react'
+import { ctfSrc } from '@/lib/contentful-src';
 import Container from '@/components/custom/Container';
 import { Search } from 'lucide-react';
 import Image from 'next/image';
@@ -101,7 +102,7 @@ const ClubsList = ({ clubs }: ClubsListProps) => {
                         {filteredClubs.filter((club) => club.isFeatured)?.map((club, index) => (
                             <Link href={`/clubs/${club.sys.id}`} key={index} className='p-6 shadow-lg rounded-xl h-[454px] flex flex-col justify-between'>
                                 <div className='w-full h-56 bg-slate-100 rounded-xl relative overflow-hidden'>
-                                    <Image src={club.clubLogo.url} alt={club.clubLogo.title || "Club Logo"} fill className='object-cover rounded-xl' />
+                                    <Image src={ctfSrc(club.clubLogo.url, 400)} alt={club.clubLogo.title || "Club Logo"} fill className='object-cover rounded-xl' unoptimized />
                                 </div>
                                 <div className='flex flex-col gap-y-4 py-4'>
                                     <h2 className='font-bold text-lg font-header'>{club.clubName}</h2>

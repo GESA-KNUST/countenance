@@ -21,8 +21,6 @@ export async function GET(request: NextRequest) {
   const state = request.nextUrl.searchParams.get("state");
   const expected = request.cookies.get(STATE_COOKIE)?.value;
 
-  // Without this the sign-in could be started by another site on the writer's
-  // behalf, which is how a session gets planted in someone else's browser.
   if (!code || !state || !expected || state !== expected) {
     return back(request, "signin");
   }

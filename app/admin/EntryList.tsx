@@ -70,8 +70,6 @@ const EntryList = ({ collection, entries }: EntryListProps) => {
         persist(next);
     };
 
-    // Typing a number moves that item to that position and shifts the rest
-    // along, which is what someone means by "make this one number 3".
     const moveTo = (index: number, position: number) => {
         const target = Math.min(Math.max(position, 1), ordered.length) - 1;
         if (target === index) return;

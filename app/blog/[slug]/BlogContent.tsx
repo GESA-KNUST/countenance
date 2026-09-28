@@ -22,7 +22,12 @@ export default function BlogContent({ slug }: { slug: string }) {
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-2 lg:px-8 pb-16">
         <div className="flex flex-col xl:flex-row gap-16">
           <MainContent selectedPost={detailedPost ?? null} />
-          <PopularPosts allPosts={allPosts} onPostSelect={handlePostSelect} />
+          <PopularPosts
+            allPosts={allPosts}
+            onPostSelect={handlePostSelect}
+            currentSlug={activeSlug}
+            authorName={detailedPost?.author?.name}
+          />
         </div>
       </div>
     </main>

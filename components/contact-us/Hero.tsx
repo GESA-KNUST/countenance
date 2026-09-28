@@ -1,5 +1,6 @@
 'use client';
 import Autoplay from "embla-carousel-autoplay"
+import { contentfulImage } from '@/lib/contentful-image';
 import Image, { StaticImageData } from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import Container from '../custom/Container';
@@ -71,14 +72,33 @@ const Hero = ({ images: imagesProp }: HeroProps) => {
         <CarouselContent className="h-full">
           {images.map((img, index) => (
             <CarouselItem key={index} className="relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full">
-              <Image
-                src={img}
-                alt={`Hero image ${index + 1}`}
-                fill
-                className='object-cover'
-                priority={index === 0}
-                sizes="100vw"
-              />
+{typeof img !== 'string' ? (
+                              <Image
+                                src={img}
+                                alt={`Hero image ${index + 1}`}
+                                fill
+                                className="object-cover"
+                                priority={index === 0}
+                                sizes="100vw"
+                              />
+                            ) : (() => {
+                              const hero = contentfulImage(img, {
+                                widths: [640, 828, 1080, 1440, 1920, 2560],
+                                quality: 78,
+                              });
+                              return (
+                                <img
+                                  src={hero.src}
+                                  srcSet={hero.srcSet || undefined}
+                                  sizes="100vw"
+                                  alt={`Hero image ${index + 1}`}
+                                  className="absolute inset-0 h-full w-full object-cover"
+                                  loading={index === 0 ? 'eager' : 'lazy'}
+                                  fetchPriority={index === 0 ? 'high' : 'auto'}
+                                  decoding="async"
+                                />
+                              );
+                            })()}
             </CarouselItem>
           ))}
         </CarouselContent>

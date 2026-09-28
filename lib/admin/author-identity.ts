@@ -1,16 +1,6 @@
 import { type CmaEntryItem, LOCALE, cma, cmaAll, entryLink } from "./cma";
 import { assetUrls } from "./assets";
 
-/**
- * A blog author belongs to exactly one verified email address, and the binding
- * lives in `authorIdentity` entries that are deliberately never published — the
- * Content Delivery API cannot read drafts, so writers' addresses stay private
- * even though the delivery token is public.
- *
- * This is what stops one person writing as another: nobody chooses who they
- * are, the address they proved at sign-in decides it.
- */
-
 interface Identity {
   email: string;
   authorId: string;
@@ -51,10 +41,6 @@ async function createAuthor(name: string) {
   return created.sys.id as string;
 }
 
-/**
- * Returns the author record for a verified address, creating one the first time
- * somebody writes. The identity entry is left as a draft on purpose.
- */
 export async function authorForEmail(email: string, name: string): Promise<string> {
   const existing = await findIdentity(email);
   if (existing) return existing.authorId;
@@ -81,10 +67,6 @@ export interface WriterProfile {
   photoUrl: string | null;
 }
 
-/**
- * The writer's own saved photo, never one borrowed from Google. Returns null
- * until they have written or set a picture, so the form can offer to take one.
- */
 export async function profileForEmail(email: string): Promise<WriterProfile | null> {
   const identity = await findIdentity(email);
   if (!identity) return null;
@@ -106,10 +88,6 @@ export async function profileForEmail(email: string): Promise<WriterProfile | nu
   return { authorId: identity.authorId, name, photoUrl };
 }
 
-/**
- * Saves a picture the writer chose themselves, creating their author record if
- * this is the first thing they have done.
- */
 export async function setWriterPhoto(
   email: string,
   name: string,

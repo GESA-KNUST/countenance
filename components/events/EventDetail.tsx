@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { ctfSrc } from '@/lib/contentful-src';
 import { MapPin, Calendar, ExternalLink, ArrowLeft } from 'lucide-react';
 import { EventItem } from '@/hooks/useEventCollection';
 import Link from 'next/link';
@@ -35,11 +36,12 @@ const EventDetail: React.FC<EventDetailProps> = ({ event }) => {
             {/* Hero Section */}
             <div className="relative h-[40vh] sm:h-[60vh] w-full">
                 <Image
-                    src={eventImage.url}
+                    src={ctfSrc(eventImage.url, 1600)}
                     alt={eventImage.description || title}
                     fill
                     className="object-cover"
                     priority
+                    unoptimized
                 />
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center p-6 text-center">
                     <div className="max-w-4xl mx-auto">

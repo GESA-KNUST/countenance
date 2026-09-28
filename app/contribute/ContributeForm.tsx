@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Check, Plus, X, Send } from 'lucide-react';
+import { Camera, Check, Plus, X, Send } from 'lucide-react';
 import StarSpinner from '@/components/ui/StarSpinner';
 import MarkdownEditor from '@/app/admin/MarkdownEditor';
 import { MAX_ORIGINAL_BYTES, resizeForHero } from '@/lib/admin/resize';
@@ -186,25 +186,48 @@ const ContributeForm = ({
             </div>
 
             <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
-                <div className="flex items-center gap-4">
-                    <label className="group relative h-14 w-14 shrink-0 cursor-pointer overflow-hidden rounded-full bg-[#252638]">
-                        {photoUrl ? (
-                            <Image
-                                src={`${photoUrl}?w=112&h=112&fit=fill&f=face&fm=webp&q=80`}
-                                alt=""
-                                fill
-                                className="object-cover"
-                                sizes="56px"
-                                unoptimized
-                            />
-                        ) : (
-                            <span className="flex h-full w-full items-center justify-center text-lg font-semibold text-white">
-                                {(writer.name || writer.email).charAt(0).toUpperCase()}
+                <div className="flex items-center gap-3.5">
+                    <span className="relative h-14 w-14 shrink-0">
+                        <span className="block h-14 w-14 overflow-hidden rounded-full bg-[#252638]">
+                            {photoUrl ? (
+                                <Image
+                                    src={`${photoUrl}?w=112&h=112&fit=fill&f=face&fm=webp&q=80`}
+                                    alt=""
+                                    width={56}
+                                    height={56}
+                                    className="h-full w-full object-cover"
+                                    unoptimized
+                                />
+                            ) : (
+                                <span className="flex h-full w-full items-center justify-center text-lg font-semibold text-white">
+                                    {(writer.name || writer.email).charAt(0).toUpperCase()}
+                                </span>
+                            )}
+                        </span>
+
+                        {photoBusy && (
+                            <span className="absolute inset-0 flex items-center justify-center rounded-full bg-black/55">
+                                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                             </span>
                         )}
-                        <span className="absolute inset-0 flex items-center justify-center bg-black/55 text-[10px] font-semibold text-white opacity-0 transition-opacity group-hover:opacity-100">
-                            {photoBusy ? '...' : 'Change'}
+
+                        <span className="pointer-events-none absolute -bottom-0.5 -right-0.5 flex h-6 w-6 items-center justify-center rounded-full border-2 border-gray-50 bg-white shadow-sm">
+                            <Camera className="h-3 w-3 text-gray-600" />
                         </span>
+                    </span>
+
+                    <div className="min-w-0 flex-1">
+                        <p className="truncate font-semibold text-gray-900">
+                            {writer.name || writer.email}
+                        </p>
+                        <p className="truncate text-sm text-gray-500">{writer.email}</p>
+                    </div>
+                </div>
+
+                <div className="mt-3.5 flex items-center justify-between gap-3 border-t border-gray-200 pt-3">
+                    <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg px-1 py-1.5 text-sm font-semibold text-[#252638] hover:underline">
+                        <Camera className="h-4 w-4" />
+                        {photoBusy ? 'Saving photo...' : photoUrl ? 'Change photo' : 'Add your photo'}
                         <input
                             type="file"
                             accept="image/*"
@@ -218,23 +241,18 @@ const ContributeForm = ({
                         />
                     </label>
 
-                    <div className="min-w-0">
-                        <p className="font-semibold text-gray-900">{writer.name || writer.email}</p>
-                        <p className="truncate text-sm text-gray-500">{writer.email}</p>
-                    </div>
-
                     <button
                         type="button"
                         onClick={signOut}
-                        className="ml-auto shrink-0 cursor-pointer text-sm font-medium text-gray-500 underline hover:text-black"
+                        className="shrink-0 cursor-pointer rounded-lg px-1 py-1.5 text-sm font-medium text-gray-500 hover:text-black hover:underline"
                     >
-                        Not you?
+                        Sign out
                     </button>
                 </div>
 
                 {!photoUrl && !photoError && (
-                    <p className="mt-3 text-sm text-gray-500">
-                        Tap the circle to add the photo that appears next to your articles.
+                    <p className="mt-2 text-sm text-gray-500">
+                        This is the photo that appears next to your articles.
                     </p>
                 )}
                 {photoError && <p className="mt-3 text-sm text-red-600">{photoError}</p>}
@@ -244,6 +262,11 @@ const ContributeForm = ({
                 <span className={labelClass}>
                     Cover photo <span className="text-red-500">*</span>
                 </span>
+                <p className="text-sm text-gray-500 mb-2">
+                    The big picture at the top of your article. It is also the one people see in the
+                    blog list and in the preview when your link is shared on WhatsApp, so pick a wide
+                    one that shows what the article is about.
+                </p>
                 {cover ? (
                     <div className="flex items-center gap-4">
                         <span className="relative block w-40 h-28 rounded-lg overflow-hidden bg-gray-100">

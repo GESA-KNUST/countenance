@@ -18,10 +18,6 @@ const PATHS_BY_TYPE: Record<string, string[]> = {
   generalSiteContent: ["/"],
 };
 
-/**
- * Only the pages that actually show this content are rebuilt. Refreshing the
- * whole site made every section on every page cold again after one small edit.
- */
 export function refreshSite(type?: string, extraPaths: string[] = []) {
   revalidateTag(CONTENTFUL_CACHE_TAG, "seconds");
 

@@ -1,6 +1,7 @@
 'use client'
 
 import Container from '@/components/custom/Container'
+import { ctfSrc } from '@/lib/contentful-src';
 import DepartmentHero from '@/components/department/DepartmentHero'
 import { Search, Globe } from 'lucide-react'
 import Link from 'next/link'
@@ -72,10 +73,11 @@ const DepartmentListPage = () => {
                                             {dept.deptLogo?.url ? (
                                                 <div className="relative w-full h-full">
                                                     <Image
-                                                        src={dept.deptLogo.url}
+                                                        src={ctfSrc(dept.deptLogo.url, 160)}
                                                         alt={dept.name}
                                                         fill
                                                         className="object-contain"
+                                                        unoptimized
                                                     />
                                                 </div>
                                             ) : (

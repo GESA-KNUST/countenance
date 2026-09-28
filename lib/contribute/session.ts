@@ -4,11 +4,6 @@ import { cookies } from "next/headers";
 export const WRITER_COOKIE = "gesa_writer";
 const SESSION_DAYS = 180;
 
-/**
- * The writer session is signed with a key derived from the admin secret rather
- * than the secret itself, so a cookie handed to the public can never be
- * mistaken for — or used to forge — an admin one.
- */
 const ADMIN_SECRET = process.env.ADMIN_SESSION_SECRET;
 const SECRET = ADMIN_SECRET
   ? createHmac("sha256", ADMIN_SECRET).update("contributor-session-v1").digest("hex")

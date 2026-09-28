@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { ctfSrc } from '@/lib/contentful-src';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight, User } from 'lucide-react';
@@ -23,10 +24,11 @@ const TeamCard = ({ member, index }: { member: TeamMember, index: number }) => {
             >
                 {member.image ? (
                     <Image
-                        src={member.image}
+                        src={ctfSrc(member.image, 600)}
                         alt={member.name}
                         fill
                         className="object-cover hover:scale-105 transition-transform duration-700"
+                        unoptimized
                     />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">

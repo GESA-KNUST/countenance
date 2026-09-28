@@ -13,12 +13,6 @@ interface VenueMapProps {
 
 export { googleMapsLink };
 
-/**
- * Google's own embed carries no API key and no tile provider that can block us,
- * and it gives visitors the map they already know. The admin location picker
- * cannot use it, because an iframe cannot report where someone tapped, so that
- * one stays on Leaflet.
- */
 const VenueMap = ({ lat, lon, label, className = 'h-[400px]' }: VenueMapProps) => {
     const [loaded, setLoaded] = useState(false);
 
