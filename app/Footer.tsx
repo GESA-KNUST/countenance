@@ -11,8 +11,9 @@ import { Separator } from '../components/ui/separator';
 
 import { useState, FormEvent } from 'react';
 import { siteLink, useSiteBase } from '@/hooks/useSiteBase';
+import { SITE_CONTACT_FALLBACK, type SiteContact } from '@/lib/data/site-contact';
 
-const Footer = () => {
+const Footer = ({ contact = SITE_CONTACT_FALLBACK }: { contact?: SiteContact }) => {
   const siteBase = useSiteBase();
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -33,11 +34,11 @@ const Footer = () => {
   };
 
   const socialLinks = [
-    { img: whatsapp, to: "https://whatsapp.com/channel/0029Vb6ndaFDeON4BBZULN0A" },
-    { img: x, to: "https://x.com/thegesaknust?s=11" },
-    { img: ig, to: "https://www.instagram.com/thegesaknust?igsh=MXhidHNqZndwYmdqMg==" },
-    { img: linkedin, to: "https://www.linkedin.com/company/gesa-knust/" },
-  ]
+    { img: whatsapp, to: contact.whatsapp },
+    { img: x, to: contact.x },
+    { img: ig, to: contact.instagram },
+    { img: linkedin, to: contact.linkedin },
+  ].filter((link) => Boolean(link.to))
 
   const pageLinks = [
     {
@@ -86,11 +87,15 @@ const Footer = () => {
             <div className='flex flex-wrap gap-10 items-start'>
               <div className='flex flex-col gap-2'>
                 <h3 className='text-sm font-bold text-primary'>Contact Us</h3>
-                <span className='text-warm-gray'>+233 20 057 6468</span>
+                <a href={`tel:${contact.phone.replace(/\s+/g, '')}`} className='text-warm-gray hover:underline'>
+                  {contact.phone}
+                </a>
               </div>
               <div className='flex flex-col gap-2'>
                 <h3 className='text-sm font-bold text-primary'>Email</h3>
-                <span className='text-warm-gray'>thegesaknust@gmail.com</span>
+                <a href={`mailto:${contact.email}`} className='text-warm-gray hover:underline'>
+                  {contact.email}
+                </a>
               </div>
             </div>
 

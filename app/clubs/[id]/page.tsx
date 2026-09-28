@@ -4,6 +4,8 @@ import { gql } from "graphql-request";
 import { ClubItems } from '@/hooks/useClubs';
 import NotFoundCard from '@/components/common/NotFoundCard';
 import { LogError } from '@/lib/logger';
+import type { Metadata } from 'next';
+import { ogImage } from '@/lib/data/og-image';
 
 interface ClubCollection {
     clubCollection: {
@@ -55,17 +57,42 @@ type Props = {
     params: Promise<{ id: string }>
 }
 
+const fetchClub = async (id: string): Promise<ClubItems | null> => {
+    try {
+        const data = await contentfulClient.request<ClubCollection>(GET_CLUB_BY_ID, { id });
+        return data.clubCollection.items[0] ?? null;
+    } catch (error) {
+        LogError("Failed to fetch club detail", error);
+        return null;
+    }
+};
+
+export async function generateMetadata(props: Props): Promise<Metadata> {
+    const { id } = await props.params;
+    const club = await fetchClub(id);
+    if (!club) return { title: 'Club not found' };
+
+    const title = club.clubName;
+    const description = club.description ?? `${club.clubName} at GESA-KNUST.`;
+    const share = ogImage(club.clubLogo?.url, club.clubLogo?.title || club.clubName);
+
+    return {
+        title,
+        description,
+        openGraph: { title, description, type: 'article', images: share },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: share.map((image) => image.url),
+        },
+    };
+}
+
 const ClubDetailPage = async (props: Props) => {
     const params = await props.params;
     const { id } = params;
-    let club: ClubItems | null = null;
-
-    try {
-        const data = await contentfulClient.request<ClubCollection>(GET_CLUB_BY_ID, { id });
-        club = data.clubCollection.items[0];
-    } catch (error) {
-        LogError("Failed to fetch club detail", error);
-    }
+    const club = await fetchClub(id);
 
     if (!club) {
         return (

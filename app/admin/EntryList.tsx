@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Plus, ChevronRight, X, ChevronUp, ChevronDown, ArrowUpDown } from 'lucide-react';
+import { Plus, ChevronRight, X, ChevronUp, ChevronDown, ArrowUpDown, Check } from 'lucide-react';
 import type { CollectionSpec } from '@/lib/admin/collections';
 import type { EntrySummary } from '@/lib/admin/entries';
 import VisibilityToggle from './VisibilityToggle';
@@ -19,20 +19,26 @@ const EntryList = ({ collection, entries }: EntryListProps) => {
     const [ordered, setOrdered] = useState(entries);
     const [savingOrder, setSavingOrder] = useState(false);
     const [orderError, setOrderError] = useState('');
+    const [justSaved, setJustSaved] = useState(false);
+    const [editing, setEditing] = useState<string | null>(null);
+    const [draft, setDraft] = useState('');
 
     useEffect(() => {
         setOrdered(entries);
     }, [entries]);
 
-    const move = async (index: number, direction: -1 | 1) => {
-        const target = index + direction;
-        if (target < 0 || target >= ordered.length) return;
+    useEffect(() => {
+        if (!justSaved) return;
+        const timer = setTimeout(() => setJustSaved(false), 2500);
+        return () => clearTimeout(timer);
+    }, [justSaved]);
 
-        const next = [...ordered];
-        [next[index], next[target]] = [next[target], next[index]];
+    const persist = async (next: EntrySummary[]) => {
+        const previous = ordered;
         setOrdered(next);
         setOrderError('');
         setSavingOrder(true);
+        setJustSaved(false);
 
         try {
             const res = await fetch('/api/admin/reorder', {
@@ -43,14 +49,45 @@ const EntryList = ({ collection, entries }: EntryListProps) => {
             if (!res.ok) {
                 const payload = await res.json().catch(() => ({}));
                 setOrderError(payload.message ?? 'The new order could not be saved.');
-                setOrdered(entries);
+                setOrdered(previous);
+            } else {
+                setJustSaved(true);
             }
         } catch {
             setOrderError('No internet connection. The new order was not saved.');
-            setOrdered(entries);
+            setOrdered(previous);
         }
 
         setSavingOrder(false);
+    };
+
+    const move = (index: number, direction: -1 | 1) => {
+        const target = index + direction;
+        if (target < 0 || target >= ordered.length) return;
+
+        const next = [...ordered];
+        [next[index], next[target]] = [next[target], next[index]];
+        persist(next);
+    };
+
+    // Typing a number moves that item to that position and shifts the rest
+    // along, which is what someone means by "make this one number 3".
+    const moveTo = (index: number, position: number) => {
+        const target = Math.min(Math.max(position, 1), ordered.length) - 1;
+        if (target === index) return;
+
+        const next = [...ordered];
+        const [moved] = next.splice(index, 1);
+        next.splice(target, 0, moved);
+        persist(next);
+    };
+
+    const commitPosition = (index: number) => {
+        const typed = Number(draft);
+        setEditing(null);
+        setDraft('');
+        if (!Number.isFinite(typed) || typed < 1) return;
+        moveTo(index, Math.round(typed));
     };
 
     const filtered = useMemo(() => {
@@ -104,11 +141,23 @@ const EntryList = ({ collection, entries }: EntryListProps) => {
             )}
 
             {reorderable && (
-                <p className="mb-3 flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2 text-sm text-gray-600">
-                    <ArrowUpDown className="h-4 w-4 shrink-0 text-gray-400" />
-                    This is the order they appear on the website. Use the arrows to move things up or
-                    down &mdash; it saves straight away.
-                </p>
+                <div className="mb-3 flex items-start gap-2.5 rounded-lg bg-gray-50 px-3 py-2.5 text-sm text-gray-600">
+                    <ArrowUpDown className="mt-0.5 h-4 w-4 shrink-0 text-gray-400" />
+                    <p className="min-w-0 flex-1">
+                        This is the order they appear on the website. Type a number to send something
+                        straight to that place, or use the arrows to nudge it. It saves on its own.
+                    </p>
+                    {savingOrder && (
+                        <span className="shrink-0 whitespace-nowrap text-gray-400">
+                            Saving&hellip;
+                        </span>
+                    )}
+                    {!savingOrder && justSaved && (
+                        <span className="flex shrink-0 items-center gap-1 whitespace-nowrap font-semibold text-green-700">
+                            <Check className="h-4 w-4" /> Saved
+                        </span>
+                    )}
+                </div>
             )}
 
             {orderError && <p className="text-sm text-red-600 mb-3">{orderError}</p>}
@@ -136,9 +185,34 @@ const EntryList = ({ collection, entries }: EntryListProps) => {
                                 >
                                     <ChevronUp className="h-4 w-4" />
                                 </button>
-                                <span className="text-[11px] font-semibold text-gray-400 tabular-nums">
-                                    {index + 1}
-                                </span>
+                                <input
+                                    value={editing === entry.id ? draft : String(index + 1)}
+                                    onFocus={(event) => {
+                                        setEditing(entry.id);
+                                        setDraft(String(index + 1));
+                                        event.target.select();
+                                    }}
+                                    onChange={(event) =>
+                                        setDraft(event.target.value.replace(/[^0-9]/g, ''))
+                                    }
+                                    onBlur={() => commitPosition(index)}
+                                    onKeyDown={(event) => {
+                                        if (event.key === 'Enter') {
+                                            event.preventDefault();
+                                            event.currentTarget.blur();
+                                        }
+                                        if (event.key === 'Escape') {
+                                            setEditing(null);
+                                            setDraft('');
+                                            event.currentTarget.blur();
+                                        }
+                                    }}
+                                    inputMode="numeric"
+                                    aria-label={`Position of ${entry.title}. Type a number to move it.`}
+                                    title="Type a number to move it there"
+                                    disabled={savingOrder}
+                                    className="w-9 cursor-text rounded-md border border-gray-200 bg-white py-1 text-center text-xs font-semibold tabular-nums text-gray-600 outline-none hover:border-gray-400 focus:border-black focus:text-black disabled:opacity-40"
+                                />
                                 <button
                                     onClick={() => move(index, 1)}
                                     disabled={index === filtered.length - 1 || savingOrder}
