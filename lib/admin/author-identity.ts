@@ -1,6 +1,5 @@
 import { type CmaEntryItem, LOCALE, cma, cmaAll, entryLink } from "./cma";
-import { uploadSubmissionImage } from "./submissions";
-import { LogError } from "../logger";
+import { assetUrls } from "./assets";
 
 /**
  * A blog author belongs to exactly one verified email address, and the binding
@@ -38,40 +37,10 @@ async function findIdentity(email: string): Promise<Identity | null> {
   return null;
 }
 
-/** Best effort: a missing photo is not a reason to refuse somebody's article. */
-async function pictureAsset(pictureUrl: string, name: string): Promise<string | null> {
-  if (!pictureUrl) return null;
-
-  try {
-    const response = await fetch(pictureUrl, { cache: "no-store" });
-    if (!response.ok) return null;
-
-    const type = response.headers.get("content-type") ?? "image/jpeg";
-    if (!type.startsWith("image/")) return null;
-
-    const bytes = await response.arrayBuffer();
-    if (bytes.byteLength === 0 || bytes.byteLength > 3 * 1024 * 1024) return null;
-
-    const extension = type.includes("png") ? "png" : "jpg";
-    const asset = await uploadSubmissionImage(bytes, `${name || "writer"}.${extension}`, type);
-    return asset.id;
-  } catch (error) {
-    LogError("[authorIdentity] profile picture", error);
-    return null;
-  }
-}
-
-async function createAuthor(name: string, pictureUrl: string) {
+async function createAuthor(name: string) {
   const fields: Record<string, Record<string, unknown>> = {
     name: { [LOCALE]: name },
   };
-
-  const assetId = await pictureAsset(pictureUrl, name);
-  if (assetId) {
-    fields.authorProfilePicture = {
-      [LOCALE]: { sys: { type: "Link", linkType: "Asset", id: assetId } },
-    };
-  }
 
   const created = await cma("/entries", {
     method: "POST",
@@ -86,15 +55,11 @@ async function createAuthor(name: string, pictureUrl: string) {
  * Returns the author record for a verified address, creating one the first time
  * somebody writes. The identity entry is left as a draft on purpose.
  */
-export async function authorForEmail(
-  email: string,
-  name: string,
-  pictureUrl: string
-): Promise<string> {
+export async function authorForEmail(email: string, name: string): Promise<string> {
   const existing = await findIdentity(email);
   if (existing) return existing.authorId;
 
-  const authorId = await createAuthor(name || email.split("@")[0], pictureUrl);
+  const authorId = await createAuthor(name || email.split("@")[0]);
 
   await cma("/entries", {
     method: "POST",
@@ -108,4 +73,64 @@ export async function authorForEmail(
   });
 
   return authorId;
+}
+
+export interface WriterProfile {
+  authorId: string;
+  name: string;
+  photoUrl: string | null;
+}
+
+/**
+ * The writer's own saved photo, never one borrowed from Google. Returns null
+ * until they have written or set a picture, so the form can offer to take one.
+ */
+export async function profileForEmail(email: string): Promise<WriterProfile | null> {
+  const identity = await findIdentity(email);
+  if (!identity) return null;
+
+  const author = await cma(`/entries/${identity.authorId}`);
+  if (!author) return null;
+
+  const fields = author.fields as Record<string, Record<string, unknown>> | undefined;
+  const name = typeof fields?.name?.[LOCALE] === "string" ? (fields.name[LOCALE] as string) : "";
+  const photo = fields?.authorProfilePicture?.[LOCALE] as { sys?: { id?: string } } | undefined;
+  const photoId = photo?.sys?.id;
+
+  let photoUrl: string | null = null;
+  if (photoId) {
+    const urls = await assetUrls([photoId]);
+    photoUrl = urls.get(photoId) ?? null;
+  }
+
+  return { authorId: identity.authorId, name, photoUrl };
+}
+
+/**
+ * Saves a picture the writer chose themselves, creating their author record if
+ * this is the first thing they have done.
+ */
+export async function setWriterPhoto(
+  email: string,
+  name: string,
+  assetId: string
+): Promise<string | null> {
+  const authorId = await authorForEmail(email, name);
+  const author = await cma(`/entries/${authorId}`);
+
+  const fields = {
+    ...((author?.fields ?? {}) as Record<string, Record<string, unknown>>),
+    authorProfilePicture: {
+      [LOCALE]: { sys: { type: "Link", linkType: "Asset", id: assetId } },
+    },
+  };
+
+  await cma(`/entries/${authorId}`, {
+    method: "PUT",
+    version: author.sys.version,
+    body: { fields },
+  });
+
+  const urls = await assetUrls([assetId]);
+  return urls.get(assetId) ?? null;
 }

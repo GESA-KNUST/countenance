@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Check, Plus, X, Send } from 'lucide-react';
 import StarSpinner from '@/components/ui/StarSpinner';
@@ -11,7 +12,17 @@ const labelClass = 'block font-semibold mb-1';
 const inputClass =
     'w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-base outline-none focus:border-black';
 
-const ContributeForm = ({ writer }: { writer: Writer }) => {
+const ContributeForm = ({
+    writer,
+    savedPhotoUrl,
+}: {
+    writer: Writer;
+    savedPhotoUrl: string | null;
+}) => {
+    const router = useRouter();
+    const [photoUrl, setPhotoUrl] = useState(savedPhotoUrl);
+    const [photoBusy, setPhotoBusy] = useState(false);
+    const [photoError, setPhotoError] = useState('');
     const [title, setTitle] = useState('');
     const [hook, setHook] = useState('');
     const [body, setBody] = useState('');
@@ -62,6 +73,33 @@ const ContributeForm = ({ writer }: { writer: Writer }) => {
         if (!value || tags.includes(value) || tags.length >= 8) return;
         setTags([...tags, value]);
         setTagDraft('');
+    };
+
+    const choosePhoto = async (file: File) => {
+        setPhotoError('');
+        setPhotoBusy(true);
+        try {
+            const resized = await resizeForHero(file);
+            const form = new FormData();
+            form.append('file', resized);
+
+            const res = await fetch('/api/contribute/photo', { method: 'POST', body: form });
+            const payload = await res.json().catch(() => ({}));
+
+            if (!res.ok) {
+                setPhotoError(payload.message ?? 'That photo could not be saved.');
+            } else {
+                setPhotoUrl(payload.url);
+            }
+        } catch {
+            setPhotoError('That photo could not be saved.');
+        }
+        setPhotoBusy(false);
+    };
+
+    const signOut = async () => {
+        await fetch('/api/contribute/auth/logout', { method: 'POST' });
+        router.refresh();
     };
 
     const handleSubmit = async (event: React.FormEvent) => {
@@ -147,37 +185,59 @@ const ContributeForm = ({ writer }: { writer: Writer }) => {
                 />
             </div>
 
-            <div className="flex items-center gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
-                {writer.picture ? (
-                    // Google's avatar, shown once at 44px. Routing it through the
-                    // image optimiser would bill a transformation for every visitor
-                    // to save nothing.
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                        src={writer.picture}
-                        alt=""
-                        referrerPolicy="no-referrer"
-                        className="h-11 w-11 shrink-0 rounded-full object-cover"
-                    />
-                ) : (
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#252638] text-base font-semibold text-white">
-                        {(writer.name || writer.email).charAt(0).toUpperCase()}
-                    </span>
-                )}
-                <div className="min-w-0">
-                    <p className="font-semibold text-gray-900">
-                        Publishing as {writer.name || writer.email}
-                    </p>
-                    <p className="truncate text-sm text-gray-500">{writer.email}</p>
-                </div>
-                <form action="/api/contribute/auth/logout" method="post" className="ml-auto shrink-0">
+            <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                <div className="flex items-center gap-4">
+                    <label className="group relative h-14 w-14 shrink-0 cursor-pointer overflow-hidden rounded-full bg-[#252638]">
+                        {photoUrl ? (
+                            <Image
+                                src={`${photoUrl}?w=112&h=112&fit=fill&f=face&fm=webp&q=80`}
+                                alt=""
+                                fill
+                                className="object-cover"
+                                sizes="56px"
+                                unoptimized
+                            />
+                        ) : (
+                            <span className="flex h-full w-full items-center justify-center text-lg font-semibold text-white">
+                                {(writer.name || writer.email).charAt(0).toUpperCase()}
+                            </span>
+                        )}
+                        <span className="absolute inset-0 flex items-center justify-center bg-black/55 text-[10px] font-semibold text-white opacity-0 transition-opacity group-hover:opacity-100">
+                            {photoBusy ? '...' : 'Change'}
+                        </span>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            disabled={photoBusy}
+                            onChange={(event) => {
+                                const file = event.target.files?.[0];
+                                event.target.value = '';
+                                if (file) choosePhoto(file);
+                            }}
+                        />
+                    </label>
+
+                    <div className="min-w-0">
+                        <p className="font-semibold text-gray-900">{writer.name || writer.email}</p>
+                        <p className="truncate text-sm text-gray-500">{writer.email}</p>
+                    </div>
+
                     <button
-                        type="submit"
-                        className="cursor-pointer text-sm font-medium text-gray-500 underline hover:text-black"
+                        type="button"
+                        onClick={signOut}
+                        className="ml-auto shrink-0 cursor-pointer text-sm font-medium text-gray-500 underline hover:text-black"
                     >
                         Not you?
                     </button>
-                </form>
+                </div>
+
+                {!photoUrl && !photoError && (
+                    <p className="mt-3 text-sm text-gray-500">
+                        Tap the circle to add the photo that appears next to your articles.
+                    </p>
+                )}
+                {photoError && <p className="mt-3 text-sm text-red-600">{photoError}</p>}
             </div>
 
             <div>
