@@ -7,9 +7,6 @@ import { LogError } from '@/lib/logger';
 import { usePostHog } from 'posthog-js/react';
 import EmptyState from '../events/EmptyState';
 import { FileText } from 'lucide-react';
-import Link from 'next/link';
-import { Separator } from '../ui/separator';
-import { useSiteContact } from '@/hooks/useSiteContact';
 import type { Blog } from '@/hooks/useBlogCollection';
 
 interface SimplifiedBlogCardProps {
@@ -78,36 +75,6 @@ const SidebarHeading = ({ children }: { children: React.ReactNode }) => (
     </h2>
 );
 
-const LogoAndSocials = () => {
-    const contact = useSiteContact();
-
-    return (
-        <div className="w-full pt-2">
-            <Separator className="mb-6" />
-            <div className="flex flex-col items-center gap-4 xl:items-start">
-                <Image src="/images/logo.svg" alt="GESA-KNUST" width={100} height={24} />
-                <div className="flex gap-2">
-                    <Link href={contact.whatsapp} aria-label="WhatsApp">
-                        <Image src="/images/whatsapp2.svg" alt="" width={36} height={36} />
-                    </Link>
-                    <Link href={contact.x} aria-label="X">
-                        <Image src="/images/twitter.svg" alt="" width={36} height={36} />
-                    </Link>
-                    <Link
-                        href="https://youtube.com/@knust-college_of_engineering?si=jtCCfu6aXxDdSXid"
-                        aria-label="YouTube"
-                    >
-                        <Image src="/images/yt.svg" alt="" width={36} height={36} />
-                    </Link>
-                    <Link href={contact.linkedin} aria-label="LinkedIn">
-                        <Image src="/images/linkedin2.svg" alt="" width={36} height={36} />
-                    </Link>
-                </div>
-            </div>
-        </div>
-    );
-};
-
 const PopularPosts = ({ allPosts, onPostSelect, currentSlug, authorName }: PopularPostsProps) => {
     if (!allPosts || allPosts.length === 0) {
         return (
@@ -121,7 +88,6 @@ const PopularPosts = ({ allPosts, onPostSelect, currentSlug, authorName }: Popul
                         icon={FileText}
                     />
                 </div>
-                <LogoAndSocials />
             </div>
         );
     }
@@ -168,8 +134,6 @@ const PopularPosts = ({ allPosts, onPostSelect, currentSlug, authorName }: Popul
                     </div>
                 </div>
             )}
-
-            <LogoAndSocials />
         </div>
     );
 };
