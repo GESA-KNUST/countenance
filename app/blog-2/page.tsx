@@ -5,9 +5,26 @@ import { gql } from "graphql-request";
 import { contentfulClient } from "@/lib/contentful-client";
 import StarSpinner from '@/components/ui/StarSpinner';
 import { LogError } from '@/lib/logger';
+import { ogImage } from '@/lib/data/og-image';
 
 type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+interface BlogMetaPost {
+  title?: string;
+  hook?: string;
+  headerImage?: { url?: string; description?: string } | null;
+  author?: { name?: string } | null;
+}
+
+interface BlogMetaResponse {
+  blogPostCollection: { items: BlogMetaPost[] };
+}
+
+/** Just the given name, so a share card reads "By Ama" rather than the full name. */
+function firstName(name: string | undefined | null) {
+  return (name ?? '').trim().split(/\s+/)[0] ?? '';
 }
 
 const GET_BLOG_BY_SLUG = gql`
@@ -17,8 +34,12 @@ const GET_BLOG_BY_SLUG = gql`
                 title
                 headerImage {
                     url
+                    description
                 }
                 hook
+                author {
+                    name
+                }
             }
         }
     }
@@ -35,7 +56,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 
   try {
-    const data: any = await contentfulClient.request(GET_BLOG_BY_SLUG, { slug });
+    const data = await contentfulClient.request<BlogMetaResponse>(GET_BLOG_BY_SLUG, { slug });
     const post = data.blogPostCollection.items[0];
 
     if (!post) {
@@ -44,13 +65,27 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       };
     }
 
+    const title = post.title ?? 'Blog & News';
+    const writer = firstName(post.author?.name);
+    // The writer goes first so it survives the truncation every social
+    // platform applies to the tail of a description.
+    const description = writer ? `By ${writer} · ${post.hook ?? ''}`.trim() : (post.hook ?? '');
+    const share = ogImage(post.headerImage?.url, post.headerImage?.description || title);
+
     return {
-      title: post.title,
-      description: post.hook,
+      title,
+      description,
       openGraph: {
-        title: post.title,
-        description: post.hook,
-        images: [post.headerImage.url],
+        title,
+        description,
+        type: 'article',
+        images: share,
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: share.map((image) => image.url),
       },
     }
   } catch (error) {
