@@ -43,6 +43,8 @@ const HeroSection = ({
   const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
 
+  const slides = isMobile && mobileImages ? mobileImages : images;
+
   const plugin = useRef(
     Autoplay({
       delay: 10000,
@@ -68,13 +70,17 @@ const HeroSection = ({
       return;
     }
 
+    api.reInit();
     setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap());
 
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap());
-    });
-  }, [api]);
+    const onSelect = () => setCurrent(api.selectedScrollSnap());
+    api.on("select", onSelect);
+
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api, slides.length]);
 
   const handleDotClick = (index: number) => {
     if (!api) return;
@@ -98,7 +104,6 @@ const HeroSection = ({
     }, 1000);
   };
 
-
   return (
     <div className='relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden'>
 
@@ -114,7 +119,7 @@ const HeroSection = ({
         }}
       >
         <CarouselContent className="h-full">
-          {(isMobile && mobileImages ? mobileImages : images).map((img, index) => (
+          {slides.map((img, index) => (
             <CarouselItem key={index} className="relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full">
               <Image
                 src={img}

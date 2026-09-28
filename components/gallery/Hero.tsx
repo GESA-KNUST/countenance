@@ -9,14 +9,19 @@ import {
   CarouselContent,
   CarouselItem,
 } from "../ui/carousel";
+import { usePageHero } from "@/hooks/usePageHero";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface HeroProps {
   images?: (string | StaticImageData)[];
 }
 
-const Hero = ({
-  images = ['/images/gallery/gallery-1.jpg', '/images/gallery/gallery-2.jpeg', '/images/gallery/gallery-3.JPG'],
-}: HeroProps) => {
+const Hero = ({ images: imagesProp }: HeroProps) => {
+  const { hero } = usePageHero('gallery');
+  const isMobile = useIsMobile();
+  const phoneImages = hero.mobileImages.length > 0 ? hero.mobileImages : hero.images;
+  const images = imagesProp ?? (isMobile ? phoneImages : hero.images);
+
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -34,13 +39,17 @@ const Hero = ({
       return;
     }
 
+    api.reInit();
     setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap());
 
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap());
-    });
-  }, [api]);
+    const onSelect = () => setCurrent(api.selectedScrollSnap());
+    api.on("select", onSelect);
+
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api, images.length]);
 
   const handleDotClick = (index: number) => {
     if (!api) return;
@@ -82,9 +91,7 @@ const Hero = ({
         </CarouselContent>
       </Carousel>
 
-
       <div className='absolute inset-0 bg-black/40 z-10' />
-
 
       <div className='relative z-20 flex flex-col justify-center items-start h-full text-white p-10 md:p-20 lg:p-40'>
         <h1 className='text-6xl md:text-8xl font-bold mb-4 font-header'>

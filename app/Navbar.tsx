@@ -4,10 +4,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from 'next/image';
 import Logo from '../public/images/logo.svg'
 import Link from 'next/link';
+import { siteLink, useSiteBase } from '@/hooks/useSiteBase';
 import { usePathname } from 'next/navigation';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
 const Navbar = () => {
+  const siteBase = useSiteBase();
   const currentPath = usePathname()
   const [isOpen, setIsOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
@@ -59,7 +61,7 @@ const Navbar = () => {
 
   return (
     <div className='flex items-center justify-between md:px-page-x lg:py-page-y px-page-sx font-poppins max-w-360 mx-auto h-(--navbar-height) relative z-[999]'>
-      <Link href="/">
+      <Link href={siteLink(siteBase, "/")}>
         <Image src={Logo} alt='logo' />
       </Link>
       <div className='hidden lg:block'>
@@ -109,7 +111,7 @@ const Navbar = () => {
                           {nav.sublinks.map((sub, si) => (
                             <Link
                               key={si}
-                              href={sub.link}
+                              href={siteLink(siteBase, sub.link)}
                               onClick={() => setOpenSubmenu(null)}
                               className={`block px-4 py-3 rounded-xl transition-all duration-300 ${currentPath === sub.link ? 'bg-primary/10 text-primary font-bold' : 'hover:bg-primary/5 text-gray-700 hover:text-primary'}`}
                             >
@@ -125,13 +127,13 @@ const Navbar = () => {
             }
 
             const isActive = currentPath === nav.link ||
-              (currentPath === '/blog-2' && nav.link === '/blog') ||
+              (currentPath.startsWith('/blog/') && nav.link === '/blog') ||
               (nav.link !== '/' && currentPath?.startsWith(`${nav.link}/`));
 
             return (
               <Tab setPosition={setPosition} key={i}>
                 <Link
-                  href={nav.link!}
+                  href={siteLink(siteBase, nav.link!)}
                   className={`font-semibold ${isActive ? 'bg-primary rounded-full' : ''} md:px-5 md:py-3 py-1.5 whitespace-nowrap`}
                 >
                   <span suppressHydrationWarning>{nav.name}</span>
@@ -201,7 +203,7 @@ const Navbar = () => {
                                     {nav.sublinks.map((sub, si) => (
                                       <Link
                                         key={si}
-                                        href={sub.link}
+                                        href={siteLink(siteBase, sub.link)}
                                         className={`block py-3 px-4 font-semibold text-base transition duration-300 rounded-xl ${currentPath === sub.link ? 'bg-primary text-white' : 'text-gray-600 hover:text-primary'}`}
                                         onClick={() => setIsOpen(false)}
                                       >
@@ -215,8 +217,8 @@ const Navbar = () => {
                           </div>
                         ) : (
                           <Link
-                            href={nav.link!}
-                            className={`block py-3 px-4 font-bold text-lg transition duration-300 rounded-2xl ${(currentPath === nav.link || (currentPath === '/blog-2' && nav.link === '/blog'))
+                            href={siteLink(siteBase, nav.link!)}
+                            className={`block py-3 px-4 font-bold text-lg transition duration-300 rounded-2xl ${(currentPath === nav.link || (currentPath.startsWith('/blog/') && nav.link === '/blog'))
                               ? 'bg-primary text-white shadow-lg shadow-primary/20'
                               : 'text-gray-900 hover:bg-primary/5'
                               }`}

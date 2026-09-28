@@ -3,9 +3,10 @@ import { MessageCircle, Instagram, Linkedin, Mail, MapPin, Phone, Twitter } from
 import { useState } from 'react';
 import emailjs from 'emailjs-com';
 import Container from '../custom/Container';
+import { useSiteContact } from '@/hooks/useSiteContact';
 
 const ContactForm = () => {
-  //  (keeping existing state and handlers)
+  const contact = useSiteContact();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -42,7 +43,7 @@ const ContactForm = () => {
       messageType: subject,
       messageBody: message,
       emailFrom: email,
-      email: 'thegesaknust@gmail.com',
+      email: contact.email,
     };
 
     emailjs.send(
@@ -73,11 +74,15 @@ const ContactForm = () => {
             <div className='space-y-4 md:space-y-6'>
               <div className='flex items-center gap-4'>
                 <Phone className="shrink-0 w-5 h-5" />
-                <span className="text-sm md:text-base">+233 20 057 6468</span>
+                <a href={`tel:${contact.phone.replace(/\s+/g, '')}`} className="text-sm md:text-base hover:underline">
+                  {contact.phone}
+                </a>
               </div>
               <div className='flex items-center gap-4'>
                 <Mail className="shrink-0 w-5 h-5" />
-                <span className="text-sm md:text-base">thegesaknust@gmail.com</span>
+                <a href={`mailto:${contact.email}`} className="text-sm md:text-base hover:underline">
+                  {contact.email}
+                </a>
               </div>
               <div className='flex items-center gap-4'>
                 <MapPin className="shrink-0 w-5 h-5" />
@@ -87,16 +92,16 @@ const ContactForm = () => {
           </div>
 
           <div className='relative z-10 flex items-center gap-4 mt-8 md:mt-auto mb-2'>
-            <a href="https://whatsapp.com/channel/0029Vb6ndaFDeON4BBZULN0A" className="bg-white/10 p-2 rounded-full hover:bg-white hover:text-black transition-all">
+            <a href={contact.whatsapp} className="bg-white/10 p-2 rounded-full hover:bg-white hover:text-black transition-all">
               <MessageCircle size={18} />
             </a>
-            <a href="https://x.com/thegesaknust?s=11" className="bg-white/10 p-2 rounded-full hover:bg-white hover:text-black transition-all">
+            <a href={contact.x} className="bg-white/10 p-2 rounded-full hover:bg-white hover:text-black transition-all">
               <Twitter size={18} />
             </a>
-            <a href="https://www.instagram.com/thegesaknust?igsh=MXhidHNqZndwYmdqMg==" className="bg-white/10 p-2 rounded-full hover:bg-white hover:text-black transition-all">
+            <a href={contact.instagram} className="bg-white/10 p-2 rounded-full hover:bg-white hover:text-black transition-all">
               <Instagram size={18} />
             </a>
-            <a href="https://www.linkedin.com/company/gesa-knust/" className="bg-white/10 p-2 rounded-full hover:bg-white hover:text-black transition-all">
+            <a href={contact.linkedin} className="bg-white/10 p-2 rounded-full hover:bg-white hover:text-black transition-all">
               <Linkedin size={18} />
             </a>
           </div>

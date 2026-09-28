@@ -18,7 +18,7 @@ interface AnnouncementCollection {
 
 const GET_ANNOUNCEMENTS = gql`
     query AnnouncementsCollection {
-  announcementsCollection {
+  announcementsCollection(order: [order_ASC]) {
     items {
       actionLink
       description

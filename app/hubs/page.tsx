@@ -17,6 +17,7 @@ import { useAnnouncements } from '@/hooks/useAnnoucement'
 import EmptyState from '@/components/events/EmptyState'
 import { Briefcase, TriangleAlert } from 'lucide-react'
 
+import { OPPORTUNITY_TYPES, matchesOpportunityType } from '@/lib/data/taxonomy'
 const HubsPage = () => {
     const [currentId, setCurrentId] = useState<number>(0)
     const { data: hubs, isLoading, error } = useHubs()
@@ -32,11 +33,19 @@ const HubsPage = () => {
     }, [announcementsData]);
 
 
+    const typeIcons: Record<string, typeof internship> = {
+        Internship: internship,
+        Scholarship: scholarship,
+        'Financial Aid': financialAid,
+    }
+
     const navItems = [
         { name: 'All', value: 'all', icon: null },
-        { name: 'Internships', value: 'internship', icon: internship },
-        { name: 'Scholarships', value: 'scholarship', icon: scholarship },
-        { name: 'Financial Aid', value: 'financial aid', icon: financialAid },
+        ...OPPORTUNITY_TYPES.map((type) => ({
+            name: type.label,
+            value: type.value,
+            icon: typeIcons[type.value] ?? null,
+        })),
     ]
 
     const [filteredOpportunities, setFilteredOpportunities] = useState<hubItem[]>(hubs ?? [])
@@ -47,7 +56,7 @@ const HubsPage = () => {
         if (currentId === 0) {
             setFilteredOpportunities(hubs ?? [])
         } else {
-            const filtered = (hubs ?? []).filter(opportunity => opportunity.opportunityType.toLowerCase() === navItems[currentId].value)
+            const filtered = (hubs ?? []).filter(opportunity => matchesOpportunityType(opportunity.opportunityType, navItems[currentId].value))
             setFilteredOpportunities(filtered)
         }
     }, [currentId])
@@ -104,8 +113,8 @@ const HubsPage = () => {
                 </div>
             </Container>
             <Container size='xl' className='relative'>
-                <div className='grid grid-cols-1 lg:grid-cols-4 gap-8'>
-                    {!isLoading && (!filteredOpportunities || filteredOpportunities.length == 0) ? <div className="lg:col-span-3">
+                <div className='grid grid-cols-1 items-start gap-8 lg:grid-cols-4 lg:grid-rows-[auto_auto]'>
+                    {!isLoading && (!filteredOpportunities || filteredOpportunities.length == 0) ? <div className="order-2 lg:order-1 lg:col-span-3 lg:row-span-2">
                         <EmptyState
                             title='No opportunities found'
                             message='There are no opportunities to display at this time.'
@@ -113,7 +122,7 @@ const HubsPage = () => {
                             showHomeButton={false}
                         />
                     </div> :
-                        <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 content-start relative">
+                        <div className="order-2 lg:order-1 lg:col-span-3 lg:row-span-2 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 content-start relative">
                             {isLoading ? (
                                 <>
                                     <SkeletonLoading />
@@ -133,7 +142,7 @@ const HubsPage = () => {
                             {error && <p className='text-red-500 text-sm'>Error loading opportunities</p>}
                         </div>
                     }
-                    <div className="lg:col-span-1 space-y-8">
+                    <div className="order-1 lg:order-2 lg:col-start-4 lg:row-start-1 space-y-8">
                         {
                             loadingAnnouncements ? (
                                 <>
@@ -176,7 +185,7 @@ const HubsPage = () => {
                                             <a href={opp.source} target='_blank' className='flex gap-2 cursor-pointer hover:bg-slate-200/20 p-2 rounded-xl' key={index}>
                                                 <div className='flex flex-col gap-2'>
                                                     <p className='font-medium'>{opp.title}</p>
-                                                    <p className='text-gray-600 text-sm'>{opp.description.slice(0, 50) + '...'}</p>
+                                                    <p className='text-gray-600 text-sm'>{(opp.description ?? '').slice(0, 50) + '...'}</p>
                                                 </div>
                                             </a>
                                         ))}
@@ -184,6 +193,9 @@ const HubsPage = () => {
                                 </div>
                             )
                         }
+                    </div>
+
+                    <div className="order-3 lg:col-start-4 lg:row-start-2">
                         <div className='flex flex-col gap-4 shadow-md rounded-xl py-4 px-4 bg-black'>
                             <h1 className='flex items-center gap-2 font-semibold text-lg xl:text-xl text-primary font-header'>
                                 <Image src={tips} alt="" />

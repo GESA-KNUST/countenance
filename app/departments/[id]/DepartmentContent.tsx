@@ -34,7 +34,11 @@ const DepartmentContent = () => {
         renderNode: {
             [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
                 const assetId = node.data.target.sys.id;
-                const asset = department?.about?.links?.assets?.block?.find((a: any) => a.sys.id === assetId);
+                const asset = [
+                    ...(department?.about?.links?.assets?.block ?? []),
+                    ...(department?.vision?.links?.assets?.block ?? []),
+                    ...(department?.mission?.links?.assets?.block ?? []),
+                ].find((a: any) => a?.sys?.id === assetId);
 
                 if (!asset) return null;
                 const baseImageUrl = asset.url.startsWith('//') ? `https:${asset.url}` : asset.url;

@@ -6,6 +6,9 @@ import { LogError } from '@/lib/logger';
 import { usePostHog } from 'posthog-js/react';
 import EmptyState from '../events/EmptyState';
 import { FileText } from 'lucide-react';
+import Link from 'next/link';
+import { Separator } from '../ui/separator';
+import { useSiteContact } from '@/hooks/useSiteContact';
 import type { Blog } from '@/hooks/useBlogCollection';
 
 interface SimplifiedBlogCardProps {
@@ -35,7 +38,7 @@ const SimplifiedBlogCard = ({ post, onPostSelect }: SimplifiedBlogCardProps) => 
                 <button
                     onClick={(e) => {
                         e.stopPropagation();
-                        const url = `${window.location.origin}/blog-2?slug=${post.slug}`;
+                        const url = `${window.location.origin}/blog/${encodeURIComponent(post.slug)}`;
                         if (navigator.share) {
                             navigator.share({
                                 title: post.title,
@@ -63,16 +66,51 @@ const SimplifiedBlogCard = ({ post, onPostSelect }: SimplifiedBlogCardProps) => 
 interface PopularPostsProps {
     allPosts: Blog[] | undefined;
     onPostSelect: (post: Blog) => void;
+    currentSlug?: string;
+    authorName?: string;
 }
 
-const PopularPosts = ({ allPosts, onPostSelect }: PopularPostsProps) => {
+const SidebarHeading = ({ children }: { children: React.ReactNode }) => (
+    <h2 className="text-3xl font-bold text-muted-foreground/50 text-center xl:text-left font-header">
+        {children}
+    </h2>
+);
 
+const LogoAndSocials = () => {
+    const contact = useSiteContact();
+
+    return (
+        <div className="w-full pt-2">
+            <Separator className="mb-6" />
+            <div className="flex flex-col items-center gap-4 xl:items-start">
+                <Image src="/images/logo.svg" alt="GESA-KNUST" width={100} height={24} />
+                <div className="flex gap-2">
+                    <Link href={contact.whatsapp} aria-label="WhatsApp">
+                        <Image src="/images/whatsapp2.svg" alt="" width={36} height={36} />
+                    </Link>
+                    <Link href={contact.x} aria-label="X">
+                        <Image src="/images/twitter.svg" alt="" width={36} height={36} />
+                    </Link>
+                    <Link
+                        href="https://youtube.com/@knust-college_of_engineering?si=jtCCfu6aXxDdSXid"
+                        aria-label="YouTube"
+                    >
+                        <Image src="/images/yt.svg" alt="" width={36} height={36} />
+                    </Link>
+                    <Link href={contact.linkedin} aria-label="LinkedIn">
+                        <Image src="/images/linkedin2.svg" alt="" width={36} height={36} />
+                    </Link>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const PopularPosts = ({ allPosts, onPostSelect, currentSlug, authorName }: PopularPostsProps) => {
     if (!allPosts || allPosts.length === 0) {
         return (
             <div className="w-[361px] flex flex-col items-center xl:items-start gap-2.5 xl:mt-78">
-                <h2 className="text-3xl font-bold text-muted-foreground/50 text-center xl:text-left font-header">
-                    Popular Posts
-                </h2>
+                <SidebarHeading>Popular Posts</SidebarHeading>
                 <div className="w-full py-8">
                     <EmptyState
                         title="No Posts Yet"
@@ -81,25 +119,55 @@ const PopularPosts = ({ allPosts, onPostSelect }: PopularPostsProps) => {
                         icon={FileText}
                     />
                 </div>
+                <LogoAndSocials />
             </div>
-        )
+        );
     }
 
-    return (
-        <div className="w-[361px] flex flex-col items-center xl:items-start gap-6 xl:mt-78">
-            <h2 className="text-3xl font-bold text-muted-foreground/50 text-center xl:text-left font-header">
-                Popular Posts
-            </h2>
+    const others = allPosts.filter((post) => post.slug !== currentSlug);
 
-            <div className="flex flex-col gap-6 w-full">
-                {allPosts?.slice(0, 5).map((post) => (
-                    <SimplifiedBlogCard
-                        key={post.slug}
-                        post={post}
-                        onPostSelect={onPostSelect}
-                    />
-                ))}
-            </div>
+    const byAuthor = authorName
+        ? others.filter((post) => post.author?.name === authorName).slice(0, 3)
+        : [];
+
+    const shown = new Set(byAuthor.map((post) => post.slug));
+    const popular = others.filter((post) => !shown.has(post.slug)).slice(0, 5);
+
+    const firstName = (authorName ?? '').trim().split(/\s+/)[0];
+
+    return (
+        <div className="w-[361px] flex flex-col items-center xl:items-start gap-10 xl:mt-78">
+            {byAuthor.length > 0 && (
+                <div className="flex flex-col items-center xl:items-start gap-6 w-full">
+                    <SidebarHeading>More from {firstName}</SidebarHeading>
+                    <div className="flex flex-col gap-6 w-full">
+                        {byAuthor.map((post) => (
+                            <SimplifiedBlogCard
+                                key={post.slug}
+                                post={post}
+                                onPostSelect={onPostSelect}
+                            />
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {popular.length > 0 && (
+                <div className="flex flex-col items-center xl:items-start gap-6 w-full">
+                    <SidebarHeading>Popular Posts</SidebarHeading>
+                    <div className="flex flex-col gap-6 w-full">
+                        {popular.map((post) => (
+                            <SimplifiedBlogCard
+                                key={post.slug}
+                                post={post}
+                                onPostSelect={onPostSelect}
+                            />
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            <LogoAndSocials />
         </div>
     );
 };

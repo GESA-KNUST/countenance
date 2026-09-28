@@ -26,7 +26,7 @@ const BlogContribute = () => {
                     </div>
 
                     <div className="relative z-10 w-full md:w-auto">
-                        <Link href="https://forms.gle/kxMYY1xN5JWMiZdYA" className="cursor-pointer block">
+                        <Link href="/contribute" className="cursor-pointer block">
                             <Button className="w-full md:w-auto bg-black text-white hover:bg-black/90 px-12 h-16 rounded-2xl font-header font-bold text-lg transition-all duration-300 group-hover:scale-[1.05] shadow-2xl active:scale-[0.98] flex items-center gap-3">
                                 Contribute to GESA Blogs
                                 <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-2" />

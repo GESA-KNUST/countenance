@@ -11,6 +11,8 @@ import {
 
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { usePageHero } from '@/hooks/usePageHero';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 interface DepartmentHeroProps {
     title: string;
@@ -26,11 +28,16 @@ const DepartmentHero = ({
     title,
     subtitle,
     text,
-    images = ['/images/dept/dept-4.jpg', '/images/dept/dept-2.jpeg', '/images/dept/dept-1.jpeg'],
+    images: imagesProp,
     titleClassName,
     backLink,
     backText,
 }: DepartmentHeroProps) => {
+    const { hero } = usePageHero('department');
+    const isMobile = useIsMobile();
+    const phoneImages = hero.mobileImages.length > 0 ? hero.mobileImages : hero.images;
+    const images = imagesProp ?? (isMobile ? phoneImages : hero.images);
+
     const [api, setApi] = useState<CarouselApi>();
     const [current, setCurrent] = useState(0);
     const [count, setCount] = useState(0);
@@ -46,13 +53,17 @@ const DepartmentHero = ({
     useEffect(() => {
         if (!api) return;
 
-        setCount(api.scrollSnapList().length);
+      api.reInit();
+      setCount(api.scrollSnapList().length);
         setCurrent(api.selectedScrollSnap());
 
-        api.on("select", () => {
-            setCurrent(api.selectedScrollSnap());
-        });
-    }, [api]);
+        const onSelect = () => setCurrent(api.selectedScrollSnap());
+        api.on("select", onSelect);
+
+        return () => {
+          api.off("select", onSelect);
+        };
+    }, [api, images.length]);
 
     const handleDotClick = (index: number) => {
         if (!api) return;
@@ -107,7 +118,6 @@ const DepartmentHero = ({
                         {subtitle}
                     </span>
                 </h1>
-
 
                 <p className='text-xs sm:text-lg md:text-xl max-w-3xl mx-auto text-gray-200 mt-2'>
                     {text}

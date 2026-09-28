@@ -14,7 +14,9 @@ if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_ACCESS_TOKEN) {
 // How long (seconds) a cached Contentful response is served before revalidation.
 // Because this cache lives on the server, one refresh serves every visitor, so
 // the number of origin calls stays roughly constant regardless of traffic.
-export const CONTENTFUL_REVALIDATE_SECONDS = 600;
+export const CONTENTFUL_REVALIDATE_SECONDS = 3600;
+
+export const CONTENTFUL_CACHE_TAG = "contentful";
 
 // `next` is a Next.js fetch extension not covered by graphql-request's types.
 type GraphQLClientConfig = ConstructorParameters<typeof GraphQLClient>[1];
@@ -28,7 +30,7 @@ const requestConfig: NextRequestConfig = {
   headers: CONTENTFUL_ACCESS_TOKEN
     ? { Authorization: `Bearer ${CONTENTFUL_ACCESS_TOKEN}` }
     : {},
-  next: { revalidate: CONTENTFUL_REVALIDATE_SECONDS },
+  next: { revalidate: CONTENTFUL_REVALIDATE_SECONDS, tags: [CONTENTFUL_CACHE_TAG] },
 };
 
 /**
@@ -41,6 +43,35 @@ export const contentfulDirect = new GraphQLClient(
   requestConfig
 );
 
+interface PartialErrorShape {
+  response?: { data?: unknown; errors?: { message?: string }[] };
+}
+
+/**
+ * Contentful answers HTTP 200 with usable `data` alongside non-fatal errors
+ * such as UNRESOLVABLE_LINK (a published entry pointing at an unpublished
+ * asset). graphql-request throws on any `errors`, which would take a whole page
+ * down over one missing image, so partial data is served and logged instead.
+ */
+export async function requestTolerant<T>(query: string, variables?: Variables): Promise<T> {
+  try {
+    return await contentfulDirect.request<T>(query, variables);
+  } catch (error) {
+    const partial = error as PartialErrorShape;
+    const data = partial.response?.data;
+
+    if (data && typeof data === "object") {
+      const messages = (partial.response?.errors ?? [])
+        .map((item) => item.message)
+        .filter(Boolean);
+      LogError("[contentful] serving partial data despite errors", messages);
+      return data as T;
+    }
+
+    throw error;
+  }
+}
+
 async function request<T>(query: string, variables?: Variables): Promise<T> {
   // On the server, hit Contentful directly so we benefit from the shared
   // Data Cache. In the browser, proxy through our own route handler so the
@@ -48,14 +79,23 @@ async function request<T>(query: string, variables?: Variables): Promise<T> {
   // calls flat no matter how many people are online, and keeps the access
   // token off the client.
   if (typeof window === "undefined") {
-    return contentfulDirect.request<T>(query, variables);
+    return requestTolerant<T>(query, variables);
   }
 
-  const res = await fetch("/api/contentful", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query, variables }),
-  });
+  const params = new URLSearchParams({ query });
+  if (variables && Object.keys(variables).length > 0) {
+    params.set("variables", JSON.stringify(variables));
+  }
+
+  const url = `/api/contentful?${params.toString()}`;
+  const res =
+    url.length < 6000
+      ? await fetch(url)
+      : await fetch("/api/contentful", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query, variables }),
+        });
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
