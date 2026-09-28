@@ -4,19 +4,17 @@ import Image from 'next/image';
 import { MapPin, Calendar, ExternalLink, ArrowLeft } from 'lucide-react';
 import { EventItem } from '@/hooks/useEventCollection';
 import Link from 'next/link';
-import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import { markdownComponents } from '@/lib/markdownComponents';
+import VenueMap from './VenueMap';
 
 interface EventDetailProps {
     event: EventItem;
 }
 
 const EventDetail: React.FC<EventDetailProps> = ({ event }) => {
-    const [mapLoading, setMapLoading] = useState(true);
-
     const { title, description, eventDate, eventImage, venue, onlineLink } = event;
 
     const dateObj = new Date(eventDate);
@@ -31,8 +29,6 @@ const EventDetail: React.FC<EventDetailProps> = ({ event }) => {
         hour: '2-digit',
         minute: '2-digit',
     });
-
-    const googleMapsUrl = `https://maps.google.com/maps?q=${venue.lat},${venue.lon}&output=embed`;
 
     return (
         <div className="min-h-screen bg-gray-50 pb-20">
@@ -112,22 +108,7 @@ const EventDetail: React.FC<EventDetailProps> = ({ event }) => {
                                 <h2 className="text-2xl font-bold text-gray-900 font-header">Event Location</h2>
                                 <p className="text-gray-500 mt-1">Join us at our physical location or follow the map below.</p>
                             </div>
-                            <div className="relative h-[400px] w-full bg-gray-50">
-                                {mapLoading && (
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                        <div className="w-8 h-8 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin"></div>
-                                    </div>
-                                )}
-                                <iframe
-                                    width="100%"
-                                    height="100%"
-                                    src={googleMapsUrl}
-                                    allowFullScreen
-                                    loading="lazy"
-                                    className={`border-0 w-full h-full transition-opacity duration-300 ${mapLoading ? 'opacity-0' : 'opacity-100'}`}
-                                    onLoad={() => setMapLoading(false)}
-                                />
-                            </div>
+                            <VenueMap lat={venue.lat} lon={venue.lon} />
                         </section>
                     </div>
 

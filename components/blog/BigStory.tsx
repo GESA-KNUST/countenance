@@ -13,8 +13,10 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import StarSpinner from '../ui/StarSpinner';
 import useBlogCollection, { type Blog } from '../../hooks/useBlogCollection';
+import { useSiteContact } from '@/hooks/useSiteContact';
 
 const BigStory = () => {
+  const contact = useSiteContact();
   const [loading, setLoading] = useState(false);
   const [post, setPost] = useState<Blog | null>(null);
   const { data: allPosts } = useBlogCollection();
@@ -92,16 +94,16 @@ const BigStory = () => {
               <Separator orientation="vertical" className="w-full" />
             </div>
             <div className="flex gap-2">
-              <Link href="https://whatsapp.com/channel/0029Vb6ndaFDeON4BBZULN0A" target="_blank" rel="noopener noreferrer">
+              <Link href={contact.whatsapp} target="_blank" rel="noopener noreferrer">
                 <Image src={whatsapp2} alt="WhatsApp" />
               </Link>
-              <Link href="https://x.com/thegesaknust?s=11" target="_blank" rel="noopener noreferrer">
+              <Link href={contact.x} target="_blank" rel="noopener noreferrer">
                 <Image src={twitter} alt="Twitter" />
               </Link>
               <Link href="https://youtube.com/@knust-college_of_engineering?si=jtCCfu6aXxDdSXid" target="_blank" rel="noopener noreferrer">
                 <Image src={yt} alt="YouTube" />
               </Link>
-              <Link href="https://www.linkedin.com/company/gesa-knust/" target="_blank" rel="noopener noreferrer">
+              <Link href={contact.linkedin} target="_blank" rel="noopener noreferrer">
                 <Image src={linkedin2} alt="LinkedIn" />
               </Link>
             </div>
