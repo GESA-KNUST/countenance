@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Container from '@/components/custom/Container';
 import ContributeForm from './ContributeForm';
-import { getBlogAuthors } from '@/lib/data/blog-authors';
+import SignInPanel from './SignInPanel';
+import { currentWriter, isSignInConfigured } from '@/lib/contribute/session';
 
 export const metadata: Metadata = {
     title: 'Write for the GESA blog',
@@ -13,8 +14,14 @@ export const metadata: Metadata = {
     },
 };
 
-const ContributePage = async () => {
-    const authors = await getBlogAuthors();
+type Props = {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+const ContributePage = async ({ searchParams }: Props) => {
+    const writer = await currentWriter();
+    const params = await searchParams;
+    const error = typeof params.error === 'string' ? params.error : '';
 
     return (
         <div className="font-poppins min-h-screen bg-white">
@@ -35,7 +42,11 @@ const ContributePage = async () => {
             </div>
 
             <Container size="lg">
-                <ContributeForm authors={authors} />
+                {writer ? (
+                    <ContributeForm writer={writer} />
+                ) : (
+                    <SignInPanel configured={isSignInConfigured()} error={error} />
+                )}
             </Container>
         </div>
     );
