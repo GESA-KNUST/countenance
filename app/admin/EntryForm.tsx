@@ -48,12 +48,21 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
     const [saved, setSaved] = useState(false);
-    const [slugTouched, setSlugTouched] = useState(
-        typeof detail.values.slug === 'string' && detail.values.slug !== ''
-    );
     const router = useRouter();
 
     const slugSources = collection.slugFrom ?? (collection.titleField ? [collection.titleField] : []);
+
+    // An address that still matches the one the current title produces was
+    // filled in for the editor, so it keeps following the title. Anything
+    // somebody typed themselves counts as touched and is left alone.
+    const [slugTouched, setSlugTouched] = useState(() => {
+        const existing = typeof detail.values.slug === 'string' ? detail.values.slug : '';
+        if (!existing) return false;
+
+        const generated =
+            buildSlug(slugSources.map((id) => detail.values[id] as string | undefined)) === existing;
+        return !(collection.slugFollowsTitle && generated);
+    });
     const autoSlug = buildSlug(slugSources.map((id) => values[id] as string | undefined));
     const effectiveSlug =
         slugTouched && typeof values.slug === 'string' && values.slug ? values.slug : autoSlug;
