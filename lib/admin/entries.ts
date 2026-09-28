@@ -1,7 +1,7 @@
 import { type CmaEntryItem, CmaError, LOCALE, assetLink, cma, cmaAll, entryLink, linkIds } from "./cma";
 import { assetUrls } from "./assets";
 import { buildSlug } from "./slug";
-import { type CollectionSpec, type FieldSpec, findCollection } from "./collections";
+import { type CollectionSpec, type FieldSpec, findCollection, loadCollections } from "./collections";
 import {
   assetIdsInDocument,
   canEditAsMarkdown,
@@ -79,10 +79,12 @@ function titleOf(collection: CollectionSpec, fields: RawFields, id: string) {
 }
 
 export async function listEntries(type: string): Promise<EntrySummary[]> {
-  const collection = findCollection(type);
+  const collection = await findCollection(type);
   if (!collection) return [];
 
-  const items = await cmaAll(`/entries?content_type=${type}&order=fields.order,-sys.updatedAt`);
+  // A generated type may have no `order` field; ordering by it would 400.
+  const order = collection.orderable === false ? "-sys.updatedAt" : "fields.order,-sys.updatedAt";
+  const items = await cmaAll(`/entries?content_type=${type}&order=${order}`);
 
   const thumbIds: string[] = [];
   for (const item of items) {
@@ -139,7 +141,7 @@ export function blankEntry(collection: CollectionSpec): EntryDetail {
 }
 
 export async function readEntry(type: string, id: string): Promise<EntryDetail | null> {
-  const collection = findCollection(type);
+  const collection = await findCollection(type);
   if (!collection) return null;
 
   const entry = await cma(`/entries/${id}`);
@@ -193,6 +195,9 @@ export async function readEntry(type: string, id: string): Promise<EntryDetail |
         break;
       case "datetime":
         values[field.id] = typeof value === "string" ? value.slice(0, 16) : "";
+        break;
+      case "number":
+        values[field.id] = typeof value === "number" ? String(value) : "";
         break;
       default:
         values[field.id] = typeof value === "string" ? value : "";
@@ -446,6 +451,11 @@ function toContentful(field: FieldSpec, value: FieldValue, existing: unknown) {
     case "date":
     case "datetime":
       return typeof value === "string" && value ? value : undefined;
+    case "number": {
+      if (typeof value !== "string" || value.trim() === "") return undefined;
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : undefined;
+    }
     default:
       return typeof value === "string" && value.trim() !== "" ? value : undefined;
   }
@@ -461,7 +471,7 @@ export async function saveEntry(
   values: Record<string, FieldValue>,
   lockedFields: string[] = []
 ): Promise<SaveResult> {
-  const collection = findCollection(type);
+  const collection = await findCollection(type);
   if (!collection) throw new Error("Unknown collection");
 
   const missing = missingRequired(collection, values);
@@ -513,10 +523,12 @@ export async function saveEntry(
     else delete fields[field.id];
   }
 
-  if (!id) {
-    fields.order = { [LOCALE]: await nextOrder(type) };
-  } else if (existing?.fields?.order?.[LOCALE] !== undefined) {
-    fields.order = { [LOCALE]: existing.fields.order[LOCALE] };
+  if (collection.orderable !== false) {
+    if (!id) {
+      fields.order = { [LOCALE]: await nextOrder(type) };
+    } else if (existing?.fields?.order?.[LOCALE] !== undefined) {
+      fields.order = { [LOCALE]: existing.fields.order[LOCALE] };
+    }
   }
 
   const slugField = collection.fields.find((field) => field.id === "slug");
@@ -599,12 +611,16 @@ export async function searchableEntries(): Promise<{
   entries: SearchableEntry[];
   raw: CmaEntryItem[];
 }> {
-  const items = await cmaAll("/entries?order=-sys.updatedAt");
+  const [items, collections] = await Promise.all([
+    cmaAll("/entries?order=-sys.updatedAt"),
+    loadCollections(),
+  ]);
+  const byType = new Map(collections.map((collection) => [collection.type, collection] as const));
 
   const found: SearchableEntry[] = [];
   for (const item of items) {
     const type = item.sys?.contentType?.sys?.id;
-    const collection = type ? findCollection(type) : undefined;
+    const collection = type ? byType.get(type) : undefined;
     if (!collection) continue;
 
     found.push({
@@ -620,7 +636,7 @@ export async function searchableEntries(): Promise<{
 }
 
 export async function referenceOptions(refType: string): Promise<RefOption[]> {
-  const target = findCollection(refType);
+  const target = await findCollection(refType);
   const items = await cmaAll(`/entries?content_type=${refType}&order=-sys.updatedAt`);
 
   return items.map(

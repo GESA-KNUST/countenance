@@ -145,6 +145,28 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
         }
 
         if (field.id === 'slug') {
+            // Where the address is made from the title anyway, showing a box
+            // invites somebody to edit a thing they should not have to think
+            // about — and an out of date box overwrites a good address on save.
+            if (collection.slugFollowsTitle && !slugTouched) {
+                return (
+                    <p className="text-sm text-gray-500">
+                        {effectiveSlug ? (
+                            <>
+                                This is made from the name above, so it always matches. The page will
+                                be at{' '}
+                                <span className="font-medium text-gray-700 break-all">
+                                    {collection.slugUrl ?? ''}
+                                    {effectiveSlug}
+                                </span>
+                            </>
+                        ) : (
+                            <>Fill in the name above and the address appears here.</>
+                        )}
+                    </p>
+                );
+            }
+
             return (
                 <>
                     <input
@@ -294,6 +316,36 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
                         </label>
                     ))}
                 </div>
+            );
+        }
+
+        if (field.kind === 'select') {
+            const options = field.options ?? [];
+            return (
+                <select
+                    value={typeof value === 'string' ? value : ''}
+                    onChange={(event) => set(field.id, event.target.value)}
+                    className={`${inputClass} cursor-pointer`}
+                >
+                    <option value="">Not chosen</option>
+                    {options.map((option) => (
+                        <option key={option.value} value={option.value}>
+                            {option.label}
+                        </option>
+                    ))}
+                </select>
+            );
+        }
+
+        if (field.kind === 'number') {
+            return (
+                <input
+                    type="number"
+                    inputMode="decimal"
+                    value={typeof value === 'string' ? value : ''}
+                    onChange={(event) => set(field.id, event.target.value)}
+                    className={inputClass}
+                />
             );
         }
 

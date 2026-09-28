@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 
 const EntryPage = async ({ params }: { params: Promise<{ type: string; id: string }> }) => {
     const { type, id } = await params;
-    const collection = findCollection(type);
+    const collection = await findCollection(type);
     if (!collection) notFound();
 
     const isNew = id === 'new';
