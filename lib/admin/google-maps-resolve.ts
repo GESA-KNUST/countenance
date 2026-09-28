@@ -26,7 +26,7 @@ const decode = (value: string) => {
   }
 };
 
-export function placeAddressFromHtml(html: string): string | null {
+function placeAddressFromHtml(html: string): string | null {
   const match = html.match(/https:\/\/www\.google\.com\/maps\/place\/([^"'<>\s\\&]+)/);
   if (!match) return null;
 
@@ -35,7 +35,7 @@ export function placeAddressFromHtml(html: string): string | null {
   return address.length > 2 ? address : null;
 }
 
-export function placeUrlFromHtml(html: string): string | null {
+function placeUrlFromHtml(html: string): string | null {
   const match = html.match(/https:\/\/www\.google\.com\/maps\/place\/[^"'<>\s\\]+/);
   return match ? decode(match[0]) : null;
 }
