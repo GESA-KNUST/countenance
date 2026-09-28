@@ -16,6 +16,7 @@ import { markdownToDocument } from "./richtext";
 import { authorForEmail } from "./author-identity";
 import { uniqueSlug } from "./entries";
 import { buildSlug } from "./slug";
+import { LogError } from "../logger";
 
 export const SUBMISSION_LIMITS = {
   title: 160,
@@ -92,6 +93,34 @@ async function publishedAuthorExists(id: string) {
   );
 }
 
+async function createTagList(words: string[], title: string): Promise<string | null> {
+  const cleaned = [...new Set(words.map((word) => word.trim()).filter(Boolean))];
+  if (cleaned.length === 0) return null;
+
+  try {
+    const created = await cma("/entries", {
+      method: "POST",
+      contentType: "blogTaglist",
+      body: {
+        fields: {
+          title: { [LOCALE]: title },
+          tags: { [LOCALE]: cleaned },
+        },
+      },
+    });
+
+    await cma(`/entries/${created.sys.id}/published`, {
+      method: "PUT",
+      version: created.sys.version,
+    });
+
+    return created.sys.id as string;
+  } catch (error) {
+    LogError("[createSubmission] tags", error);
+    return null;
+  }
+}
+
 export async function createSubmission(input: SubmissionInput, writer: VerifiedWriter) {
   if (!(await submissionAssetExists(input.coverImage))) {
     throw new Error("cover image does not exist");
@@ -99,6 +128,7 @@ export async function createSubmission(input: SubmissionInput, writer: VerifiedW
 
   const authorId = await authorForEmail(writer.email, writer.name);
   const slug = await uniqueSlug("blogPost", buildSlug([input.title]), null);
+  const tagListId = await createTagList(input.tags, input.title);
 
   const fields: Record<string, Record<string, unknown>> = {
     title: { [LOCALE]: input.title },
@@ -112,6 +142,10 @@ export async function createSubmission(input: SubmissionInput, writer: VerifiedW
     author: { [LOCALE]: entryLink(authorId) },
     slug: { [LOCALE]: slug },
   };
+
+  if (tagListId) {
+    fields.tags = { [LOCALE]: entryLink(tagListId) };
+  }
 
   const created = await cma("/entries", {
     method: "POST",

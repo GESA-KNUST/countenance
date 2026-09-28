@@ -71,7 +71,7 @@ interface PopularPostsProps {
 }
 
 const SidebarHeading = ({ children }: { children: React.ReactNode }) => (
-    <h2 className="text-3xl font-bold text-muted-foreground/50 text-center xl:text-left font-header">
+    <h2 className="text-balance text-2xl font-bold text-muted-foreground/60 text-center xl:text-left font-header">
         {children}
     </h2>
 );
@@ -79,7 +79,7 @@ const SidebarHeading = ({ children }: { children: React.ReactNode }) => (
 const PopularPosts = ({ allPosts, onPostSelect, currentSlug, authorName }: PopularPostsProps) => {
     if (!allPosts || allPosts.length === 0) {
         return (
-            <div className="w-[361px] flex flex-col items-center xl:items-start gap-2.5 xl:mt-78">
+            <div className="w-[361px] flex flex-col items-center xl:items-start gap-2.5 xl:mt-4">
                 <SidebarHeading>Popular Posts</SidebarHeading>
                 <div className="w-full py-8">
                     <EmptyState
@@ -105,7 +105,7 @@ const PopularPosts = ({ allPosts, onPostSelect, currentSlug, authorName }: Popul
     const firstName = (authorName ?? '').trim().split(/\s+/)[0];
 
     return (
-        <div className="w-[361px] flex flex-col items-center xl:items-start gap-10 xl:mt-78">
+        <div className="w-[361px] flex flex-col items-center xl:items-start gap-10 xl:mt-4">
             {byAuthor.length > 0 && (
                 <div className="flex flex-col items-center xl:items-start gap-6 w-full">
                     <SidebarHeading>More from {firstName}</SidebarHeading>
