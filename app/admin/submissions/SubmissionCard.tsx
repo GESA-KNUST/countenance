@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Check, X, Pencil } from 'lucide-react';
+import { BadgeCheck, Check, Pencil, X } from 'lucide-react';
 import StarSpinner from '@/components/ui/StarSpinner';
 import type { SubmissionSummary } from '@/lib/admin/submissions';
 
@@ -54,14 +54,22 @@ const SubmissionCard = ({ submission }: { submission: SubmissionSummary }) => {
                 <div className="min-w-0 flex-1">
                     <p className="font-semibold">{submission.title}</p>
                     <p className="text-sm text-gray-600 line-clamp-2 mt-0.5">{submission.hook}</p>
-                    <p className="text-xs text-gray-500 mt-2">
-                        From {submission.contributorName}
-                        {submission.contributorEmail ? ` · ${submission.contributorEmail}` : ''} ·{' '}
-                        {new Date(submission.submittedAt).toLocaleDateString('en-GB', {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric',
-                        })}
+                    <p className="mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-gray-500">
+                        <span>From {submission.contributorName}</span>
+                        {submission.contributorEmail && (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-0.5 font-medium text-green-800">
+                                <BadgeCheck className="h-3 w-3" />
+                                {submission.contributorEmail}
+                            </span>
+                        )}
+                        <span>
+                            ·{' '}
+                            {new Date(submission.submittedAt).toLocaleDateString('en-GB', {
+                                day: 'numeric',
+                                month: 'short',
+                                year: 'numeric',
+                            })}
+                        </span>
                     </p>
                 </div>
             </div>

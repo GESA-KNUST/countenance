@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isWriteConfigured } from "@/lib/admin/cma";
 import { SUBMISSION_LIMITS, uploadSubmissionImage } from "@/lib/admin/submissions";
-import { clientKey, rateLimit } from "@/lib/admin/rate-limit";
+import { rateLimit } from "@/lib/admin/rate-limit";
+import { currentWriter } from "@/lib/contribute/session";
 import { LogError } from "@/lib/logger";
 
 export const maxDuration = 60;
@@ -13,7 +14,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: "Not available right now." }, { status: 503 });
   }
 
-  const limit = rateLimit(clientKey(request, "contribute-upload"), 20, 60 * 60 * 1000);
+  const writer = await currentWriter();
+  if (!writer) {
+    return NextResponse.json({ message: "Please sign in first." }, { status: 401 });
+  }
+
+  const limit = rateLimit(`writer-upload:${writer.email}`, 20, 60 * 60 * 1000);
   if (!limit.allowed) {
     return NextResponse.json(
       { message: "Too many photos for now. Please try again later." },
