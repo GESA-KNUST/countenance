@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { AlertCircle, Check, Lock, Plus, RotateCcw, Save, X } from 'lucide-react';
+import { AlertCircle, Check, Lock, RotateCcw, Save, X } from 'lucide-react';
 import { useState as useLocalState } from 'react';
 import StarSpinner from '@/components/ui/StarSpinner';
 import type { CollectionSpec, FieldSpec } from '@/lib/admin/collections';
@@ -48,12 +48,21 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
     const [saved, setSaved] = useState(false);
-    const [slugTouched, setSlugTouched] = useState(
-        typeof detail.values.slug === 'string' && detail.values.slug !== ''
-    );
     const router = useRouter();
 
     const slugSources = collection.slugFrom ?? (collection.titleField ? [collection.titleField] : []);
+
+    // An address that still matches the one the current title produces was
+    // filled in for the editor, so it keeps following the title. Anything
+    // somebody typed themselves counts as touched and is left alone.
+    const [slugTouched, setSlugTouched] = useState(() => {
+        const existing = typeof detail.values.slug === 'string' ? detail.values.slug : '';
+        if (!existing) return false;
+
+        const generated =
+            buildSlug(slugSources.map((id) => detail.values[id] as string | undefined)) === existing;
+        return !(collection.slugFollowsTitle && generated);
+    });
     const autoSlug = buildSlug(slugSources.map((id) => values[id] as string | undefined));
     const effectiveSlug =
         slugTouched && typeof values.slug === 'string' && values.slug ? values.slug : autoSlug;
@@ -136,6 +145,28 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
         }
 
         if (field.id === 'slug') {
+            // Where the address is made from the title anyway, showing a box
+            // invites somebody to edit a thing they should not have to think
+            // about — and an out of date box overwrites a good address on save.
+            if (collection.slugFollowsTitle && !slugTouched) {
+                return (
+                    <p className="text-sm text-gray-500">
+                        {effectiveSlug ? (
+                            <>
+                                This is made from the name above, so it always matches. The page will
+                                be at{' '}
+                                <span className="font-medium text-gray-700 break-all">
+                                    {collection.slugUrl ?? ''}
+                                    {effectiveSlug}
+                                </span>
+                            </>
+                        ) : (
+                            <>Fill in the name above and the address appears here.</>
+                        )}
+                    </p>
+                );
+            }
+
             return (
                 <>
                     <input
@@ -285,6 +316,45 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
                         </label>
                     ))}
                 </div>
+            );
+        }
+
+        if (field.kind === 'tagWords') {
+            return (
+                <TagInput
+                    words={Array.isArray(value) ? (value as string[]) : []}
+                    onChange={(words) => set(field.id, words)}
+                />
+            );
+        }
+
+        if (field.kind === 'select') {
+            const options = field.options ?? [];
+            return (
+                <select
+                    value={typeof value === 'string' ? value : ''}
+                    onChange={(event) => set(field.id, event.target.value)}
+                    className={`${inputClass} cursor-pointer`}
+                >
+                    <option value="">Not chosen</option>
+                    {options.map((option) => (
+                        <option key={option.value} value={option.value}>
+                            {option.label}
+                        </option>
+                    ))}
+                </select>
+            );
+        }
+
+        if (field.kind === 'number') {
+            return (
+                <input
+                    type="number"
+                    inputMode="decimal"
+                    value={typeof value === 'string' ? value : ''}
+                    onChange={(event) => set(field.id, event.target.value)}
+                    className={inputClass}
+                />
             );
         }
 

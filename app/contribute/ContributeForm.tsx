@@ -1,23 +1,30 @@
 'use client';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Check, Plus, X, Send } from 'lucide-react';
 import StarSpinner from '@/components/ui/StarSpinner';
 import MarkdownEditor from '@/app/admin/MarkdownEditor';
 import { MAX_ORIGINAL_BYTES, resizeForHero } from '@/lib/admin/resize';
-import type { BlogAuthorOption } from '@/lib/data/blog-authors';
+import type { Writer } from '@/lib/contribute/session';
 
 const labelClass = 'block font-semibold mb-1';
 const inputClass =
     'w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-base outline-none focus:border-black';
 
-const ContributeForm = ({ authors }: { authors: BlogAuthorOption[] }) => {
+const ContributeForm = ({
+    writer,
+    savedPhotoUrl,
+}: {
+    writer: Writer;
+    savedPhotoUrl: string | null;
+}) => {
+    const router = useRouter();
+    const [photoUrl, setPhotoUrl] = useState(savedPhotoUrl);
+    const [photoBusy, setPhotoBusy] = useState(false);
+    const [photoError, setPhotoError] = useState('');
     const [title, setTitle] = useState('');
     const [hook, setHook] = useState('');
-    const [name, setName] = useState('');
-    const [authorId, setAuthorId] = useState('');
-    const [returning, setReturning] = useState<boolean | null>(authors.length > 0 ? null : false);
-    const [email, setEmail] = useState('');
     const [body, setBody] = useState('');
     const [tags, setTags] = useState<string[]>([]);
     const [tagDraft, setTagDraft] = useState('');
@@ -68,6 +75,33 @@ const ContributeForm = ({ authors }: { authors: BlogAuthorOption[] }) => {
         setTagDraft('');
     };
 
+    const choosePhoto = async (file: File) => {
+        setPhotoError('');
+        setPhotoBusy(true);
+        try {
+            const resized = await resizeForHero(file);
+            const form = new FormData();
+            form.append('file', resized);
+
+            const res = await fetch('/api/contribute/photo', { method: 'POST', body: form });
+            const payload = await res.json().catch(() => ({}));
+
+            if (!res.ok) {
+                setPhotoError(payload.message ?? 'That photo could not be saved.');
+            } else {
+                setPhotoUrl(payload.url);
+            }
+        } catch {
+            setPhotoError('That photo could not be saved.');
+        }
+        setPhotoBusy(false);
+    };
+
+    const signOut = async () => {
+        await fetch('/api/contribute/auth/logout', { method: 'POST' });
+        router.refresh();
+    };
+
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         setError('');
@@ -81,10 +115,7 @@ const ContributeForm = ({ authors }: { authors: BlogAuthorOption[] }) => {
                     title,
                     hook,
                     body,
-                    contributorName: name,
-                    contributorEmail: email,
                     coverImage: cover?.id ?? '',
-                    authorId,
                     tags,
                     website,
                 }),
@@ -109,12 +140,11 @@ const ContributeForm = ({ authors }: { authors: BlogAuthorOption[] }) => {
             <div className="rounded-2xl border border-green-200 bg-green-50 p-8 text-center">
                 <Check className="w-10 h-10 text-green-700 mx-auto mb-4" />
                 <h2 className="font-header font-bold text-2xl text-[#252638] mb-2">
-                    Thank you, {name.split(' ')[0] || 'friend'}!
+                    Thank you, {(writer.name || writer.email).split(' ')[0]}!
                 </h2>
                 <p className="text-gray-700">
                     Your article has been sent to the GESA team for review. Nothing is published yet
-                    &mdash; someone will read it and get back to you
-                    {email ? ` at ${email}` : ''}.
+                    &mdash; someone will read it and get back to you at {writer.email}.
                 </p>
             </div>
         );
@@ -124,7 +154,6 @@ const ContributeForm = ({ authors }: { authors: BlogAuthorOption[] }) => {
         title.trim() !== '' &&
         hook.trim() !== '' &&
         body.trim() !== '' &&
-        name.trim() !== '' &&
         cover !== null;
 
     return (
@@ -156,102 +185,59 @@ const ContributeForm = ({ authors }: { authors: BlogAuthorOption[] }) => {
                 />
             </div>
 
-            {authors.length > 0 && (
-                <div>
-                    <span className={labelClass}>Have you written for GESA before?</span>
-                    <p className="text-sm text-gray-500 mb-3">
-                        Pick yourself from the list and we will use the name and photo already on
-                        your other articles.
-                    </p>
-
-                    <div className="flex flex-wrap gap-2">
-                        {authors.map((author) => {
-                            const active = authorId === author.id;
-                            return (
-                                <button
-                                    key={author.id}
-                                    type="button"
-                                    onClick={() => {
-                                        setReturning(true);
-                                        setAuthorId(author.id);
-                                        setName(author.name);
-                                    }}
-                                    className={`inline-flex items-center gap-2.5 rounded-full border py-1.5 pl-1.5 pr-4 text-sm font-medium transition-colors cursor-pointer ${
-                                        active
-                                            ? 'border-[#252638] bg-[#252638] text-white'
-                                            : 'border-gray-300 bg-white text-gray-700 hover:border-black'
-                                    }`}
-                                >
-                                    <span className="relative block h-8 w-8 shrink-0 overflow-hidden rounded-full bg-gray-200">
-                                        {author.photoUrl && (
-                                            <Image
-                                                src={`${author.photoUrl}?w=64&h=64&fit=fill&f=face&fm=webp&q=80`}
-                                                alt=""
-                                                fill
-                                                className="object-cover"
-                                                sizes="32px"
-                                                unoptimized
-                                            />
-                                        )}
-                                    </span>
-                                    {author.name}
-                                </button>
-                            );
-                        })}
-
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setReturning(false);
-                                setAuthorId('');
-                                setName('');
+            <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                <div className="flex items-center gap-4">
+                    <label className="group relative h-14 w-14 shrink-0 cursor-pointer overflow-hidden rounded-full bg-[#252638]">
+                        {photoUrl ? (
+                            <Image
+                                src={`${photoUrl}?w=112&h=112&fit=fill&f=face&fm=webp&q=80`}
+                                alt=""
+                                fill
+                                className="object-cover"
+                                sizes="56px"
+                                unoptimized
+                            />
+                        ) : (
+                            <span className="flex h-full w-full items-center justify-center text-lg font-semibold text-white">
+                                {(writer.name || writer.email).charAt(0).toUpperCase()}
+                            </span>
+                        )}
+                        <span className="absolute inset-0 flex items-center justify-center bg-black/55 text-[10px] font-semibold text-white opacity-0 transition-opacity group-hover:opacity-100">
+                            {photoBusy ? '...' : 'Change'}
+                        </span>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            disabled={photoBusy}
+                            onChange={(event) => {
+                                const file = event.target.files?.[0];
+                                event.target.value = '';
+                                if (file) choosePhoto(file);
                             }}
-                            className={`inline-flex items-center rounded-full border px-4 py-2.5 text-sm font-medium transition-colors cursor-pointer ${
-                                returning === false
-                                    ? 'border-[#252638] bg-[#252638] text-white'
-                                    : 'border-gray-300 bg-white text-gray-700 hover:border-black'
-                            }`}
-                        >
-                            This is my first article
-                        </button>
+                        />
+                    </label>
+
+                    <div className="min-w-0">
+                        <p className="font-semibold text-gray-900">{writer.name || writer.email}</p>
+                        <p className="truncate text-sm text-gray-500">{writer.email}</p>
                     </div>
 
-                    {authorId && (
-                        <p className="mt-3 text-sm text-green-700">
-                            Writing as <span className="font-semibold">{name}</span>. Your existing
-                            photo will be used.
-                        </p>
-                    )}
+                    <button
+                        type="button"
+                        onClick={signOut}
+                        className="ml-auto shrink-0 cursor-pointer text-sm font-medium text-gray-500 underline hover:text-black"
+                    >
+                        Not you?
+                    </button>
                 </div>
-            )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label htmlFor="c-name" className={labelClass}>
-                        Your name <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                        id="c-name"
-                        value={name}
-                        onChange={(event) => setName(event.target.value)}
-                        maxLength={120}
-                        readOnly={Boolean(authorId)}
-                        className={`${inputClass} ${authorId ? 'bg-gray-50 text-gray-600' : ''}`}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="c-email" className={labelClass}>
-                        Your email
-                    </label>
-                    <input
-                        id="c-email"
-                        type="email"
-                        value={email}
-                        onChange={(event) => setEmail(event.target.value)}
-                        maxLength={160}
-                        className={inputClass}
-                    />
-                </div>
+                {!photoUrl && !photoError && (
+                    <p className="mt-3 text-sm text-gray-500">
+                        Tap the circle to add the photo that appears next to your articles.
+                    </p>
+                )}
+                {photoError && <p className="mt-3 text-sm text-red-600">{photoError}</p>}
             </div>
 
             <div>

@@ -29,18 +29,20 @@ const AdminHome = async () => {
     const allEntries = index.entries;
     const submissions = await submissionsFrom(index.raw);
 
+    const [groups, ungrouped] = await Promise.all([collectionGroups(), ungroupedCollections()]);
+
     const pages = ADMIN_PAGES.map((page) => ({
         ...page,
         entry: entries[page.key] ?? { images: [], mobileImages: [] },
     }));
 
     const sections: SearchableSection[] = [
-        ...collectionGroups().map((group) => ({
+        ...groups.map((group) => ({
             label: group.name,
             hint: group.hint,
             href: `/admin/g/${group.name}`,
         })),
-        ...ungroupedCollections().map((collection) => ({
+        ...ungrouped.map((collection) => ({
             label: collection.label,
             hint: collection.hint,
             href: `/admin/c/${collection.type}`,
@@ -92,7 +94,7 @@ const AdminHome = async () => {
                     Blog posts, events, photos and everything else.
                 </p>
                 <div className="flex flex-col gap-2 mb-12">
-                    {collectionGroups().map((group) => (
+                    {groups.map((group) => (
                         <Link
                             key={group.name}
                             href={`/admin/g/${group.name}`}
@@ -106,7 +108,7 @@ const AdminHome = async () => {
                         </Link>
                     ))}
 
-                    {ungroupedCollections().map((collection) => (
+                    {ungrouped.map((collection) => (
                         <Link
                             key={collection.type}
                             href={`/admin/c/${collection.type}`}
