@@ -8,6 +8,7 @@ import {
 } from '@/lib/data/executive';
 import ExecutiveProfile from '@/components/executives/ExecutiveProfile';
 import { ogImage } from '@/lib/data/og-image';
+import { extractText } from '@/lib/extractText';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -20,8 +21,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!executive || !hasProfile(executive)) return { title: 'Executive not found' };
 
   const title = `${executive.fullName} | ${executive.executivePositionHeld}`;
+  const bio = extractText(executive.bio?.json as Parameters<typeof extractText>[0]).trim();
   const description =
-    executive.quote?.trim() ||
+    (bio ? `${bio.slice(0, 180).trimEnd()}${bio.length > 180 ? '...' : ''}` : '') ||
     `${executive.fullName} served as ${executive.executivePositionHeld} of GESA-KNUST in ${executive.academicYear}.`;
   const share = ogImage(executive.officialImage?.url, executive.fullName, 'face');
 

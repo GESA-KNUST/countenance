@@ -67,15 +67,6 @@ const ExecutiveProfile = ({ executive, colleagues }: ExecutiveProfileProps) => {
   return (
     <div className="font-poppins bg-white min-h-screen">
       <div className="relative overflow-hidden border-b border-gray-100 bg-white">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-32 -right-24 h-80 w-80 rounded-full bg-[#FFBE00]/25 blur-3xl"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-[#252638]/5 blur-3xl"
-        />
-
         <Container size="xl" className="relative">
           <Link
             href="/executives"
@@ -87,10 +78,6 @@ const ExecutiveProfile = ({ executive, colleagues }: ExecutiveProfileProps) => {
 
           <div className="mt-8 grid grid-cols-1 items-center gap-8 md:mt-10 md:grid-cols-[minmax(0,320px)_1fr] md:gap-12 lg:gap-16">
             <div className="relative mx-auto w-full max-w-[280px] md:mx-0 md:max-w-none">
-              <div
-                aria-hidden
-                className="absolute -bottom-3 -left-3 h-24 w-24 rounded-2xl bg-[#FFBE00] md:-bottom-4 md:-left-4 md:h-32 md:w-32"
-              />
               <div className="relative aspect-4/5 overflow-hidden rounded-3xl bg-gray-100 shadow-xl ring-1 ring-black/5">
                 {officialImage?.url && (
                   <Image
@@ -154,15 +141,6 @@ const ExecutiveProfile = ({ executive, colleagues }: ExecutiveProfileProps) => {
       <Container size="xl">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           <div className="lg:col-span-2 min-w-0">
-            {quote && (
-              <blockquote className="relative bg-[#FFBE00]/10 border-l-4 border-[#FFBE00] rounded-r-xl p-6 mb-10">
-                <Quote className="w-6 h-6 text-[#FFBE00] mb-3" />
-                <p className="text-xl md:text-2xl font-header font-semibold text-[#252638] leading-snug">
-                  {quote}
-                </p>
-              </blockquote>
-            )}
-
             {hasBioContent(executive) && bio?.json ? (
               <div className="max-w-none">
                 <h2 className="font-header font-bold text-2xl text-[#252638] mb-5">Biography</h2>
@@ -172,6 +150,19 @@ const ExecutiveProfile = ({ executive, colleagues }: ExecutiveProfileProps) => {
               <p className="text-gray-500">
                 A full biography for {fullName} has not been added yet.
               </p>
+            )}
+
+            {quote && (
+              <figure className="mt-12 border-t border-gray-200 pt-10">
+                <Quote className="h-7 w-7 text-gray-300" aria-hidden />
+                <blockquote className="mt-3 font-header text-2xl leading-snug text-[#252638] md:text-[1.75rem]">
+                  {quote}
+                </blockquote>
+                <figcaption className="mt-4 flex items-center gap-3 text-sm text-gray-500">
+                  <span className="h-px w-8 bg-gray-300" />
+                  {fullName}
+                </figcaption>
+              </figure>
             )}
 
             {portfolio.length > 0 && (

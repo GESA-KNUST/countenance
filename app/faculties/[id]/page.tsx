@@ -60,12 +60,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             description: `Official page of the ${faculty.name} at KNUST.`,
             openGraph: {
                 title: faculty.name,
-                images: ogImage(image, faculty.name),
+                images: ogImage(image, faculty.name, { contain: true }),
             },
             twitter: {
                 card: 'summary_large_image',
                 title: faculty.name,
-                images: ogImage(image, faculty.name).map((item) => item.url),
+                images: ogImage(image, faculty.name, { contain: true }).map((item) => item.url),
             },
         };
     } catch (error) {

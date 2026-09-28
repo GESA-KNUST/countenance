@@ -9,11 +9,22 @@ export interface OgImageEntry {
   type: string;
 }
 
+interface OgOptions {
+  focus?: "face" | "center";
+  /**
+   * Letterbox the picture on white instead of cropping it. A logo cropped to
+   * the wide share shape loses its edges, so those pass this.
+   */
+  contain?: boolean;
+}
+
 export function ogImage(
   url: string | null | undefined,
   alt: string,
-  focus: "face" | "center" = "center"
+  options: OgOptions | "face" | "center" = {}
 ): OgImageEntry[] {
+  const settings: OgOptions = typeof options === "string" ? { focus: options } : options;
+  const focus = settings.focus ?? "center";
   if (!url) return [];
 
   const base = url.startsWith("//") ? `https:${url}` : url;
@@ -24,11 +35,17 @@ export function ogImage(
   const params = new URLSearchParams({
     w: String(OG_WIDTH),
     h: String(OG_HEIGHT),
-    fit: "fill",
-    f: focus,
     fm: "jpg",
     q: "80",
   });
+
+  if (settings.contain) {
+    params.set("fit", "pad");
+    params.set("bg", "rgb:ffffff");
+  } else {
+    params.set("fit", "fill");
+    params.set("f", focus);
+  }
 
   return [
     {

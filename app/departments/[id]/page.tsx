@@ -58,12 +58,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             description: `Official page of the Department of ${dept.name} at KNUST.`,
             openGraph: {
                 title: dept.name,
-                images: ogImage(dept.deptLogo?.url, dept.name),
+                images: ogImage(dept.deptLogo?.url, dept.name, { contain: true }),
             },
             twitter: {
                 card: 'summary_large_image',
                 title: dept.name,
-                images: ogImage(dept.deptLogo?.url, dept.name).map((item) => item.url),
+                images: ogImage(dept.deptLogo?.url, dept.name, { contain: true }).map((item) => item.url),
             },
         };
     } catch (error) {

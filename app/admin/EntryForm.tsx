@@ -516,14 +516,19 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
                             </div>
                         </div>
                     ) : (
-                        <button
-                            type="button"
-                            onClick={() => setConfirmingDelete(true)}
-                            className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-gray-500 hover:text-red-700"
-                        >
-                            <Trash2 className="h-4 w-4" />
-                            Delete this {collection.singular}
-                        </button>
+                        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5">
+                            <p className="text-sm text-gray-600">
+                                Finished with this {collection.singular}?
+                            </p>
+                            <button
+                                type="button"
+                                onClick={() => setConfirmingDelete(true)}
+                                className="inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-lg border border-red-300 bg-white px-4 py-2.5 text-sm font-semibold text-red-700 transition-colors hover:border-red-500 hover:bg-red-50"
+                            >
+                                <Trash2 className="h-4 w-4" />
+                                Delete
+                            </button>
+                        </div>
                     )}
                 </div>
             )}

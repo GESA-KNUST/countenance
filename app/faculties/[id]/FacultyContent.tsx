@@ -28,7 +28,7 @@ const headingClass = 'text-4xl md:text-5xl font-extrabold font-header text-gray-
 
 /** Renders a markdown field with a graceful fallback when it is empty. */
 const Markdown = ({ content, fallback }: { content?: string; fallback: string }) => (
-    <div className="text-lg text-gray-700 space-y-6 max-w-none leading-relaxed">
+    <div className="text-lg text-gray-700 space-y-6 max-w-2xl leading-relaxed">
         {content ? (
             <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]} components={markdownComponents}>
                 {content}

@@ -74,7 +74,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
     const title = club.clubName;
     const description = club.description ?? `${club.clubName} at GESA-KNUST.`;
-    const share = ogImage(club.clubLogo?.url, club.clubLogo?.title || club.clubName);
+    const share = ogImage(club.clubLogo?.url, club.clubLogo?.title || club.clubName, { contain: true });
 
     return {
         title,
