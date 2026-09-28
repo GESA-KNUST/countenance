@@ -520,11 +520,26 @@ export async function saveEntry(
   }
 
   const slugField = collection.fields.find((field) => field.id === "slug");
-  if (slugField && !fields.slug) {
+  if (slugField) {
     const sources = collection.slugFrom ?? (collection.titleField ? [collection.titleField] : []);
     const base = buildSlug(sources.map((fieldId) => resolved[fieldId] as string | undefined));
 
-    if (base) {
+    const current = fields.slug?.[LOCALE];
+    const currentSlug = typeof current === "string" ? current : "";
+
+    // A slug that still matches what the old title produced was made for the
+    // editor, not chosen by them, so it should follow the title rather than
+    // leave a stale address behind. Anything typed by hand survives untouched.
+    const previousBase = collection.slugFollowsTitle
+      ? buildSlug(
+          sources.map((fieldId) => existing?.fields?.[fieldId]?.[LOCALE] as string | undefined)
+        )
+      : "";
+    const wasGenerated =
+      previousBase.length > 0 &&
+      (currentSlug === previousBase || new RegExp(`^${previousBase}-\\d+$`).test(currentSlug));
+
+    if (base && (!currentSlug || wasGenerated)) {
       fields.slug = { [LOCALE]: await uniqueSlug(type, base, id) };
     }
   }

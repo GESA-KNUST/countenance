@@ -1,49 +1,35 @@
-'use client';
+import type { Metadata } from 'next';
+import { getEventBySlug } from '@/lib/data/event';
+import { ogImage } from '@/lib/data/og-image';
+import EventDetailClient from './EventDetailClient';
 
-import { useParams } from 'next/navigation';
-import { useEventBySlug } from '@/hooks/useEventCollection';
-import EventDetail from '@/components/events/EventDetail';
-import { useStore } from '@/store/useStore';
-import { useEffect } from 'react';
-import NotFoundCard from '@/components/common/NotFoundCard';
-import { CalendarX } from 'lucide-react';
+interface Props {
+    params: Promise<{ slug: string }>;
+}
 
-const EventDetailPage = () => {
-    const { slug } = useParams();
-    const { data: event, isLoading, error } = useEventBySlug(slug as string);
-    const { addToRecentlyViewed } = useStore();
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const { slug } = await params;
+    const event = await getEventBySlug(slug);
+    if (!event) return { title: 'Event not found' };
 
-    useEffect(() => {
-        if (event && slug) {
-            addToRecentlyViewed(`/events/${slug}`);
-        }
-    }, [event, slug, addToRecentlyViewed]);
+    const title = event.title;
+    const description =
+        event.description?.slice(0, 180) || `${event.title} — a GESA-KNUST event.`;
+    const share = ogImage(event.eventImage?.url, event.eventImage?.description || event.title);
 
-    if (isLoading) {
-        return (
-            <div className="min-h-screen bg-gray-50 pt-32 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-4xl mx-auto space-y-8 animate-pulse">
-                    <div className="h-[400px] bg-gray-200 rounded-3xl"></div>
-                    <div className="h-10 bg-gray-200 rounded-lg w-3/4"></div>
-                    <div className="h-32 bg-gray-200 rounded-2xl"></div>
-                </div>
-            </div>
-        );
-    }
+    return {
+        title,
+        description,
+        openGraph: { title, description, type: 'article', images: share },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: share.map((image) => image.url),
+        },
+    };
+}
 
-    if (error || !event) {
-        return (
-            <NotFoundCard
-                icon={CalendarX}
-                title="Event Not Found"
-                message="The event you are looking for might have been moved or deleted."
-                backHref="/events"
-                backText="Back to Events"
-            />
-        );
-    }
-
-    return <EventDetail event={event} />;
-};
+const EventDetailPage = () => <EventDetailClient />;
 
 export default EventDetailPage;

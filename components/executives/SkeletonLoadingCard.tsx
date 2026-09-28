@@ -3,7 +3,7 @@ import { Skeleton } from '../ui/skeleton';
 const SkeletonLoadingCard = () => {
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-      <Skeleton className="h-[252px] w-full" />
+      <Skeleton className="aspect-4/3 w-full" />
       <div className="p-6">
         <Skeleton className="h-4 w-1/4 mb-4" />
         <Skeleton className="h-6 w-3/4" />

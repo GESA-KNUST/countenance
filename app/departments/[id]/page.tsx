@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
+import { ogImage } from '@/lib/data/og-image';
 import { gql } from 'graphql-request';
 import { contentfulClient } from '@/lib/contentful-client';
 import StarSpinner from '@/components/ui/StarSpinner';
@@ -57,7 +58,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             description: `Official page of the Department of ${dept.name} at KNUST.`,
             openGraph: {
                 title: dept.name,
-                images: dept.deptLogo?.url ? [dept.deptLogo.url] : [],
+                images: ogImage(dept.deptLogo?.url, dept.name),
+            },
+            twitter: {
+                card: 'summary_large_image',
+                title: dept.name,
+                images: ogImage(dept.deptLogo?.url, dept.name).map((item) => item.url),
             },
         };
     } catch (error) {

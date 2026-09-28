@@ -27,6 +27,9 @@ export interface POTWItem {
     };
   };
   linkedinUrl?: string;
+  name?: string | null;
+  role?: string | null;
+  slug?: string | null;
 }
 
 interface POTWCollection {
@@ -63,6 +66,9 @@ export const GET_POTW = gql`
         }
       }
       linkedinUrl
+      name
+      role
+      slug
     }
   }
 }`
