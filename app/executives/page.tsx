@@ -2,6 +2,7 @@
 import { useState, useMemo } from 'react';
 import Hero from '../../components/executives/Hero';
 import Intro from '../../components/executives/Intro';
+import ExecutiveMarquee from '../../components/executives/ExecutiveMarquee';
 import Executives from '../../components/executives/Executives';
 import YearFilter from '../../components/executives/YearFilter';
 import { useExecutiveCollection } from '../../hooks/useExecutiveCollection';
@@ -26,9 +27,15 @@ const ExecutivesPage = () => {
     return counts;
   }, [executives]);
 
-  // Fall back to the most recent year until the user picks one, instead of
-  // calling setState during render.
   const effectiveYear = selectedYear ?? academicYears[0] ?? null;
+
+  // The rail always shows whoever is in office now, even while the grid below is
+  // filtered to an earlier year.
+  const currentYear = academicYears[0] ?? null;
+  const currentExecutives = useMemo(
+    () => (currentYear ? executives.filter((exec) => exec.academicYear === currentYear) : []),
+    [executives, currentYear]
+  );
 
   const filteredExecutives = useMemo(() => {
     if (!effectiveYear) return [];
@@ -52,14 +59,21 @@ const ExecutivesPage = () => {
   return (
     <div>
       <Hero />
-      <Intro />
-      <YearFilter
-        academicYears={academicYears}
-        selectedYear={effectiveYear}
-        setSelectedYear={setSelectedYear}
-        countsByYear={countsByYear}
+      <ExecutiveMarquee
+        executives={currentExecutives}
+        isLoading={isLoading}
+        year={currentYear}
       />
-      <Executives executives={filteredExecutives} isLoading={isLoading} />
+      <Intro />
+      <section id="executives" className="scroll-mt-4">
+        <YearFilter
+          academicYears={academicYears}
+          selectedYear={effectiveYear}
+          setSelectedYear={setSelectedYear}
+          countsByYear={countsByYear}
+        />
+        <Executives executives={filteredExecutives} isLoading={isLoading} />
+      </section>
     </div>
   );
 };

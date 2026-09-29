@@ -15,37 +15,22 @@ symptom is `/admin` failing to load or refusing to save.
 The dashboard warns you inside the last 60 days, so you should never be surprised
 by it.
 
-## The easy way (one command)
-
-On a computer with the project checked out and a still-valid token in `.env.local`:
-
-```bash
-npm run token:renew
-```
-
-That creates a new five-year token, checks it works, writes it into `.env.local`
-(keeping a `.env.local.backup`), and prints the value with the remaining steps.
-
-Then, because the live site reads its own copy of the value:
-
-1. **Vercel → project → Settings → Environment Variables.**
-   Edit `CONTENTFUL_MANAGEMENT_TOKEN`, paste the new value, save.
-   Make sure Production, Preview and Development are all ticked.
-2. **Vercel → Deployments → the latest one → Redeploy.**
-   Environment variables only take effect on a new deployment.
-3. Open `https://www.gesaknust.com/admin`, change something small and save it.
-   If that works, the renewal is done.
-4. Revoke the old token: **app.contentful.com → Settings → API keys →
-   Content management tokens.** Do this *after* step 3, not before.
-
-## The manual way (no computer with the project on it)
+## How to renew it
 
 1. Log in at **app.contentful.com** and open the GESA space.
 2. Gear icon (top right) → **API keys** → **Content management tokens** tab.
 3. **Create personal access token.** Name it `gesa-website-<year>` and choose the
    longest expiry offered.
 4. Copy the value immediately. Contentful shows it once and never again.
-5. Do steps 1–4 from the list above (Vercel, redeploy, test, revoke the old one).
+5. **Vercel → project → Settings → Environment Variables.** Edit
+   `CONTENTFUL_MANAGEMENT_TOKEN`, paste the new value, save. Tick Production,
+   Preview and Development.
+6. **Vercel → Deployments → the latest one → Redeploy.** Environment variables
+   only take effect on a new deployment.
+7. Open `https://www.gesaknust.com/admin`, change something small and save it.
+   If that works, the renewal is done.
+8. Revoke the old token on the same Contentful page. Do this *after* step 7, not
+   before.
 
 ## Things that have caught people out
 

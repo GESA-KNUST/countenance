@@ -6,6 +6,7 @@ import {
   checkPassword,
   createSessionValue,
   isAuthConfigured,
+  ownerSession,
 } from "@/lib/admin/session";
 
 export async function POST(request: NextRequest) {
@@ -38,6 +39,6 @@ export async function POST(request: NextRequest) {
   }
 
   const response = NextResponse.json({ ok: true });
-  response.cookies.set(SESSION_COOKIE, createSessionValue(), SESSION_COOKIE_OPTIONS);
+  response.cookies.set(SESSION_COOKIE, createSessionValue(ownerSession()), SESSION_COOKIE_OPTIONS);
   return response;
 }
