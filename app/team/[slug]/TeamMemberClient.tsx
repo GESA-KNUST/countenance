@@ -107,7 +107,7 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
                     </div>
 
                     {/* Right Column: Content */}
-                    <div className="lg:col-span-8 lg:pt-24 space-y-12">
+                    <div className="lg:col-span-8 space-y-12">
 
                         {/* Bio Section */}
                         <motion.div
