@@ -126,15 +126,33 @@ function specFrom(contentType: ContentType): CollectionSpec | null {
   };
 }
 
+/**
+ * The content model changes a few times a year, but every admin page asked
+ * Contentful for it. Holding it for a few minutes removes a management API
+ * call from each page view without anyone noticing a delay.
+ */
+const MODEL_TTL_MS = 5 * 60 * 1000;
+let modelCache: { at: number; items: ContentType[] } | null = null;
+
+async function contentTypes(): Promise<ContentType[]> {
+  if (modelCache && Date.now() - modelCache.at < MODEL_TTL_MS) {
+    return modelCache.items;
+  }
+
+  const response = (await cma("/content_types?limit=1000")) as { items?: ContentType[] } | null;
+  const items = response?.items ?? [];
+  modelCache = { at: Date.now(), items };
+  return items;
+}
+
 export async function generatedCollections(handAuthored: Set<string>): Promise<CollectionSpec[]> {
-  let response: { items?: ContentType[] } | null = null;
+  let items: ContentType[] = [];
   try {
-    response = await cma("/content_types?limit=1000");
+    items = await contentTypes();
   } catch {
     return [];
   }
 
-  const items = response?.items ?? [];
   const specs: CollectionSpec[] = [];
   for (const contentType of items) {
     if (!contentType?.sys?.id || handAuthored.has(contentType.sys.id)) continue;
