@@ -3,8 +3,8 @@ import { Star } from 'lucide-react';
 const Intro = () => {
   return (
     <div className="bg-white px-6 py-14 sm:px-12 sm:py-16 md:px-16 md:py-20 lg:px-20">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 sm:gap-12">
-        <div className="mx-auto flex max-w-3xl flex-col items-center gap-5 text-center sm:gap-6">
+      <div className="flex w-full flex-col gap-10 sm:gap-12">
+        <div className="flex w-full flex-col items-center gap-5 text-center sm:gap-6">
           <div className="flex items-center gap-2">
             <Star className="w-3.5 h-3.5 text-[#FFBE00]" fill="#FFBE00" />
             <h6 className="text-[#FFBE00] font-bold text-xs sm:text-sm uppercase tracking-[0.15em] font-header">
