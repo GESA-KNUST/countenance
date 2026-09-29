@@ -6,9 +6,10 @@ import { contentfulClient } from '@/lib/contentful-client';
 import StarSpinner from '@/components/ui/StarSpinner';
 import { LogError } from '@/lib/logger';
 import DepartmentContent from './DepartmentContent';
+import { departmentIndex } from '@/lib/data/org-index';
 
 type Props = {
-    params: Promise<{ id: string }>;
+    params: Promise<{ slug: string }>;
 };
 
 interface DepartmentMetadataResponse {
@@ -36,10 +37,11 @@ const GET_DEPARTMENT_FOR_METADATA = gql`
 `;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const { id } = await params;
+    const { slug } = await params;
+    const id = (await departmentIndex()).find((item) => item.slug === slug)?.id;
 
     if (!id) {
-        return { title: 'Department Detail' };
+        return { title: 'Department Not Found' };
     }
 
     try {

@@ -6,9 +6,10 @@ import { contentfulClient } from '@/lib/contentful-client';
 import StarSpinner from '@/components/ui/StarSpinner';
 import { LogError } from '@/lib/logger';
 import FacultyContent from './FacultyContent';
+import { facultyIndex } from '@/lib/data/org-index';
 
 type Props = {
-    params: Promise<{ id: string }>;
+    params: Promise<{ slug: string }>;
 };
 
 interface FacultyMetadataResponse {
@@ -36,10 +37,11 @@ const GET_FACULTY_FOR_METADATA = gql`
 `;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const { id } = await params;
+    const { slug } = await params;
+    const id = (await facultyIndex()).find((item) => item.slug === slug)?.id;
 
     if (!id) {
-        return { title: 'Faculty Detail' };
+        return { title: 'Faculty Not Found' };
     }
 
     try {

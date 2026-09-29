@@ -5,6 +5,7 @@ import { ctfSrc } from '@/lib/contentful-src';
 import DepartmentHero from '@/components/department/DepartmentHero'
 import { Search, School } from 'lucide-react'
 import Link from 'next/link'
+import { orgSlug } from '@/lib/data/org-slug'
 import React, { useState } from 'react'
 import { useFacultyCollection } from '@/hooks/useFacultyCollection'
 import Image from 'next/image'
@@ -96,7 +97,7 @@ const FacultyListPage = () => {
                                     </p>
                                     <div className='w-full pt-4 mt-auto'>
                                         <Link
-                                            href={`/faculties/${fac.sys.id}`}
+                                            href={`/faculties/${orgSlug(fac.name)}`}
                                             className='bg-black text-white px-6 py-4 rounded-2xl w-full font-bold hover:bg-primary transition-all duration-300 flex items-center justify-center gap-2 group/btn shadow-lg shadow-black/5 hover:shadow-primary/20'
                                         >
                                             View Faculty

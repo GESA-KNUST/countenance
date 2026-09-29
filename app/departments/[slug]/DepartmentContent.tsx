@@ -3,7 +3,7 @@
 import Container from '@/components/custom/Container'
 import RichTextGallery from '@/components/common/RichTextGallery'
 import DepartmentHero from '@/components/department/DepartmentHero'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Image from 'next/image'
 import { Mail, Globe, Music2 } from 'lucide-react'
@@ -13,23 +13,26 @@ import whatsapp2 from '@/public/images/whatsapp2.svg'
 import twitter from '@/public/images/twitter.svg'
 import linkedin2 from '@/public/images/linkedin2.svg'
 import { useParams } from 'next/navigation'
+import { useDepartmentIdFromSlug } from '@/hooks/useOrgSlug'
 import { useDepartment } from '@/hooks/useDepartment'
-import { documentToReactComponents, Options } from '@contentful/rich-text-react-renderer'
+import { Options } from '@contentful/rich-text-react-renderer'
 import { BLOCKS } from '@contentful/rich-text-types'
 import { useStore } from '@/store/useStore'
 import { DepartmentDetailSkeleton } from '@/components/department/DepartmentDetailSkeleton'
 
 const DepartmentContent = () => {
     const params = useParams();
-    const id = params.id as string;
-    const { data: department, isLoading, error } = useDepartment(id);
+    const slug = params.slug as string;
+    const { id, isLoading: findingId, known } = useDepartmentIdFromSlug(slug);
+    const { data: department, isLoading: loadingDepartment, error } = useDepartment(id);
+    const isLoading = findingId || (Boolean(id) && loadingDepartment);
     const { addToRecentlyViewed } = useStore();
 
     useEffect(() => {
-        if (department && id) {
-            addToRecentlyViewed(`/departments/${id}`);
+        if (department && slug) {
+            addToRecentlyViewed(`/departments/${slug}`);
         }
-    }, [department, id, addToRecentlyViewed]);
+    }, [department, slug, addToRecentlyViewed]);
 
     const options: Options = {
         renderNode: {
@@ -69,7 +72,7 @@ const DepartmentContent = () => {
         );
     }
 
-    if (error || !department || !id) {
+    if (error || (known && !id) || !department) {
         return (
             <NotFoundCard
                 icon={Globe}

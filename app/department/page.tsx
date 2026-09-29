@@ -5,6 +5,7 @@ import { ctfSrc } from '@/lib/contentful-src';
 import DepartmentHero from '@/components/department/DepartmentHero'
 import { Search, Globe } from 'lucide-react'
 import Link from 'next/link'
+import { orgSlug } from '@/lib/data/org-slug'
 import React, { useState } from 'react'
 import { useDepartmentCollection } from '@/hooks/useDepartmentCollection'
 import Image from 'next/image'
@@ -100,7 +101,7 @@ const DepartmentListPage = () => {
                                     </p>
                                     <div className='w-full pt-4 mt-auto'>
                                         <Link
-                                            href={`/departments/${dept.sys.id}`}
+                                            href={`/departments/${orgSlug(dept.name, dept.deptAbbreviation)}`}
                                             className='bg-black text-white px-6 py-4 rounded-2xl w-full font-bold hover:bg-primary transition-all duration-300 flex items-center justify-center gap-2 group/btn shadow-lg shadow-black/5 hover:shadow-primary/20'
                                         >
                                             View Department

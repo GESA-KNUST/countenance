@@ -7,6 +7,8 @@ const ADMIN_HOSTS = (process.env.ADMIN_HOSTNAMES ?? "web-admin.gesaknust.com")
 
 const ADMIN_PATHS = ["/admin", "/api/admin"];
 
+const ENTRY_ID = /^[A-Za-z0-9]{20,24}$/;
+
 
 const RENAMED_POSTS: Record<string, string> = {
   "you-are-not-finished-yet-nietzsches-idea-of-the-overman":
@@ -63,6 +65,17 @@ export function proxy(request: NextRequest) {
     }
   }
 
+  for (const section of ["departments", "faculties"]) {
+    const prefix = `/${section}/`;
+    if (!pathname.startsWith(prefix)) continue;
+
+    const raw = decodeURIComponent(pathname.slice(prefix.length));
+    if (raw && ENTRY_ID.test(raw)) {
+      const target = new URL(`/${section === "departments" ? "department" : "faculty"}`, request.nextUrl);
+      return NextResponse.redirect(target, 308);
+    }
+  }
+
   if (pathname === "/blog-2") {
     const slug = request.nextUrl.searchParams.get("slug");
     const target = new URL(slug ? `/blog/${encodeURIComponent(slug)}` : "/blog", request.nextUrl);
@@ -104,5 +117,12 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/admin/:path*", "/blog-2", "/blog/:slug"],
+  matcher: [
+    "/admin/:path*",
+    "/api/admin/:path*",
+    "/blog-2",
+    "/blog/:slug",
+    "/departments/:slug",
+    "/faculties/:slug",
+  ],
 };

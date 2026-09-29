@@ -8,16 +8,13 @@ import Image from 'next/image'
 import { Globe, School, LayoutGrid, ChevronRight, Mail } from 'lucide-react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
+import { useFacultyIdFromSlug } from '@/hooks/useOrgSlug'
 import { useFaculty } from '@/hooks/useFaculty'
 import PageLoader from '@/components/common/PageLoader'
 import NotFoundCard from '@/components/common/NotFoundCard'
 import SectionEyebrow from '@/components/common/SectionEyebrow'
-import { markdownComponents } from '@/lib/markdownComponents'
 import twitter from '@/public/images/twitter.svg'
 import linkedin2 from '@/public/images/linkedin2.svg'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import remarkBreaks from 'remark-breaks'
 import MarkdownGallery from '@/components/common/MarkdownGallery'
 
 const tabTriggerClass =
@@ -40,8 +37,10 @@ const Markdown = ({ content, fallback }: { content?: string; fallback: string })
 
 const FacultyContent = () => {
     const params = useParams();
-    const id = params.id as string;
-    const { data: faculty, isLoading, error } = useFaculty(id);
+    const slug = params.slug as string;
+    const { id, isLoading: findingId, known } = useFacultyIdFromSlug(slug);
+    const { data: faculty, isLoading: loadingFaculty, error } = useFaculty(id);
+    const isLoading = findingId || (Boolean(id) && loadingFaculty);
 
     if (isLoading) {
         return <PageLoader />;
