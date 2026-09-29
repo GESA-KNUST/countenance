@@ -183,3 +183,28 @@
     scrollbar-color: var(--color-primary, #FFBE00) var(--color-slate-100, #f1f5f9);
   }
 }
+@keyframes marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee-track {
+  animation: marquee-scroll var(--marquee-duration, 20s) linear infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+}
+
+.marquee-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 var(--marquee-fade, 48px),
+    #000 calc(100% - var(--marquee-fade, 48px)),
+    transparent 100%
+  );
+}

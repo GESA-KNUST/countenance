@@ -1,11 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ChevronRight, Images } from 'lucide-react';
+import { ChevronRight, Images, Users } from 'lucide-react';
 import { ADMIN_PAGES } from '@/lib/admin/pages';
 import { readAllHeroEntries } from '@/lib/admin/contentful-write';
 import { searchableEntries } from '@/lib/admin/entries';
 import { submissionsFrom } from '@/lib/admin/submissions';
 import { isWriteConfigured } from '@/lib/admin/cma';
+import { currentManager } from '@/lib/admin/session';
 import { collectionGroups, ungroupedCollections } from '@/lib/admin/collections';
 import LogoutButton from './LogoutButton';
 import AdminSearch, { type SearchableSection } from './AdminSearch';
@@ -25,7 +26,11 @@ const AdminHome = async () => {
         );
     }
 
-    const [entries, index] = await Promise.all([readAllHeroEntries(), searchableEntries()]);
+    const [entries, index, signedIn] = await Promise.all([
+        readAllHeroEntries(),
+        searchableEntries(),
+        currentManager(),
+    ]);
     const allEntries = index.entries;
     const submissions = await submissionsFrom(index.raw);
 
@@ -170,6 +175,28 @@ const AdminHome = async () => {
                     ))}
                 </div>
             </AdminSearch>
+
+            {signedIn?.role === 'owner' && (
+                <div className="mt-12 border-t border-gray-200 pt-8">
+                    <h2 className="font-semibold mb-1">Access</h2>
+                    <p className="text-sm text-gray-500 mb-4">
+                        Who is allowed to change the website.
+                    </p>
+                    <Link
+                        href="/admin/managers"
+                        className="bg-white border border-gray-200 rounded-xl px-4 py-3.5 flex items-center gap-3 hover:border-black transition-colors"
+                    >
+                        <Users className="w-5 h-5 text-gray-500 shrink-0" />
+                        <div className="min-w-0 flex-1">
+                            <p className="font-semibold">Website managers</p>
+                            <p className="text-sm text-gray-500 truncate">
+                                Invite someone, or remove their access
+                            </p>
+                        </div>
+                        <ChevronRight className="w-5 h-5 text-gray-400 shrink-0" />
+                    </Link>
+                </div>
+            )}
         </div>
     );
 };

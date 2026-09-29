@@ -55,7 +55,7 @@ const TeamMemberPage = async ({ params }: Props) => {
         notFound();
     }
 
-    return <TeamMemberClient member={member} />;
+    return <TeamMemberClient member={member} members={teamMembers} />;
 };
 
 export default TeamMemberPage;

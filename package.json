@@ -7,8 +7,7 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit",
-    "token:renew": "node scripts/renew-contentful-token.mjs"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@contentful/rich-text-react-renderer": "^16.1.6",

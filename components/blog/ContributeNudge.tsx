@@ -8,9 +8,9 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 const DISMISSED_KEY = 'gesa-contribute-nudge';
 const QUIET_FOR_DAYS = 60;
 
-const SCROLL_TRIGGER = 0.2;
-const EARLIEST_MS = 2500;
-const DWELL_MS = 12000;
+const SCROLL_TRIGGER = 0.08;
+const EARLIEST_MS = 1200;
+const DWELL_MS = 6000;
 
 function recentlyDismissed() {
     try {
