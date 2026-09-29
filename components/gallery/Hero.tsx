@@ -84,7 +84,7 @@ const Hero = ({ images: imagesProp }: HeroProps) => {
                   src={img}
                   alt={`Hero image ${index + 1}`}
                   fill
-                  className="object-cover object-[center_25%]"
+                  className={`object-cover ${isMobile ? 'object-top' : 'object-[center_25%]'}`}
                   priority={index === 0}
                   sizes="100vw"
                 />
@@ -93,7 +93,7 @@ const Hero = ({ images: imagesProp }: HeroProps) => {
                   widths: [640, 828, 1080, 1440, 1920, 2560],
                   quality: 78,
                   aspect: isMobile ? 3 / 4 : 16 / 9,
-                  focus: 'faces',
+                  focus: isMobile ? 'top' : 'faces',
                 });
                 return (
                   <img
@@ -101,7 +101,7 @@ const Hero = ({ images: imagesProp }: HeroProps) => {
                     srcSet={hero.srcSet || undefined}
                     sizes="100vw"
                     alt={`Hero image ${index + 1}`}
-                    className="absolute inset-0 h-full w-full object-cover object-[center_25%]"
+                    className={`absolute inset-0 h-full w-full object-cover ${isMobile ? 'object-top' : 'object-[center_25%]'}`}
                     loading={index === 0 ? 'eager' : 'lazy'}
                     fetchPriority={index === 0 ? 'high' : 'auto'}
                     decoding="async"
