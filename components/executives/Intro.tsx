@@ -21,7 +21,7 @@ const Intro = () => {
           <div className="w-12 h-1 rounded-full bg-[#FFBE00]" />
         </div>
 
-        <div className="flex w-full flex-col gap-6 text-center text-slate-700 text-[1.0625rem] leading-[1.75] sm:text-lg sm:leading-[1.8]">
+        <div className="flex w-full flex-col gap-6 text-left text-slate-700 text-[1.0625rem] leading-[1.75] sm:text-lg sm:leading-[1.8]">
           <p>
             As a student-led association dedicated to nurturing growth and excellence, we are
             committed to creating an environment where every student can develop their skills,
