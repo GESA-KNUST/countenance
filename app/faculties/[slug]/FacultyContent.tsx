@@ -110,9 +110,11 @@ const FacultyContent = () => {
 
                         <TabsContent value="about" className={tabContentClass}>
                             <div className='mx-auto flex max-w-3xl flex-col gap-8'>
-                                <SectionEyebrow label="GESA - KNUST" />
-                                <h1 className={headingClass}>{faculty.name}</h1>
-                                <div className='w-20 h-2 bg-primary rounded-full'></div>
+                                <div className='flex flex-col items-center gap-6 text-center'>
+                                    <SectionEyebrow label="GESA - KNUST" />
+                                    <h1 className={headingClass}>{faculty.name}</h1>
+                                    <div className='w-20 h-2 bg-primary rounded-full'></div>
+                                </div>
                                 <Markdown content={faculty.about} fallback="Information coming soon..." />
                                 <div className='flex flex-wrap items-center gap-8 pt-8 border-t border-gray-100'>
                                     <WebsiteButton />
@@ -155,18 +157,22 @@ const FacultyContent = () => {
 
                         <TabsContent value="mission" className={tabContentClass}>
                             <div className='mx-auto flex max-w-3xl flex-col gap-8'>
-                                <SectionEyebrow label="Faculty Mission" />
-                                <h1 className={headingClass}>Our Mission</h1>
-                                <div className='w-20 h-2 bg-primary rounded-full'></div>
+                                <div className='flex flex-col items-center gap-6 text-center'>
+                                    <SectionEyebrow label="Faculty Mission" />
+                                    <h1 className={headingClass}>Our Mission</h1>
+                                    <div className='w-20 h-2 bg-primary rounded-full'></div>
+                                </div>
                                 <Markdown content={faculty.mission} fallback="Mission details are currently being updated." />
                             </div>
                         </TabsContent>
 
                         <TabsContent value="vision" className={tabContentClass}>
                             <div className='mx-auto flex max-w-3xl flex-col gap-8'>
-                                <SectionEyebrow label="Faculty Vision" />
-                                <h1 className={headingClass}>Our Vision</h1>
-                                <div className='w-20 h-2 bg-primary rounded-full'></div>
+                                <div className='flex flex-col items-center gap-6 text-center'>
+                                    <SectionEyebrow label="Faculty Vision" />
+                                    <h1 className={headingClass}>Our Vision</h1>
+                                    <div className='w-20 h-2 bg-primary rounded-full'></div>
+                                </div>
                                 <Markdown content={faculty.vision} fallback="Vision statement is being finalized." />
                             </div>
                         </TabsContent>
