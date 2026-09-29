@@ -5,7 +5,7 @@ const Intro = () => {
     <div className="bg-white px-6 py-14 sm:px-12 sm:py-16 md:p-16 lg:p-20 flex justify-center">
       <div className="flex flex-col items-center md:items-start gap-8 sm:gap-10 max-w-3xl w-full">
         <div className="flex flex-col items-center md:items-start gap-5 sm:gap-6 text-center md:text-left">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 self-center">
             <Star className="w-3.5 h-3.5 text-[#FFBE00]" fill="#FFBE00" />
             <h6 className="text-[#FFBE00] font-bold text-xs sm:text-sm uppercase tracking-[0.15em] font-header">
               Meet our executives
@@ -14,7 +14,7 @@ const Intro = () => {
           </div>
 
           <h2 className="text-[1.6rem] leading-[1.25] sm:text-3xl md:text-4xl font-bold text-[#252638] font-header text-balance">
-            Behind every success is a team of committed leaders&mdash;meet the executives
+            Behind every success is a team of committed leaders. Meet the executives
             steering our mission forward.
           </h2>
 
@@ -30,7 +30,7 @@ const Intro = () => {
           <p>
             It is with great honor and enthusiasm that we, the Executive Body of the Noble
             Association, extend our warmest welcome to you. We are privileged to support and
-            guide you throughout your academic journey&mdash;within the association and beyond.
+            guide you throughout your academic journey within the association and beyond.
           </p>
           <p>
             Our mission is to provide unwavering leadership, meaningful opportunities, and a
