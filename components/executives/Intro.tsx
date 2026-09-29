@@ -3,7 +3,7 @@ import { Star } from 'lucide-react';
 const Intro = () => {
   return (
     <div className="bg-white px-6 py-14 sm:px-12 sm:py-16 md:px-16 md:py-20 lg:px-20">
-      <div className="flex w-full flex-col gap-10 sm:gap-12">
+      <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 sm:gap-12">
         <div className="flex w-full flex-col items-center gap-5 text-center sm:gap-6">
           <div className="flex items-center gap-2">
             <Star className="w-3.5 h-3.5 text-[#FFBE00]" fill="#FFBE00" />
@@ -13,7 +13,7 @@ const Intro = () => {
             <Star className="w-3.5 h-3.5 text-[#FFBE00]" fill="#FFBE00" />
           </div>
 
-          <h2 className="text-[1.6rem] leading-[1.25] sm:text-3xl md:text-4xl font-bold text-[#252638] font-header text-balance">
+          <h2 className="text-[1.6rem] leading-[1.25] sm:text-3xl md:text-4xl font-bold text-[#252638] font-header">
             Behind every success is a team of committed leaders. Meet the executives
             steering our mission forward.
           </h2>
