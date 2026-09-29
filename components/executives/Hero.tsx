@@ -70,6 +70,10 @@ const Hero = ({
     api.scrollTo(index);
   };
 
+  const handleExploreMore = () => {
+    document.getElementById('executives')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
     <div className='relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden bg-neutral-950'>
 
@@ -131,7 +135,7 @@ const Hero = ({
               Explore leadership insights, transformative innovations, and standout student experiences at the core of KNUST’s engineering excellence.
             </p>
           </div>
-          <button className="bg-[#FFBE00] text-black px-4 py-2 sm:py-3 rounded-full md:rounded-lg font-semibold flex items-center gap-2 w-fit mx-auto md:mx-0 text-xs sm:text-base">
+          <button onClick={handleExploreMore} className="cursor-pointer bg-[#FFBE00] text-black px-4 py-2 sm:py-3 rounded-full md:rounded-lg font-semibold flex items-center gap-2 w-fit mx-auto md:mx-0 text-xs sm:text-base">
             <span>Explore more</span>
             <ArrowUpRight className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>

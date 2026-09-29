@@ -53,13 +53,15 @@ const ExecutivesPage = () => {
     <div>
       <Hero />
       <Intro />
-      <YearFilter
-        academicYears={academicYears}
-        selectedYear={effectiveYear}
-        setSelectedYear={setSelectedYear}
-        countsByYear={countsByYear}
-      />
-      <Executives executives={filteredExecutives} isLoading={isLoading} />
+      <section id="executives" className="scroll-mt-4">
+        <YearFilter
+          academicYears={academicYears}
+          selectedYear={effectiveYear}
+          setSelectedYear={setSelectedYear}
+          countsByYear={countsByYear}
+        />
+        <Executives executives={filteredExecutives} isLoading={isLoading} />
+      </section>
     </div>
   );
 };
