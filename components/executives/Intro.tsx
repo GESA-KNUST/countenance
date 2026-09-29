@@ -21,8 +21,8 @@ const Intro = () => {
           <div className="w-12 h-1 rounded-full bg-[#FFBE00]" />
         </div>
 
-        <div className="grid gap-6 text-left text-slate-700 text-[1.0625rem] leading-[1.75] sm:text-lg sm:leading-[1.8] md:grid-cols-2 md:gap-x-12 lg:gap-x-16">
-          <p className="md:row-span-2 md:self-start md:border-l-2 md:border-[#FFBE00] md:pl-6 md:text-[1.15rem] md:leading-[1.85] md:text-slate-800">
+        <div className="flex w-full flex-col gap-6 text-left text-slate-700 text-[1.0625rem] leading-[1.75] sm:text-lg sm:leading-[1.8]">
+          <p>
             As a student-led association dedicated to nurturing growth and excellence, we are
             committed to creating an environment where every student can develop their skills,
             deepen their knowledge, and unlock their full potential.
