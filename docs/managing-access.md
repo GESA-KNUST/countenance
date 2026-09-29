@@ -28,9 +28,9 @@ to give access back.
 Two things are refused on purpose: you cannot remove your own access, and the last remaining
 owner cannot be removed. That is what stops the site being locked away from everyone.
 
-## The owner password
+## The Heads password
 
-`ADMIN_PASSWORD` still signs you in as owner, through **Owner sign-in** at the bottom of the
+`ADMIN_PASSWORD` still signs you in as owner, through **Heads sign in** at the bottom of the
 login screen. It exists so a Google outage or a locked account can never lock you out of your
 own website.
 
@@ -50,6 +50,6 @@ dashboard. Changing it in Vercel is the only way to close it.
   never exposed by the public Delivery API. Only a SHA-256 hash of each invite token is stored.
 - Sessions are signed with a key derived from `ADMIN_SESSION_SECRET`. Changing that value
   signs everybody out immediately.
-- `ADMIN_OWNER_EMAIL` names the account the owner password signs in as.
+- `ADMIN_OWNER_EMAIL` names the account the Heads password signs in as.
 - Google callback URLs must be registered in Google Cloud for both
   `/api/admin/auth/callback` and `/api/contribute/auth/callback`.

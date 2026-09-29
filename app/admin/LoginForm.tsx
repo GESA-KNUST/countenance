@@ -101,12 +101,12 @@ const LoginForm = ({ inviteToken }: { inviteToken?: string }) => {
                                 onClick={() => setShowPassword(true)}
                                 className="text-sm text-gray-500 underline underline-offset-4 hover:text-black cursor-pointer"
                             >
-                                Owner sign-in
+                                Heads sign in
                             </button>
                         ) : (
                             <form onSubmit={handleSubmit}>
                                 <label htmlFor="password" className="block text-sm font-medium mb-2">
-                                    Owner password
+                                    Heads password
                                 </label>
                                 <input
                                     id="password"
