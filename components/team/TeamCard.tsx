@@ -24,7 +24,7 @@ const TeamCard = ({ member, index }: { member: TeamMember, index: number }) => {
             >
                 {member.image ? (
                     <Image
-                        src={ctfSrc(member.image, 600)}
+                        src={ctfSrc(member.image, 600, { height: 750, focus: 'face' })}
                         alt={member.name}
                         fill
                         className="object-cover hover:scale-105 transition-transform duration-700"

@@ -75,7 +75,7 @@ const EventCard: React.FC<EventCardProps> = ({
         {/* Image */}
         <div className="h-48 sm:h-60 w-full relative shrink-0 bg-gray-100">
           <Image
-            src={ctfSrc(imgUrl, 800)}
+            src={ctfSrc(imgUrl, 800, { height: 480 })}
             alt={imgDesc}
             fill
             className="w-full h-full object-cover"

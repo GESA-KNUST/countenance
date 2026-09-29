@@ -32,7 +32,7 @@ const PersonalityProfile = ({ person }: { person: POTWItem }) => {
                             <div className="relative aspect-4/5 overflow-hidden rounded-3xl bg-gray-100 shadow-xl ring-1 ring-black/5">
                                 {person.image?.url && (
                                     <Image
-                                        src={ctfSrc(person.image.url, 640)}
+                                        src={ctfSrc(person.image.url, 640, { height: 800, focus: 'face' })}
                                         alt={person.image.title || name}
                                         fill
                                         className="object-cover"

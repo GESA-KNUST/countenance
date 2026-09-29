@@ -46,7 +46,7 @@ const Gallery = ({ assets }: { assets: GalleryAsset[] }) => {
                     className="relative aspect-4/3 overflow-hidden rounded-xl bg-gray-100"
                 >
                     <Image
-                        src={ctfSrc(absolute(asset.url), 640)}
+                        src={ctfSrc(absolute(asset.url), 640, { height: 480 })}
                         alt={asset.description || asset.title || ''}
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

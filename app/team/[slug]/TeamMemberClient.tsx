@@ -22,7 +22,7 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
                     {member.image ? (
                         <div className="absolute right-0 top-0 w-full md:w-2/3 h-full">
                             <Image
-                                src={ctfSrc(member.image, 800)}
+                                src={ctfSrc(member.image, 800, { height: 1000, focus: 'face' })}
                                 alt={member.name}
                                 fill
                                 className="object-cover object-top opacity-80"
@@ -89,7 +89,7 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
                             <div className="aspect-[4/5] relative rounded-[1.5rem] overflow-hidden bg-slate-200 shadow-inner">
                                 {member.image ? (
                                     <Image
-                                        src={ctfSrc(member.image, 800)}
+                                        src={ctfSrc(member.image, 800, { height: 1000, focus: 'face' })}
                                         alt={member.name}
                                         fill
                                         className="object-cover"

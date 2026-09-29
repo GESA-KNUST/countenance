@@ -186,7 +186,7 @@ const EventCard = ({ event, type }: { event: any; type: 'upcoming' | 'recent' })
       <div className="bg-white/95 backdrop-blur-sm dark:bg-card border-2 border-transparent hover:border-primary/30 shadow-sm hover:shadow-2xl transition-all duration-300 rounded-2xl sm:rounded-3xl overflow-hidden flex flex-row items-stretch gap-3 sm:gap-4 p-3 group-hover:-translate-y-1">
         <div className="relative shrink-0 w-20 sm:w-28 lg:w-24 xl:w-32 aspect-square rounded-xl overflow-hidden bg-gray-100">
           <Image
-            src={ctfSrc(event.eventImage.url, 256)}
+            src={ctfSrc(event.eventImage.url, 256, { height: 256 })}
             alt=""
             className="object-cover transition-transform duration-700 group-hover:scale-110"
             fill

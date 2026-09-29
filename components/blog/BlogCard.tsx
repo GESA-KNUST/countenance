@@ -74,7 +74,7 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
             <div className="h-60 relative shrink-0 rounded-t-sm bg-gray-100">
               {headerImg?.url && (
                 <Image
-                  src={ctfSrc(headerImg.url, 800)}
+                  src={ctfSrc(headerImg.url, 800, { height: 480 })}
                   alt={headerImg.title || "Blog post header image"}
                   className="w-full h-full object-cover rounded-t-sm"
                   fill
@@ -109,7 +109,7 @@ const BlogCard = ({ post, headerImg, slug, author, onPostSelect }: CardProps) =>
                     <div className="h-10 w-10 relative rounded-full overflow-hidden shrink-0 border border-gray-100 bg-gray-100">
                       {author?.url && (
                         <Image
-                          src={ctfSrc(author.url, 96)}
+                          src={ctfSrc(author.url, 96, { height: 96, focus: 'face' })}
                           alt={"author image"}
                           className="h-full w-full object-cover"
                           fill

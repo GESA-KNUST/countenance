@@ -85,7 +85,7 @@ const ExecutiveProfile = ({ executive, colleagues }: ExecutiveProfileProps) => {
               <div className="relative aspect-4/5 overflow-hidden rounded-3xl bg-gray-100 shadow-xl ring-1 ring-black/5">
                 {officialImage?.url && (
                   <Image
-                    src={ctfSrc(officialImage.url, 640)}
+                    src={ctfSrc(officialImage.url, 640, { height: 800, focus: 'face' })}
                     alt={officialImage.description || fullName}
                     fill
                     className="object-cover"
@@ -227,7 +227,7 @@ const ExecutiveProfile = ({ executive, colleagues }: ExecutiveProfileProps) => {
                       <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-gray-100 shrink-0">
                         {colleague.officialImage?.url && (
                           <Image
-                            src={ctfSrc(colleague.officialImage.url, 96)}
+                            src={ctfSrc(colleague.officialImage.url, 96, { height: 96, focus: 'face' })}
                             alt={colleague.fullName}
                             fill
                             className="object-cover"
