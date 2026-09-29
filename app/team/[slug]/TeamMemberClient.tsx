@@ -17,93 +17,72 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
     return (
         <div className="min-h-screen bg-slate-50 font-poppins pb-12" suppressHydrationWarning>
             {/* Hero Section */}
-            <div className="relative h-[40vh] min-h-[500px] lg:h-[85vh] w-full bg-slate-900 overflow-hidden flex items-end shadow-2xl">
-                <div className="absolute inset-0 z-0">
-                    {member.image ? (
-                        <div className="absolute right-0 top-0 w-full md:w-2/3 h-full">
-                            <Image
-                                src={ctfSrc(member.image, 800, { height: 1000, focus: 'face' })}
-                                alt={member.name}
-                                fill
-                                className="object-cover object-top opacity-80"
-                                unoptimized
-                            />
-                        </div>
-                    ) : (
-                        <div className="absolute inset-0 bg-[url('/images/grid-pattern.svg')] opacity-20" />
-                    )}
-                </div>
-
-                <Link
-                    href="/team"
-                    className="absolute top-0 left-0 z-50 inline-flex lg:hidden items-center text-yellow-500 bg-black/20 hover:bg-black/40 px-4 py-2 rounded-br-2xl transition-all backdrop-blur-sm border-b border-r border-white/10"
-                >
-                    <ArrowLeft className="mr-2" size={18} />
-                    <span className="text-sm font-medium">Back to Team</span>
-                </Link>
-
-                <Container size="xl" className="relative z-20 w-full mb-16">
+            <div className="border-b border-slate-200 bg-white">
+                <Container size="xl">
                     <Link
                         href="/team"
-                        className="hidden lg:inline-flex items-center text-yellow-500 hover:text-yellow-400 hover:bg-white/10 px-4 py-2 rounded-full transition-all group mb-8 backdrop-blur-sm border border-transparent hover:border-white/20"
+                        className="group inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition-colors hover:text-slate-900"
                     >
-                        <ArrowLeft className="mr-2 group-hover:-translate-x-1 transition-transform" size={18} />
-                        <span className="text-sm font-medium">Back to Team</span>
+                        <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
+                        All the team
                     </Link>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="max-w-4xl"
-                    >
-                        <div className="flex items-center gap-3 mb-4">
-                            <span className="px-3 py-1 bg-primary text-black text-xs font-bold rounded-md uppercase tracking-widest shadow-[0_0_15px_rgba(255,190,0,0.5)]">
-                                {member.role}
-                            </span>
-                            <span className="h-px flex-1 bg-gradient-to-r from-slate-700 to-transparent"></span>
-                        </div>
-                        <h1 className="text-3xl md:text-5xl font-bold font-header text-white tracking-tight leading-none mb-4 drop-shadow-lg">
-                            {member.name}
-                        </h1>
-                        <p className="text-xl md:text-2xl text-yellow-500 font-medium max-w-2xl drop-shadow-lg">
-                            {member.year} {member.major}
-                        </p>
-                    </motion.div>
-                </Container>
-            </div>
-
-            {/* Main Content */}
-            <Container size="xl" className="mt-2 lg:-mt-20 relative z-30">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
-
-                    {/* Left Column: Portrait and Connect */}
-                    <div className="lg:col-span-4 space-y-8">
-                        {/* Portrait Card */}
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.3, duration: 0.5 }}
-                            className="bg-white p-3 rounded-[2rem] shadow-2xl rotate-1 hover:rotate-0 transition-transform duration-500 hidden lg:block"
-                        >
-                            <div className="aspect-[4/5] relative rounded-[1.5rem] overflow-hidden bg-slate-200 shadow-inner">
+                    <div className="mt-8 grid grid-cols-1 items-center gap-8 md:mt-10 md:grid-cols-[minmax(0,320px)_1fr] md:gap-12 lg:gap-16">
+                        <div className="relative mx-auto w-full max-w-[280px] md:mx-0 md:max-w-none">
+                            <div
+                                aria-hidden
+                                className="absolute -bottom-3 -left-3 h-24 w-24 rounded-2xl bg-[#FFBE00] md:-bottom-4 md:-left-4 md:h-32 md:w-32"
+                            />
+                            <div className="relative aspect-4/5 overflow-hidden rounded-3xl bg-slate-100 shadow-xl ring-1 ring-black/5">
                                 {member.image ? (
                                     <Image
                                         src={ctfSrc(member.image, 800, { height: 1000, focus: 'face' })}
                                         alt={member.name}
                                         fill
                                         className="object-cover"
+                                        sizes="(max-width: 768px) 280px, 320px"
+                                        priority
                                         unoptimized
                                     />
                                 ) : (
-                                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 bg-slate-100">
-                                        <User size={80} strokeWidth={1} />
-                                        <span className="text-xs uppercase tracking-widest mt-2">{member.name}</span>
+                                    <div className="flex h-full w-full flex-col items-center justify-center text-slate-400">
+                                        <User size={64} strokeWidth={1} />
                                     </div>
                                 )}
                             </div>
-                        </motion.div>
+                        </div>
 
+                        <div className="min-w-0">
+                            <div className="flex items-center gap-3">
+                                <span className="h-px w-8 bg-[#FFBE00]" />
+                                <p className="font-header text-xs font-bold uppercase tracking-[0.2em] text-[#B88900]">
+                                    {member.role}
+                                </p>
+                            </div>
+
+                            <h1 className="mt-4 font-header text-4xl font-bold leading-[1.05] tracking-tight text-slate-900 sm:text-5xl">
+                                {member.name}
+                            </h1>
+
+                            <div className="mt-5 flex flex-wrap items-center gap-2 text-sm">
+                                <span className="rounded-full bg-slate-900 px-3 py-1 font-semibold text-white">
+                                    {member.year}
+                                </span>
+                                <span className="rounded-full border border-slate-200 px-3 py-1 text-slate-600">
+                                    {member.major}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </Container>
+            </div>
+
+            {/* Main Content */}
+            <Container size="xl" className="relative z-30">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
+
+                    {/* Left Column: Portrait and Connect */}
+                    <div className="lg:col-span-4 space-y-8">
                         {/* Social Links */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
