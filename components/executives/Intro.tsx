@@ -4,8 +4,8 @@ const Intro = () => {
   return (
     <div className="bg-white px-6 py-14 sm:px-12 sm:py-16 md:p-16 lg:p-20 flex justify-center">
       <div className="flex flex-col items-center md:items-start gap-8 sm:gap-10 max-w-3xl w-full">
-        <div className="flex flex-col items-center md:items-start gap-5 sm:gap-6 text-center md:text-left">
-          <div className="flex items-center gap-2 self-center">
+        <div className="flex flex-col items-center gap-5 sm:gap-6 text-center w-full">
+          <div className="flex items-center gap-2">
             <Star className="w-3.5 h-3.5 text-[#FFBE00]" fill="#FFBE00" />
             <h6 className="text-[#FFBE00] font-bold text-xs sm:text-sm uppercase tracking-[0.15em] font-header">
               Meet our executives
@@ -18,7 +18,7 @@ const Intro = () => {
             steering our mission forward.
           </h2>
 
-          <div className="w-12 h-1 rounded-full bg-[#FFBE00] self-center" />
+          <div className="w-12 h-1 rounded-full bg-[#FFBE00]" />
         </div>
 
         <div className="flex flex-col gap-5 text-left text-slate-700 text-[1.0625rem] sm:text-lg leading-[1.75] sm:leading-[1.8]">
