@@ -29,7 +29,7 @@ const headingClass = 'text-4xl md:text-5xl font-extrabold font-header text-gray-
 
 /** Renders a markdown field with a graceful fallback when it is empty. */
 const Markdown = ({ content, fallback }: { content?: string; fallback: string }) => (
-    <div className="text-lg text-gray-700 space-y-6 max-w-2xl leading-relaxed">
+    <div className="text-lg text-gray-700 space-y-6 max-w-none leading-relaxed">
         {content ? (
             <MarkdownGallery content={content} />
         ) : (
@@ -110,7 +110,7 @@ const FacultyContent = () => {
                         </TabsList>
 
                         <TabsContent value="about" className={tabContentClass}>
-                            <div className='flex flex-col gap-8'>
+                            <div className='mx-auto flex max-w-3xl flex-col gap-8'>
                                 <SectionEyebrow label="GESA - KNUST" />
                                 <h1 className={headingClass}>{faculty.name}</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
@@ -123,7 +123,7 @@ const FacultyContent = () => {
                         </TabsContent>
 
                         <TabsContent value="departments" className={tabContentClass}>
-                            <div className='flex flex-col gap-8'>
+                            <div className='mx-auto flex max-w-5xl flex-col gap-8'>
                                 <SectionEyebrow label="Our Departments" />
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     {faculty.departmentsUnderFacultyCollection?.items?.length ? (
@@ -155,7 +155,7 @@ const FacultyContent = () => {
                         </TabsContent>
 
                         <TabsContent value="mission" className={tabContentClass}>
-                            <div className='flex flex-col gap-8'>
+                            <div className='mx-auto flex max-w-3xl flex-col gap-8'>
                                 <SectionEyebrow label="Faculty Mission" />
                                 <h1 className={headingClass}>Our Mission</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
@@ -164,7 +164,7 @@ const FacultyContent = () => {
                         </TabsContent>
 
                         <TabsContent value="vision" className={tabContentClass}>
-                            <div className='flex flex-col gap-8'>
+                            <div className='mx-auto flex max-w-3xl flex-col gap-8'>
                                 <SectionEyebrow label="Faculty Vision" />
                                 <h1 className={headingClass}>Our Vision</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>

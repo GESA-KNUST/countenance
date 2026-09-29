@@ -145,11 +145,11 @@ const DepartmentContent = () => {
                         </TabsList>
 
                         <TabsContent value="about" className='py-12 animate-in fade-in slide-in-from-bottom-4 duration-500'>
-                            <div className='flex flex-col gap-8'>
+                            <div className='mx-auto flex max-w-3xl flex-col gap-8'>
                                 <SectionEyebrow label={`${department.deptAbbreviation || 'GESA'} - KNUST`} />
                                 <h1 className='text-3xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>{department.name}</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
-                                <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-2xl leading-relaxed'>
+                                <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
                                     {department.about ? (
                                         <RichTextGallery
                                             document={department.about.json}
@@ -171,11 +171,11 @@ const DepartmentContent = () => {
                         </TabsContent>
 
                         <TabsContent value="mission" className='py-12 animate-in fade-in slide-in-from-bottom-4 duration-500'>
-                            <div className='flex flex-col gap-8'>
+                            <div className='mx-auto flex max-w-3xl flex-col gap-8'>
                                 <SectionEyebrow label={`${department.deptAbbreviation || 'GESA'} - KNUST`} />
                                 <h1 className='text-3xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>Our Mission</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
-                                <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-2xl leading-relaxed'>
+                                <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
                                     {department.mission ? (
                                         <RichTextGallery
                                             document={department.mission.json}
@@ -197,11 +197,11 @@ const DepartmentContent = () => {
                         </TabsContent>
 
                         <TabsContent value="vision" className='py-12 animate-in fade-in slide-in-from-bottom-4 duration-500'>
-                            <div className='flex flex-col gap-8'>
+                            <div className='mx-auto flex max-w-3xl flex-col gap-8'>
                                 <SectionEyebrow label={`${department.deptAbbreviation || 'GESA'} - KNUST`} />
                                 <h1 className='text-3xl md:text-5xl font-extrabold font-header text-gray-900 leading-tight'>Our Vision</h1>
                                 <div className='w-20 h-2 bg-primary rounded-full'></div>
-                                <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-2xl leading-relaxed'>
+                                <div className='text-lg font-header text-gray-700 space-y-6 prose prose-lg max-w-none leading-relaxed'>
                                     {department.vision ? (
                                         <RichTextGallery
                                             document={department.vision.json}
