@@ -99,7 +99,10 @@ export function proxy(request: NextRequest) {
     });
   }
 
-  const response = NextResponse.next();
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-pathname", pathname);
+
+  const response = NextResponse.next({ request: { headers: requestHeaders } });
 
   if (isAdminPath(pathname)) {
     response.headers.set("X-Frame-Options", "DENY");

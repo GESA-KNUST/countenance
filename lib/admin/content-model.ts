@@ -1,7 +1,7 @@
 import { cma } from "./cma";
 import type { CollectionSpec, FieldKind, FieldSpec } from "./collections";
 
-const NEVER_GENERATE = new Set(["pageHero", "galleryImage"]);
+const NEVER_GENERATE = new Set(["pageHero", "galleryImage", "siteManager", "authorIdentity"]);
 
 interface Validation {
   in?: unknown[];
