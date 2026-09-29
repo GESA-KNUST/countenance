@@ -70,6 +70,10 @@ const Hero = ({
     api.scrollTo(index);
   };
 
+  const handleExploreMore = () => {
+    document.getElementById('executives')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
     <div className='relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden bg-neutral-950'>
 
@@ -90,7 +94,7 @@ const Hero = ({
                   src={img}
                   alt={`Hero image ${index + 1}`}
                   fill
-                  className="object-cover object-[center_25%]"
+                  className={`object-cover ${isMobile ? 'object-top' : 'object-[center_25%]'}`}
                   priority={index === 0}
                   sizes="100vw"
                 />
@@ -99,7 +103,7 @@ const Hero = ({
                   widths: [640, 828, 1080, 1440, 1920, 2560],
                   quality: 78,
                   aspect: isMobile ? 3 / 4 : 16 / 9,
-                  focus: 'faces',
+                  focus: isMobile ? 'top' : 'faces',
                 });
                 return (
                   <img
@@ -107,7 +111,7 @@ const Hero = ({
                     srcSet={hero.srcSet || undefined}
                     sizes="100vw"
                     alt={`Hero image ${index + 1}`}
-                    className="absolute inset-0 h-full w-full object-cover object-[center_25%]"
+                    className={`absolute inset-0 h-full w-full object-cover ${isMobile ? 'object-top' : 'object-[center_25%]'}`}
                     loading={index === 0 ? 'eager' : 'lazy'}
                     fetchPriority={index === 0 ? 'high' : 'auto'}
                     decoding="async"
@@ -131,7 +135,7 @@ const Hero = ({
               Explore leadership insights, transformative innovations, and standout student experiences at the core of KNUST’s engineering excellence.
             </p>
           </div>
-          <button className="bg-[#FFBE00] text-black px-4 py-2 sm:py-3 rounded-full md:rounded-lg font-semibold flex items-center gap-2 w-fit mx-auto md:mx-0 text-xs sm:text-base">
+          <button onClick={handleExploreMore} className="cursor-pointer bg-[#FFBE00] text-black px-4 py-2 sm:py-3 rounded-full md:rounded-lg font-semibold flex items-center gap-2 w-fit mx-auto md:mx-0 text-xs sm:text-base">
             <span>Explore more</span>
             <ArrowUpRight className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
