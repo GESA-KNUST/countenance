@@ -2,9 +2,9 @@ import { Star } from 'lucide-react';
 
 const Intro = () => {
   return (
-    <div className="bg-white px-6 py-14 sm:px-12 sm:py-16 md:p-16 lg:p-20 flex justify-center">
-      <div className="flex flex-col items-center md:items-start gap-8 sm:gap-10 max-w-3xl w-full">
-        <div className="flex flex-col items-center gap-5 sm:gap-6 text-center w-full">
+    <div className="bg-white px-6 py-14 sm:px-12 sm:py-16 md:px-16 md:py-20 lg:px-20">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 sm:gap-12">
+        <div className="mx-auto flex max-w-3xl flex-col items-center gap-5 text-center sm:gap-6">
           <div className="flex items-center gap-2">
             <Star className="w-3.5 h-3.5 text-[#FFBE00]" fill="#FFBE00" />
             <h6 className="text-[#FFBE00] font-bold text-xs sm:text-sm uppercase tracking-[0.15em] font-header">
@@ -21,8 +21,8 @@ const Intro = () => {
           <div className="w-12 h-1 rounded-full bg-[#FFBE00]" />
         </div>
 
-        <div className="flex flex-col gap-5 text-left text-slate-700 text-[1.0625rem] sm:text-lg leading-[1.75] sm:leading-[1.8]">
-          <p>
+        <div className="grid gap-6 text-left text-slate-700 text-[1.0625rem] leading-[1.75] sm:text-lg sm:leading-[1.8] md:grid-cols-2 md:gap-x-12 lg:gap-x-16">
+          <p className="md:row-span-2 md:self-start md:border-l-2 md:border-[#FFBE00] md:pl-6 md:text-[1.15rem] md:leading-[1.85] md:text-slate-800">
             As a student-led association dedicated to nurturing growth and excellence, we are
             committed to creating an environment where every student can develop their skills,
             deepen their knowledge, and unlock their full potential.
@@ -39,10 +39,6 @@ const Intro = () => {
             achievements, and future impact.
           </p>
         </div>
-
-        <p className="w-full border-l-2 border-[#FFBE00] pl-5 font-header text-lg sm:text-xl font-bold text-[#252638] text-left">
-          Together, we build, we learn, and we rise.
-        </p>
       </div>
     </div>
   );
