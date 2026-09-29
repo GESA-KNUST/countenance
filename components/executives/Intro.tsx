@@ -18,7 +18,7 @@ const Intro = () => {
             steering our mission forward.
           </h2>
 
-          <div className="w-12 h-1 rounded-full bg-[#FFBE00]" />
+          <div className="w-12 h-1 rounded-full bg-[#FFBE00] self-center" />
         </div>
 
         <div className="flex flex-col gap-5 text-left text-slate-700 text-[1.0625rem] sm:text-lg leading-[1.75] sm:leading-[1.8]">
