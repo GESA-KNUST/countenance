@@ -68,12 +68,8 @@ const HomeClubsPreview = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {clubs?.filter(club => club.isFeatured).slice(0, 3)?.map((club, index) => (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, amount: 0.15 }}
-                                transition={{ delay: index * 0.1 }}
+                            <div
+                                key={club.sys?.id ?? index}
                                 className='bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-500 flex flex-col gap-6 group hover:-translate-y-1'
                             >
                                 <div className='w-16 h-16 bg-primary/10 rounded-2xl p-0 flex items-center justify-center group-hover:scale-110 transition-transform relative overflow-hidden'>
@@ -99,7 +95,7 @@ const HomeClubsPreview = () => {
                                     View Details
                                     <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                                 </Link>
-                            </motion.div>
+                            </div>
                         ))}
                     </div>
                 </div>

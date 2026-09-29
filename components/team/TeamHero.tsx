@@ -2,9 +2,10 @@
 
 import HeroSection from '../home/HeroSection';
 import { usePageHero } from '@/hooks/usePageHero';
+import type { PageHero } from '@/lib/data/page-hero';
 
-const TeamHero = () => {
-    const { hero } = usePageHero('team');
+const TeamHero = ({ initial }: { initial?: PageHero }) => {
+    const { hero } = usePageHero('team', initial);
 
     return (
         <HeroSection

@@ -7,12 +7,22 @@ import {
   type PageHeroKey,
 } from "@/lib/data/page-hero";
 
-export const usePageHero = (pageKey: PageHeroKey): { hero: PageHero; isLoading: boolean } => {
-  const { data, isLoading } = useFetchData<PageHero>({
+
+export const usePageHero = (
+  pageKey: PageHeroKey,
+  initial?: PageHero
+): { hero: PageHero; isLoading: boolean } => {
+  const { data, isLoading, isError } = useFetchData<PageHero>({
     queryKey: ["page-hero", pageKey],
     queryFn: () => fetchPageHero(pageKey),
-    placeholderData: PAGE_HERO_FALLBACKS[pageKey],
+    initialData: initial,
   });
 
-  return { hero: data ?? PAGE_HERO_FALLBACKS[pageKey], isLoading };
+  if (data) return { hero: data, isLoading: false };
+  if (isError) return { hero: PAGE_HERO_FALLBACKS[pageKey], isLoading: false };
+
+  return {
+    hero: { ...PAGE_HERO_FALLBACKS[pageKey], images: [], mobileImages: [] },
+    isLoading,
+  };
 };

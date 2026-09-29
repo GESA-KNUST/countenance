@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image';
 import { ctfSrc } from '@/lib/contentful-src';
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { useGalleries } from "@/hooks/useGalleryCollection";
 import FetchError from "../custom/FetchError";
@@ -18,20 +18,7 @@ const getSpanClasses = (i: number) => {
     }
 };
 
-const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    show: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.1
-        }
-    }
-};
 
-const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
-    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 50, damping: 20 } }
-};
 
 const Gallery = () => {
     const { data: galleries, error } = useGalleries()
@@ -59,18 +46,11 @@ const Gallery = () => {
                 </motion.h1>
 
 
-                <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, amount: 0.15 }}
-                    className="grid grid-cols-1 md:grid-cols-4 auto-rows-[250px] gap-4"
-                >
+                <div className="grid grid-cols-1 md:grid-cols-4 auto-rows-[250px] gap-4">
                     {galleries?.map((img, index) => {
                         return (
-                            <motion.div
+                            <div
                                 key={index}
-                                variants={itemVariants}
                                 className={`relative rounded-3xl overflow-hidden group cursor-pointer ${getSpanClasses(index)} shadow-sm hover:shadow-2xl transition-all duration-500`}
                                 aria-label={`Gallery image ${index + 1}`}
                                 onClick={() => openPicturesLink(img.picturesLink)}
@@ -95,10 +75,10 @@ const Gallery = () => {
                                         </p>
                                     </div>
                                 </div>
-                            </motion.div>
+                            </div>
                         );
                     })}
-                </motion.div>
+                </div>
 
                 <div className='flex justify-center mt-12'>
                     <Link href='/gallery'>

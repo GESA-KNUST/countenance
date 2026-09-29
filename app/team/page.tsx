@@ -20,10 +20,12 @@ export async function generateMetadata(): Promise<Metadata> {
     };
 }
 
-const TeamPage = () => {
+const TeamPage = async () => {
+    const hero = await getPageHero('team');
+
     return (
         <div className="min-h-screen bg-white">
-            <TeamHero />
+            <TeamHero initial={hero} />
             <TeamSection />
         </div>
     );

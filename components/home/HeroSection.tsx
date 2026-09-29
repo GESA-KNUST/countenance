@@ -106,7 +106,7 @@ const HeroSection = ({
   };
 
   return (
-    <div className='relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden'>
+    <div className='relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden bg-[#252638]'>
 
       {/* Background Image Carousel */}
       <Carousel

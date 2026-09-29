@@ -40,14 +40,8 @@ const Contribute = () => {
                 </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    {blogs?.slice(0, 2).map((post, index) => (
-                        <motion.div
-                            key={post.slug}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                        >
+                    {blogs?.slice(0, 2).map((post) => (
+                        <div key={post.slug}>
                             <BlogCard
                                 post={post}
                                 slug={post.title}
@@ -57,7 +51,7 @@ const Contribute = () => {
                                 }}
                                 headerImg={post.headerImage}
                             />
-                        </motion.div>
+                        </div>
                     ))}
 
                     {/* Contribute Card */}
