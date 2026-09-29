@@ -24,7 +24,7 @@ export function contentfulImage(
     intrinsicWidth?: number | null;
     intrinsicHeight?: number | null;
     aspect?: number;
-    focus?: "center" | "face" | "top";
+    focus?: "center" | "face" | "faces" | "top";
   } = {}
 ): ResponsiveImage {
   const base = absolute(url);

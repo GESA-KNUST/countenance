@@ -83,9 +83,9 @@ const DepartmentHero = ({
                     duration: 80,
                 }}
             >
-                <CarouselContent className="h-full">
+                <CarouselContent className="h-full ml-0">
                     {images.map((img, index) => (
-                        <CarouselItem key={index} className="relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full">
+                        <CarouselItem key={index} className="relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full pl-0">
 {typeof img !== 'string' ? (
                                                           <Image
                                                             src={img}
@@ -99,6 +99,8 @@ const DepartmentHero = ({
                                                           const hero = contentfulImage(img, {
                                                             widths: [640, 828, 1080, 1440, 1920, 2560],
                                                             quality: 78,
+                                                            aspect: isMobile ? 3 / 4 : 16 / 9,
+                                                            focus: 'faces',
                                                           });
                                                           return (
                                                             <img
@@ -106,7 +108,7 @@ const DepartmentHero = ({
                                                               srcSet={hero.srcSet || undefined}
                                                               sizes="100vw"
                                                               alt={`Hero image ${index + 1}`}
-                                                              className="absolute inset-0 h-full w-full object-cover"
+                                                              className="absolute inset-0 h-full w-full object-cover object-[center_25%]"
                                                               loading={index === 0 ? 'eager' : 'lazy'}
                                                               fetchPriority={index === 0 ? 'high' : 'auto'}
                                                               decoding="async"

@@ -96,7 +96,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         className="w-full h-full absolute inset-0"
         opts={{ loop: true, duration: 50 }}
       >
-        <CarouselContent className="h-full ml-0">
+        <CarouselContent className="h-full ml-0 ml-0">
           {images.map((img, index) => (
             <CarouselItem
               key={index}
@@ -106,7 +106,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 src={img}
                 alt={`Hero image ${index + 1}`}
                 fill
-                className="object-cover"
+                className="object-cover object-[center_25%]"
                 priority={index === 0}
                 sizes="100vw"
               />
