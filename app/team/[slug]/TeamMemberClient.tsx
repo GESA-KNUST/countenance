@@ -4,16 +4,18 @@ import Image from 'next/image';
 import { ctfSrc } from '@/lib/contentful-src';
 import Link from 'next/link';
 import Container from '@/components/custom/Container';
-import { Github, Linkedin, User, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Github, Linkedin, User, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import { TeamMember } from '@/lib/data/team';
+import TeamSwitcher from './TeamSwitcher';
 
 interface TeamMemberClientProps {
     member: TeamMember;
+    members: TeamMember[];
 }
 
-const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
+const TeamMemberClient = ({ member, members }: TeamMemberClientProps) => {
     return (
         <div className="min-h-screen bg-slate-50 font-poppins pb-12" suppressHydrationWarning>
             {/* Hero Section */}
@@ -213,10 +215,7 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
                                 <span className="block whitespace-nowrap font-medium text-slate-900">GESA Web Application Development Team</span>
                                 <span className="block text-[10px] sm:text-xs text-yellow-600 mt-0.5 font-bold">Built for engineers by engineers</span>
                             </div>
-                            <Link href="/team" className="flex items-center gap-1 hover:text-primary transition-colors whitespace-nowrap font-medium group text-slate-900">
-                                View all members
-                                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                            </Link>
+                            <TeamSwitcher members={members} currentSlug={member.slug} />
                         </div>
                     </div>
                 </div>
