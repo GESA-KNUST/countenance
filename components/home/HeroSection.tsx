@@ -30,7 +30,7 @@ const HeroSection = ({
   title,
   highlight,
   text,
-  images = ['/images/img1.png', '/images/img2.png', '/images/img1.png', '/images/img2.png'],
+  images = ['/images/img1.webp', '/images/img2.webp', '/images/img1.webp', '/images/img2.webp'],
   mobileImages,
   button = true,
   buttonTarget,
