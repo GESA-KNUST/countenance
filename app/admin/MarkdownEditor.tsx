@@ -155,7 +155,7 @@ const MarkdownEditor = ({
         });
     };
 
-    const addImage = async (file: File | null | undefined, insertAt?: number) => {
+    const addImage = async (file: File | null | undefined) => {
         if (!file) return;
         onError('');
 
@@ -183,11 +183,26 @@ const MarkdownEditor = ({
             const asset = await res.json();
             onAssetUploaded(asset.id, asset.url);
 
-            const at = insertAt ?? Math.min(activeBlock + 1, blocks.length);
+            const imageBlock: Block = { key: nextKey(), kind: 'image', id: asset.id };
+            const active = blocks[activeBlock];
             const next = [...blocks];
-            next.splice(at, 0, { key: nextKey(), kind: 'image', id: asset.id });
-            if (!next.some((block, index) => index > at && block.kind === 'text')) {
-                next.push({ key: nextKey(), kind: 'text', text: '' });
+
+            if (active && active.kind === 'text') {
+                const area = areas.current.get(active.key);
+                const caret = area ? area.selectionStart : active.text.length;
+                next.splice(
+                    activeBlock,
+                    1,
+                    { key: active.key, kind: 'text', text: active.text.slice(0, caret) },
+                    imageBlock,
+                    { key: nextKey(), kind: 'text', text: active.text.slice(caret) }
+                );
+            } else {
+                const at = Math.min(activeBlock + 1, blocks.length);
+                next.splice(at, 0, imageBlock);
+                if (!next.some((block, index) => index > at && block.kind === 'text')) {
+                    next.push({ key: nextKey(), kind: 'text', text: '' });
+                }
             }
             commit(next);
         } catch (error) {
@@ -215,8 +230,8 @@ const MarkdownEditor = ({
 
                 {allowImages && (
                 <label
-                    title="Add a photo"
-                    aria-label="Add a photo"
+                    title="Add a photo where your cursor is"
+                    aria-label="Add a photo where your cursor is"
                     className={`p-2 rounded-md hover:bg-white hover:shadow-sm text-gray-600 hover:text-black ${
                         preview || uploading ? 'opacity-30' : 'cursor-pointer'
                     }`}
@@ -261,41 +276,19 @@ const MarkdownEditor = ({
                     )}
                     {blocks.map((block, index) =>
                         block.kind === 'text' ? (
-                            <div key={block.key}>
-                                <textarea
-                                    ref={(element) => {
-                                        if (element) areas.current.set(block.key, element);
-                                        else areas.current.delete(block.key);
-                                    }}
-                                    value={block.text}
-                                    onChange={(event) => setText(block.key, event.target.value)}
-                                    onFocus={() => setActiveBlock(index)}
-                                    rows={Math.max(3, Math.min(rows, block.text.split('\n').length + 1))}
-                                    placeholder={blocks.length === 1 ? 'Write here...' : undefined}
-                                    className="w-full px-4 py-3 text-base outline-none resize-y leading-relaxed"
-                                />
-                                {allowImages && (
-                                    <label
-                                        title="Add a photo directly under this text"
-                                        className={`flex items-center gap-1.5 px-4 pb-2.5 pt-0.5 text-xs font-medium text-gray-400 hover:text-black ${
-                                            uploading ? 'opacity-40' : 'cursor-pointer'
-                                        }`}
-                                    >
-                                        <ImagePlus className="w-3.5 h-3.5" />
-                                        Add a photo under this text
-                                        <input
-                                            type="file"
-                                            accept="image/*"
-                                            className="hidden"
-                                            disabled={uploading}
-                                            onChange={(event) => {
-                                                addImage(event.target.files?.[0], index + 1);
-                                                event.target.value = '';
-                                            }}
-                                        />
-                                    </label>
-                                )}
-                            </div>
+                            <textarea
+                                key={block.key}
+                                ref={(element) => {
+                                    if (element) areas.current.set(block.key, element);
+                                    else areas.current.delete(block.key);
+                                }}
+                                value={block.text}
+                                onChange={(event) => setText(block.key, event.target.value)}
+                                onFocus={() => setActiveBlock(index)}
+                                rows={Math.max(3, Math.min(rows, block.text.split('\n').length + 1))}
+                                placeholder={blocks.length === 1 ? 'Write here...' : undefined}
+                                className="w-full px-4 py-3 text-base outline-none resize-y leading-relaxed"
+                            />
                         ) : (
                             <div key={block.key} className="p-3 bg-gray-50/60">
                                 <div className="flex items-start gap-3">
