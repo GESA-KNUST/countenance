@@ -10,7 +10,7 @@
  *   - POST/non-GET & /api: never cached (always hit the network)
  */
 
-const VERSION = 'v2';
+const VERSION = 'v3';
 const PRECACHE = `countenance-precache-${VERSION}`;
 const STATIC_CACHE = `countenance-static-${VERSION}`;
 const IMAGE_CACHE = `countenance-images-${VERSION}`;
@@ -58,11 +58,16 @@ async function cacheFirst(request, cacheName) {
     const cache = await caches.open(cacheName);
     const cached = await cache.match(request);
     if (cached) return cached;
-    const response = await fetch(request);
-    if (response && (response.ok || response.type === 'opaque')) {
-        cache.put(request, response.clone());
+
+    try {
+        const response = await fetch(request);
+        if (response && (response.ok || response.type === 'opaque')) {
+            cache.put(request, response.clone());
+        }
+        return response;
+    } catch {
+        return new Response('', { status: 504, statusText: 'Offline' });
     }
-    return response;
 }
 
 async function staleWhileRevalidate(request, cacheName, limit) {
@@ -78,7 +83,13 @@ async function staleWhileRevalidate(request, cacheName, limit) {
             return response;
         })
         .catch(() => undefined);
-    return cached || network || fetch(request);
+
+    if (cached) return cached;
+
+    const response = await network;
+    if (response) return response;
+
+    return new Response('', { status: 504, statusText: 'Offline' });
 }
 
 async function networkFirstNavigation(request) {
@@ -93,7 +104,7 @@ async function networkFirstNavigation(request) {
         const cached = await cache.match(request);
         if (cached) return cached;
         const offline = await caches.match(OFFLINE_URL);
-        return offline || Response.error();
+        return offline || new Response('', { status: 504, statusText: 'Offline' });
     }
 }
 
@@ -137,6 +148,12 @@ self.addEventListener('fetch', (event) => {
 
     // Never cache API responses — always go to the network so data stays fresh.
     if (url.origin === self.location.origin && url.pathname.startsWith('/api/')) {
+        return;
+    }
+
+    // Next.js data requests (prefetch and navigation payloads) must never be
+    // served from cache, or a stale or missing payload breaks navigation.
+    if (url.searchParams.has('_rsc') || request.headers.get('RSC') === '1') {
         return;
     }
 

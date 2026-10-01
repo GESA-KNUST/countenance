@@ -46,7 +46,7 @@ const ProvostSection = () => {
 
                             <div className="relative h-[500px] sm:h-[600px] w-full rounded-2xl overflow-hidden shadow-2xl z-10">
                                 <Image
-                                    src="/images/Provost.jpg"
+                                    src="/images/Provost.webp"
                                     alt="Professor Kwabena Biritwum Nyarko"
                                     fill
                                     className="object-cover transition-transform duration-700 group-hover:scale-105"

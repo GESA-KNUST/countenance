@@ -66,7 +66,7 @@ export const teamMembers: TeamMember[] = [
         year: "3rd Year",
         major: "Telecom Engineering",
         description: "As a Lead Developer together with [Obrempong](/team/obrempong-kwabena-osei-wusu), Joy played a critical role in bringing the GESA vision to life. He expertly handled both the creative frontend implementation and robust backend logic, crafting fluid animations and responsive layouts while ensuring system stability. His versatile skills delivered a cohesive, polished, and dynamic application.",
-        image: "/images/Joy.jpg",
+        image: "/images/Joy.webp",
         funFact: "Real life Bertram Gilfoyle.",
         socials: {
             github: "https://github.com/Joylinton04",
@@ -81,7 +81,7 @@ export const teamMembers: TeamMember[] = [
         year: "4th Year",
         major: "Computer Engineering",
         description: "A creative powerhouse with a deep background in graphics design, Logical brought the GESA platform to life through his expert use of Figma. He meticulously crafted the web interfaces, establishing the premium visual identity that balances aesthetic appeal with intuitive user experience.",
-        image: "/images/Albert.jpg",
+        image: "/images/Albert.webp",
         funFact: "Sees the world in hex codes.",
         socials: {
             github: "https://github.com/Logical883",
