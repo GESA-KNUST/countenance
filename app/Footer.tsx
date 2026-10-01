@@ -55,7 +55,7 @@ const Footer = ({ contact = SITE_CONTACT_FALLBACK }: { contact?: SiteContact }) 
         { page: "Events", to: "/events" },
         { page: "Executives", to: "/executives" },
         { page: "Clubs and Societies", to: "/clubs" },
-        { page: "Opportunities Hub", to: "/hub" },
+        { page: "Opportunities Hub", to: "/hubs" },
         { page: "Gallery", to: "/gallery" },
       ]
     },

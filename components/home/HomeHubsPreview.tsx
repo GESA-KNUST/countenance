@@ -49,7 +49,7 @@ const HomeHubsPreview = () => {
         <div className="bg-white py-12 font-poppins relative overflow-hidden">
             <Image
                 className="absolute top-0 left-0 w-full h-full object-cover z-0"
-                src="/images/img1.png"
+                src="/images/img1.webp"
                 alt="Hub Preview"
                 fill
                 priority

@@ -51,7 +51,7 @@ const ClubsPage = async () => {
         title="Explore Our Clubs and Societies"
         highlight="Clubs and Societies"
         text='Connect, learn, and grow with clubs and societies that support your passions, goals, and personal development.'
-        images={['/images/clubs/clubs-1.jpeg', '/images/clubs/clubs-2.jpg', '/images/clubs/clubs-3.jpg']}
+        images={['/images/clubs/clubs-1.webp', '/images/clubs/clubs-2.webp', '/images/clubs/clubs-3.webp']}
         button={false}
       />
       <ClubsList clubs={clubs} />

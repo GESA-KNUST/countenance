@@ -27,7 +27,7 @@ const FacultyListPage = () => {
                 title="Explore"
                 subtitle="Faculties"
                 text='Discover the diverse academic faculties within the College of Engineering, each dedicated to excellence and innovation.'
-                images={['/images/faculty/faculty-1.jpg', '/images/faculty/faculty-2.jpg', '/images/faculty/faculty-3.JPG']}
+                images={['/images/faculty/faculty-1.webp', '/images/faculty/faculty-2.webp', '/images/faculty/faculty-3.webp']}
             />
             <Container size='xl'>
                 <div className='flex flex-col md:flex-row items-center justify-center gap-6 py-6 md:py-12'>
