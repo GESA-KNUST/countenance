@@ -1,7 +1,7 @@
 import BigStory from '../../components/blog/BigStory'
 import RecentBlog from '../../components/blog/RecentBlogs'
-import img1 from "public/images/img1.png";
-import img2 from "public/images/img2.png";
+import img1 from "public/images/img1.webp";
+import img2 from "public/images/img2.webp";
 import HeroSection from '@/components/home/HeroSection';
 import BlogContribute from '@/components/blog/BlogContribute';
 

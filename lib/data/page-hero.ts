@@ -68,10 +68,10 @@ export const GET_PAGE_HERO = gql`
 
 export const PAGE_HERO_FALLBACKS: Record<PageHeroKey, PageHero> = {
   home: {
-    images: ["/images/img1.png", "/images/home/home-1.jpg", "/images/home/home-4.jpg"],
+    images: ["/images/img1.webp", "/images/home/home-1.webp", "/images/home/home-4.webp"],
     mobileImages: [],
     ogImage: {
-      url: "/images/executive/executivehero-1.jpg",
+      url: "/images/executive/executivehero-1.webp",
       title: "GESA-KNUST | Ghana Engineering Students Association",
       description: null,
       width: 1200,
@@ -81,35 +81,35 @@ export const PAGE_HERO_FALLBACKS: Record<PageHeroKey, PageHero> = {
   },
   gallery: {
     images: [
-      "/images/gallery/gallery-1.jpg",
-      "/images/gallery/gallery-2.jpeg",
-      "/images/gallery/gallery-3.JPG",
+      "/images/gallery/gallery-1.webp",
+      "/images/gallery/gallery-2.webp",
+      "/images/gallery/gallery-3.webp",
     ],
     mobileImages: [],
     ogImage: null,
   },
   department: {
-    images: ["/images/dept/dept-3.jpg", "/images/dept/dept-2.jpeg", "/images/dept/dept-1.jpeg"],
+    images: ["/images/dept/dept-3.webp", "/images/dept/dept-2.webp", "/images/dept/dept-1.jpeg"],
     mobileImages: [],
     ogImage: null,
   },
   team: {
     images: [
-      "/images/Team/Team-1.png",
-      "/images/Team/Team-2.png",
-      "/images/Team/Team-3.png",
-      "/images/Team/Team-4.png",
-      "/images/Team/Team-5.png",
+      "/images/Team/Team-1.webp",
+      "/images/Team/Team-2.webp",
+      "/images/Team/Team-3.webp",
+      "/images/Team/Team-4.webp",
+      "/images/Team/Team-5.webp",
     ],
     mobileImages: [
-      "/images/Team/teammobile1.png",
-      "/images/Team/teammobile-2.png",
-      "/images/Team/teammobile-3.png",
-      "/images/Team/teammobile-4.png",
-      "/images/Team/teammobile-5.png",
+      "/images/Team/teammobile1.webp",
+      "/images/Team/teammobile-2.webp",
+      "/images/Team/teammobile-3.webp",
+      "/images/Team/teammobile-4.webp",
+      "/images/Team/teammobile-5.webp",
     ],
     ogImage: {
-      url: "/images/Team/Team-1.png",
+      url: "/images/Team/Team-1.webp",
       title: "GESA Development Team",
       description: null,
       width: 1626,
@@ -119,19 +119,19 @@ export const PAGE_HERO_FALLBACKS: Record<PageHeroKey, PageHero> = {
   },
   executives: {
     images: [
-      "/images/executive/executivehero-1.jpg",
-      "/images/executive/executivehero-2.jpg",
-      "/images/executive/executivehero-3.png",
+      "/images/executive/executivehero-1.webp",
+      "/images/executive/executivehero-2.webp",
+      "/images/executive/executivehero-3.webp",
     ],
     mobileImages: [
-      "/images/executive/executiveimage-1.png",
-      "/images/executive/executiveimage-2.png",
+      "/images/executive/executiveimage-1.webp",
+      "/images/executive/executiveimage-2.webp",
       "/images/executive/executiveimage-3.jpg",
     ],
     ogImage: null,
   },
   "contact-us": {
-    images: ["/images/img2.png", "/images/img1.png", "/images/img2.png"],
+    images: ["/images/img2.webp", "/images/img1.webp", "/images/img2.webp"],
     mobileImages: [],
     ogImage: null,
   },

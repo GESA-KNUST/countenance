@@ -94,7 +94,7 @@ const HubsPage = () => {
                 title="Explore New Opportunities"
                 highlight="Opportunities"
                 text='Discover upcoming opportunities—from internships to scholarships and financial support—carefully curated to help you grow and succeed.'
-                images={['/images/opportunities/opportunities-2.JPG','/images/opportunities/opportunities-1.JPG', '/images/opportunities/opportunities-3.JPG']}
+                images={['/images/opportunities/opportunities-2.webp','/images/opportunities/opportunities-1.webp', '/images/opportunities/opportunities-3.webp']}
                 button={false}
             />
             <Container size='lg'>

@@ -179,7 +179,7 @@ const HistorySection = () => {
                         >
                             <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-xl relative z-10 border border-slate-100 bg-white group">
                                 <Image
-                                    src="/images/engineering_activities.jpg"
+                                    src="/images/engineering_activities.webp"
                                     alt="GESA Activities"
                                     fill
                                     className="object-cover transition-transform duration-700 group-hover:scale-105"
