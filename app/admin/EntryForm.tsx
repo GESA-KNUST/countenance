@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AlertCircle, Check, Lock, RotateCcw, Save, Trash2, X } from 'lucide-react';
-import { useState as useLocalState } from 'react';
 import StarSpinner from '@/components/ui/StarSpinner';
 import type { CollectionSpec, FieldSpec } from '@/lib/admin/collections';
 import type { EntryDetail, FieldValue, RefOption } from '@/lib/admin/entries';
@@ -556,7 +555,7 @@ const TagInput = ({
     words: string[];
     onChange: (words: string[]) => void;
 }) => {
-    const [draft, setDraft] = useLocalState('');
+    const [draft, setDraft] = useState('');
 
     const commit = () => {
         const value = draft.trim();
