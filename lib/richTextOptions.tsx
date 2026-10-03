@@ -1,7 +1,7 @@
 import { BLOCKS, INLINES, MARKS } from '@contentful/rich-text-types';
 import type { Options } from '@contentful/rich-text-react-renderer';
 import { contentfulImage } from './contentful-image';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 const SAFE_HREF = /^(https?:\/\/|mailto:|tel:|#|\/(?!\/))/i;
 

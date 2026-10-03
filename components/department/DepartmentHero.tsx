@@ -2,7 +2,7 @@
 import Autoplay from "embla-carousel-autoplay"
 import { contentfulImage } from '@/lib/contentful-image';
 import Image, { StaticImageData } from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
     Carousel,
     CarouselApi,

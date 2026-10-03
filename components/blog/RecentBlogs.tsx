@@ -1,5 +1,4 @@
 'use client';
-import React from 'react';
 import useBlogCollection from '../../hooks/useBlogCollection';
 import BlogCard from './BlogCard';
 import Container from '../custom/Container';

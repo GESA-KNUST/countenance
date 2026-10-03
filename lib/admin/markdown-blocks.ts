@@ -52,6 +52,6 @@ export function serializeBlocks(blocks: Block[]): string {
           : `![](asset:${block.id})`
         : block.text
     )
-    .filter((part, index, all) => part !== "" || all.length === 1)
+    .filter((part, _index, all) => part !== "" || all.length === 1)
     .join("\n\n");
 }
