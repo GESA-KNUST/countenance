@@ -1,19 +1,14 @@
 'use client'
-import { useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from '../ui/button';
-import Image from 'next/image';
 import Link from 'next/link';
 import Container from '../custom/Container';
 import { POTWItem, usePOTW } from '@/hooks/usePOTW';
 import { extractText } from '@/lib/extractText';
 import LoadingPOTW from './LoadingPOTW';
 import FetchError from '../custom/FetchError';
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-import { proseRichTextOptions } from '@/lib/richTextOptions';
 import { contentfulImage } from '@/lib/contentful-image';
 import { personalitySlug } from '@/lib/data/potw';
-import { X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 
 const Personality = ({ initial }: { initial?: POTWItem[] | null }) => {
@@ -22,9 +17,6 @@ const Personality = ({ initial }: { initial?: POTWItem[] | null }) => {
   const getDescription = personality ? extractText(personality.description?.json) : '';
 
   if (!isLoading && !error && !personality) return null;
-
-
-
 
 
   return (

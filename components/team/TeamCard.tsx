@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { ctfSrc } from '@/lib/contentful-src';
 import Image from 'next/image';
 import { motion } from 'framer-motion';

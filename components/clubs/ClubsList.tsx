@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ctfSrc } from '@/lib/contentful-src';
 import Container from '@/components/custom/Container';
 import { Search } from 'lucide-react';

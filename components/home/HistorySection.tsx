@@ -1,6 +1,5 @@
 "use client";
 
-import React from 'react';
 import Container from '../custom/Container';
 import Image from "next/image";
 import { motion } from "framer-motion";

@@ -1,4 +1,3 @@
-import React from 'react'
 import Image from 'next/image'
 import { ArrowRight, Calendar } from 'lucide-react'
 import internship from '@/public/images/internship.svg'
