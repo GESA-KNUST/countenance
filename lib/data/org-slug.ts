@@ -17,12 +17,3 @@ export function orgSlug(name: string | null | undefined, abbreviation?: string |
 
   return clean(name ?? "");
 }
-
-export function matchesOrgSlug(
-  slug: string,
-  name: string | null | undefined,
-  abbreviation?: string | null
-): boolean {
-  const wanted = clean(slug);
-  return wanted !== "" && orgSlug(name, abbreviation) === wanted;
-}

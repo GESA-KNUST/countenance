@@ -1,4 +1,3 @@
-import React from 'react'
 import Container from '../custom/Container'
 import { Skeleton } from '../ui/skeleton'
 

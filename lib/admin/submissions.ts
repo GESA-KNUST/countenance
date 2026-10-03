@@ -84,14 +84,6 @@ async function submissionAssetExists(id: string) {
   return Boolean(asset?.fields?.file?.[LOCALE]?.url);
 }
 
-async function publishedAuthorExists(id: string) {
-  const entry = await cma(`/entries/${id}`);
-  return Boolean(
-    entry &&
-      entry.sys.contentType?.sys?.id === "blogAuthor" &&
-      entry.sys.publishedVersion
-  );
-}
 
 async function createTagList(words: string[], title: string): Promise<string | null> {
   const cleaned = [...new Set(words.map((word) => word.trim()).filter(Boolean))];

@@ -1,4 +1,3 @@
-import React from 'react'
 import HeroSection from '@/components/home/HeroSection'
 import { contentfulClient } from '@/lib/contentful-client';
 import { gql } from 'graphql-request';
