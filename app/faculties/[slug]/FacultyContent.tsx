@@ -38,7 +38,7 @@ const Markdown = ({ content, fallback }: { content?: string; fallback: string })
 const FacultyContent = () => {
     const params = useParams();
     const slug = params.slug as string;
-    const { id, isLoading: findingId, known } = useFacultyIdFromSlug(slug);
+    const { id, isLoading: findingId } = useFacultyIdFromSlug(slug);
     const { data: faculty, isLoading: loadingFaculty, error } = useFaculty(id);
     const isLoading = findingId || (Boolean(id) && loadingFaculty);
 

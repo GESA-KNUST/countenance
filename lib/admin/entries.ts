@@ -357,7 +357,7 @@ async function resolveTagList(
   const cleaned = [...new Set(words.map((word) => word.trim()).filter(Boolean))];
   if (cleaned.length === 0) return undefined;
 
-  const reusable = linkedId ? await isTagListPrivate(field, linkedId) : false;
+  const reusable = linkedId ? await isTagListPrivate(linkedId) : false;
 
   if (linkedId && reusable) {
     const existing = await cma(`/entries/${linkedId}`);
@@ -398,7 +398,7 @@ async function resolveTagList(
   return created.sys.id;
 }
 
-async function isTagListPrivate(field: FieldSpec, tagListId: string) {
+async function isTagListPrivate(tagListId: string) {
   const users = await cmaAll(`/entries?links_to_entry=${tagListId}`);
   return users.length <= 1;
 }
