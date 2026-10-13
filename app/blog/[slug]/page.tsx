@@ -8,6 +8,8 @@ import { LogError } from '@/lib/logger';
 import ContributeNudge from '@/components/blog/ContributeNudge';
 import { currentWriter } from '@/lib/contribute/session';
 import { ogImage } from '@/lib/data/og-image';
+import { getBlogPostSafe, getBlogsSafe } from '@/lib/data/blog';
+import { articleSchema } from '@/lib/seo/blog-schema';
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -75,10 +77,12 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     return {
       title,
       description,
+      alternates: { canonical: `/blog/${encodeURIComponent(slug)}` },
       openGraph: {
         title,
         description,
         type: 'article',
+        url: `/blog/${encodeURIComponent(slug)}`,
         images: share,
       },
       twitter: {
@@ -97,14 +101,26 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 }
 
 export default async function Page(props: Props) {
-  const { slug } = await props.params;
+  const { slug: raw } = await props.params;
+  const slug = decodeURIComponent(raw);
 
-  const writer = await currentWriter();
+  const [writer, post, posts] = await Promise.all([
+    currentWriter(),
+    getBlogPostSafe(slug),
+    getBlogsSafe(),
+  ]);
 
   return (
     <>
+      {post && (
+        <script
+          type="application/ld+json"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema(post)) }}
+        />
+      )}
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-gray-50"><StarSpinner /></div>}>
-        <BlogContent slug={decodeURIComponent(slug)} />
+        <BlogContent slug={slug} initialPost={post} initialPosts={posts} />
       </Suspense>
       {!writer && <ContributeNudge />}
     </>

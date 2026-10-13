@@ -1,16 +1,16 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useEventBySlug } from '@/hooks/useEventCollection';
+import { useEventBySlug, type EventItem } from '@/hooks/useEventCollection';
 import EventDetail from '@/components/events/EventDetail';
 import { useStore } from '@/store/useStore';
 import { useEffect } from 'react';
 import NotFoundCard from '@/components/common/NotFoundCard';
 import { CalendarX } from 'lucide-react';
 
-const EventDetailClient = () => {
+const EventDetailClient = ({ initialEvent }: { initialEvent?: EventItem }) => {
     const { slug } = useParams();
-    const { data: event, isLoading, error } = useEventBySlug(slug as string);
+    const { data: event, isLoading, error } = useEventBySlug(slug as string, initialEvent);
     const { addToRecentlyViewed } = useStore();
 
     useEffect(() => {

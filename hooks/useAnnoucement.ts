@@ -1,44 +1,12 @@
-import { gql } from "graphql-request";
 import { useFetchData } from "./useFetchData";
-import { contentfulClient } from "../lib/contentful-client";
+import { getAnnouncements, type Announcement } from "@/lib/data/hub";
 
-interface Announcement {
-    actionLink: string;
-    description: string;
-    dueDate: string;
-    title: string;
-    _id: string;
-}
+export type { Announcement };
 
-interface AnnouncementCollection {
-    announcementsCollection: {
-        items: Announcement[];
-    }
-}
-
-const GET_ANNOUNCEMENTS = gql`
-    query AnnouncementsCollection {
-  announcementsCollection(order: [order_ASC]) {
-    items {
-      actionLink
-      description
-      dueDate
-      title
-      _id
-    }
-  }
-}
-`;
-
-export const useAnnouncements = () => {
-    return useFetchData({
-        queryKey: ["announcements"],
-        queryFn: async () => {
-            const data = await contentfulClient.request<AnnouncementCollection>(GET_ANNOUNCEMENTS);
-            if (data.announcementsCollection.items.length === 0) {
-                return null;
-            }
-            return data.announcementsCollection.items;
-        },
-    });
+export const useAnnouncements = (initialData?: Announcement[] | null) => {
+  return useFetchData({
+    queryKey: ["announcements"],
+    queryFn: getAnnouncements,
+    initialData,
+  });
 };

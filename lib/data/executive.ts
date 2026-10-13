@@ -10,7 +10,7 @@ export interface ExecutiveImage {
 }
 
 export interface Executive {
-  sys: { id: string };
+  sys: { id: string; publishedAt?: string | null };
   fullName: string;
   executivePositionHeld: string;
   academicYear: string;
@@ -29,7 +29,7 @@ export interface Executive {
   email: string | null;
 }
 
-export const EXECUTIVE_LIST_FIELDS = `sys { id }
+export const EXECUTIVE_LIST_FIELDS = `sys { id publishedAt }
         fullName
         executivePositionHeld
         academicYear
@@ -106,6 +106,52 @@ export function executiveSlug(executive: Executive) {
 export function sortAcademicYears(years: string[]) {
   const startYear = (year: string) => Number(year.match(/\d{4}/)?.[0] ?? 0);
   return [...years].sort((a, b) => startYear(b) - startYear(a) || b.localeCompare(a));
+}
+
+
+export function currentAcademicYear(executives: Executive[]): string | null {
+  return sortAcademicYears([...new Set(executives.map((executive) => executive.academicYear))])[0] ?? null;
+}
+
+export function academicYearStart(year: string | null | undefined): number | null {
+  const match = (year ?? "").match(/\d{4}/);
+  return match ? Number(match[0]) : null;
+}
+
+export function academicYearRange(year: string | null | undefined) {
+  const start = academicYearStart(year);
+  if (!start) return null;
+  return { startDate: String(start), endDate: String(start + 1) };
+}
+
+export function isCurrentYear(year: string | null | undefined, current: string | null) {
+  return Boolean(year && current && year === current);
+}
+
+export function positionLabel(executive: Executive, current: string | null) {
+  const position = executive.executivePositionHeld?.trim() || "Executive";
+  return isCurrentYear(executive.academicYear, current) ? position : `Former ${position}`;
+}
+
+export function tenureSentence(executive: Executive, current: string | null) {
+  const position = executive.executivePositionHeld?.trim() || "an executive";
+  const year = executive.academicYear;
+
+  return isCurrentYear(year, current)
+    ? `${executive.fullName} is the ${position} of GESA-KNUST for the ${year} academic year.`
+    : `${executive.fullName} served as ${position} of GESA-KNUST during the ${year} academic year.`;
+}
+
+export function executivesForYear(executives: Executive[], year: string | null) {
+  return year ? executives.filter((executive) => executive.academicYear === year) : [];
+}
+
+export function executiveCountsByYear(executives: Executive[]) {
+  const counts: Record<string, number> = {};
+  for (const executive of executives) {
+    counts[executive.academicYear] = (counts[executive.academicYear] ?? 0) + 1;
+  }
+  return counts;
 }
 
 const GET_ALL = gql`

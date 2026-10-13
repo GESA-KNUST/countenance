@@ -1,48 +1,32 @@
-'use client';
-import { useState, useMemo } from 'react';
 import Hero from '../../components/executives/Hero';
 import Intro from '../../components/executives/Intro';
 import ExecutiveMarquee from '../../components/executives/ExecutiveMarquee';
-import Executives from '../../components/executives/Executives';
-import YearFilter from '../../components/executives/YearFilter';
-import { useExecutiveCollection } from '../../hooks/useExecutiveCollection';
-import { sortAcademicYears } from '@/lib/data/executive';
+import CurrentLeadership from '../../components/executives/CurrentLeadership';
+import ExecutivesBrowser from '../../components/executives/ExecutivesBrowser';
+import {
+  getExecutives,
+  currentAcademicYear,
+  executiveCountsByYear,
+  executivesForYear,
+  sortAcademicYears,
+} from '@/lib/data/executive';
+import { currentExecutivesListSchema } from '@/lib/seo/executive-schema';
 import EmptyState from '@/components/events/EmptyState';
 import { TriangleAlert } from 'lucide-react';
 
-const ExecutivesPage = () => {
-  const { executives, isLoading, error } = useExecutiveCollection();
-  const [selectedYear, setSelectedYear] = useState<string | null>(null);
 
-  const academicYears = useMemo(
-    () => sortAcademicYears([...new Set(executives.map((exec) => exec.academicYear))]),
-    [executives]
-  );
+const ExecutivesPage = async () => {
+  const executives = await getExecutives();
 
-  const countsByYear = useMemo(() => {
-    const counts: Record<string, number> = {};
-    for (const exec of executives) {
-      counts[exec.academicYear] = (counts[exec.academicYear] ?? 0) + 1;
-    }
-    return counts;
-  }, [executives]);
+  const academicYears = sortAcademicYears([
+    ...new Set(executives.map((executive) => executive.academicYear)),
+  ]);
+  const countsByYear = executiveCountsByYear(executives);
+  const currentYear = currentAcademicYear(executives);
+  const currentExecutives = executivesForYear(executives, currentYear);
 
-  const effectiveYear = selectedYear ?? academicYears[0] ?? null;
 
-  // The rail always shows whoever is in office now, even while the grid below is
-  // filtered to an earlier year.
-  const currentYear = academicYears[0] ?? null;
-  const currentExecutives = useMemo(
-    () => (currentYear ? executives.filter((exec) => exec.academicYear === currentYear) : []),
-    [executives, currentYear]
-  );
-
-  const filteredExecutives = useMemo(() => {
-    if (!effectiveYear) return [];
-    return executives.filter((exec) => exec.academicYear === effectiveYear);
-  }, [executives, effectiveYear]);
-
-  if (error) {
+  if (executives.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
         <EmptyState
@@ -50,7 +34,6 @@ const ExecutivesPage = () => {
           message="We encountered an issue loading the executives. Please try again later."
           icon={TriangleAlert}
           showHomeButton={true}
-          onRefresh={() => window.location.reload()}
         />
       </div>
     );
@@ -58,21 +41,27 @@ const ExecutivesPage = () => {
 
   return (
     <div>
-      <Hero />
-      <ExecutiveMarquee
-        executives={currentExecutives}
-        isLoading={isLoading}
-        year={currentYear}
-      />
-      <Intro />
-      <section id="executives" className="scroll-mt-4">
-        <YearFilter
-          academicYears={academicYears}
-          selectedYear={effectiveYear}
-          setSelectedYear={setSelectedYear}
-          countsByYear={countsByYear}
+      {currentExecutives.length > 0 && (
+        <script
+          type="application/ld+json"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(currentExecutivesListSchema(executives, currentYear)),
+          }}
         />
-        <Executives executives={filteredExecutives} isLoading={isLoading} />
+      )}
+
+      <Hero />
+      <ExecutiveMarquee executives={currentExecutives} isLoading={false} year={currentYear} />
+      <Intro />
+      <CurrentLeadership executives={currentExecutives} year={currentYear} />
+      <section id="executives" className="scroll-mt-4">
+        <ExecutivesBrowser
+          executives={executives}
+          academicYears={academicYears}
+          countsByYear={countsByYear}
+          currentYear={currentYear}
+        />
       </section>
     </div>
   );
