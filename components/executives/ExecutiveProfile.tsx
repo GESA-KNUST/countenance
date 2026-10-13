@@ -70,7 +70,8 @@ const ExecutiveProfile = ({ executive, colleagues, isCurrent = true }: Executive
       <div className="relative overflow-hidden border-b border-gray-100 bg-white">
         <Container size="xl" className="relative">
           <Link
-            href="/executives"
+            href={isCurrent ? '/executives' : `/executives?year=${encodeURIComponent(academicYear)}`}
+            scroll={false}
             className="group inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition-colors hover:text-[#252638]"
           >
             <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
