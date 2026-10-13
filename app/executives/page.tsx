@@ -11,9 +11,7 @@ import {
   sortAcademicYears,
 } from '@/lib/data/executive';
 import { currentExecutivesListSchema } from '@/lib/seo/executive-schema';
-import EmptyState from '@/components/events/EmptyState';
-import { TriangleAlert } from 'lucide-react';
-
+import ExecutivesError from '../../components/executives/ExecutivesError';
 
 const ExecutivesPage = async () => {
   const executives = await getExecutives();
@@ -25,18 +23,8 @@ const ExecutivesPage = async () => {
   const currentYear = currentAcademicYear(executives);
   const currentExecutives = executivesForYear(executives, currentYear);
 
-
   if (executives.length === 0) {
-    return (
-      <div className="flex items-center justify-center min-h-[50vh]">
-        <EmptyState
-          title="Failed to Load Executives"
-          message="We encountered an issue loading the executives. Please try again later."
-          icon={TriangleAlert}
-          showHomeButton={true}
-        />
-      </div>
-    );
+    return <ExecutivesError />;
   }
 
   return (
