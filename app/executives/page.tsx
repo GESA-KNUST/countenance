@@ -1,7 +1,6 @@
 import Hero from '../../components/executives/Hero';
 import Intro from '../../components/executives/Intro';
 import ExecutiveMarquee from '../../components/executives/ExecutiveMarquee';
-import CurrentLeadership from '../../components/executives/CurrentLeadership';
 import ExecutivesBrowser from '../../components/executives/ExecutivesBrowser';
 import {
   getExecutives,
@@ -41,8 +40,7 @@ const ExecutivesPage = async () => {
 
       <Hero />
       <ExecutiveMarquee executives={currentExecutives} isLoading={false} year={currentYear} />
-      <Intro />
-      <CurrentLeadership executives={currentExecutives} year={currentYear} />
+      <Intro lead={currentExecutives[0] ?? null} year={currentYear} />
       <section id="executives" className="scroll-mt-4">
         <ExecutivesBrowser
           executives={executives}
