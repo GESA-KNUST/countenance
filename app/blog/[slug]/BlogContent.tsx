@@ -5,14 +5,23 @@ import MainContent from '@/components/blog-2/MainContent';
 import PopularPosts from '@/components/blog-2/PopularPosts';
 import useBlogCollection, { type Blog } from '@/hooks/useBlogCollection';
 import { useBlog } from '@/hooks/useBlog';
+import type { BlogPost } from '@/lib/data/blog';
 
-export default function BlogContent({ slug }: { slug: string }) {
-  const { data: allPosts } = useBlogCollection();
+export default function BlogContent({
+  slug,
+  initialPost,
+  initialPosts,
+}: {
+  slug: string;
+  initialPost?: BlogPost | null;
+  initialPosts?: Blog[];
+}) {
+  const { data: allPosts } = useBlogCollection(initialPosts);
   const router = useRouter();
 
   const activeSlug = slug || allPosts?.[0]?.slug;
 
-  const { data: detailedPost } = useBlog(activeSlug || '');
+  const { data: detailedPost } = useBlog(activeSlug || '', initialPost);
 
   const handlePostSelect = (post: Blog) => {
     const href = blogHref(post.slug);

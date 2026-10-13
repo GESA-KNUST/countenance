@@ -5,14 +5,15 @@ import { Button } from '../ui/button'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { useHubs } from '@/hooks/useHubs'
+import type { HubItem } from '@/lib/data/hub'
 import Image from 'next/image'
 import EmptyState from '../events/EmptyState'
 import { Briefcase, TriangleAlert } from 'lucide-react'
 
 import { motion } from 'framer-motion'
 
-const HomeHubsPreview = () => {
-    const { data: hubs, isLoading, error } = useHubs()
+const HomeHubsPreview = ({ initialHubs }: { initialHubs?: HubItem[] | null }) => {
+    const { data: hubs, isLoading, error } = useHubs(initialHubs)
 
     if (isLoading) {
         return <div className="h-96 flex items-center justify-center text-muted-foreground animate-pulse">Loading hubs...</div>

@@ -60,7 +60,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         return {
             title: `${faculty.name} | GESA KNUST`,
             description: `Official page of the ${faculty.name} at KNUST.`,
+            alternates: { canonical: `/faculties/${slug}` },
             openGraph: {
+                url: `/faculties/${slug}`,
                 title: faculty.name,
                 images: ogImage(image, faculty.name, { contain: true }),
             },

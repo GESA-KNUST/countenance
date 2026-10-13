@@ -9,9 +9,25 @@ import HomeClubsPreview from '../components/home/HomeClubsPreview';
 import Contribute from '@/components/home/Contribute';
 import { getPageHero } from '@/lib/data/page-hero';
 import { getPersonalityOfTheWeek } from '@/lib/data/potw';
+import { getEventsSafe } from '@/lib/data/event';
+import { getClubsSafe } from '@/lib/data/club';
+import { getHubsSafe } from '@/lib/data/hub';
+import { getGalleriesSafe } from '@/lib/data/gallery';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+};
 
 const Home = async () => {
-  const [hero, potw] = await Promise.all([getPageHero('home'), getPersonalityOfTheWeek()]);
+  const [hero, potw, events, clubs, hubs, galleries] = await Promise.all([
+    getPageHero('home'),
+    getPersonalityOfTheWeek(),
+    getEventsSafe(),
+    getClubsSafe(),
+    getHubsSafe(),
+    getGalleriesSafe(),
+  ]);
 
   return (
     <div className='font-poppins min-h-screen overflow-x-hidden w-full'>
@@ -27,11 +43,11 @@ const Home = async () => {
       <Personality initial={potw} />
       <ProvostSection />
       <HistorySection />
-      <HomeHubsPreview />
-      <HomeClubsPreview />
-      <RecentEvent />
+      <HomeHubsPreview initialHubs={hubs} />
+      <HomeClubsPreview initialClubs={clubs} />
+      <RecentEvent initialEvents={events} />
       <Contribute />
-      <Gallery />
+      <Gallery initialGalleries={galleries} />
     </div>
   )
 }

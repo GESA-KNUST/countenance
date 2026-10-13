@@ -1,66 +1,14 @@
 'use client';
-import { gql } from "graphql-request";
 import { useFetchData } from "./useFetchData";
-import { contentfulClient } from "@/lib/contentful-client";
+import { getGalleries, getGalleryGroup, type Gallery } from "@/lib/data/gallery";
 
-export interface Gallery {
-  sys: { id: string };
-  eventName: string;
-  picturesLink: string;
-  sampleImagesCollection: {
-    items: {
-      title: string;
-      description: string;
-      url: string;
-    }[];
-  };
-}
+export type { Gallery };
 
-const GET_GALLERY_COLLECTION = gql`
-  query Query($galleryGroupId: String!) {
-    galleryGroup(id: $galleryGroupId) {
-      sys { id }
-      eventName
-      picturesLink
-      sampleImagesCollection(limit: 50) {
-        items {
-          title
-          description
-          url
-        }
-      }
-    }
-  }
-`;
-
-const GET_GALLERIES = gql`
-  query GetGalleries {
-    galleryGroupCollection(order: [order_ASC]) {
-      items {
-        sys { id }
-        eventName
-        picturesLink
-        sampleImagesCollection(limit: 5) {
-          items {
-            title
-            description
-            url
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const useGalleries = () => {
+export const useGalleries = (initialData?: Gallery[]) => {
   const { data, isLoading, error } = useFetchData({
     queryKey: ["galleries"],
-    queryFn: async () => {
-      const { galleryGroupCollection } = await contentfulClient.request<{
-        galleryGroupCollection: { items: Gallery[] };
-      }>(GET_GALLERIES);
-      return galleryGroupCollection.items;
-    },
+    queryFn: getGalleries,
+    initialData,
   });
 
   return { data, isLoading, error };
@@ -69,14 +17,7 @@ export const useGalleries = () => {
 export const useGalleryCollection = (galleryGroupId: string) => {
   const { data, isLoading, error } = useFetchData({
     queryKey: ["gallery", galleryGroupId],
-    queryFn: async () => {
-      if (!galleryGroupId) return null;
-      const { galleryGroup } = await contentfulClient.request<{ galleryGroup: Gallery }>(
-        GET_GALLERY_COLLECTION,
-        { galleryGroupId }
-      );
-      return galleryGroup;
-    },
+    queryFn: () => getGalleryGroup(galleryGroupId),
     enabled: !!galleryGroupId,
   });
 

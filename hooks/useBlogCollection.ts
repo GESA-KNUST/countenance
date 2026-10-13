@@ -1,73 +1,14 @@
 'use client';
-import { gql } from "graphql-request";
 import { useFetchData } from "./useFetchData";
-import { contentfulClient } from "../lib/contentful-client";
+import { getBlogs, type Blog } from "@/lib/data/blog";
 
-interface Author {
-    name: string;
-    authorProfilePicture: {
-        url: string;
-        title: string;
-    };
-}
+export type { Blog };
 
-export interface Blog {
-    title: string;
-    slug: string;
-    headerImage: {
-        title: string;
-        url: string;
-    };
-    author: Author;
-    hook: string;
-    tags: {
-        tags: string[];
-    };
-    datePublished: string;
-    _id: string;
-}
-
-interface Props {
-    blogPostCollection: {
-        items: Blog[];
-    };
-}
-
-const GET_BLOGS = gql`
-    query {
-        blogPostCollection(order: [order_ASC]) {
-            items {
-                headerImage {
-                    title
-                    url
-                }
-                slug
-                author {
-                    name
-                    authorProfilePicture {
-                        url
-                        title
-                    }
-                }
-                hook
-                tags {
-                    tags
-                }
-                title
-                datePublished
-                _id
-            }
-        }
-    }
-`;
-
-const useBlogCollection = () => {
+const useBlogCollection = (initialData?: Blog[]) => {
     return useFetchData({
         queryKey: ["blogs"],
-        queryFn: async () => {
-            const data = await contentfulClient.request<Props>(GET_BLOGS);
-            return data.blogPostCollection.items;
-        },
+        queryFn: getBlogs,
+        initialData,
     })
 }
 

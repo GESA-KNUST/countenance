@@ -1,49 +1,12 @@
-import { gql } from "graphql-request";
 import { useFetchData } from "./useFetchData";
-import { contentfulClient } from "../lib/contentful-client";
+import { getFaculties, type FacultySummary } from "@/lib/data/faculty";
 
-export interface FacultySummary {
-  sys: {
-    id: string;
-  };
-  name: string;
-  facultyMainImageCollection: {
-    items: {
-      url: string;
-    }[];
-  };
-}
+export type { FacultySummary };
 
-interface Props {
-  facultyCollection: {
-    items: FacultySummary[];
-  };
-}
-
-const GET_FACULTIES = gql`
-  query GetFaculties {
-    facultyCollection(order: [order_ASC]) {
-      items {
-        sys {
-          id
-        }
-        name
-        facultyMainImageCollection(limit: 1) {
-          items {
-            url
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const useFacultyCollection = () => {
+export const useFacultyCollection = (initialData?: FacultySummary[]) => {
   return useFetchData<FacultySummary[]>({
     queryKey: ["faculties"],
-    queryFn: async () => {
-      const data = await contentfulClient.request<Props>(GET_FACULTIES);
-      return data.facultyCollection.items;
-    },
+    queryFn: getFaculties,
+    initialData,
   });
 };

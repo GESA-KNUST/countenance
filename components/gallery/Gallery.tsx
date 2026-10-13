@@ -1,11 +1,11 @@
 'use client';
 import GalleryCard from './GalleryCard';
-import { useGalleries } from '../../hooks/useGalleryCollection';
+import { useGalleries, type Gallery as GalleryGroup } from '../../hooks/useGalleryCollection';
 import EmptyState from '../events/EmptyState';
 import { Image as ImageIcon } from 'lucide-react';
 
-const Gallery = () => {
-  const { data: galleries, isLoading, error } = useGalleries();
+const Gallery = ({ initialGalleries }: { initialGalleries?: GalleryGroup[] }) => {
+  const { data: galleries, isLoading, error } = useGalleries(initialGalleries);
 
   if (isLoading) {
     return (

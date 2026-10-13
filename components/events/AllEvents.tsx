@@ -3,11 +3,11 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import EventCard from "./EventsCard";
 import SkeletonLoadingCard from "./SkeletonLoadingCard";
-import useEventCollection from "../../hooks/useEventCollection";
+import useEventCollection, { type EventItem } from "../../hooks/useEventCollection";
 import EmptyState from "./EmptyState";
 
-const AllEvents = () => {
-  const { data: events, isLoading, error } = useEventCollection();
+const AllEvents = ({ initialEvents }: { initialEvents?: EventItem[] }) => {
+  const { data: events, isLoading, error } = useEventCollection(initialEvents);
   const [searchTerm, setSearchTerm] = useState("");
 
   const items = events ?? [];

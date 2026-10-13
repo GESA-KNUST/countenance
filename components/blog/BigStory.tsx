@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import { blogHref } from '@/lib/data/blog-link';
 import { ctfSrc } from '@/lib/contentful-src';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import star from '../../public/images/star.svg';
 import logo from '../../public/images/logo.svg';
@@ -17,20 +17,15 @@ import StarSpinner from '../ui/StarSpinner';
 import useBlogCollection, { type Blog } from '../../hooks/useBlogCollection';
 import { useSiteContact } from '@/hooks/useSiteContact';
 
-const BigStory = () => {
+const FEATURED_SLUG = 'the-ghana-engineering-students-association-gesa-knust';
+
+const BigStory = ({ initialPosts }: { initialPosts?: Blog[] }) => {
   const contact = useSiteContact();
   const [loading, setLoading] = useState(false);
-  const [post, setPost] = useState<Blog | null>(null);
-  const { data: allPosts } = useBlogCollection();
+  const { data: allPosts } = useBlogCollection(initialPosts);
   const router = useRouter();
 
-  useEffect(() => {
-    if (allPosts) {
-      const slug = 'the-ghana-engineering-students-association-gesa-knust';
-      const foundPost = allPosts.find(p => p.slug === slug);
-      setPost(foundPost ?? null);
-    }
-  }, [allPosts]);
+  const post = allPosts?.find((item) => item.slug === FEATURED_SLUG) ?? null;
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

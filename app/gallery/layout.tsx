@@ -8,8 +8,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
     return {
         title: "Gallery",
+        alternates: { canonical: "/gallery" },
         description: "Visual tour of GESA-KNUST activities, events, and memorable moments in the College of Engineering.",
         openGraph: {
+            url: "/gallery",
             title: "Gallery | GESA-KNUST",
             description: "Photos and memories from GESA-KNUST events.",
             images,
