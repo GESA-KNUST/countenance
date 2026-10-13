@@ -5,14 +5,15 @@ import { Button } from '../ui/button'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { useClubs } from '@/hooks/useClubs'
+import type { ClubItems } from '@/lib/data/club'
 import Image from 'next/image'
 import EmptyState from '../events/EmptyState'
 import { Users, TriangleAlert } from 'lucide-react'
 
 import { motion } from "framer-motion";
 
-const HomeClubsPreview = () => {
-    const { data: clubs, isLoading, error } = useClubs()
+const HomeClubsPreview = ({ initialClubs }: { initialClubs?: ClubItems[] }) => {
+    const { data: clubs, isLoading, error } = useClubs(initialClubs)
 
     if (isLoading) {
         return <div className="h-96 flex items-center justify-center text-muted-foreground animate-pulse">Loading clubs...</div>

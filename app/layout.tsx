@@ -10,6 +10,9 @@ import { CSPostHogProvider } from "@/providers/PostHogProvider";
 import { getPageHero, ogImageMetadata } from "@/lib/data/page-hero";
 import { getContentVersion } from '@/lib/data/content-version';
 import { getSiteContact } from "@/lib/data/site-contact";
+import { currentAcademicYear, getExecutives } from "@/lib/data/executive";
+import { currentMemberSchema } from "@/lib/seo/executive-schema";
+import { ORGANIZATION_ID } from "@/lib/seo/site";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -103,11 +106,18 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  const [contact, contentVersion] = await Promise.all([getSiteContact(), getContentVersion()]);
+  const [contact, contentVersion, executives] = await Promise.all([
+    getSiteContact(),
+    getContentVersion(),
+    getExecutives(),
+  ]);
+
+  const members = currentMemberSchema(executives, currentAcademicYear(executives));
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": ORGANIZATION_ID,
     "name": "Ghana Engineering Students Association - KNUST",
     "alternateName": "GESA-KNUST",
     "url": "https://www.gesaknust.com",
@@ -120,7 +130,8 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       "areaServed": "GH",
       "availableLanguage": "en"
     },
-    "sameAs": [contact.x, contact.instagram, contact.linkedin, contact.whatsapp].filter(Boolean)
+    "sameAs": [contact.x, contact.instagram, contact.linkedin, contact.whatsapp].filter(Boolean),
+    ...(members.length > 0 ? { "member": members } : {})
   };
 
   return (

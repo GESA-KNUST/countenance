@@ -3,10 +3,15 @@ import type { Metadata } from 'next';
 import {
   getExecutiveBySlug,
   getExecutives,
+  currentAcademicYear,
   executiveSlug,
   hasProfile,
+  isCurrentYear,
+  positionLabel,
+  tenureSentence,
 } from '@/lib/data/executive';
 import ExecutiveProfile from '@/components/executives/ExecutiveProfile';
+import { executivePersonSchema } from '@/lib/seo/executive-schema';
 import { ogImage } from '@/lib/data/og-image';
 import { extractText } from '@/lib/extractText';
 
@@ -16,24 +21,31 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const executive = await getExecutiveBySlug(slug);
+  const [executive, executives] = await Promise.all([getExecutiveBySlug(slug), getExecutives()]);
 
   if (!executive || !hasProfile(executive)) return { title: 'Executive not found' };
 
-  const title = `${executive.fullName} | ${executive.executivePositionHeld}`;
+  const current = currentAcademicYear(executives);
+
+  const title = `${executive.fullName} | ${positionLabel(executive, current)} (${executive.academicYear})`;
+
   const bio = extractText(executive.bio?.json as Parameters<typeof extractText>[0]).trim();
-  const description =
-    (bio ? `${bio.slice(0, 180).trimEnd()}${bio.length > 180 ? '...' : ''}` : '') ||
-    `${executive.fullName} served as ${executive.executivePositionHeld} of GESA-KNUST in ${executive.academicYear}.`;
+  const tenure = tenureSentence(executive, current);
+  const description = bio
+    ? `${tenure} ${bio.slice(0, 160).trimEnd()}${bio.length > 160 ? '...' : ''}`
+    : tenure;
   const share = ogImage(executive.officialImage?.url, executive.fullName, 'face');
+  const path = `/executives/${executiveSlug(executive)}`;
 
   return {
     title,
     description,
+    alternates: { canonical: path },
     openGraph: {
       title,
       description,
       type: 'profile',
+      url: path,
       images: share,
     },
     twitter: {
@@ -56,6 +68,9 @@ const ExecutiveProfilePage = async ({ params }: Props) => {
   if (!executive || !hasProfile(executive)) notFound();
 
   const executives = await getExecutives();
+  const current = currentAcademicYear(executives);
+  const serving = isCurrentYear(executive.academicYear, current);
+
   const colleagues = executives
     .filter(
       (other) =>
@@ -65,7 +80,18 @@ const ExecutiveProfilePage = async ({ params }: Props) => {
     )
     .slice(0, 3);
 
-  return <ExecutiveProfile executive={executive} colleagues={colleagues} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(executivePersonSchema(executive, current)),
+        }}
+      />
+      <ExecutiveProfile executive={executive} colleagues={colleagues} isCurrent={serving} />
+    </>
+  );
 };
 
 export default ExecutiveProfilePage;

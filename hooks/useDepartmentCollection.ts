@@ -1,47 +1,12 @@
-import { gql } from "graphql-request";
 import { useFetchData } from "./useFetchData";
-import { contentfulClient } from "../lib/contentful-client";
+import { getDepartments, type DepartmentSummary } from "@/lib/data/department";
 
-export interface DepartmentSummary {
-    sys: {
-        id: string;
-    };
-    name: string;
-    deptAbbreviation: string;
-    deptLogo: {
-        url: string;
-    };
-}
+export type { DepartmentSummary };
 
-interface Props {
-    departmentCollection: {
-        items: DepartmentSummary[];
-    };
-}
-
-const GET_DEPARTMENTS = gql`
-  query GetDepartments {
-    departmentCollection(order: [order_ASC]) {
-      items {
-        sys {
-          id
-        }
-        name
-        deptAbbreviation
-        deptLogo {
-          url
-        }
-      }
-    }
-  }
-`;
-
-export const useDepartmentCollection = () => {
+export const useDepartmentCollection = (initialData?: DepartmentSummary[]) => {
     return useFetchData({
         queryKey: ["departments"],
-        queryFn: async () => {
-            const data = await contentfulClient.request<Props>(GET_DEPARTMENTS);
-            return data.departmentCollection.items;
-        },
+        queryFn: getDepartments,
+        initialData,
     });
 };

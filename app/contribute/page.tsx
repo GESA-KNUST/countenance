@@ -9,7 +9,9 @@ export const metadata: Metadata = {
     title: 'Write for the GESA blog',
     description:
         'Share your knowledge, experience and insights with the GESA-KNUST engineering community. Write your article and send it to the team for review.',
+    alternates: { canonical: '/contribute' },
     openGraph: {
+        url: '/contribute',
         title: 'Write for the GESA blog',
         description: 'Share your knowledge and experience with the GESA-KNUST engineering community.',
     },
