@@ -1,6 +1,12 @@
 import { Star } from 'lucide-react';
+import { tenureSentence, type Executive } from '@/lib/data/executive';
 
-const Intro = () => {
+interface IntroProps {
+  lead?: Executive | null;
+  year?: string | null;
+}
+
+const Intro = ({ lead, year }: IntroProps) => {
   return (
     <div className="bg-white px-6 py-14 sm:px-12 sm:py-16 md:px-16 md:py-20 lg:px-20">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 sm:gap-12">
@@ -22,6 +28,11 @@ const Intro = () => {
         </div>
 
         <div className="flex w-full flex-col gap-6 text-left text-slate-700 text-[1.0625rem] leading-[1.75] sm:text-lg sm:leading-[1.8]">
+          {lead && (
+            <p className="font-medium text-[#252638]">
+              {tenureSentence(lead, year ?? null)}
+            </p>
+          )}
           <p>
             As a student-led association dedicated to nurturing growth and excellence, we are
             committed to creating an environment where every student can develop their skills,
