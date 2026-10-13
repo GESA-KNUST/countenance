@@ -1,48 +1,9 @@
 import HeroSection from '@/components/home/HeroSection'
-import { contentfulClient } from '@/lib/contentful-client';
-import { gql } from 'graphql-request';
 import ClubsList from '@/components/clubs/ClubsList';
-import { ClubItems } from '@/hooks/useClubs';
-import { LogError } from '@/lib/logger';
-
-interface ClubCollection {
-  clubCollection: {
-    items: ClubItems[]
-  }
-}
-
-const GET_CLUBS = gql`
-query ClubCollection {
-  clubCollection {
-    items {
-      sys {
-        id
-      }
-      clubLink
-      clubLogo {
-        description
-        url
-        title
-      }
-      clubName
-      clubType
-      description
-      isFeatured
-      isActivelyRecruitingMembers
-    }
-  }
-}
-`;
+import { getClubsSafe } from '@/lib/data/club';
 
 const ClubsPage = async () => {
-  let clubs: ClubItems[] = [];
-
-  try {
-    const data = await contentfulClient.request<ClubCollection>(GET_CLUBS);
-    clubs = data.clubCollection.items;
-  } catch (error) {
-    LogError("Failed to fetch clubs", error);
-  }
+  const clubs = await getClubsSafe();
 
   return (
     <div className='font-poppins min-h-screen'>
