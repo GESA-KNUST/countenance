@@ -3,8 +3,15 @@ import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { type Executive, executiveSlug, hasProfile } from '@/lib/data/executive';
 
-const ExecutiveCard = ({ executive }: { executive: Executive }) => {
-  const { fullName, executivePositionHeld, officialImage, programmeOfStudy } = executive;
+const ExecutiveCard = ({
+  executive,
+  former = false,
+}: {
+  executive: Executive;
+  former?: boolean;
+}) => {
+  const { fullName, executivePositionHeld, officialImage, programmeOfStudy, academicYear } =
+    executive;
   const profile = hasProfile(executive);
 
   const card = (
@@ -32,7 +39,10 @@ const ExecutiveCard = ({ executive }: { executive: Executive }) => {
 
       <div className="p-6 flex flex-col grow">
         <h3 className="text-sm font-semibold text-[#FFBE00] font-header">
-          {executivePositionHeld}
+          {former ? `Former ${executivePositionHeld}` : executivePositionHeld}
+          {former && academicYear && (
+            <span className="text-gray-400 font-normal"> · {academicYear}</span>
+          )}
         </h3>
         <h2 className="text-2xl font-semibold text-gray-900 font-header mt-3">{fullName}</h2>
 

@@ -1,45 +1,13 @@
-import { gql } from "graphql-request";
 import { useFetchData } from "./useFetchData";
-import { contentfulClient } from "../lib/contentful-client";
+import { getHubs, type HubItem } from "@/lib/data/hub";
 
-export interface hubItem {
-    title: string
-    _id: string
-    description: string
-    opportunityType: string
-    source: string
-    applicationDeadline: string
-}
+export type { HubItem };
+export type hubItem = HubItem;
 
-interface HubCollection {
-    hubCollection: {
-        items: hubItem[]
-    }
-}
-
-const GET_HUBS = gql`
-query Items {
-  hubCollection(order: [order_ASC]) {
-    items {
-      title
-      _id
-      description
-      opportunityType
-      source
-      applicationDeadline
-    }
-  }
-}`
-
-export const useHubs = () => {
+export const useHubs = (initialData?: HubItem[] | null) => {
   return useFetchData({
     queryKey: ["hubs"],
-    queryFn: async () => {
-      const data = await contentfulClient.request<HubCollection>(GET_HUBS);
-      if (data.hubCollection.items.length === 0) {
-          return null;
-      }
-      return data.hubCollection.items;
-    },
+    queryFn: getHubs,
+    initialData,
   });
 };

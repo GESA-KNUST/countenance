@@ -23,7 +23,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
         title: `${member.name} | ${member.role}`,
         description: member.description,
+        alternates: { canonical: `/team/${member.slug}` },
         openGraph: {
+            url: `/team/${member.slug}`,
             title: `${member.name} | ${member.role}`,
             description: member.description,
             siteName: 'GESA-KNUST',

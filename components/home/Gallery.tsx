@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { ctfSrc } from '@/lib/contentful-src';
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useGalleries } from "@/hooks/useGalleryCollection";
+import { useGalleries, type Gallery as GalleryGroup } from "@/hooks/useGalleryCollection";
 import FetchError from "../custom/FetchError";
 
 const getSpanClasses = (i: number) => {
@@ -20,8 +20,8 @@ const getSpanClasses = (i: number) => {
 
 
 
-const Gallery = () => {
-    const { data: galleries, error } = useGalleries()
+const Gallery = ({ initialGalleries }: { initialGalleries?: GalleryGroup[] }) => {
+    const { data: galleries, error } = useGalleries(initialGalleries)
     const openPicturesLink = (pictureLink: string) => {
         if (pictureLink) {
             window.open(pictureLink, '_blank');

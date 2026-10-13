@@ -12,7 +12,8 @@ export async function generateMetadata(): Promise<Metadata> {
     return {
         title: 'The Team | GESA',
         description: 'Meet the development team behind the GESA platform.',
-        openGraph: { images },
+        alternates: { canonical: '/team' },
+        openGraph: { url: '/team', images },
         twitter: {
             card: 'summary_large_image',
             images: images.map((image) => image.url),

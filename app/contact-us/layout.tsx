@@ -8,8 +8,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
     return {
         title: "Contact Us",
+        alternates: { canonical: "/contact-us" },
         description: "Get in touch with GESA-KNUST. We are here to answer your questions and collaborate.",
         openGraph: {
+            url: "/contact-us",
             title: "Contact Us | GESA-KNUST",
             description: "Reach out to the Ghana Engineering Students Association.",
             images,

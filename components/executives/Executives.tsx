@@ -7,9 +7,10 @@ import type { Executive } from '@/lib/data/executive';
 interface ExecutivesProps {
   executives: Executive[];
   isLoading: boolean;
+  former?: boolean;
 }
 
-const Executives = ({ executives, isLoading }: ExecutivesProps) => {
+const Executives = ({ executives, isLoading, former = false }: ExecutivesProps) => {
   return (
     <div className="bg-white px-8 pb-8 sm:px-12 sm:pb-12 md:px-16 md:pb-16 lg:px-20 lg:pb-20">
       {!isLoading && executives.length === 0 ? (
@@ -24,7 +25,7 @@ const Executives = ({ executives, isLoading }: ExecutivesProps) => {
           {isLoading
             ? Array.from({ length: 9 }).map((_, index) => <SkeletonLoadingCard key={index} />)
             : executives.map((executive) => (
-              <ExecutiveCard key={executive.sys.id} executive={executive} />
+              <ExecutiveCard key={executive.sys.id} executive={executive} former={former} />
             ))}
         </div>
       )}

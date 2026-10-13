@@ -21,9 +21,10 @@ import { type Executive, executiveSlug, hasBioContent } from '@/lib/data/executi
 interface ExecutiveProfileProps {
   executive: Executive;
   colleagues: Executive[];
+  isCurrent?: boolean;
 }
 
-const ExecutiveProfile = ({ executive, colleagues }: ExecutiveProfileProps) => {
+const ExecutiveProfile = ({ executive, colleagues, isCurrent = true }: ExecutiveProfileProps) => {
   const {
     fullName,
     executivePositionHeld,
@@ -101,7 +102,7 @@ const ExecutiveProfile = ({ executive, colleagues }: ExecutiveProfileProps) => {
               <div className="flex items-center gap-3">
                 <span className="h-px w-8 bg-[#FFBE00]" />
                 <p className="font-header text-xs font-bold uppercase tracking-[0.2em] text-[#B88900]">
-                  {executivePositionHeld}
+                  {isCurrent ? executivePositionHeld : `Former ${executivePositionHeld}`}
                 </p>
               </div>
 
@@ -113,12 +114,39 @@ const ExecutiveProfile = ({ executive, colleagues }: ExecutiveProfileProps) => {
                 <span className="inline-flex items-center rounded-full bg-[#252638] px-3.5 py-1.5 text-xs font-bold tracking-wide text-white">
                   {academicYear}
                 </span>
+                <span
+                  className={`inline-flex items-center gap-1 rounded-full px-3.5 py-1.5 text-xs font-bold tracking-wide ${
+                    isCurrent
+                      ? 'bg-[#FFBE00] text-black'
+                      : 'border border-gray-200 bg-gray-50 text-gray-500'
+                  }`}
+                >
+                  {isCurrent ? 'Serving now' : 'Past executive'}
+                </span>
                 {programmeOfStudy && (
                   <span className="inline-flex items-center rounded-full border border-gray-200 bg-white px-3.5 py-1.5 text-xs font-medium text-gray-600">
                     {programmeOfStudy}
                   </span>
                 )}
               </div>
+
+              <p className="mt-5 text-[0.9375rem] leading-relaxed text-gray-500">
+                {isCurrent
+                  ? `${fullName} is the ${executivePositionHeld} of GESA-KNUST for the ${academicYear} academic year.`
+                  : `${fullName} served as ${executivePositionHeld} of GESA-KNUST during the ${academicYear} academic year and is no longer in office.`}
+                {!isCurrent && (
+                  <>
+                    {' '}
+                    <Link
+                      href="/executives"
+                      className="font-semibold text-[#252638] underline underline-offset-4 hover:text-[#B88900]"
+                    >
+                      See the executives serving now
+                    </Link>
+                    .
+                  </>
+                )}
+              </p>
 
               {socials.length > 0 && (
                 <div className="mt-8 flex flex-wrap items-center gap-2.5">
