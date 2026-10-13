@@ -4,13 +4,13 @@ import { ctfSrc } from '@/lib/contentful-src';
 import { format } from "date-fns";
 import { ArrowRight, CalendarDays, Clock } from "lucide-react";
 import Link from "next/link";
-import useEventCollection from "@/hooks/useEventCollection";
+import useEventCollection, { type EventItem } from "@/hooks/useEventCollection";
 import FetchError from "../custom/FetchError";
 
 import * as Tabs from "@radix-ui/react-tabs";
 
-const RecentEvent = () => {
-  const { data: events, isLoading, error } = useEventCollection();
+const RecentEvent = ({ initialEvents }: { initialEvents?: EventItem[] }) => {
+  const { data: events, isLoading, error } = useEventCollection(initialEvents);
 
   const now = new Date();
 
