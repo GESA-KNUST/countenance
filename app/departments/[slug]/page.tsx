@@ -58,7 +58,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         return {
             title: `${dept.name} | GESA KNUST`,
             description: `Official page of the Department of ${dept.name} at KNUST.`,
+            alternates: { canonical: `/departments/${slug}` },
             openGraph: {
+                url: `/departments/${slug}`,
                 title: dept.name,
                 images: ogImage(dept.deptLogo?.url, dept.name, { contain: true }),
             },
