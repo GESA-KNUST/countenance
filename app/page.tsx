@@ -13,6 +13,7 @@ import { getEventsSafe } from '@/lib/data/event';
 import { getClubsSafe } from '@/lib/data/club';
 import { getHubsSafe } from '@/lib/data/hub';
 import { getGalleriesSafe } from '@/lib/data/gallery';
+import { getBlogsSafe } from '@/lib/data/blog';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -20,13 +21,14 @@ export const metadata: Metadata = {
 };
 
 const Home = async () => {
-  const [hero, potw, events, clubs, hubs, galleries] = await Promise.all([
+  const [hero, potw, events, clubs, hubs, galleries, blogs] = await Promise.all([
     getPageHero('home'),
     getPersonalityOfTheWeek(),
     getEventsSafe(),
     getClubsSafe(),
     getHubsSafe(),
     getGalleriesSafe(),
+    getBlogsSafe(),
   ]);
 
   return (
@@ -47,7 +49,7 @@ const Home = async () => {
       <HomeHubsPreview initialHubs={hubs} />
       <HomeClubsPreview initialClubs={clubs} />
       <RecentEvent initialEvents={events} />
-      <Contribute />
+      <Contribute initialBlogs={blogs} />
       <Gallery initialGalleries={galleries} />
     </div>
   )
