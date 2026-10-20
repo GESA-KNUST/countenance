@@ -24,6 +24,7 @@ const BAND = {
   curve: 80,
   fade: 18,
   fill: 0.72,
+  sizes: '(max-width: 768px) 55vw, 30vw',
 };
 
 function arc(bend: number) {
@@ -284,6 +285,7 @@ const HeroSection = ({
     if (variant !== 'band') return;
     for (const tile of tiles) {
       const preload = new window.Image();
+      preload.sizes = BAND.sizes;
       if (tile.srcSet) preload.srcset = tile.srcSet;
       preload.src = tile.src;
       preload.decode?.().catch(() => {});
@@ -435,7 +437,7 @@ const HeroSection = ({
                           onLoad={(event) => reveal(event.currentTarget)}
                           src={tile.src}
                           srcSet={tile.srcSet || undefined}
-                          sizes='(max-width: 768px) 55vw, 30vw'
+                          sizes={BAND.sizes}
                           alt=''
                           draggable={false}
                           decoding='async'

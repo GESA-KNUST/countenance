@@ -3,15 +3,15 @@ import Container from '../custom/Container';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import useBlogCollection from '@/hooks/useBlogCollection';
+import useBlogCollection, { type Blog } from '@/hooks/useBlogCollection';
 import BlogCard from '../blog/BlogCard';
 import FetchError from '../custom/FetchError';
 
 import { motion } from "framer-motion";
 
-const Contribute = () => {
+const Contribute = ({ initialBlogs }: { initialBlogs?: Blog[] }) => {
 
-    const { data: blogs, error } = useBlogCollection()
+    const { data: blogs, error } = useBlogCollection(initialBlogs)
 
     if (error) {
         return <FetchError />

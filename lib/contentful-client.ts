@@ -11,21 +11,18 @@ if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_ACCESS_TOKEN) {
   });
 }
 
-// How long (seconds) a cached Contentful response is served before revalidation.
-// Because this cache lives on the server, one refresh serves every visitor, so
-// the number of origin calls stays roughly constant regardless of traffic.
 export const CONTENTFUL_REVALIDATE_SECONDS = 3600;
 
 export const CONTENTFUL_CACHE_TAG = "contentful";
 
-// `next` is a Next.js fetch extension not covered by graphql-request's types.
+const CONTENTFUL_TIMEOUT_MS = 8000;
+
 type GraphQLClientConfig = ConstructorParameters<typeof GraphQLClient>[1];
 type NextRequestConfig = GraphQLClientConfig & {
   next?: { revalidate?: number | false; tags?: string[] };
 };
 
 const requestConfig: NextRequestConfig = {
-  // GET (rather than POST) lets responses flow through Next's Data Cache / CDN.
   method: "GET",
   headers: CONTENTFUL_ACCESS_TOKEN
     ? { Authorization: `Bearer ${CONTENTFUL_ACCESS_TOKEN}` }
@@ -33,11 +30,6 @@ const requestConfig: NextRequestConfig = {
   next: { revalidate: CONTENTFUL_REVALIDATE_SECONDS, tags: [CONTENTFUL_CACHE_TAG] },
 };
 
-/**
- * Direct client to the Contentful GraphQL API. Intended for server-side use
- * (Server Components, route handlers) where the `next.revalidate` Data Cache
- * is shared across all requests/users.
- */
 export const contentfulDirect = new GraphQLClient(
   `https://graphql.contentful.com/content/v1/spaces/${CONTENTFUL_SPACE_ID ?? "undefined"}`,
   requestConfig
@@ -47,15 +39,13 @@ interface PartialErrorShape {
   response?: { data?: unknown; errors?: { message?: string }[] };
 }
 
-/**
- * Contentful answers HTTP 200 with usable `data` alongside non-fatal errors
- * such as UNRESOLVABLE_LINK (a published entry pointing at an unpublished
- * asset). graphql-request throws on any `errors`, which would take a whole page
- * down over one missing image, so partial data is served and logged instead.
- */
 export async function requestTolerant<T>(query: string, variables?: Variables): Promise<T> {
   try {
-    return await contentfulDirect.request<T>(query, variables);
+    return await contentfulDirect.request<T>({
+      document: query,
+      variables,
+      signal: AbortSignal.timeout(CONTENTFUL_TIMEOUT_MS),
+    });
   } catch (error) {
     const partial = error as PartialErrorShape;
     const data = partial.response?.data;
@@ -73,11 +63,6 @@ export async function requestTolerant<T>(query: string, variables?: Variables): 
 }
 
 async function request<T>(query: string, variables?: Variables): Promise<T> {
-  // On the server, hit Contentful directly so we benefit from the shared
-  // Data Cache. In the browser, proxy through our own route handler so the
-  // response is served from that same server-side cache — this keeps origin
-  // calls flat no matter how many people are online, and keeps the access
-  // token off the client.
   if (typeof window === "undefined") {
     return requestTolerant<T>(query, variables);
   }
@@ -87,9 +72,6 @@ async function request<T>(query: string, variables?: Variables): Promise<T> {
     params.set("variables", JSON.stringify(variables));
   }
 
-  // The page carries the time content last changed. Putting it in the URL means
-  // a publish gives every browser a fresh address, so nobody is served an hour
-  // old copy from the CDN, while unchanged content still hits the cache.
   const version = (globalThis as { __contentVersion?: string }).__contentVersion;
   if (version) params.set("v", version);
 
@@ -111,8 +93,4 @@ async function request<T>(query: string, variables?: Variables): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-/**
- * Isomorphic Contentful client. Mirrors `graphql-request`'s `.request` API so
- * existing call sites stay unchanged while transparently caching on the server.
- */
 export const contentfulClient = { request };
