@@ -2,7 +2,7 @@
 import Autoplay from "embla-carousel-autoplay"
 import { contentfulImage } from '@/lib/contentful-image';
 import Image, { StaticImageData } from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { motion } from "framer-motion";
 import { ArrowUpRight } from 'lucide-react';
 import { useRouter } from "next/navigation";
@@ -14,6 +14,86 @@ import {
 } from "../ui/carousel";
 import StarSpinner from "../ui/StarSpinner";
 
+const CAMERA = 1.6;
+const MAX_TILE_WIDTH = 55;
+
+const BAND = {
+  speed: 4,
+  aspect: 16 / 9,
+  gap: 6,
+  curve: 80,
+  fade: 18,
+  fill: 0.72,
+};
+
+function arc(bend: number) {
+  return (CAMERA - 1 + Math.cos(bend)) / (2 * CAMERA * Math.sin(bend));
+}
+
+interface BandLayout {
+  columns: number;
+  sweep: number;
+  unit: number;
+  limit: number;
+  slices: number;
+  axis: number;
+  tilePct: number;
+}
+
+function measureBand(
+  width: number,
+  height: number,
+  textBottom: number,
+  footTop: number,
+  stacked: boolean,
+  bend: number
+): BandLayout {
+  const slices = 12;
+  const round = (n: number) => +n.toFixed(4);
+
+  const narrow = stacked;
+  const widest = narrow ? 76 : MAX_TILE_WIDTH;
+  const fill = narrow ? 0.6 : BAND.fill;
+  const lift = narrow ? 0.38 : 0.5;
+
+  const room = Math.max(0, footTop - textBottom);
+  const tile = Math.min(room * fill, ((widest / 100) * width) / BAND.aspect);
+
+  const half = tile / 2;
+  const guard = narrow ? 20 : 0;
+  const highest = textBottom + half + guard;
+  const lowest = footTop - half - guard;
+  const wanted = textBottom + room * lift;
+  const centre =
+    lowest >= highest
+      ? Math.min(Math.max(wanted, highest), lowest)
+      : (textBottom + footTop) / 2;
+  const axis = round(Math.min(84, Math.max(50, (centre / (height || 1)) * 100)));
+  const tilePct = round((tile / (height || 1)) * 100);
+
+  const radius = width * arc(bend);
+  if (!(tile > 0) || !(radius > 0)) {
+    return { columns: 2, sweep: 0, unit: 0, limit: 0, slices, axis, tilePct };
+  }
+
+  const deg = (rad: number) => (rad * 180) / Math.PI;
+  const unit = deg(tile / radius);
+  const pitch = (BAND.aspect + BAND.gap / 100) * unit;
+  const limit = deg(bend) + (BAND.aspect * unit) / 2;
+  const columns = Math.min(60, Math.max(2, Math.ceil((2 * limit) / pitch)));
+  const sweep = round((columns * pitch) / 2);
+
+  return {
+    columns,
+    sweep,
+    unit: round(unit),
+    limit: round(Math.min(sweep, limit)),
+    slices,
+    axis,
+    tilePct,
+  };
+}
+
 interface HeroSectionProps {
   title?: string;
   highlight?: string;
@@ -24,6 +104,7 @@ interface HeroSectionProps {
   buttonTarget?: string;
   isScroll?: boolean;
   overlayOpacity?: string;
+  variant?: 'carousel' | 'band';
 }
 
 const HeroSection = ({
@@ -36,6 +117,7 @@ const HeroSection = ({
   buttonTarget,
   isScroll = false,
   overlayOpacity = 'bg-black/40',
+  variant = 'carousel',
 }: HeroSectionProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -88,6 +170,90 @@ const HeroSection = ({
     api.scrollTo(index);
   };
 
+  const bandRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const ledeRef = useRef<HTMLParagraphElement>(null);
+  const bandId = useId().replace(/[^a-zA-Z0-9]/g, '');
+  const bend = (Math.min(85, Math.max(5, BAND.curve)) * Math.PI) / 180;
+  const [layout, setLayout] = useState<BandLayout | null>(null);
+  const [shown, setShown] = useState<Record<number, number>>({});
+
+  const tiles = useMemo(
+    () =>
+      images.map((img) => {
+        if (typeof img !== 'string') return { src: (img as StaticImageData).src, srcSet: '' };
+        const picture = contentfulImage(img, {
+          widths: [320, 480, 640, 960],
+          quality: 78,
+          aspect: BAND.aspect,
+          focus: 'faces',
+        });
+        return { src: picture.src, srcSet: picture.srcSet };
+      }),
+    [images]
+  );
+
+  useEffect(() => {
+    if (variant !== 'band') return;
+    const hero = bandRef.current;
+    if (!hero) return;
+
+    const read = () => {
+      const heroBox = hero.getBoundingClientRect();
+      const contentBox = contentRef.current?.getBoundingClientRect();
+      const ledeBox = ledeRef.current?.getBoundingClientRect();
+
+      const headline = contentBox ? contentBox.bottom - heroBox.top : heroBox.height * 0.35;
+      const lede = ledeBox
+        ? { top: ledeBox.top - heroBox.top, bottom: ledeBox.bottom - heroBox.top }
+        : null;
+
+      const stacked = lede !== null && lede.top - headline > 40;
+      const textBottom = stacked ? headline : lede ? lede.bottom : headline;
+      const footTop = stacked && lede ? lede.top : heroBox.height;
+
+      const next = measureBand(
+        heroBox.width,
+        heroBox.height,
+        textBottom,
+        footTop,
+        stacked,
+        bend
+      );
+
+      setLayout((prev) =>
+        prev?.columns === next.columns &&
+        prev.sweep === next.sweep &&
+        prev.unit === next.unit &&
+        prev.slices === next.slices &&
+        prev.axis === next.axis &&
+        prev.tilePct === next.tilePct
+          ? prev
+          : next
+      );
+    };
+
+    const observer = new ResizeObserver(read);
+    observer.observe(hero);
+    if (contentRef.current) observer.observe(contentRef.current);
+    if (ledeRef.current) observer.observe(ledeRef.current);
+
+    document.fonts?.ready.then(read).catch(() => {});
+
+    return () => observer.disconnect();
+  }, [variant, bend]);
+
+  const band = layout ?? measureBand(1200, 560, 200, 560, false, bend);
+  const cycles = tiles.length > band.columns;
+
+  useEffect(() => {
+    if (variant !== 'band') return;
+    for (const tile of tiles.slice(0, band.columns)) {
+      const preload = new window.Image();
+      preload.src = tile.src;
+    }
+  }, [variant, tiles, band.columns]);
+
   const titleParts = title && highlight ? title.split(highlight) : [title ?? ''];
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -105,10 +271,120 @@ const HeroSection = ({
     }, 1000);
   };
 
-  return (
-    <div className='relative h-[60vh] md:h-[calc(100vh-var(--navbar-height))] w-full font-poppins flex items-center justify-center overflow-hidden bg-[#252638]'>
+  const orbit = `hero-orbit-${bandId}`;
+  const tileClass = `hero-tile-${bandId}`;
+  const radiusPct = 100 * arc(bend);
+  const radius = `${+radiusPct.toFixed(3)}cqw`;
+  const unitOf = (n: number) => `calc(${+n.toFixed(4)} * ${band.tilePct}cqh)`;
+  const turn = (degrees: number) =>
+    `translateZ(${radius}) rotateY(${+degrees.toFixed(4)}deg) translateZ(-${radius})`;
+  const vanish = +(((band.sweep - band.limit) / (2 * band.sweep || 1)) * 100).toFixed(4);
+  const duration = band.columns * BAND.speed;
+  const share = BAND.aspect / band.slices;
+  const bandMask = `linear-gradient(90deg,transparent,#000 ${BAND.fade}%,#000 ${100 - BAND.fade}%,transparent)`;
+  const sliceMask =
+    'linear-gradient(to bottom,transparent 0%,rgba(0,0,0,0.65) 7%,#000 20%,#000 80%,rgba(0,0,0,0.65) 93%,transparent 100%)';
+  const bandCss =
+    `@keyframes ${orbit}{` +
+    `from{transform:${turn(-band.sweep)}}to{transform:${turn(band.sweep)}}` +
+    `0%,${vanish}%,${100 - vanish}%,100%{visibility:hidden}` +
+    `${vanish + 0.001}%,${100 - vanish - 0.001}%{visibility:visible}}` +
+    `@media(prefers-reduced-motion:reduce){.${tileClass}{animation-play-state:paused}}`;
 
-      {/* Background Image Carousel */}
+  return (
+    <div
+      ref={bandRef}
+      style={variant === 'band' ? { containerType: 'size' } : undefined}
+      className={`relative w-full font-poppins flex overflow-hidden md:h-[calc(100vh-var(--navbar-height))] ${
+        variant === 'band'
+          ? 'h-[53vh] min-h-[420px] md:min-h-0 flex-col items-center justify-start bg-white'
+          : 'h-[60vh] items-center justify-center bg-[#252638]'
+      }`}
+    >
+
+      {variant === 'band' ? (
+        <>
+          <style>{bandCss}</style>
+          <div
+            aria-hidden
+            className='pointer-events-none absolute inset-0 transition-opacity duration-500'
+            style={{
+              opacity: layout ? 1 : 0,
+              perspective: `${+(radiusPct * CAMERA).toFixed(3)}cqw`,
+              perspectiveOrigin: `50% ${band.axis}%`,
+              maskImage: bandMask,
+              WebkitMaskImage: bandMask,
+            }}
+          >
+            {Array.from({ length: band.columns }, (_, t) => {
+              const first = band.columns - 1 - t;
+              const tile = tiles[(shown[t] ?? first) % Math.max(tiles.length, 1)];
+
+              return (
+                <div
+                  key={t}
+                  className={`${tileClass} absolute`}
+                  style={{
+                    left: `calc(50% - ${unitOf(BAND.aspect / 2)})`,
+                    top: `calc(${band.axis}% - ${unitOf(0.5)})`,
+                    width: unitOf(BAND.aspect),
+                    height: unitOf(1),
+                    transformStyle: 'preserve-3d',
+                    animation: `${orbit} ${duration}s linear ${-t * BAND.speed}s infinite`,
+                  }}
+                  onAnimationIteration={
+                    cycles
+                      ? (event) => {
+                          const lap = Math.round(event.elapsedTime / duration);
+                          setShown((prev) => {
+                            const next = lap * band.columns + first;
+                            return prev[t] === next ? prev : { ...prev, [t]: next };
+                          });
+                        }
+                      : undefined
+                  }
+                >
+                  {Array.from({ length: band.slices }, (_, k) => (
+                    <div
+                      key={k}
+                      className='absolute top-0 overflow-hidden'
+                      style={{
+                        maskImage: sliceMask,
+                        WebkitMaskImage: sliceMask,
+                        backfaceVisibility: 'hidden',
+                        left: unitOf((BAND.aspect - share) / 2),
+                        width:
+                          k === band.slices - 1
+                            ? unitOf(share)
+                            : `calc(${unitOf(share)} + 1px)`,
+                        height: unitOf(1),
+                        transform: turn((BAND.aspect / 2 - (k + 0.5) * share) * band.unit),
+                      }}
+                    >
+                      {tile ? (
+                        <img
+                          src={tile.src}
+                          srcSet={tile.srcSet || undefined}
+                          sizes='(max-width: 768px) 55vw, 30vw'
+                          alt=''
+                          draggable={false}
+                          decoding='async'
+                          className='absolute top-0 max-w-none object-cover'
+                          style={{
+                            left: unitOf(-k * share),
+                            width: unitOf(BAND.aspect),
+                            height: unitOf(1),
+                          }}
+                        />
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              );
+            })}
+          </div>
+        </>
+      ) : (
       <Carousel
         plugins={[plugin.current]}
         setApi={setApi}
@@ -155,12 +431,13 @@ const HeroSection = ({
           ))}
         </CarouselContent>
       </Carousel>
+      )}
 
-      {/* Overlay */}
-      <div className={`absolute inset-0 ${overlayOpacity} z-10`} />
+      {variant !== 'band' && <div className={`absolute inset-0 ${overlayOpacity} z-10`} />}
 
       {/* Content */}
       <motion.div
+        ref={contentRef}
         initial="hidden"
         animate="visible"
         variants={{
@@ -175,7 +452,11 @@ const HeroSection = ({
             }
           }
         }}
-        className='relative z-20 flex flex-col items-center justify-center text-white px-4 text-center max-w-360 mx-auto gap-2 md:-mt-32'
+        className={`relative z-20 flex flex-col items-center justify-center px-4 text-center max-w-360 mx-auto gap-3 ${
+          variant === 'band'
+            ? 'w-full text-[#252638] pt-[2vh] md:pt-[3vh]'
+            : 'text-white md:-mt-32'
+        }`}
       >
         <motion.h1
           variants={{
@@ -189,17 +470,19 @@ const HeroSection = ({
           {titleParts[1]}
         </motion.h1>
 
-        <motion.p
-          variants={{
-            hidden: { opacity: 0, y: 20 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
-          }}
-          className='text-sm sm:text-lg md:text-xl max-w-3xl mx-auto'
-        >
-          {text}
-        </motion.p>
+        {variant !== 'band' && (
+          <motion.p
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+            }}
+            className='text-sm sm:text-lg md:text-xl max-w-3xl mx-auto'
+          >
+            {text}
+          </motion.p>
+        )}
 
-        {button && (
+        {button && variant !== 'band' && (
           <motion.div
             variants={{
               hidden: { opacity: 0, y: 20 },
@@ -219,7 +502,19 @@ const HeroSection = ({
         )}
       </motion.div>
 
-      {/* Progress Dots */}
+      {variant === 'band' && (
+        <motion.p
+          ref={ledeRef}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.25, ease: 'easeOut' }}
+          className='relative z-20 w-full px-4 text-center max-w-3xl mx-auto text-[#252638] mt-auto pb-[3vh] text-sm sm:text-lg md:text-xl md:mt-3 md:pb-0'
+        >
+          {text}
+        </motion.p>
+      )}
+
+      {variant !== 'band' && (
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30">
         <div className="flex gap-x-2">
           {Array.from({ length: count }).map((_, index) => (
@@ -232,6 +527,7 @@ const HeroSection = ({
           ))}
         </div>
       </div>
+      )}
 
     </div >
   );

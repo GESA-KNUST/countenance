@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AlertCircle, Check, Lock, RotateCcw, Save, Trash2, X } from 'lucide-react';
 import StarSpinner from '@/components/ui/StarSpinner';
-import type { CollectionSpec, FieldSpec } from '@/lib/admin/collections';
+import type { CollectionSpec, FieldSection, FieldSpec } from '@/lib/admin/collections';
 import type { EntryDetail, FieldValue, RefOption } from '@/lib/admin/entries';
 import ImagePicker from './ImagePicker';
-import MarkdownEditor from './MarkdownEditor';
+import RichEditor from './RichEditor';
 import LocationPicker from './LocationPicker';
 import { buildSlug } from '@/lib/admin/slug';
 
@@ -40,6 +40,28 @@ function blankValues(collection: CollectionSpec): Record<string, FieldValue> {
     return values;
 }
 
+function isEmpty(value: FieldValue): boolean {
+    if (value === null || value === undefined) return true;
+    if (typeof value === 'string') return value.trim() === '';
+    if (Array.isArray(value)) return value.length === 0;
+    return false;
+}
+
+function formSections(collection: CollectionSpec): FieldSection[] {
+    if (!collection.sections || collection.sections.length === 0) {
+        return [{ title: '', fields: collection.fields.map((field) => field.id) }];
+    }
+
+    const placed = new Set(collection.sections.flatMap((section) => section.fields));
+    const leftover = collection.fields
+        .filter((field) => !placed.has(field.id))
+        .map((field) => field.id);
+
+    return leftover.length > 0
+        ? [...collection.sections, { title: 'Everything else', fields: leftover }]
+        : collection.sections;
+}
+
 const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
     const [values, setValues] = useState(detail.values);
     const [urls, setUrls] = useState(detail.assetUrls);
@@ -49,6 +71,7 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
     const [saved, setSaved] = useState(false);
     const [confirmingDelete, setConfirmingDelete] = useState(false);
     const [deleting, setDeleting] = useState(false);
+    const [missing, setMissing] = useState<string[]>([]);
     const router = useRouter();
 
     const slugSources = collection.slugFrom ?? (collection.titleField ? [collection.titleField] : []);
@@ -67,6 +90,7 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
 
     const set = (id: string, value: FieldValue) => {
         setSaved(false);
+        setMissing((current) => (current.includes(id) ? current.filter((item) => item !== id) : current));
         setValues((current) => {
             const next = { ...current, [id]: value };
             if (!slugTouched && slugSources.includes(id)) {
@@ -110,6 +134,26 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
     };
 
     const handleSave = async () => {
+        const empties = collection.fields
+            .filter((field) => field.required && field.id !== 'slug' && isEmpty(values[field.id]))
+            .map((field) => field.id);
+
+        if (empties.length > 0) {
+            const first = collection.fields.find((field) => field.id === empties[0]);
+            setMissing(empties);
+            setSaved(false);
+            setError(
+                empties.length === 1
+                    ? `Please fill in "${first?.label}" before saving.`
+                    : `${empties.length} boxes still need filling in. The first is "${first?.label}".`
+            );
+            document
+                .getElementById(`field-${empties[0]}`)
+                ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+
+        setMissing([]);
         setSaving(true);
         setError('');
 
@@ -224,18 +268,20 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
                 return (
                     <div className="rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm">
                         <p className="flex items-center gap-2 font-medium text-amber-900">
-                            <Lock className="w-4 h-4" /> This one has to be edited in Contentful
+                            <Lock className="w-4 h-4" /> This one can only be changed in Contentful
                         </p>
                         <p className="text-amber-800 mt-1">
-                            It contains {locked}, which this simple editor cannot show without
-                            breaking it. Everything else on this page still saves normally.
+                            It has something in it ({locked}) that this editor cannot show, and
+                            showing it wrongly would break it. The editor here handles headings,
+                            bold, italics, lists, quotes, links, lines and photos. Your changes to
+                            everything else on this page still save normally.
                         </p>
                     </div>
                 );
             }
 
             return (
-                <MarkdownEditor
+                <RichEditor
                     value={typeof value === 'string' ? value : ''}
                     onChange={(next) => set(field.id, next)}
                     rows={field.id === 'blogContent' ? 18 : 8}
@@ -249,7 +295,7 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
 
         if (field.kind === 'markdown') {
             return (
-                <MarkdownEditor
+                <RichEditor
                     value={typeof value === 'string' ? value : ''}
                     onChange={(next) => set(field.id, next)}
                     rows={8}
@@ -417,18 +463,68 @@ const EntryForm = ({ collection, detail, refOptions }: EntryFormProps) => {
         );
     };
 
-    return (
-        <div className="flex flex-col gap-6">
-            {collection.fields.map((field) => (
-                <div key={field.id}>
-                    <label className="block font-medium mb-1">
-                        {field.label}
-                        {field.required && <span className="text-red-500 ml-1">*</span>}
-                    </label>
-                    {field.hint && <p className="text-sm text-gray-500 mb-2">{field.hint}</p>}
+    const byId = new Map(collection.fields.map((field) => [field.id, field]));
+
+    const renderLabelled = (field: FieldSpec) => {
+        const notFilled = missing.includes(field.id);
+
+        return (
+            <div key={field.id} id={`field-${field.id}`} className="scroll-mt-24">
+                <label className="mb-1 flex flex-wrap items-baseline gap-x-2 font-medium">
+                    {field.label}
+                    {field.required ? (
+                        <span
+                            className={`text-xs font-semibold ${
+                                notFilled ? 'text-red-600' : 'text-gray-500'
+                            }`}
+                        >
+                            Needed
+                        </span>
+                    ) : (
+                        <span className="text-xs font-normal text-gray-400">Optional</span>
+                    )}
+                </label>
+                {field.hint && <p className="mb-2 text-sm text-gray-500">{field.hint}</p>}
+                <div
+                    className={
+                        notFilled ? 'rounded-xl ring-2 ring-red-400 ring-offset-2 ring-offset-white' : undefined
+                    }
+                >
                     {renderField(field)}
                 </div>
-            ))}
+                {notFilled && (
+                    <p className="mt-1.5 text-sm font-medium text-red-600">
+                        This one is needed before you can save.
+                    </p>
+                )}
+            </div>
+        );
+    };
+
+    return (
+        <div className="flex flex-col gap-6">
+            {formSections(collection).map((section, index) => {
+                const fields = section.fields
+                    .map((id) => byId.get(id))
+                    .filter((field): field is FieldSpec => Boolean(field));
+                if (fields.length === 0) return null;
+
+                return (
+                    <section key={section.title || index} className="flex flex-col gap-5">
+                        {section.title && (
+                            <div className="border-b border-gray-200 pb-2">
+                                <h2 className="font-header text-base font-bold tracking-wide text-[#252638] uppercase">
+                                    {section.title}
+                                </h2>
+                                {section.intro && (
+                                    <p className="mt-1 text-sm text-gray-500">{section.intro}</p>
+                                )}
+                            </div>
+                        )}
+                        {fields.map(renderLabelled)}
+                    </section>
+                );
+            })}
 
             <div className="sticky bottom-0 -mx-4 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 bg-gradient-to-t from-white via-white to-white/80 backdrop-blur-sm">
                 <div className="rounded-2xl border border-gray-200 bg-white shadow-lg shadow-black/5 p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center gap-3">
