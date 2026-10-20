@@ -11,11 +11,10 @@ export default function ServiceWorkerRegister() {
         if (!('serviceWorker' in navigator)) return
 
         let refreshing = false
+        const hadController = !!navigator.serviceWorker.controller
 
-        // When a new worker takes control, reload once so the user gets the
-        // latest assets without a manual refresh.
         const onControllerChange = () => {
-            if (refreshing) return
+            if (!hadController || refreshing) return
             refreshing = true
             window.location.reload()
         }
