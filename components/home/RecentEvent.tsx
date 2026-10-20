@@ -71,7 +71,7 @@ const RecentEvent = ({ initialEvents }: { initialEvents?: EventItem[] }) => {
 
             <Tabs.Content value="upcoming" className="outline-none">
               <div className="flex flex-col gap-6">
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-6">
                   {upcoming && upcoming.length > 0 ? (
                     upcoming.map((event) => (
                       <EventCard key={event._id} event={event} type="upcoming" />
@@ -85,7 +85,7 @@ const RecentEvent = ({ initialEvents }: { initialEvents?: EventItem[] }) => {
             </Tabs.Content>
 
             <Tabs.Content value="recent" className="outline-none">
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-6">
                 {recent && recent.length > 0 ? (
                   recent.map((event) => (
                     <EventCard key={event._id} event={event} type="recent" />
@@ -99,14 +99,14 @@ const RecentEvent = ({ initialEvents }: { initialEvents?: EventItem[] }) => {
         </div>
 
         {/* Desktop View */}
-        <div className="hidden lg:grid lg:grid-cols-[1.2fr_auto_1fr] gap-12">
+        <div className="hidden lg:grid lg:grid-cols-[1.2fr_auto_1fr] gap-8 xl:gap-12">
           {/* Upcoming Events Column */}
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-8 min-w-0">
             <h3 className="font-header font-bold text-4xl text-white">
               Upcoming Events
             </h3>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-6">
               {upcoming && upcoming.length > 0 ? (
                 upcoming.map((event) => (
                   <EventCard key={event._id} event={event} type="upcoming" />
@@ -125,7 +125,7 @@ const RecentEvent = ({ initialEvents }: { initialEvents?: EventItem[] }) => {
           </div>
 
           {/* Recent Events Column */}
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-8 min-w-0">
             <div className="flex items-center justify-between">
               <h3 className="font-header font-bold text-4xl text-white flex items-center gap-3">
                 Recent Events
@@ -151,55 +151,42 @@ const RecentEvent = ({ initialEvents }: { initialEvents?: EventItem[] }) => {
 };
 
 const EventCard = ({ event, type }: { event: any; type: 'upcoming' | 'recent' }) => {
-  if (type === 'upcoming') {
-    return (
-      <Link href={`/events#event-${event.slug}`} className="group block w-full">
-        <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-white/95 backdrop-blur-sm dark:bg-card hover:bg-white dark:hover:bg-accent/50 rounded-2xl border-2 border-transparent hover:border-primary/30 transition-all duration-300 group-hover:scale-[1.02] shadow-sm">
-          <div className="flex flex-col items-center justify-center w-14 h-14 lg:w-16 lg:h-16 rounded-xl bg-primary/10 text-primary border border-primary/20 shrink-0">
-            <span className="text-[10px] lg:text-xs font-bold uppercase tracking-wider">
-              {format(new Date(event.eventDate), "MMM")}
-            </span>
-            <span className="text-xl lg:text-2xl font-bold font-open_sans leading-none">
-              {format(new Date(event.eventDate), "d")}
-            </span>
-          </div>
-
-          <div className="flex-1 min-w-0">
-            <h3 className="font-bold text-gray-900 dark:text-gray-100 line-clamp-2 group-hover:text-primary transition-colors font-header text-base sm:text-lg">
-              {event.title}
-            </h3>
-            <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
-              <span className="whitespace-pre-wrap">{event.description}</span>
-            </p>
-          </div>
-
-          <div className="text-muted-foreground shrink-0 group-hover:text-primary transition-transform duration-300 group-hover:translate-x-1">
-            <ArrowRight className="w-5 h-5" />
-          </div>
-        </div>
-      </Link>
-    );
-  }
+  const upcoming = type === 'upcoming';
 
   return (
     <Link href={`/events#event-${event.slug}`} className="group block w-full">
       <div className="bg-white/95 backdrop-blur-sm dark:bg-card border-2 border-transparent hover:border-primary/30 shadow-sm hover:shadow-2xl transition-all duration-300 rounded-2xl sm:rounded-3xl overflow-hidden flex flex-row items-stretch gap-3 sm:gap-4 p-3 group-hover:-translate-y-1">
         <div className="relative shrink-0 w-20 sm:w-28 lg:w-24 xl:w-32 aspect-square rounded-xl overflow-hidden bg-gray-100">
-          <Image
-            src={ctfSrc(event.eventImage.url, 256, { height: 256 })}
-            alt=""
-            className="object-cover transition-transform duration-700 group-hover:scale-110"
-            fill
-            sizes="(max-width: 640px) 80px, (max-width: 1024px) 112px, 128px"
+          {event.eventImage?.url ? (
+            <Image
+              src={ctfSrc(event.eventImage.url, 256, { height: 256 })}
+              alt=""
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
+              fill
+              sizes="(max-width: 640px) 80px, (max-width: 1024px) 112px, 128px"
               unoptimized
-          />
+            />
+          ) : (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-primary/10 text-primary">
+              <span className="text-[10px] font-bold uppercase tracking-wider">
+                {format(new Date(event.eventDate), "MMM")}
+              </span>
+              <span className="text-2xl font-bold font-open_sans leading-none">
+                {format(new Date(event.eventDate), "d")}
+              </span>
+            </div>
+          )}
           <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
         </div>
 
         <div className="flex flex-col flex-1 min-w-0 gap-1">
           <div className="flex items-center gap-1.5 text-primary font-bold text-[10px] uppercase tracking-widest">
-            <Clock className="w-3 h-3 shrink-0" />
-            completed
+            {upcoming ? (
+              <CalendarDays className="w-3 h-3 shrink-0" />
+            ) : (
+              <Clock className="w-3 h-3 shrink-0" />
+            )}
+            {upcoming ? 'up next' : 'completed'}
           </div>
 
           <h3 className="font-header font-bold text-sm sm:text-lg text-gray-900 line-clamp-2 group-hover:text-primary transition-colors leading-tight">
@@ -207,7 +194,7 @@ const EventCard = ({ event, type }: { event: any; type: 'upcoming' | 'recent' })
           </h3>
 
           <p className="text-gray-500 text-[11px] sm:text-sm line-clamp-2 leading-snug">
-            {event.description}
+            <span className="whitespace-pre-wrap">{event.description}</span>
           </p>
 
           <div className="flex items-center justify-between gap-2 mt-auto pt-1.5">
@@ -226,8 +213,7 @@ const EventCard = ({ event, type }: { event: any; type: 'upcoming' | 'recent' })
 };
 
 const JoinCommunityCard = () => (
-  <div className="mt-4 p-5 lg:p-8 bg-linear-to-br from-gray-900 to-black rounded-3xl text-white relative overflow-hidden group border border-white/10 shadow-2xl">
-    <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-3xl -mr-16 -mt-16 transition-all duration-500 group-hover:bg-primary/30"></div>
+  <div className="mt-4 p-5 lg:p-8 bg-linear-to-br from-gray-900 to-black rounded-3xl text-white relative overflow-hidden group border border-white/10">
     <div className="relative z-10">
       <h3 className="font-bold text-xl lg:text-2xl mb-2 font-header">Join the Community</h3>
       <p className="text-gray-400 text-sm mb-6 leading-relaxed">Don&apos;t miss out on future events and opportunities from the biggest engineering body on campus.</p>
