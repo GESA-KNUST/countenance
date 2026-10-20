@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { ctfSrc } from '@/lib/contentful-src';
 import { format } from "date-fns";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, CalendarDays, Clock } from "lucide-react";
 import Link from "next/link";
 import useEventCollection, { type EventItem } from "@/hooks/useEventCollection";
@@ -11,6 +12,31 @@ import * as Tabs from "@radix-ui/react-tabs";
 
 const RecentEvent = ({ initialEvents }: { initialEvents?: EventItem[] }) => {
   const { data: events, isLoading, error } = useEventCollection(initialEvents);
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const [showVideo, setShowVideo] = useState(false);
+
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node || showVideo) return;
+    if (typeof IntersectionObserver === 'undefined') {
+      setShowVideo(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setShowVideo(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '600px 0px' }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [showVideo]);
 
   const now = new Date();
 
@@ -39,10 +65,12 @@ const RecentEvent = ({ initialEvents }: { initialEvents?: EventItem[] }) => {
   }
 
   return (
-    <section className="px-4 sm:px-page-sx md:px-page-x py-12 lg:py-24 font-header bg-background/50 overflow-hidden relative">
+    <section ref={sectionRef} className="px-4 sm:px-page-sx md:px-page-x py-12 lg:py-24 font-header bg-background/50 overflow-hidden relative">
       <video
         className="absolute top-0 left-0 w-full h-full object-cover z-0"
-        src="/videos/coenight.mp4"
+        {...(showVideo ? { src: "/videos/coenight.mp4" } : {})}
+        poster="/videos/coenight-poster.jpg"
+        preload="none"
         autoPlay
         loop
         muted
