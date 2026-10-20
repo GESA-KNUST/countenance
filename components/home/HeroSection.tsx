@@ -261,6 +261,22 @@ const HeroSection = ({
     };
   }, [variant, bend]);
 
+  const readyRef = useRef(false);
+
+  const reveal = (node: HTMLImageElement | null) => {
+    if (!node || !readyRef.current) return;
+    if (!node.complete || node.naturalWidth === 0) return;
+    node.setAttribute('data-shown', '');
+  };
+
+  useEffect(() => {
+    readyRef.current = ready;
+    if (!ready) return;
+    for (const row of shots.current.values()) {
+      for (const node of row) reveal(node);
+    }
+  }, [ready]);
+
   const band = layout ?? measureBand(1200, 560, 200, 560, false, bend);
   const cycles = tiles.length > band.columns;
 
@@ -294,6 +310,7 @@ const HeroSection = ({
   const orbit = `hero-orbit-${bandId}`;
   const peek = `hero-peek-${bandId}`;
   const tileClass = `hero-tile-${bandId}`;
+  const shotClass = `hero-shot-${bandId}`;
   const radiusPct = 100 * arc(bend);
   const unitOf = (n: number) => `calc(${+n.toFixed(4)} * var(--band-tile))`;
   const vanish = +(((band.sweep - band.limit) / (2 * band.sweep || 1)) * 100).toFixed(1);
@@ -307,7 +324,9 @@ const HeroSection = ({
     `@keyframes ${orbit}{` +
     `from{transform:translateZ(var(--band-r)) rotateY(var(--band-from)) translateZ(calc(-1 * var(--band-r)))}` +
     `to{transform:translateZ(var(--band-r)) rotateY(var(--band-to)) translateZ(calc(-1 * var(--band-r)))}}` +
-    `@media(prefers-reduced-motion:reduce){.${tileClass}{animation-play-state:paused}}`;
+    `@media(prefers-reduced-motion:reduce){.${tileClass}{animation-play-state:paused}}` +
+    `.${shotClass}{opacity:0;transition:opacity 700ms ease}` +
+    `.${shotClass}[data-shown]{opacity:1}`;
 
   const peekCss =
     `@keyframes ${peek}{` +
@@ -341,7 +360,7 @@ const HeroSection = ({
             className='pointer-events-none absolute inset-0 transition-opacity duration-500'
             style={{
               ...bandVars,
-              opacity: layout && ready ? 1 : 0,
+              opacity: layout ? 1 : 0,
               perspective: `${+(radiusPct * CAMERA).toFixed(3)}cqw`,
               perspectiveOrigin: `50% ${band.axis}%`,
               maskImage: bandMask,
@@ -392,6 +411,7 @@ const HeroSection = ({
                         maskImage: sliceMask,
                         WebkitMaskImage: sliceMask,
                         backfaceVisibility: 'hidden',
+                        backgroundColor: '#e9ecef',
                         left: unitOf((BAND.aspect - share) / 2),
                         width:
                           k === band.slices - 1
@@ -410,14 +430,16 @@ const HeroSection = ({
                             const row = shots.current.get(t) ?? [];
                             if (node) row[k] = node;
                             shots.current.set(t, row);
+                            reveal(node);
                           }}
+                          onLoad={(event) => reveal(event.currentTarget)}
                           src={tile.src}
                           srcSet={tile.srcSet || undefined}
                           sizes='(max-width: 768px) 55vw, 30vw'
                           alt=''
                           draggable={false}
                           decoding='async'
-                          className='absolute top-0 max-w-none object-cover'
+                          className={`${shotClass} absolute top-0 max-w-none object-cover`}
                           style={{
                             left: unitOf(-k * share),
                             width: unitOf(BAND.aspect),
