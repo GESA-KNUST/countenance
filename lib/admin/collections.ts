@@ -24,6 +24,13 @@ export type FieldKind =
   | "tagWords"
   | "select";
 
+export interface FieldSection {
+  title: string;
+
+  intro?: string;
+  fields: string[];
+}
+
 export interface FieldSpec {
   id: string;
   label: string;
@@ -58,6 +65,8 @@ export interface CollectionSpec {
   orderable?: boolean;
 
   generated?: boolean;
+
+  sections?: FieldSection[];
   fields: FieldSpec[];
 }
 
@@ -71,6 +80,22 @@ export const COLLECTIONS: CollectionSpec[] = [
     hint: "Articles on the blog",
     titleField: "title",
     thumbField: "headerImage",
+    sections: [
+      {
+        title: "The basics",
+        fields: ["title", "hook", "headerImage", "author", "datePublished"],
+      },
+      {
+        title: "The article",
+        intro: "Write it the way you want it to read. The buttons above the box do headings, bold, lists, links and photos.",
+        fields: ["blogContent"],
+      },
+      {
+        title: "Helping people find it",
+        intro: "Optional. Tags group it with similar articles; the web address is made from the title unless you change it.",
+        fields: ["tags", "slug"],
+      },
+    ],
     fields: [
       { id: "title", label: "Title", kind: "text", required: true },
       { id: "hook", label: "Short summary", kind: "text", required: true, hint: "One line shown under the title in listings." },
@@ -104,6 +129,21 @@ export const COLLECTIONS: CollectionSpec[] = [
     hint: "Upcoming and past events",
     titleField: "title",
     thumbField: "eventImage",
+    sections: [
+      {
+        title: "The basics",
+        fields: ["title", "description", "eventImage"],
+      },
+      {
+        title: "When and where",
+        intro: "The map pin is what people tap for directions, so set it even when the venue is obvious.",
+        fields: ["eventDate", "venueInPlainEnglish", "venue", "onlineLink"],
+      },
+      {
+        title: "Helping people find it",
+        fields: ["slug"],
+      },
+    ],
     fields: [
       { id: "title", label: "Event name", kind: "text" },
       { id: "description", label: "Description", kind: "longtext", required: true },
@@ -131,6 +171,22 @@ export const COLLECTIONS: CollectionSpec[] = [
     slugFollowsTitle: true,
     thumbField: "image",
     singleton: true,
+    sections: [
+      {
+        title: "The basics",
+        fields: ["name", "role", "image"],
+      },
+      {
+        title: "About them",
+        intro: "A few paragraphs shown on their page.",
+        fields: ["description"],
+      },
+      {
+        title: "Links",
+        intro: "Fill in what you have. Leave the rest blank and they just will not show.",
+        fields: ["linkedinUrl", "slug"],
+      },
+    ],
     fields: [
       { id: "name", label: "Their name", kind: "text", required: true },
       { id: "role", label: "What they do", kind: "text", hint: "For example: Telecommunications Engineering student." },
@@ -203,6 +259,26 @@ export const COLLECTIONS: CollectionSpec[] = [
     slugFrom: ["fullName", "academicYear"],
     slugUrl: "gesaknust.com/executives/",
     thumbField: "officialImage",
+    sections: [
+      {
+        title: "The basics",
+        fields: ["fullName", "executivePositionHeld", "academicYear", "officialImage", "programmeOfStudy"],
+      },
+      {
+        title: "Their profile page",
+        intro: "All optional. Writing a biography is what gives this person a page of their own.",
+        fields: ["quote", "bio", "achievements", "portfolioImages"],
+      },
+      {
+        title: "Links and contact",
+        intro: "Fill in what you have. Leave the rest blank and they just will not show.",
+        fields: ["primarySocialLink", "portfolioLink", "linkedInUrl", "instagramUrl", "xUrl", "email"],
+      },
+      {
+        title: "Helping people find them",
+        fields: ["slug"],
+      },
+    ],
     fields: [
       { id: "fullName", label: "Full name", kind: "text", required: true },
       { id: "executivePositionHeld", label: "Position", kind: "text", required: true },
@@ -229,6 +305,21 @@ export const COLLECTIONS: CollectionSpec[] = [
     hint: "Clubs and societies",
     titleField: "clubName",
     thumbField: "clubLogo",
+    sections: [
+      {
+        title: "The basics",
+        fields: ["clubName", "clubLogo", "description", "clubType"],
+      },
+      {
+        title: "About the club",
+        intro: "A longer write-up shown on the club's own page.",
+        fields: ["aboutclub"],
+      },
+      {
+        title: "Link and how it shows up",
+        fields: ["clubLink", "isFeatured", "isActivelyRecruitingMembers"],
+      },
+    ],
     fields: [
       { id: "clubName", label: "Club name", kind: "text", required: true },
       { id: "clubLogo", label: "Logo", kind: "image", required: true },
@@ -254,6 +345,22 @@ export const COLLECTIONS: CollectionSpec[] = [
     hint: "Engineering departments",
     titleField: "name",
     thumbField: "deptLogo",
+    sections: [
+      {
+        title: "The basics",
+        fields: ["name", "deptAbbreviation", "deptLogo"],
+      },
+      {
+        title: "What this department is about",
+        intro: "Three short write-ups. They appear as the About, Mission and Vision tabs on the department's page.",
+        fields: ["about", "vision", "mission"],
+      },
+      {
+        title: "How people reach them",
+        intro: "Fill in what you have. Leave the rest blank and they just will not show.",
+        fields: ["deptPhone", "deptEmail", "websiteLink", "deptLinkedIn", "whatsappLink", "xComLink", "tiktokLink"],
+      },
+    ],
     fields: [
       { id: "name", label: "Department name", kind: "text", required: true },
       { id: "deptAbbreviation", label: "Short name", kind: "text", required: true, hint: "For example: ChemEng." },
@@ -277,6 +384,27 @@ export const COLLECTIONS: CollectionSpec[] = [
     hint: "Faculties and the departments under them",
     titleField: "name",
     thumbField: "facultyMainImage",
+    sections: [
+      {
+        title: "The basics",
+        fields: ["name", "facultyMainImage"],
+      },
+      {
+        title: "What this faculty is about",
+        intro: "Three short write-ups. They appear as the About, Mission and Vision tabs on the faculty's page.",
+        fields: ["about", "vision", "mission"],
+      },
+      {
+        title: "Departments under it",
+        intro: "Tick every department that belongs to this faculty.",
+        fields: ["departmentsUnderFaculty"],
+      },
+      {
+        title: "How people reach them",
+        intro: "Fill in what you have. Leave the rest blank and they just will not show.",
+        fields: ["facultyWebsite", "facultyMail", "facultyLinkedIn", "facultyTwitter"],
+      },
+    ],
     fields: [
       { id: "name", label: "Faculty name", kind: "text", required: true },
       { id: "about", label: "About", kind: "markdown", required: true },

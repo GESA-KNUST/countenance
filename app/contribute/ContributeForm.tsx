@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Camera, Check, Plus, X, Send } from 'lucide-react';
 import StarSpinner from '@/components/ui/StarSpinner';
-import MarkdownEditor from '@/app/admin/MarkdownEditor';
+import RichEditor from '@/app/admin/RichEditor';
 import { MAX_ORIGINAL_BYTES, resizeForHero } from '@/lib/admin/resize';
 import type { Writer } from '@/lib/contribute/session';
 
@@ -310,7 +310,7 @@ const ContributeForm = ({
                 <p className="text-sm text-gray-500 mb-2">
                     Write it here. Use the buttons for headings, bold, lists and photos.
                 </p>
-                <MarkdownEditor
+                <RichEditor
                     value={body}
                     onChange={setBody}
                     rows={16}
