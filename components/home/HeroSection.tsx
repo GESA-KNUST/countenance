@@ -49,7 +49,7 @@ function measureBand(
   bend: number
 ): BandLayout {
   const slices = 12;
-  const round = (n: number) => +n.toFixed(4);
+  const round = (n: number) => +n.toFixed(1);
 
   const narrow = stacked;
   const widest = narrow ? 76 : MAX_TILE_WIDTH;
@@ -176,7 +176,8 @@ const HeroSection = ({
   const bandId = useId().replace(/[^a-zA-Z0-9]/g, '');
   const bend = (Math.min(85, Math.max(5, BAND.curve)) * Math.PI) / 180;
   const [layout, setLayout] = useState<BandLayout | null>(null);
-  const [shown, setShown] = useState<Record<number, number>>({});
+  const [ready, setReady] = useState(false);
+  const shots = useRef(new Map<number, HTMLImageElement[]>());
 
   const tiles = useMemo(
     () =>
@@ -233,14 +234,31 @@ const HeroSection = ({
       );
     };
 
-    const observer = new ResizeObserver(read);
+    let queued = 0;
+    const schedule = () => {
+      if (queued) return;
+      queued = requestAnimationFrame(() => {
+        queued = 0;
+        read();
+      });
+    };
+
+    const observer = new ResizeObserver(schedule);
     observer.observe(hero);
     if (contentRef.current) observer.observe(contentRef.current);
     if (ledeRef.current) observer.observe(ledeRef.current);
 
-    document.fonts?.ready.then(read).catch(() => {});
+    const settle = () => {
+      read();
+      setReady(true);
+    };
+    if (document.fonts?.ready) document.fonts.ready.then(settle).catch(settle);
+    else settle();
 
-    return () => observer.disconnect();
+    return () => {
+      if (queued) cancelAnimationFrame(queued);
+      observer.disconnect();
+    };
   }, [variant, bend]);
 
   const band = layout ?? measureBand(1200, 560, 200, 560, false, bend);
@@ -248,11 +266,13 @@ const HeroSection = ({
 
   useEffect(() => {
     if (variant !== 'band') return;
-    for (const tile of tiles.slice(0, band.columns)) {
+    for (const tile of tiles) {
       const preload = new window.Image();
+      if (tile.srcSet) preload.srcset = tile.srcSet;
       preload.src = tile.src;
+      preload.decode?.().catch(() => {});
     }
-  }, [variant, tiles, band.columns]);
+  }, [variant, tiles]);
 
   const titleParts = title && highlight ? title.split(highlight) : [title ?? ''];
 
@@ -272,24 +292,34 @@ const HeroSection = ({
   };
 
   const orbit = `hero-orbit-${bandId}`;
+  const peek = `hero-peek-${bandId}`;
   const tileClass = `hero-tile-${bandId}`;
   const radiusPct = 100 * arc(bend);
-  const radius = `${+radiusPct.toFixed(3)}cqw`;
-  const unitOf = (n: number) => `calc(${+n.toFixed(4)} * ${band.tilePct}cqh)`;
-  const turn = (degrees: number) =>
-    `translateZ(${radius}) rotateY(${+degrees.toFixed(4)}deg) translateZ(-${radius})`;
-  const vanish = +(((band.sweep - band.limit) / (2 * band.sweep || 1)) * 100).toFixed(4);
+  const unitOf = (n: number) => `calc(${+n.toFixed(4)} * var(--band-tile))`;
+  const vanish = +(((band.sweep - band.limit) / (2 * band.sweep || 1)) * 100).toFixed(1);
   const duration = band.columns * BAND.speed;
   const share = BAND.aspect / band.slices;
   const bandMask = `linear-gradient(90deg,transparent,#000 ${BAND.fade}%,#000 ${100 - BAND.fade}%,transparent)`;
   const sliceMask =
     'linear-gradient(to bottom,transparent 0%,rgba(0,0,0,0.65) 7%,#000 20%,#000 80%,rgba(0,0,0,0.65) 93%,transparent 100%)';
-  const bandCss =
+
+  const orbitCss =
     `@keyframes ${orbit}{` +
-    `from{transform:${turn(-band.sweep)}}to{transform:${turn(band.sweep)}}` +
-    `0%,${vanish}%,${100 - vanish}%,100%{visibility:hidden}` +
-    `${vanish + 0.001}%,${100 - vanish - 0.001}%{visibility:visible}}` +
+    `from{transform:translateZ(var(--band-r)) rotateY(var(--band-from)) translateZ(calc(-1 * var(--band-r)))}` +
+    `to{transform:translateZ(var(--band-r)) rotateY(var(--band-to)) translateZ(calc(-1 * var(--band-r)))}}` +
     `@media(prefers-reduced-motion:reduce){.${tileClass}{animation-play-state:paused}}`;
+
+  const peekCss =
+    `@keyframes ${peek}{` +
+    `0%,${vanish}%,${100 - vanish}%,100%{visibility:hidden}` +
+    `${vanish + 0.1}%,${100 - vanish - 0.1}%{visibility:visible}}`;
+
+  const bandVars = {
+    '--band-r': `${+radiusPct.toFixed(3)}cqw`,
+    '--band-from': `${-band.sweep}deg`,
+    '--band-to': `${band.sweep}deg`,
+    '--band-tile': `${band.tilePct}cqh`,
+  } as React.CSSProperties;
 
   return (
     <div
@@ -304,12 +334,14 @@ const HeroSection = ({
 
       {variant === 'band' ? (
         <>
-          <style>{bandCss}</style>
+          <style>{orbitCss}</style>
+          <style>{peekCss}</style>
           <div
             aria-hidden
             className='pointer-events-none absolute inset-0 transition-opacity duration-500'
             style={{
-              opacity: layout ? 1 : 0,
+              ...bandVars,
+              opacity: layout && ready ? 1 : 0,
               perspective: `${+(radiusPct * CAMERA).toFixed(3)}cqw`,
               perspectiveOrigin: `50% ${band.axis}%`,
               maskImage: bandMask,
@@ -318,7 +350,7 @@ const HeroSection = ({
           >
             {Array.from({ length: band.columns }, (_, t) => {
               const first = band.columns - 1 - t;
-              const tile = tiles[(shown[t] ?? first) % Math.max(tiles.length, 1)];
+              const tile = tiles[first % Math.max(tiles.length, 1)];
 
               return (
                 <div
@@ -330,16 +362,24 @@ const HeroSection = ({
                     width: unitOf(BAND.aspect),
                     height: unitOf(1),
                     transformStyle: 'preserve-3d',
-                    animation: `${orbit} ${duration}s linear ${-t * BAND.speed}s infinite`,
+                    willChange: 'transform',
+                    animation:
+                      `${orbit} ${duration}s linear ${-t * BAND.speed}s infinite,` +
+                      `${peek} ${duration}s linear ${-t * BAND.speed}s infinite`,
                   }}
                   onAnimationIteration={
                     cycles
                       ? (event) => {
+                          if (event.animationName !== orbit) return;
                           const lap = Math.round(event.elapsedTime / duration);
-                          setShown((prev) => {
-                            const next = lap * band.columns + first;
-                            return prev[t] === next ? prev : { ...prev, [t]: next };
-                          });
+                          const next = tiles[(lap * band.columns + first) % tiles.length];
+                          if (!next) return;
+                          for (const node of shots.current.get(t) ?? []) {
+                            if (node.src !== next.src) {
+                              node.srcset = next.srcSet || '';
+                              node.src = next.src;
+                            }
+                          }
                         }
                       : undefined
                   }
@@ -358,11 +398,19 @@ const HeroSection = ({
                             ? unitOf(share)
                             : `calc(${unitOf(share)} + 1px)`,
                         height: unitOf(1),
-                        transform: turn((BAND.aspect / 2 - (k + 0.5) * share) * band.unit),
+                        transform:
+                          `translateZ(var(--band-r)) ` +
+                          `rotateY(${+((BAND.aspect / 2 - (k + 0.5) * share) * band.unit).toFixed(4)}deg) ` +
+                          `translateZ(calc(-1 * var(--band-r)))`,
                       }}
                     >
                       {tile ? (
                         <img
+                          ref={(node) => {
+                            const row = shots.current.get(t) ?? [];
+                            if (node) row[k] = node;
+                            shots.current.set(t, row);
+                          }}
                           src={tile.src}
                           srcSet={tile.srcSet || undefined}
                           sizes='(max-width: 768px) 55vw, 30vw'
