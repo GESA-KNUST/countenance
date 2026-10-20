@@ -39,6 +39,7 @@ const Home = async () => {
         mobileImages={hero.mobileImages.length > 0 ? hero.mobileImages : undefined}
         buttonTarget="personality-of-the-week"
         isScroll={true}
+        variant="band"
       />
       <Personality initial={potw} />
       <ProvostSection />
