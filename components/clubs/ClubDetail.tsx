@@ -41,6 +41,12 @@ interface AssetGridProps {
     findAsset: (id: string) => EmbeddedAsset | undefined;
 }
 
+const personName = (asset: EmbeddedAsset) => {
+    const title = asset.title?.trim() ?? '';
+    const fileStem = asset.fileName?.replace(/\.[^.]+$/, '') ?? '';
+    return title && title !== fileStem ? title : '';
+};
+
 const isPortrait = (asset: EmbeddedAsset) => Boolean(asset.width && asset.height && asset.height > asset.width);
 
 const AssetGrid = ({ ids, findAsset }: AssetGridProps) => {
@@ -48,8 +54,9 @@ const AssetGrid = ({ ids, findAsset }: AssetGridProps) => {
     if (items.length === 0) return null;
 
     const single = items.length === 1;
-    const captioned = items.every((asset) => asset.description);
-    const people = captioned && (!single || isPortrait(items[0]));
+    const named = items.every((asset) => personName(asset) || asset.description);
+    const headshots = items.every(isPortrait);
+    const people = single ? named && headshots : named || headshots;
 
     if (single && !people) {
         const image = contentfulImage(items[0].url, { intrinsicWidth: items[0].width, intrinsicHeight: items[0].height });
@@ -59,7 +66,7 @@ const AssetGrid = ({ ids, findAsset }: AssetGridProps) => {
                     src={image.src}
                     srcSet={image.srcSet || undefined}
                     sizes="(max-width: 768px) 100vw, 672px"
-                    alt={items[0].description || items[0].title || ''}
+                    alt={items[0].description || personName(items[0])}
                     width={image.width}
                     height={image.height}
                     loading="lazy"
@@ -81,6 +88,7 @@ const AssetGrid = ({ ids, findAsset }: AssetGridProps) => {
     return (
         <div className={`grid ${columns} gap-4 sm:gap-5 my-8`}>
             {items.map((asset) => {
+                const name = personName(asset);
                 const image = contentfulImage(asset.url, {
                     widths: [320, 480, 640, 960],
                     intrinsicWidth: asset.width,
@@ -94,16 +102,18 @@ const AssetGrid = ({ ids, findAsset }: AssetGridProps) => {
                                 src={image.src}
                                 srcSet={image.srcSet || undefined}
                                 sizes={people ? '(max-width: 640px) 50vw, 240px' : '(max-width: 640px) 100vw, 360px'}
-                                alt={asset.title || ''}
+                                alt={name || asset.description || ''}
                                 loading="lazy"
                                 decoding="async"
                                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                                 style={{ aspectRatio: String(aspect) }}
                             />
                         </div>
-                        {people && (
+                        {people && (name || asset.description) && (
                             <figcaption className="mt-3 space-y-0.5">
-                                <p className="font-header font-bold text-gray-900 text-sm sm:text-base leading-snug">{asset.title}</p>
+                                {name && (
+                                    <p className="font-header font-bold text-gray-900 text-sm sm:text-base leading-snug">{name}</p>
+                                )}
                                 {asset.description && (
                                     <p className="text-xs sm:text-sm text-gray-500 leading-snug">{asset.description}</p>
                                 )}
