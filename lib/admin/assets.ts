@@ -102,3 +102,38 @@ export async function assertPublishedAsset(id: string) {
   if (!asset.sys.publishedVersion) throw new Error(`Image ${id} is not published`);
   if (!asset.fields?.file?.[LOCALE]?.url) throw new Error(`Image ${id} has no file`);
 }
+
+export interface AssetCaption {
+  name: string;
+  caption: string;
+}
+
+const stemOf = (fileName: unknown) =>
+  typeof fileName === "string" ? fileName.replace(/\.[^.]+$/, "") : "";
+
+export async function readAssetCaption(id: string): Promise<AssetCaption | null> {
+  const asset = await cma(`/assets/${id}`);
+  if (!asset) return null;
+
+  const title = asset.fields?.title?.[LOCALE] ?? "";
+  const fileStem = stemOf(asset.fields?.file?.[LOCALE]?.fileName);
+  return {
+    name: title === fileStem ? "" : title,
+    caption: asset.fields?.description?.[LOCALE] ?? "",
+  };
+}
+
+export async function saveAssetCaption(id: string, { name, caption }: AssetCaption) {
+  const asset = await cma(`/assets/${id}`);
+  if (!asset) throw new Error(`Image ${id} does not exist`);
+
+  const fileStem = stemOf(asset.fields?.file?.[LOCALE]?.fileName);
+  const fields = {
+    ...asset.fields,
+    title: { [LOCALE]: name || fileStem || "image" },
+    description: { [LOCALE]: caption },
+  };
+
+  const saved = await cma(`/assets/${id}`, { method: "PUT", body: { fields }, version: asset.sys.version });
+  await cma(`/assets/${id}/published`, { method: "PUT", version: saved.sys.version });
+}
