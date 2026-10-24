@@ -1,12 +1,11 @@
 'use client'
 import Container from '../custom/Container'
-import { ctfSrc } from '@/lib/contentful-src';
 import { Button } from '../ui/button'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { useClubs } from '@/hooks/useClubs'
 import type { ClubItems } from '@/lib/data/club'
-import Image from 'next/image'
+import ClubLogo from '../clubs/ClubLogo'
 import EmptyState from '../events/EmptyState'
 import { Users, TriangleAlert } from 'lucide-react'
 
@@ -73,15 +72,14 @@ const HomeClubsPreview = ({ initialClubs }: { initialClubs?: ClubItems[] }) => {
                                 key={club.sys?.id ?? index}
                                 className='bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-500 flex flex-col gap-6 group hover:-translate-y-1'
                             >
-                                <div className='w-16 h-16 bg-primary/10 rounded-2xl p-0 flex items-center justify-center group-hover:scale-110 transition-transform relative overflow-hidden'>
-                                    <Image
-                                        src={ctfSrc(club?.clubLogo?.url || '/images/logo.svg', 160)}
-                                        alt=""
-                                        className="w-full h-full object-cover"
-                                        fill
-                                        unoptimized
-                                    />
-                                </div>
+                                <ClubLogo
+                                    name={club.clubName}
+                                    url={club.clubLogo?.url}
+                                    alt=""
+                                    width={160}
+                                    className='w-16 h-16 bg-white rounded-2xl group-hover:scale-110 transition-transform'
+                                    monogramClassName='text-base'
+                                />
                                 <div className="flex-1">
                                     <h3 className='font-bold text-2xl mb-3 transition-colors group-hover:text-primary font-header'>{club.clubName}</h3>
                                     <p className='text-gray-500 mb-6 line-clamp-2 leading-relaxed'>{club.description}</p>
