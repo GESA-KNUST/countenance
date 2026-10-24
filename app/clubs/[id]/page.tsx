@@ -44,6 +44,7 @@ query ClubById($id: String!) {
               description
               width
               height
+              fileName
             }
           }
         }

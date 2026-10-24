@@ -59,6 +59,7 @@ export interface EmbeddedAsset {
     url: string;
     title?: string | null;
     description?: string | null;
+    fileName?: string | null;
     width?: number | null;
     height?: number | null;
 }

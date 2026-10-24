@@ -32,6 +32,86 @@ const thumbUrl = (url: string) => (url.startsWith('//') ? `https:${url}` : url);
 
 const AssetUrls = createContext<Record<string, string>>({});
 
+type CaptionState = 'loading' | 'idle' | 'saving' | 'saved' | 'error';
+
+const PhotoCaption = ({ assetId }: { assetId: string }) => {
+    const [name, setName] = useState('');
+    const [caption, setCaption] = useState('');
+    const [state, setState] = useState<CaptionState>('loading');
+    const saved = useRef({ name: '', caption: '' });
+
+    useEffect(() => {
+        if (!assetId) return;
+        let cancelled = false;
+        fetch(`/api/admin/asset-caption?id=${encodeURIComponent(assetId)}`)
+            .then((res) => (res.ok ? res.json() : Promise.reject()))
+            .then((data: { name: string; caption: string }) => {
+                if (cancelled) return;
+                saved.current = data;
+                setName(data.name);
+                setCaption(data.caption);
+                setState('idle');
+            })
+            .catch(() => !cancelled && setState('idle'));
+        return () => {
+            cancelled = true;
+        };
+    }, [assetId]);
+
+    const save = async () => {
+        const next = { name: name.trim(), caption: caption.trim() };
+        if (next.name === saved.current.name && next.caption === saved.current.caption) return;
+        setState('saving');
+        try {
+            const res = await fetch('/api/admin/asset-caption', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: assetId, ...next }),
+            });
+            if (!res.ok) throw new Error();
+            saved.current = next;
+            setState('saved');
+        } catch {
+            setState('error');
+        }
+    };
+
+    const field =
+        'w-full rounded-md border border-gray-200 bg-white px-2.5 py-1.5 text-sm outline-none focus:border-black disabled:bg-gray-50';
+
+    return (
+        <span className="block space-y-1.5 border-t border-gray-100 bg-white p-2.5" contentEditable={false}>
+            <input
+                className={field}
+                placeholder="Name (for a person's photo)"
+                value={name}
+                maxLength={120}
+                disabled={state === 'loading'}
+                onChange={(event) => setName(event.target.value)}
+                onBlur={save}
+                onKeyDown={(event) => event.stopPropagation()}
+            />
+            <input
+                className={field}
+                placeholder="Role or caption, e.g. President"
+                value={caption}
+                maxLength={300}
+                disabled={state === 'loading'}
+                onChange={(event) => setCaption(event.target.value)}
+                onBlur={save}
+                onKeyDown={(event) => event.stopPropagation()}
+            />
+            <span className="block text-xs text-gray-500">
+                {state === 'saving' && 'Saving...'}
+                {state === 'saved' && 'Saved.'}
+                {state === 'error' && <span className="text-red-700">Could not save. Try again.</span>}
+                {(state === 'idle' || state === 'loading') &&
+                    'Photos placed one after another show as a grid. Add a name and role to show them as a team.'}
+            </span>
+        </span>
+    );
+};
+
 const AssetImageView = ({ node, deleteNode, selected }: NodeViewProps) => {
     const urls = useContext(AssetUrls);
     const id = node.attrs.assetId as string;
@@ -40,7 +120,7 @@ const AssetImageView = ({ node, deleteNode, selected }: NodeViewProps) => {
     return (
         <NodeViewWrapper
             className={`relative my-4 inline-block w-full max-w-sm overflow-hidden rounded-xl border-2 ${
-                selected ? 'border-[#FFBE00]' : 'border-transparent'
+                selected ? 'border-[#FFBE00]' : 'border-gray-200'
             }`}
             data-drag-handle
         >
@@ -60,6 +140,8 @@ const AssetImageView = ({ node, deleteNode, selected }: NodeViewProps) => {
                     </span>
                 )}
             </span>
+
+            <PhotoCaption assetId={id} />
 
             <button
                 type="button"
@@ -86,7 +168,10 @@ const AssetImage = Node.create({
         'div',
         { 'data-asset-id': HTMLAttributes.assetId as string },
     ],
-    addNodeView: () => ReactNodeViewRenderer(AssetImageView),
+    addNodeView: () =>
+        ReactNodeViewRenderer(AssetImageView, {
+            stopEvent: ({ event }) => event.target instanceof HTMLInputElement,
+        }),
 });
 
 interface RichEditorProps {
