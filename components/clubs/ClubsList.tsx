@@ -1,11 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react'
-import { ctfSrc } from '@/lib/contentful-src';
 import Container from '@/components/custom/Container';
 import { Search } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ClubItems } from '@/hooks/useClubs';
+import ClubLogo from './ClubLogo';
 import academicIcon from '@/public/images/academic.svg'
 import creativeIcon from '@/public/images/social.svg'
 import leadershipIcon from '@/public/images/leadership&S.svg'
@@ -101,9 +101,15 @@ const ClubsList = ({ clubs }: ClubsListProps) => {
                     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-6'>
                         {filteredClubs.filter((club) => club.isFeatured)?.map((club, index) => (
                             <Link href={`/clubs/${club.sys.id}`} key={index} className='p-6 shadow-lg rounded-xl h-[454px] flex flex-col justify-between'>
-                                <div className='w-full h-56 bg-slate-100 rounded-xl relative overflow-hidden'>
-                                    <Image src={ctfSrc(club.clubLogo.url, 400)} alt={club.clubLogo.title || "Club Logo"} fill className='object-cover rounded-xl' unoptimized />
-                                </div>
+                                <ClubLogo
+                                    name={club.clubName}
+                                    url={club.clubLogo?.url}
+                                    alt={club.clubLogo?.title}
+                                    width={400}
+                                    className='w-full h-56 bg-white border border-slate-100 rounded-xl'
+                                    imageClassName='p-4'
+                                    monogramClassName='text-5xl'
+                                />
                                 <div className='flex flex-col gap-y-4 py-4'>
                                     <h2 className='font-bold text-lg font-header'>{club.clubName}</h2>
                                     <p className='text-sm text-gray-500 line-clamp-2'>{club.description}</p>

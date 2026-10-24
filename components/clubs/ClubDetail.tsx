@@ -1,24 +1,156 @@
 'use client';
 
-import Image from 'next/image';
-import { ctfSrc } from '@/lib/contentful-src';
 import Link from 'next/link';
-import { documentToReactComponents, Options } from '@contentful/rich-text-react-renderer';
-import { BLOCKS } from '@contentful/rich-text-types';
-import { Globe, ArrowLeft, ExternalLink } from 'lucide-react';
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { BLOCKS, type TopLevelBlock } from '@contentful/rich-text-types';
+import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { ClubItems } from '@/hooks/useClubs';
 import Container from '../custom/Container';
-import { richTextParagraphRenderer } from '@/lib/richTextOptions';
+import { proseRichTextOptions, type EmbeddedAsset } from '@/lib/richTextOptions';
+import { contentfulImage } from '@/lib/contentful-image';
+import ClubLogo from './ClubLogo';
 
 import { useStore } from '@/store/useStore';
-import { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 
 interface ClubDetailProps {
     club: ClubItems;
 }
 
+type ContentGroup = { kind: 'nodes'; nodes: TopLevelBlock[] } | { kind: 'assets'; ids: string[] };
+
+function groupAssetRuns(nodes: TopLevelBlock[]): ContentGroup[] {
+    const groups: ContentGroup[] = [];
+    for (const node of nodes) {
+        const id = node.nodeType === BLOCKS.EMBEDDED_ASSET ? node.data?.target?.sys?.id : undefined;
+        const last = groups[groups.length - 1];
+        if (id) {
+            if (last?.kind === 'assets') last.ids.push(id);
+            else groups.push({ kind: 'assets', ids: [id] });
+        } else if (last?.kind === 'nodes') {
+            last.nodes.push(node);
+        } else {
+            groups.push({ kind: 'nodes', nodes: [node] });
+        }
+    }
+    return groups;
+}
+
+interface AssetGridProps {
+    ids: string[];
+    findAsset: (id: string) => EmbeddedAsset | undefined;
+}
+
+const isPortrait = (asset: EmbeddedAsset) => Boolean(asset.width && asset.height && asset.height > asset.width);
+
+const AssetGrid = ({ ids, findAsset }: AssetGridProps) => {
+    const items = ids.map(findAsset).filter((asset): asset is EmbeddedAsset => Boolean(asset?.url));
+    if (items.length === 0) return null;
+
+    const single = items.length === 1;
+    const captioned = items.every((asset) => asset.description);
+    const people = captioned && (!single || isPortrait(items[0]));
+
+    if (single && !people) {
+        const image = contentfulImage(items[0].url, { intrinsicWidth: items[0].width, intrinsicHeight: items[0].height });
+        return (
+            <figure className="my-8 w-full max-w-2xl mx-auto">
+                <img
+                    src={image.src}
+                    srcSet={image.srcSet || undefined}
+                    sizes="(max-width: 768px) 100vw, 672px"
+                    alt={items[0].description || items[0].title || ''}
+                    width={image.width}
+                    height={image.height}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-auto rounded-2xl shadow-sm"
+                />
+                {items[0].description && (
+                    <figcaption className="text-sm text-gray-500 text-center mt-2">{items[0].description}</figcaption>
+                )}
+            </figure>
+        );
+    }
+
+    const aspect = people ? 4 / 5 : 4 / 3;
+    const columns = people
+        ? single ? 'grid-cols-1 max-w-[240px]' : 'grid-cols-2 sm:grid-cols-3'
+        : 'grid-cols-1 sm:grid-cols-2';
+
+    return (
+        <div className={`grid ${columns} gap-4 sm:gap-5 my-8`}>
+            {items.map((asset) => {
+                const image = contentfulImage(asset.url, {
+                    widths: [320, 480, 640, 960],
+                    intrinsicWidth: asset.width,
+                    aspect,
+                    focus: people ? 'face' : 'center',
+                });
+                return (
+                    <figure key={asset.sys.id} className="group">
+                        <div className="overflow-hidden rounded-2xl bg-gray-100 shadow-sm">
+                            <img
+                                src={image.src}
+                                srcSet={image.srcSet || undefined}
+                                sizes={people ? '(max-width: 640px) 50vw, 240px' : '(max-width: 640px) 100vw, 360px'}
+                                alt={asset.title || ''}
+                                loading="lazy"
+                                decoding="async"
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                                style={{ aspectRatio: String(aspect) }}
+                            />
+                        </div>
+                        {people && (
+                            <figcaption className="mt-3 space-y-0.5">
+                                <p className="font-header font-bold text-gray-900 text-sm sm:text-base leading-snug">{asset.title}</p>
+                                {asset.description && (
+                                    <p className="text-xs sm:text-sm text-gray-500 leading-snug">{asset.description}</p>
+                                )}
+                            </figcaption>
+                        )}
+                    </figure>
+                );
+            })}
+        </div>
+    );
+};
+
+interface JoinCardProps {
+    clubLink: string;
+    recruiting: boolean;
+}
+
+const RecruitingStatus = ({ recruiting }: { recruiting: boolean }) => (
+    <p className="flex items-center gap-2 text-sm text-gray-600">
+        <span className={`w-2 h-2 rounded-full ${recruiting ? 'bg-emerald-500' : 'bg-gray-300'}`} />
+        {recruiting ? 'Accepting new members' : 'Recruitment currently closed'}
+    </p>
+);
+
+const JoinButton = ({ clubLink, className = '' }: { clubLink: string; className?: string }) => (
+    <a
+        href={clubLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-gray-900 font-semibold hover:bg-[#f0b200] transition-colors ${className}`}
+    >
+        Join the community
+        <ArrowUpRight className="w-4 h-4" />
+    </a>
+);
+
+const JoinCard = ({ clubLink, recruiting }: JoinCardProps) => (
+    <div className="rounded-2xl border border-gray-200 bg-white p-6 space-y-4">
+        <h2 className="font-header font-bold text-lg text-gray-900">Interested?</h2>
+        <RecruitingStatus recruiting={recruiting} />
+        <p className="text-sm text-gray-500">Membership is open to all GESA students.</p>
+        <JoinButton clubLink={clubLink} className="w-full" />
+    </div>
+);
+
 const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
-    const { clubName, clubLogo, clubType, clubLink, isActivelyRecruitingMembers, aboutclub, sys } = club;
+    const { clubName, clubLogo, clubType, clubLink, description, isActivelyRecruitingMembers, aboutclub, sys } = club;
     const { addToRecentlyViewed } = useStore();
 
     useEffect(() => {
@@ -27,152 +159,74 @@ const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
         }
     }, [club, sys.id, addToRecentlyViewed]);
 
-    const options: Options = {
-        renderNode: {
-            ...richTextParagraphRenderer,
-            [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
-                const assetId = node.data.target.sys.id;
-                const asset = aboutclub?.links?.assets?.block?.find((a: any) => a.sys.id === assetId);
-
-                if (!asset) return null;
-
-                return (
-                    <div className="my-8 w-full rounded-2xl overflow-hidden shadow-lg">
-                        <Image
-                            src={ctfSrc(asset.url, 1200)}
-                            alt={asset.title || "Embedded Asset"}
-                            width={asset.width || 800}
-                            height={asset.height || 600}
-                            className="w-full h-auto object-cover"
-                            unoptimized
-                        />
-                    </div>
-                );
-            },
-        },
-    };
-
-    const QuickOverview = () => (
-        <div className="space-y-6">
-            <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 space-y-1">
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Category</span>
-                <p className="font-bold text-gray-900">{clubType}</p>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 space-y-1">
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Membership</span>
-                <p className="font-bold text-gray-900">Open to all GESA Students</p>
-            </div>
-
-            <div className="pt-6 border-t border-gray-100">
-                {isActivelyRecruitingMembers ? (
-                    <div className="flex items-center gap-4 p-4 rounded-2xl bg-primary/5 border border-primary/10">
-                        <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                        <p className="text-sm font-medium text-gray-700 italic">
-                            Currently accepting new members for the academic year.
-                        </p>
-                    </div>
-                ) : (
-                    <div className="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                        <div className="w-2 h-2 rounded-full bg-gray-400" />
-                        <p className="text-sm font-medium text-gray-500 italic">
-                            Membership recruitment is currently closed. Please check back later.
-                        </p>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
+    const assets = aboutclub?.links?.assets?.block ?? [];
+    const options = proseRichTextOptions(assets);
+    const findAsset = (id: string) => assets.find((asset) => asset.sys.id === id);
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-20 font-poppins">
-            {/* Hero Section */}
-            <div className="relative h-[40vh] sm:h-[50vh] w-full overflow-hidden bg-gray-900">
-                <Image
-                    src={ctfSrc(clubLogo.url, 400)}
-                    alt={clubLogo.title || clubName}
-                    fill
-                    className="object-cover opacity-60 scale-105 blur-[2px]"
-                    priority
-                    unoptimized
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent" />
-
-                <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                    <div className="max-w-4xl mx-auto space-y-6">
+        <div className="min-h-screen bg-white sm:bg-gray-50 pb-16 font-poppins">
+            <header className="bg-white border-b border-gray-100">
+                <Container size="xl">
+                    <div className="py-6 sm:py-10">
                         <Link
                             href="/clubs"
-                            className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-4 transition-all hover:-translate-x-1"
+                            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors"
                         >
-                            <ArrowLeft className="w-5 h-5" />
-                            <span className="font-medium">Back to Clubs and Societies</span>
+                            <ArrowLeft className="w-4 h-4" />
+                            All clubs and societies
                         </Link>
 
-                        <div className="relative w-24 h-24 sm:w-32 sm:h-32 mx-auto rounded-3xl overflow-hidden border-4 border-white/10 shadow-2xl animate-in zoom-in duration-700">
-                            <Image
-                                src={ctfSrc(clubLogo.url, 400)}
-                                alt={clubName}
-                                fill
-                                className="object-contain bg-white p-2"
-                                unoptimized
+                        <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
+                            <ClubLogo
+                                name={clubName}
+                                url={clubLogo?.url}
+                                alt={clubLogo?.title}
+                                width={400}
+                                className="w-20 h-20 sm:w-28 sm:h-28 shrink-0 rounded-2xl border border-gray-200 bg-white"
+                                imageClassName="p-2"
+                                monogramClassName="text-xl sm:text-2xl"
                             />
+                            <div className="space-y-3 min-w-0">
+                                <span className="inline-block text-xs font-semibold text-gray-700 bg-primary/15 px-3 py-1 rounded-full">
+                                    {clubType}
+                                </span>
+                                <h1 className="font-header text-2xl sm:text-4xl font-bold text-gray-900 leading-tight">
+                                    {clubName}
+                                </h1>
+                                {description && (
+                                    <p className="text-gray-600 leading-relaxed max-w-3xl">{description}</p>
+                                )}
+                            </div>
                         </div>
 
-                        <div className="space-y-3">
-                            <div className="inline-block bg-primary/20 backdrop-blur-md border border-primary/30 text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest animate-in fade-in slide-in-from-bottom-4 duration-700">
-                                {clubType}
-                            </div>
-                            <h1 className="font-header text-3xl sm:text-5xl md:text-6xl font-black text-white leading-tight animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
-                                {clubName}
-                            </h1>
+                        <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-4 lg:hidden">
+                            <JoinButton clubLink={clubLink} />
+                            <RecruitingStatus recruiting={isActivelyRecruitingMembers} />
                         </div>
                     </div>
-                </div>
-            </div>
+                </Container>
+            </header>
 
             <Container size="xl">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 -mt-16 relative z-30">
-                    {/* Main Content */}
-                    <div className="lg:col-span-8 space-y-8">
-                        <div className="bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden relative">
-                            <div className="absolute top-0 left-0 w-2 h-full bg-primary" />
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 pt-6 sm:pt-10">
+                    <article className="lg:col-span-8 text-gray-600 sm:rounded-2xl sm:border sm:border-gray-200 sm:bg-white sm:p-10 max-sm:[&_p]:!text-base max-sm:[&_ul]:!text-base max-sm:[&_ol]:!text-base max-sm:[&_ul]:pl-5 max-sm:[&_ol]:pl-5">
+                        {aboutclub?.json &&
+                            groupAssetRuns(aboutclub.json.content).map((group, index) =>
+                                group.kind === 'assets' ? (
+                                    <AssetGrid key={index} ids={group.ids} findAsset={findAsset} />
+                                ) : (
+                                    <Fragment key={index}>
+                                        {documentToReactComponents({ ...aboutclub.json, content: group.nodes }, options)}
+                                    </Fragment>
+                                )
+                            )}
+                    </article>
 
-                            <h2 className="text-2xl font-bold text-gray-900 mb-8 font-header flex items-center gap-3">
-                                <Globe className="text-primary w-6 h-6" />
-                                About the Community
-                            </h2>
-
-                            <div className="prose prose-lg text-gray-600 max-w-none">
-                                {aboutclub && aboutclub.json && documentToReactComponents(aboutclub.json, options)}
-                            </div>
-
-                            {/* Mobile Quick Overview - Visible only on mobile */}
-                            <div className="mt-12 border-t border-gray-100 pt-12 lg:hidden">
-                                <h3 className="text-xl font-bold text-gray-900 mb-6 font-header">Quick Overview</h3>
-                                <QuickOverview />
-                            </div>
-
-                            <div className="mt-12 pt-10 border-t border-gray-100 flex flex-wrap gap-4">
-                                <a
-                                    href={clubLink}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="px-8 py-4 bg-primary text-white font-bold rounded-2xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2"
-                                >
-                                    <ExternalLink className="w-5 h-5" />
-                                    Join Our Community
-                                </a>
-                            </div>
+                    <aside className="lg:col-span-4">
+                        <div className="lg:sticky lg:top-24">
+                            <JoinCard clubLink={clubLink} recruiting={isActivelyRecruitingMembers} />
                         </div>
-                    </div>
-
-                    {/* Sidebar - Visible only on desktop */}
-                    <div className="hidden lg:block lg:col-span-4 space-y-8">
-                        <div className="bg-white rounded-[2rem] p-8 shadow-xl shadow-gray-200/50 border border-gray-100 sticky top-24">
-                            <h3 className="text-xl font-bold text-gray-900 mb-6 font-header">Quick Overview</h3>
-                            <QuickOverview />
-                        </div>
-                    </div>
+                    </aside>
                 </div>
             </Container>
         </div>
