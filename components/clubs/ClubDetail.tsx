@@ -164,7 +164,7 @@ const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
     const findAsset = (id: string) => assets.find((asset) => asset.sys.id === id);
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-16 font-poppins">
+        <div className="min-h-screen bg-white sm:bg-gray-50 pb-16 font-poppins">
             <header className="bg-white border-b border-gray-100">
                 <Container size="xl">
                     <div className="py-6 sm:py-10">
@@ -209,7 +209,7 @@ const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
 
             <Container size="xl">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 pt-6 sm:pt-10">
-                    <article className="lg:col-span-8 rounded-2xl border border-gray-200 bg-white px-5 py-6 sm:p-10 text-gray-600">
+                    <article className="lg:col-span-8 text-gray-600 sm:rounded-2xl sm:border sm:border-gray-200 sm:bg-white sm:p-10 max-sm:[&_p]:!text-base max-sm:[&_ul]:!text-base max-sm:[&_ol]:!text-base max-sm:[&_ul]:pl-5 max-sm:[&_ol]:pl-5">
                         {aboutclub?.json &&
                             groupAssetRuns(aboutclub.json.content).map((group, index) =>
                                 group.kind === 'assets' ? (
