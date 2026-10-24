@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Container from '@/components/custom/Container';
 import { Search } from 'lucide-react';
 import Image from 'next/image';
@@ -15,6 +15,7 @@ import EmptyState from '@/components/events/EmptyState';
 import { Users } from 'lucide-react';
 
 import { CLUB_TYPES, matchesClubType } from '@/lib/data/taxonomy'
+import { clearClubsReturn, readClubsReturn, rememberClubsReturn } from '@/lib/clubs-return'
 interface ClubsListProps {
     clubs: ClubItems[];
 }
@@ -29,6 +30,26 @@ const ClubsList = ({ clubs }: ClubsListProps) => {
     ]
 
     const [filteredClubs, setFilteredClubs] = useState<ClubItems[]>(clubs || []);
+    const pendingScroll = useRef<number | null>(null);
+
+    useEffect(() => {
+        const saved = readClubsReturn();
+        clearClubsReturn();
+        if (!saved) return;
+        pendingScroll.current = saved.scrollY;
+        setCurrentId(saved.tab);
+        setSearch(saved.search);
+    }, []);
+
+    useEffect(() => {
+        if (pendingScroll.current === null) return;
+        const y = pendingScroll.current;
+        pendingScroll.current = null;
+        requestAnimationFrame(() => window.scrollTo({ top: y, behavior: 'instant' }));
+    }, [filteredClubs]);
+
+    const openClub = (clubId: string) =>
+        rememberClubsReturn({ clubId, scrollY: window.scrollY, tab: currentId, search });
 
     useEffect(() => {
         let result = clubs || [];
@@ -100,7 +121,7 @@ const ClubsList = ({ clubs }: ClubsListProps) => {
 
                     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-6'>
                         {filteredClubs.filter((club) => club.isFeatured)?.map((club, index) => (
-                            <Link href={`/clubs/${club.sys.id}`} key={index} className='p-6 shadow-lg rounded-xl h-[454px] flex flex-col justify-between'>
+                            <Link href={`/clubs/${club.sys.id}`} key={index} onClick={() => openClub(club.sys.id)} className='p-6 shadow-lg rounded-xl h-[454px] flex flex-col justify-between'>
                                 <ClubLogo
                                     name={club.clubName}
                                     url={club.clubLogo?.url}
@@ -137,7 +158,7 @@ const ClubsList = ({ clubs }: ClubsListProps) => {
                             <h2 className='font-bold text-2xl font-header mb-8 text-gray-900'>Other Communities</h2>
                             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6 py-12'>
                                 {filteredClubs?.filter(club => !club.isFeatured).map((club, index) => (
-                                    <Link href={`/clubs/${club.sys.id}`} key={index} className='bg-[#F9FAFB] p-6 rounded-xl flex flex-col gap-4 w-full'>
+                                    <Link href={`/clubs/${club.sys.id}`} key={index} onClick={() => openClub(club.sys.id)} className='bg-[#F9FAFB] p-6 rounded-xl flex flex-col gap-4 w-full'>
                                         <div className='w-12 h-12 rounded-full bg-primary/13 p-1 flex items-center justify-center'>
                                             <Image src={getClubIcon(club.clubType)} alt="" width={32} height={32} />
                                         </div>

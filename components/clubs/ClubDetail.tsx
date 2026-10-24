@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS, type TopLevelBlock } from '@contentful/rich-text-types';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
@@ -11,7 +12,8 @@ import { contentfulImage } from '@/lib/contentful-image';
 import ClubLogo from './ClubLogo';
 
 import { useStore } from '@/store/useStore';
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, type MouseEvent } from 'react';
+import { readClubsReturn } from '@/lib/clubs-return';
 
 interface ClubDetailProps {
     club: ClubItems;
@@ -162,12 +164,19 @@ const JoinCard = ({ clubLink, recruiting }: JoinCardProps) => (
 const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
     const { clubName, clubLogo, clubType, clubLink, description, isActivelyRecruitingMembers, aboutclub, sys } = club;
     const { addToRecentlyViewed } = useStore();
+    const router = useRouter();
 
     useEffect(() => {
         if (club && sys.id) {
             addToRecentlyViewed(`/clubs/${sys.id}`);
         }
     }, [club, sys.id, addToRecentlyViewed]);
+
+    const backToClubs = (event: MouseEvent<HTMLAnchorElement>) => {
+        if (readClubsReturn()?.clubId !== sys.id) return;
+        event.preventDefault();
+        router.back();
+    };
 
     const assets = aboutclub?.links?.assets?.block ?? [];
     const options = proseRichTextOptions(assets);
@@ -180,6 +189,7 @@ const ClubDetail: React.FC<ClubDetailProps> = ({ club }) => {
                     <div className="py-6 sm:py-10">
                         <Link
                             href="/clubs"
+                            onClick={backToClubs}
                             className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors"
                         >
                             <ArrowLeft className="w-4 h-4" />
