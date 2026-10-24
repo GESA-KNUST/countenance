@@ -29,6 +29,7 @@ export interface ClubItems {
           url: string;
           title: string;
           description: string;
+          fileName?: string;
           width: number;
           height: number;
         }[];
