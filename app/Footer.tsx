@@ -64,6 +64,7 @@ const Footer = ({ contact = SITE_CONTACT_FALLBACK }: { contact?: SiteContact }) 
       path: [
         { page: "Campus", to: "/" },
         { page: "KNUST", to: "https://www.knust.edu.gh/" },
+        { page: "Privacy Policy", to: "/privacy" },
       ]
     },
   ]
